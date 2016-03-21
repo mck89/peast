@@ -1,0 +1,23 @@
+<?php
+namespace Peast\Syntax\Node;
+
+class ThrowStatement extends Statement
+{
+    protected $argument;
+    
+    public function getArgument()
+    {
+        return $this->argument;
+    }
+    
+    public function setArgument(Expression $argument)
+    {
+        $this->argument = $argument;
+        return $this;
+    }
+    
+    public function getSource()
+    {
+        return "throw " . $this->getArgument()->getSource() . ";";
+    }
+}

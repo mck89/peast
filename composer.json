@@ -1,0 +1,21 @@
+{
+    "name": "mck89/peast",
+    "description": "Peast is PHP library that generates AST for JavaScript code",
+    "authors": [
+        {
+            "name": "Marco Marchiò",
+            "email": "marco.mm89@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Peast\\": "lib/Peast/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
