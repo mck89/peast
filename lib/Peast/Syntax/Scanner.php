@@ -77,7 +77,8 @@ class Scanner
     {
         $position = $this->getPosition();
         foreach ($tests as $test) {
-            if ($this->consume($test)) {
+            $testFn = is_array($test) ? "consumeArray" : "consume";
+            if ($this->$testFn($test)) {
                 $this->setPosition($position);
                 return false;
             }

@@ -512,13 +512,55 @@ class ES6 extends Parser
     {
         $position = $this->scanner->getPosition();
         
-        if ($this->scanner->notBefore(array("{", "function", "class", "let", "[")) &&
+        $lookahead = array("{", "function", "class", array("let", "["));
+        
+        if ($this->scanner->notBefore($lookahead) &&
             $expression = $this->parseExpression(true, $yeld) &&
             $this->scanner->consume(";")) {
             
             $node = $this->createNode("ExpressionSta");
             $node->setExpression($expression);
             return $this->completeNode($node);
+        }
+        
+        $this->scanner->setPosition($position);
+        
+        return null;
+    }
+    
+    protected function parseIterationStatement($yield = false, $return = false)
+    {
+        $position = $this->scanner->getPosition();
+
+        if ($this->scanner->consume("do")) {
+            
+            if ($body = $this->parseStatement($yeld, $return) &&
+                $this->scanner->consumeArray("while", "(") &&
+                $test = $this->parseExpression(true, $yeld) &&
+                $this->scanner->consume(")")) {
+                    
+                $node = $this->createNode("DoWhileStatement");
+                $node->setBody($body);
+                $node->setTest($test);
+                return $this->completeNode($node);
+                
+            }
+            
+        } elseif ($this->scanner->consumeArray("while", "(")) {
+            
+            if ($test = $this->parseExpression(true, $yeld) &&
+                $this->scanner->consume(")") &&
+                $body = $this->parseStatement($yeld, $return)) {
+                    
+                $node = $this->createNode("WhileStatement");
+                $node->setTest($test);
+                $node->setBody($body);
+                return $this->completeNode($node);
+                    
+                }
+            
+        } elseif ($this->scanner->consumeArray("for", "(")) {
+            
         }
         
         $this->scanner->setPosition($position);
