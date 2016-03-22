@@ -14,8 +14,9 @@ class ForInStatement extends Statement
         return $this->left;
     }
     
-    public function setLeft(VariableDeclaration $left)
+    public function setLeft($left)
     {
+        $this->assertType($left, array("VariableDeclaration", "Expression"));
         $this->left = $left;
         return $this;
     }

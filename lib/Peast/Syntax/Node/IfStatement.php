@@ -36,8 +36,9 @@ class IfStatement extends Statement
         return $this->alternate;
     }
     
-    public function setAlternate(Statement $alternate)
+    public function setAlternate($alternate)
     {
+        $this->assertType($alternate, "Statement", true);
         $this->alternate = $alternate;
         return $this;
     }

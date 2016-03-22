@@ -10,8 +10,9 @@ class ContinueStatement extends Statement
         return $this->label;
     }
     
-    public function setLabel(Identifier $label)
+    public function setLabel($label)
     {
+        $this->assertType($label, "Identifier", true);
         $this->label = $label;
         return $this;
     }

@@ -10,8 +10,9 @@ class ReturnStatement extends Statement
         return $this->argument;
     }
     
-    public function setArgument(Expression $argument)
+    public function setArgument($argument)
     {
+        $this->assertType($argument, "Expression", true);
         $this->argument = $argument;
         return $this;
     }

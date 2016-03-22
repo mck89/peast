@@ -16,8 +16,13 @@ class ForStatement extends Statement
         return $this->init;
     }
     
-    public function setInit(VariableDeclaration $init)
+    public function setInit($init)
     {
+        $this->assertType(
+            $init,
+            array("VariableDeclaration", "Expression"),
+            true
+        );
         $this->init = $init;
         return $this;
     }
@@ -27,8 +32,9 @@ class ForStatement extends Statement
         return $this->test;
     }
     
-    public function setTest(Expression $test)
+    public function setTest($test)
     {
+        $this->assertType($test, "Expression", true);
         $this->test = $test;
         return $this;
     }
@@ -38,8 +44,9 @@ class ForStatement extends Statement
         return $this->update;
     }
     
-    public function setUpdate(Expression $update)
+    public function setUpdate($update)
     {
+        $this->assertType($update, "Expression", true);
         $this->update = $update;
         return $this;
     }

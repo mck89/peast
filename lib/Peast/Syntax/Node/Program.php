@@ -29,11 +29,7 @@ class Program extends Node
     
     public function setBody($body)
     {
-        if ($this->getSourceType() === self::SOURCE_TYPE_SCRIPT) {
-            $this->assertArrayOf($body, "Statement");
-        } else {
-            $this->assertArrayOf($body, "ModuleDeclaration");
-        }
+        $this->assertArrayOf($body, array("Statement", "ModuleDeclaration");
         $this->body = $body;
         return $this;
     }

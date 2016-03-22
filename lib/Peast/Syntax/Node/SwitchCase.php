@@ -12,8 +12,9 @@ class SwitchCase extends Node
         return $this->test;
     }
     
-    public function setTest(Expression $test)
+    public function setTest($test)
     {
+        $this->assertType($test, "Expression", true);
         $this->test = $test;
         return $this;
     }

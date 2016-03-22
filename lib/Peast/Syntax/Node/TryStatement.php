@@ -25,8 +25,9 @@ class TryStatement extends Statement
         return $this->handler;
     }
     
-    public function setHandler(CatchClause $handler)
+    public function setHandler($handler)
     {
+        $this->assertType($handler, "CatchClause", true);
         $this->handler = $handler;
         return $this;
     }
@@ -36,8 +37,9 @@ class TryStatement extends Statement
         return $this->finalizer;
     }
     
-    public function setFinalizer(BlockStatement $finalizer)
+    public function setFinalizer($finalizer)
     {
+        $this->assertType($finalizer, "BlockStatement", true);
         $this->finalizer = $finalizer;
         return $this;
     }

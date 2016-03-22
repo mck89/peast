@@ -53,22 +53,58 @@ abstract class Node
         return $source;
     }
     
-    protected function assertArrayOf($params, $class)
+    protected function assertArrayOf($params, $classes)
     {
-        $error = function () {
-            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-            $method = $backtrace[2]["class"] . "::" . $backtrace[2]["function"];
-            $error = "Argument 0 passed to $method must be an array of $class";
-            throw new \ErrorException($error);
-        };
+        if (!is_array($classes)) {
+            $classes = array($classes);
+        }
         if (!is_array($params)) {
-            $error();
+            $this->typeError($classes, true);
         } else {
             foreach ($params as $param) {
-                if (!($param instanceof $class)) {
-                    $error();
+                foreach ($classes as $class) {
+                    if ($param instanceof $class) {
+                        continue 2;
+                    }
                 }
+                $this->typeError($classes, true);
             }
+        }
+    }
+    
+    protected function assertType($param, $classes, $allowNull = false)
+    {
+        if (!is_array($classes)) {
+            $classes = array($classes);
+        }
+        if ($param === null && !$allowNull) {
+            $this->typeError($classes, false);
+        }
+        foreach ($classes as $class) {
+            if ($param instanceof $class) {
+                return;
+            }
+        }
+        $this->typeError($classes, false, $allowNull);
+    }
+    
+    protected function typeError($allowedTypes, $array = false, $allowNull = false)
+    {
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        $method = $backtrace[2]["class"] . "::" . $backtrace[2]["function"];
+        $msg = "Argument 0 passed to $method must be ";
+        if ($array) {
+            $msg .= "array of $allowedTypes";
+        } else {
+            $msg .= implode(" or ", $allowedTypes);
+        }
+        if ($allowNull) {
+            $msg .= " or null";
+        }
+        if (version_compare(phpversion(), '7', '>=')) {
+            throw new \TypeError($msg);
+        } else {
+            trigger_error($msg, E_RECOVERABLE_ERROR);
         }
     }
     
