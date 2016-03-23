@@ -620,6 +620,56 @@ class ES6 extends Parser
                         }
                     }
                 }
+            } elseif ($init = $this->parseLexicalDeclaration($yeld)) {
+                
+                $test = $this->parseExpression(true, $yeld);
+                
+                if ($this->scanner->consume(";")) {
+                        
+                    $update = $this->parseExpression(true, $yeld);
+                    
+                    if ($this->scanner->consume(")") &&
+                        $body = $this->parseStatement($yeld, $return)) {
+                        
+                        $node = $this->createNode("ForStatement");
+                        $node->setInit($init);
+                        $node->setTest($test);
+                        $node->setUpdate($update);
+                        $node->setBody($body);
+                        return $this->completeNode($node);
+                        
+                    }
+                }
+            } elseif ($left = $this->parseForDeclaration($yeld)) {
+                
+                if ($this->scanner->consume("in")) {
+                            
+                    if ($right = $this->parseExpression(true, $yeld) &&
+                        $this->scanner->consume(")") &&
+                        $body = $this->parseStatement($yeld, $return)) {
+                        
+                        $node = $this->createNode("ForInStatement");
+                        $node->setLeft($left);
+                        $node->setRight($right);
+                        $node->setBody($body);
+                        return $this->completeNode($node);
+                        
+                    }
+                    
+                } elseif ($this->scanner->consume("of")) {
+                    
+                    if ($right = $this->parseAssignmentExpression(true, $yeld) &&
+                        $this->scanner->consume(")") &&
+                        $body = $this->parseStatement($yeld, $return)) {
+                        
+                        $node = $this->createNode("ForOfStatement");
+                        $node->setLeft($left);
+                        $node->setRight($right);
+                        $node->setBody($body);
+                        return $this->completeNode($node);
+                        
+                    }
+                }
             }
         }
         
