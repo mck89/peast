@@ -750,7 +750,7 @@ class ES6 extends Parser
             
             if (($default || $id) &&
                 $this->scanner->consume("(") &&
-                $params = $this->parseFormalParameters() &&
+                ($params = $this->parseFormalParameters() || true) &&
                 $this->scanner->consumeArray(array(")", "{")) &&
                 $body = $this->parseFunctionBody() &&
                 $this->scanner->consume("}")) {
@@ -780,7 +780,7 @@ class ES6 extends Parser
             
             if (($default || $id) &&
                 $this->scanner->consume("(") &&
-                $params = $this->parseFormalParameters(true) &&
+                ($params = $this->parseFormalParameters(true) || true) &&
                 $this->scanner->consumeArray(array(")", "{")) &&
                 $body = $this->parseGeneratorBody() &&
                 $this->scanner->consume("}")) {
@@ -810,7 +810,7 @@ class ES6 extends Parser
             $id = $this->BindingIdentifier();
             
             if ($this->scanner->consume("(") &&
-                $params = $this->parseFormalParameters() &&
+                ($params = $this->parseFormalParameters() || true) &&
                 $this->scanner->consumeArray(array(")", "{")) &&
                 $body = $this->parseFunctionBody() &&
                 $this->scanner->consume("}")) {
@@ -837,7 +837,7 @@ class ES6 extends Parser
             $id = $this->BindingIdentifier(true);
             
             if ($this->scanner->consume("(") &&
-                $params = $this->parseFormalParameters(true) &&
+                ($params = $this->parseFormalParameters(true) || true) &&
                 $this->scanner->consumeArray(array(")", "{")) &&
                 $body = $this->parseGeneratorBody() &&
                 $this->scanner->consume("}")) {
@@ -880,12 +880,23 @@ class ES6 extends Parser
             
             $this->scanner->setPosition($position);
             
-        } elseif ($this->scanner->consume("yield") {
+        } elseif ($this->scanner->consume("yield")) {
             
             $node = $this->createNode("YieldExpression");
             return $this->completeNode($node);
         }
         
         return null;
+    }
+    
+    protected function parseFormalParameters($yeld)
+    {
+        $list = $this->parseFormalParametersList($yeld);
+        return $list ? $list : array();
+    }
+    
+    protected function parseStrictFormalParameters($yeld)
+    {
+        return $this->parseFormalParameters($yeld);
     }
 }
