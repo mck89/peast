@@ -963,4 +963,135 @@ class ES6 extends Parser
         }
         return $items;
     }
+    
+    protected function parseClassDeclaration($yeld = false, $default = false)
+    {
+        if ($this->scanner->consume("class")) {
+            
+            $position = $this->scanner->getPosition();
+            $id = $this->BindingIdentifier($yeld);
+            
+            if (($default || $id) &&
+                $tail = $this->parseClassTail($yeld)) {
+                
+                $node = $this->createNode("ClassDeclaration");
+                if ($id) {
+                    $node->setId($id);
+                }
+                if ($tail[0]) {
+                    $node->setSuperClass($tail[0]);
+                }
+                $node->setBody($tail[1]);
+                return $this->completeNode($node);
+                
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        
+        return null;
+    }
+    
+    protected function parseClassExpression($yeld = false, $default = false)
+    {
+        if ($this->scanner->consume("class")) {
+            
+            $position = $this->scanner->getPosition();
+            $id = $this->BindingIdentifier($yeld);
+            
+            if ($tail = $this->parseClassTail($yeld)) {
+                
+                $node = $this->createNode("ClassExpression");
+                if ($id) {
+                    $node->setId($id);
+                }
+                if ($tail[0]) {
+                    $node->setSuperClass($tail[0]);
+                }
+                $node->setBody($tail[1]);
+                return $this->completeNode($node);
+                
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        
+        return null;
+    }
+    
+    protected function parseClassTail($yeld = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        $heritage = $this->parseClassHeritage($yeld);
+        
+        if ($this->scanner->consume("{")) {
+            
+            $body = $this->parseClassBody($yeld);
+            
+            if ($this->scanner->consume("}")) {
+                return array($heritage, $body);
+            }
+        }
+        
+        $this->scanner->setPosition($position);
+        
+        return null;
+    }
+    
+    protected function parseClassHeritage($yeld = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("extends") &&
+            $superClass = $this->parseLeftHandSideExpression($yeld)) {
+            return $superClass;
+        }
+        
+        $this->scanner->setPosition($position);
+        
+        return null;
+    }
+    
+    protected function parseClassBody($yeld = false)
+    {
+        $body = $this->getClassElementList($yeld);
+        $node = $this->createNode("ClassBody");
+        if ($body) {
+            $node->setBody($body);
+        }
+        return $this->completeNode($node);
+    }
+    
+    protected function parseClassElementList($yeld = false)
+    {
+        $items = array();
+        while ($item = $this->parseClassElement($yeld)) {
+            if ($item !== true) {
+                $items[] = $item;
+            }
+        }
+        return count($items) ? $items : null;
+    }
+    
+    protected function parseClassElement($yeld = false)
+    {
+        if ($this->consume(";")) {
+            return true;
+        } elseif ($def = $this->parseMethodDefinition($yeld)) {
+            return $def;
+        }
+        
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("static") &&
+            $def = $this->parseMethodDefinition($yeld)) {
+            $def->setStatic(true);
+            return $def;        
+        }
+        
+        $this->scanner->setPosition($position);
+        
+        return null;
+    }
 }

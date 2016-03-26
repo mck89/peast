@@ -1,15 +1,13 @@
 <?php
 namespace Peast\Syntax\Node;
 
-trait Function_
+trait Class_
 {
     protected $id;
     
-    protected $params = array();
+    protected $superClass;
     
     protected $body;
-    
-    protected $generator = false;
     
     public function getId()
     {
@@ -23,15 +21,15 @@ trait Function_
         return $this;
     }
     
-    public function getParams()
+    public function getSuperClass()
     {
-        return $this->params;
+        return $this->superClass;
     }
     
-    public function setParams($params)
+    public function setSuperClass($superClass)
     {
-        $this->assertArrayOf($params, "Pattern");
-        $this->params = $params;
+        $this->assertType($superClass, "Expression", true);
+        $this->superClass = $superClass;
         return $this;
     }
     
@@ -40,36 +38,24 @@ trait Function_
         return $this->body;
     }
     
-    public function setBody(BlockStatement $body)
+    public function setBody(ClassBody $body)
     {
         $this->body = $body;
         return $this;
     }
     
-    public function getGenerator()
-    {
-        return $this->generator;
-    }
-    
-    public function setGenerator($generator)
-    {
-        $this->generator = (bool) $generator;
-        return $this;
-    }
-    
     public function getSource()
     {
-        $source = "function";
-        
-        if ($this->getGenerator()) {
-            $source .= " *";
-        }
+        $source = "class";
         
         if ($id = $this->getId()) {
             $source .= " " . $id->getSource();
         }
         
-        $source .= " (" . $this->nodeListToSource($this->getParams()) . ")";
+        if ($superClass = $this->getSuperClass()) {
+            $source .= " extends " . $superClass->getSource();
+        }
+        
         $source .= " {" . $this->getBody()->getSource() . "}";
         
         return $source;
