@@ -899,4 +899,54 @@ class ES6 extends Parser
     {
         return $this->parseFormalParameters($yeld);
     }
+    
+    protected function parseFormalParameterList($yeld)
+    {
+        $params = $this->parseFormalsList($yeld);
+        if ($params) {
+            
+            $position = $this->scanner->getPosition();
+            
+            if ($this->scanner->consume(",") &&
+                $rest = $this->parseFunctionRestParameter($yeld)) {
+                $params[] = $rest;
+            } else {
+                $this->scanner->setPosition($position);
+            }
+            
+        } elseif ($rest = $this->parseFunctionRestParameter($yeld)) {
+            $params = array($rest);
+        }
+        
+        return $params;
+    }
+    
+    protected function parseFormalsList($yeld)
+    {
+        $list = array();
+        $position = null;
+        while ($param = $this->parseFormalParameter($yeld)) {
+            $list = array();
+            if (!$this->scanner->consume(",")) {
+                $position = null;
+                break;
+            } else {
+                $position = $this->scanner->getPosition();
+            }
+        }
+        if ($position) {
+            $this->scanner->setPosition($position);
+        }
+        return count($list) ? $list : null;
+    }
+    
+    protected function parseFunctionRestParameter($yeld)
+    {
+        return $this->parseBindingRestElement($yeld);
+    }
+    
+    protected function parseFormalParameter($yeld)
+    {
+        return $this->parseBindingElement($yeld);
+    }
 }
