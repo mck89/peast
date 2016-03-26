@@ -44,13 +44,16 @@ abstract class Node
         return $this;
     }
     
-    protected function nodeListToSource($list)
+    protected function nodeListToSource($list, $separator = "")
     {
-        $source = "";
-        foreach ($list as $item) {
-            $source .= $item->getSource();
+        if (!count($list)) {
+            return "";
         }
-        return $source;
+        $sources = array();
+        foreach ($list as $item) {
+            $sources[] = $item->getSource();
+        }
+        return implode($separator, $sources);
     }
     
     protected function assertArrayOf($params, $classes)

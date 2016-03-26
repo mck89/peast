@@ -740,4 +740,125 @@ class ES6 extends Parser
         
         return null;
     }
+    
+    protected function parseFunctionDeclaration($yeld = false, $default = false)
+    {
+        if ($this->scanner->consume("function")) {
+            
+            $position = $this->scanner->getPosition();
+            $id = $this->BindingIdentifier($yeld);
+            
+            if (($default || $id) &&
+                $this->scanner->consume("(") &&
+                $params = $this->parseFormalParameters() &&
+                $this->scanner->consumeArray(array(")", "{")) &&
+                $body = $this->parseFunctionBody() &&
+                $this->scanner->consume("}")) {
+                
+                $node = $this->createNode("FunctionDeclaration");
+                if ($id) {
+                    $node->setId($id);
+                }
+                $node->setParams($params);
+                $node->setBody($body);
+                return $this->completeNode($node);
+                
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        
+        return null;
+    }
+    
+    protected function parseGeneratorDeclaration($yeld = false, $default = false)
+    {
+        if ($this->scanner->consumeArray(array("function", "*"))) {
+            
+            $position = $this->scanner->getPosition();
+            $id = $this->BindingIdentifier($yeld);
+            
+            if (($default || $id) &&
+                $this->scanner->consume("(") &&
+                $params = $this->parseFormalParameters(true) &&
+                $this->scanner->consumeArray(array(")", "{")) &&
+                $body = $this->parseGeneratorBody() &&
+                $this->scanner->consume("}")) {
+                
+                $node = $this->createNode("FunctionDeclaration");
+                if ($id) {
+                    $node->setId($id);
+                }
+                $node->setParams($params);
+                $node->setBody($body);
+                $node->setGenerator(true);
+                return $this->completeNode($node);
+                
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        
+        return null;
+    }
+    
+    protected function parseFunctionExpression()
+    {
+        if ($this->scanner->consume("function")) {
+            
+            $position = $this->scanner->getPosition();
+            $id = $this->BindingIdentifier();
+            
+            if ($this->scanner->consume("(") &&
+                $params = $this->parseFormalParameters() &&
+                $this->scanner->consumeArray(array(")", "{")) &&
+                $body = $this->parseFunctionBody() &&
+                $this->scanner->consume("}")) {
+                
+                $node = $this->createNode("FunctionExpression");
+                $node->setId($id);
+                $node->setParams($params);
+                $node->setBody($body);
+                return $this->completeNode($node);
+                
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        
+        return null;
+    }
+    
+    protected function parseGeneratorExpression()
+    {
+        if ($this->scanner->consume(array("function", "*"))) {
+            
+            $position = $this->scanner->getPosition();
+            $id = $this->BindingIdentifier(true);
+            
+            if ($this->scanner->consume("(") &&
+                $params = $this->parseFormalParameters(true) &&
+                $this->scanner->consumeArray(array(")", "{")) &&
+                $body = $this->parseGeneratorBody() &&
+                $this->scanner->consume("}")) {
+                
+                $node = $this->createNode("FunctionExpression");
+                $node->setId($id);
+                $node->setParams($params);
+                $node->setBody($body);
+                $node->setGenerator(true);
+                return $this->completeNode($node);
+                
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        
+        return null;
+    }
+    
+    protected function parseGeneratorBody()
+    {
+        return $this->parseFunctionBody(true);
+    }
 }

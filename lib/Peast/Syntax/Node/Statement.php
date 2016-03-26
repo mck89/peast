@@ -1,6 +1,6 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class Statement extends Node
+abstract class Statement extends Node
 {
 }
