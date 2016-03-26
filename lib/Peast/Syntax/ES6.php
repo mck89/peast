@@ -831,7 +831,7 @@ class ES6 extends Parser
     
     protected function parseGeneratorExpression()
     {
-        if ($this->scanner->consume(array("function", "*"))) {
+        if ($this->scanner->consumeArray(array("function", "*"))) {
             
             $position = $this->scanner->getPosition();
             $id = $this->BindingIdentifier(true);
@@ -860,5 +860,32 @@ class ES6 extends Parser
     protected function parseGeneratorBody()
     {
         return $this->parseFunctionBody(true);
+    }
+    
+    protected function parseYieldExpression($in = false)
+    {
+        if ($this->scanner->consume("yield", false)) {
+            
+            $position = $this->scanner->getPosition();
+            $delegate = $this->scanner->consume("*") ? true : false;
+            
+            if ($argument = $this->parseAssignmentExpression($in, true)) {
+                
+                $node = $this->createNode("YieldExpression");
+                $node->setArgument($argument);
+                $node->setDelegate($delegate);
+                return $this->completeNode($node);
+                
+            }
+            
+            $this->scanner->setPosition($position);
+            
+        } elseif ($this->scanner->consume("yield") {
+            
+            $node = $this->createNode("YieldExpression");
+            return $this->completeNode($node);
+        }
+        
+        return null;
     }
 }

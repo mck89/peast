@@ -62,7 +62,7 @@ trait Function_
         $source = "function";
         
         if ($this->getGenerator()) {
-            $source .= "*";
+            $source .= " *";
         }
         
         if ($id = $this->getId()) {
