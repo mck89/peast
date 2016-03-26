@@ -752,7 +752,7 @@ class ES6 extends Parser
                 $this->scanner->consume("(") &&
                 ($params = $this->parseFormalParameters() || true) &&
                 $this->scanner->consumeArray(array(")", "{")) &&
-                $body = $this->parseFunctionBody() &&
+                ($body = $this->parseFunctionBody() || true) &&
                 $this->scanner->consume("}")) {
                 
                 $node = $this->createNode("FunctionDeclaration");
@@ -782,7 +782,7 @@ class ES6 extends Parser
                 $this->scanner->consume("(") &&
                 ($params = $this->parseFormalParameters(true) || true) &&
                 $this->scanner->consumeArray(array(")", "{")) &&
-                $body = $this->parseGeneratorBody() &&
+                ($body = $this->parseGeneratorBody() || true) &&
                 $this->scanner->consume("}")) {
                 
                 $node = $this->createNode("FunctionDeclaration");
@@ -812,7 +812,7 @@ class ES6 extends Parser
             if ($this->scanner->consume("(") &&
                 ($params = $this->parseFormalParameters() || true) &&
                 $this->scanner->consumeArray(array(")", "{")) &&
-                $body = $this->parseFunctionBody() &&
+                ($body = $this->parseFunctionBody() || true) &&
                 $this->scanner->consume("}")) {
                 
                 $node = $this->createNode("FunctionExpression");
@@ -839,7 +839,7 @@ class ES6 extends Parser
             if ($this->scanner->consume("(") &&
                 ($params = $this->parseFormalParameters(true) || true) &&
                 $this->scanner->consumeArray(array(")", "{")) &&
-                $body = $this->parseGeneratorBody() &&
+                ($body = $this->parseGeneratorBody() || true) &&
                 $this->scanner->consume("}")) {
                 
                 $node = $this->createNode("FunctionExpression");
@@ -948,5 +948,19 @@ class ES6 extends Parser
     protected function parseFormalParameter($yeld)
     {
         return $this->parseBindingElement($yeld);
+    }
+    
+    protected function parseFunctionBody($yeld)
+    {
+        return $this->parseFunctionStatementList($yeld);
+    }
+    
+    protected function parseFunctionStatementList($yeld)
+    {
+        $items = array();
+        while ($item = $this->parseStatementList($yeld, true)) {
+            $items[] = $item;
+        }
+        return $items;
     }
 }
