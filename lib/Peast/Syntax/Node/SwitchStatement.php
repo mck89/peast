@@ -30,10 +30,10 @@ class SwitchStatement extends Statement
         return $this;
     }
     
-    public function getSource()
+    public function compile()
     {
-        return "switch (" . $this->getDiscriminant()->getSource() . ") {" .
-               $this->nodeListToSource($this->getBody()) .
+        return "switch (" . $this->getDiscriminant()->compile() . ") {" .
+               $this->compileNodeList($this->getBody()) .
                "}";
     }
 }

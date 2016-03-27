@@ -29,10 +29,10 @@ class LabeledStatement extends Statement
         return $this;
     }
     
-    public function getSource()
+    public function compile()
     {
-        return $this->getLabel()->getSource() .
+        return $this->getLabel()->compile() .
                ":" .
-               $this->getBody()->getSource();
+               $this->getBody()->compile();
     }
 }

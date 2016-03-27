@@ -62,27 +62,27 @@ class ForStatement extends Statement
         return $this;
     }
     
-    public function getSource()
+    public function compile()
     {
         $source = "for (";
         
         if ($init = $this->getInit()) {
-            $source .= $init->getSource();
+            $source .= $init->compile();
         }
         
         $source .= ";";
         
         if ($test = $this->getTest()) {
-            $source .= $test->getSource();
+            $source .= $test->compile();
         }
         
         $source .= ";";
         
         if ($update = $this->getUpdate()) {
-            $source .= $update->getSource();
+            $source .= $update->compile();
         }
         
-        $source .= ") " . $this->getBody()->getSource();
+        $source .= ") " . $this->getBody()->compile();
         
         return $source;
     }

@@ -29,9 +29,9 @@ class DoWhileStatement extends Statement
         return $this;
     }
     
-    public function getSource()
+    public function compile()
     {
         return "do" . $this->getBody()->getSource .
-               "while (" . $this->getTest()->getSource() . ")";
+               "while (" . $this->getTest()->compile() . ")";
     }
 }

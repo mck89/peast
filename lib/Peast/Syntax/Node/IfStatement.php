@@ -43,13 +43,13 @@ class IfStatement extends Statement
         return $this;
     }
     
-    public function getSource()
+    public function compile()
     {
-        $source = "if (" . $this->getTest()->getSource() . ") ";
-        $source .= $this->getConsequent()->getSource();
+        $source = "if (" . $this->getTest()->compile() . ") ";
+        $source .= $this->getConsequent()->compile();
         
         if ($alternate = $this->getAlternate()) {
-            $source .= " else " . $alternate->getSource();
+            $source .= " else " . $alternate->compile();
         }
         
         return $source;

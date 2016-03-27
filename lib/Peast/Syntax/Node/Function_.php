@@ -57,7 +57,7 @@ trait Function_
         return $this;
     }
     
-    public function getSource()
+    public function compile()
     {
         $source = "function";
         
@@ -66,11 +66,11 @@ trait Function_
         }
         
         if ($id = $this->getId()) {
-            $source .= " " . $id->getSource();
+            $source .= " " . $id->compile();
         }
         
-        $source .= " (" . $this->nodeListToSource($this->getParams()) . ")";
-        $source .= " {" . $this->getBody()->getSource() . "}";
+        $source .= " (" . $this->compileNodeList($this->getParams()) . ")";
+        $source .= " {" . $this->getBody()->compile() . "}";
         
         return $source;
     }

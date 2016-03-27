@@ -44,14 +44,14 @@ abstract class Node
         return $this;
     }
     
-    protected function nodeListToSource($list, $separator = "")
+    protected function compileNodeList($list, $separator = "")
     {
         if (!count($list)) {
             return "";
         }
         $sources = array();
         foreach ($list as $item) {
-            $sources[] = $item->getSource();
+            $sources[] = $item->compile();
         }
         return implode($separator, $sources);
     }
@@ -111,5 +111,5 @@ abstract class Node
         }
     }
     
-    abstract public function getSource();
+    abstract public function compile();
 }

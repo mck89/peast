@@ -43,10 +43,10 @@ class ForInStatement extends Statement
         return $this;
     }
     
-    public function getSource()
+    public function compile()
     {
-        return "for (" . $this->getLeft()->getSource() .
-               " in " . $this->getRight()->getSource() . ") " .
-               $this->getBody()->getSource();
+        return "for (" . $this->getLeft()->compile() .
+               " in " . $this->getRight()->compile() . ") " .
+               $this->getBody()->compile();
     }
 }

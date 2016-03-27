@@ -30,7 +30,7 @@ class YieldExpression extends Expression
         return $this;
     }
     
-    public function getSource()
+    public function compile()
     {
         $source = "yield";
         
@@ -39,7 +39,7 @@ class YieldExpression extends Expression
         }
         
         if ($argument = $this->getArgument()) {
-            $source .= " " . $argument->getSource();
+            $source .= " " . $argument->compile();
         }
         
         return $source;

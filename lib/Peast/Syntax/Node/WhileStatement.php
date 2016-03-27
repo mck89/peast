@@ -29,9 +29,9 @@ class WhileStatement extends Statement
         return $this;
     }
     
-    public function getSource()
+    public function compile()
     {
-        return "while (" . $this->getTest()->getSource() . ")" .
-               $this->getBody()->getSource();
+        return "while (" . $this->getTest()->compile() . ")" .
+               $this->getBody()->compile();
     }
 }

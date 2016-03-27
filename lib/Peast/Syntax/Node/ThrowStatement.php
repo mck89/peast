@@ -16,8 +16,8 @@ class ThrowStatement extends Statement
         return $this;
     }
     
-    public function getSource()
+    public function compile()
     {
-        return "throw " . $this->getArgument()->getSource() . ";";
+        return "throw " . $this->getArgument()->compile() . ";";
     }
 }

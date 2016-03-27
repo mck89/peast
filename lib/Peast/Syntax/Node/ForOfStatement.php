@@ -3,10 +3,10 @@ namespace Peast\Syntax\Node;
 
 class ForOfStatement extends ForInStatement
 {
-    public function getSource()
+    public function compile()
     {
-        return "for (" . $this->getLeft()->getSource() .
-               " of " . $this->getRight()->getSource() . ") " .
-               $this->getBody()->getSource();
+        return "for (" . $this->getLeft()->compile() .
+               " of " . $this->getRight()->compile() . ") " .
+               $this->getBody()->compile();
     }
 }

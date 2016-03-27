@@ -44,16 +44,16 @@ class TryStatement extends Statement
         return $this;
     }
     
-    public function getSource()
+    public function compile()
     {
-        $source = "try " . $this->getBlock()->getSource();
+        $source = "try " . $this->getBlock()->compile();
         
         if ($handler = $this->getHandler()) {
-            $source .= $handler->getSource(); 
+            $source .= $handler->compile(); 
         }
         
         if ($finalizer = $this->getFinalizer()) {
-            $source .= $finalizer->getSource(); 
+            $source .= $finalizer->compile(); 
         }
         
         return $source;

@@ -17,12 +17,12 @@ class ReturnStatement extends Statement
         return $this;
     }
     
-    public function getSource()
+    public function compile()
     {
         $source = "return";
         
         if ($argument = $this->getArgument()) {
-            $source .= " " . $argument->getSource(); 
+            $source .= " " . $argument->compile(); 
         }
         
         $source .= ";";

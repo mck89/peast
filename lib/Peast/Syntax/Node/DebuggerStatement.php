@@ -3,7 +3,7 @@ namespace Peast\Syntax\Node;
 
 class DebuggerStatement extends Statement
 {
-    public function getSource()
+    public function compile()
     {
         return "debugger;";
     }

@@ -44,19 +44,19 @@ trait Class_
         return $this;
     }
     
-    public function getSource()
+    public function compile()
     {
         $source = "class";
         
         if ($id = $this->getId()) {
-            $source .= " " . $id->getSource();
+            $source .= " " . $id->compile();
         }
         
         if ($superClass = $this->getSuperClass()) {
-            $source .= " extends " . $superClass->getSource();
+            $source .= " extends " . $superClass->compile();
         }
         
-        $source .= " {" . $this->getBody()->getSource() . "}";
+        $source .= " {" . $this->getBody()->compile() . "}";
         
         return $source;
     }

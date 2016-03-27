@@ -36,10 +36,10 @@ class VariableDeclaration extends Declaration
         return $this;
     }
     
-    public function getSource()
+    public function compile()
     {
         return $this->getKind() .
-               $this->nodeListToSource($this->getBody(), ",") .
+               $this->compileNodeList($this->getBody(), ",") .
                ";";
     }
 }

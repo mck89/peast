@@ -3,7 +3,7 @@ namespace Peast\Syntax\Node;
 
 class EmptyStatement extends Statement
 {
-    public function getSource()
+    public function compile()
     {
         return ";";
     }

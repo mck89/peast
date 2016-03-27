@@ -17,12 +17,12 @@ class BreakStatement extends Statement
         return $this;
     }
     
-    public function getSource()
+    public function compile()
     {
         $source = "break";
         
         if ($label = $this->getLabel()) {
-            $source .= " " . $label->getSource(); 
+            $source .= " " . $label->compile(); 
         }
         
         $source .= ";";

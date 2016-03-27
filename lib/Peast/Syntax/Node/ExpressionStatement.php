@@ -16,8 +16,8 @@ class ExpressionStatement extends Statement
         return $this;
     }
     
-    public function getSource()
+    public function compile()
     {
-        return $this->getExpression()->getSource() . ";";
+        return $this->getExpression()->compile() . ";";
     }
 }

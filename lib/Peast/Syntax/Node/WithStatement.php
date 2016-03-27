@@ -29,9 +29,9 @@ class WithStatement extends Statement
         return $this;
     }
     
-    public function getSource()
+    public function compile()
     {
-        return "with (" . $this->getObject()->getSource() . ") " .
-               $this->getBody()->getSource();
+        return "with (" . $this->getObject()->compile() . ") " .
+               $this->getBody()->compile();
     }
 }
