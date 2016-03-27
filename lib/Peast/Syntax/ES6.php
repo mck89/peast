@@ -1293,4 +1293,79 @@ class ES6 extends Parser
         
         return null;
     }
+    
+    protected function parseModuleItem()
+    {
+        if ($item = $this->parseImportDeclaration()) {
+            return $item;
+        } elseif ($item = $this->parseExportDeclaration()) {
+            return $item;
+        } elseif ($item = $this->parseStatementListItem()) {
+            return $item;
+        }
+        return null;
+    }
+    
+    protected function parseFromClause()
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("from") &&
+            $spec = $this->parseModuleSpecifier()) {
+            return $spec;
+        }
+        
+        $this->scanner->setPosition($position);
+        
+        return null;
+    }
+    
+    protected function parseModuleSpecifier()
+    {
+        return $this->parseStringLiteral();
+    }
+    
+    protected function parseExportDeclaration()
+    {
+        if ($this->scanner->consume("export")) {
+            
+            $position = $this->scanner->getPosition();
+            
+            if ($this->scanner->consume("*")) {
+                
+                if (($source = $this->parseFromClause()) &&
+                    $this->scanner->consume(";")) {
+                    
+                    $node = $this->createNode("ExportAllDeclaration");
+                    $node->setSource($source);
+                    return $this->completeNode($node);
+                    
+                }
+                
+            } elseif ($this->scanner->consume("default")) {
+                
+                if (($declaration = $this->parseHoistableDeclaration(true)) ||
+                    ($declaration = $this->parseClassDeclaration(true))) {
+                    
+                    $node = $this->createNode("ExportDefaultDeclaration");
+                    $node->setDeclaration($declaration);
+                    return $this->completeNode($node);
+                    
+                } elseif ($this->scanner->notBefore(array("function", "class")) &&
+                          ($declaration = $this->parseAssignmentExpression(true)) &&
+                          $this->scanner->consume(";")) {
+                    
+                    $node = $this->createNode("ExportDefaultDeclaration");
+                    $node->setDeclaration($declaration);
+                    return $this->completeNode($node);
+                    
+                }
+                
+            }
+            
+            $this->scanner->setPosition($position);
+            
+        }
+        return null;
+    }
 }
