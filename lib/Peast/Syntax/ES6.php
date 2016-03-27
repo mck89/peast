@@ -563,7 +563,7 @@ class ES6 extends Parser
                 
                 $subPosition = $this->scanner->getPosition();
                 
-                if ($init = $this->parseVariableDeclarationList($yield) &&
+                if ($decl = $this->parseVariableDeclarationList($yield) &&
                     $this->scanner->consume(";")) {
                     
                     $test = $this->parseExpression(true, $yield);
@@ -574,6 +574,11 @@ class ES6 extends Parser
                         
                         if ($this->scanner->consume(")") &&
                             $body = $this->parseStatement($yield, $return)) {
+                            
+                            $init = $this->createNode("VariableDeclaration");
+                            $init->setKind($init::KIND_VAR);
+                            $init->setDeclarations($decl);
+                            $init = $this->completeNode($init);
                             
                             $node = $this->createNode("ForStatement");
                             $node->setInit($init);
@@ -588,7 +593,12 @@ class ES6 extends Parser
                     
                     $this->scanner->setPosition($subPosition);
                     
-                    if ($left = $this->parseForBinding($yield)) {
+                    if ($decl = $this->parseForBinding($yield)) {
+                        
+                        $left = $this->createNode("VariableDeclaration");
+                        $left->setKind($left::KIND_VAR);
+                        $left->setDeclarations(array($decl));
+                        $left = $this->completeNode($left);
                         
                         if ($this->scanner->consume("in")) {
                             
