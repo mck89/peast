@@ -1250,4 +1250,37 @@ class ES6 extends Parser
         
         return null;
     }
+    
+    protected function parseForDeclaration($yield = false)
+    {
+         $position = $this->scanner->getPosition();
+        
+        if ($letOrConst = $this->parseLetOrConst() &&
+            $declaration = $this->parseForBinding($yield)) {
+            
+            $node = $this->createNode("VariableDeclaration");
+            $node->setKind($letOrConst);
+            $node->setDeclarations(array($declaration));
+            return $this->completeNode($node);
+            
+        }
+        
+        $this->scanner->setPosition($position);
+        
+        return null;
+    }
+    
+    protected function parseForBinding($yield = false)
+    {
+        if (($init = $this->parseBindingIdentifier($yield)) ||
+            ($init = $this->parseBindingPattern($yield))) {
+            
+            $node = $this->createNode("VariableDeclarator");
+            $node->setId($id);
+            return $this->completeNode($node);
+            
+        }
+        
+        return null;
+    }
 }
