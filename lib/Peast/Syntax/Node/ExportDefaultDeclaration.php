@@ -12,7 +12,7 @@ class ExportDefaultDeclaration extends ModuleDeclaration
     
     public function setDeclaration($declaration)
     {
-        $this->assertArrayOf($declaration, array("Declaration", "Expression"));
+        $this->assertType($declaration, array("Declaration", "Expression"));
         $this->declaration = $declaration;
         return $this;
     }

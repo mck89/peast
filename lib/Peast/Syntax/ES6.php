@@ -934,17 +934,18 @@ class ES6 extends Parser
     protected function parseFormalsList($yield)
     {
         $list = array();
-        $position = null;
+        $position = $this->scanner->getPosition();
+        $valid = true;
         while ($param = $this->parseFormalParameter($yield)) {
             $list[] = $param;
+            $valid = true;
             if (!$this->scanner->consume(",")) {
-                $position = null;
                 break;
             } else {
-                $position = $this->scanner->getPosition();
+                $valid = false;
             }
         }
-        if ($position) {
+        if ($valid) {
             $this->scanner->setPosition($position);
         }
         return count($list) ? $list : null;
@@ -1139,17 +1140,18 @@ class ES6 extends Parser
     protected function parseBindingList($in = false, $yield = false)
     {
         $list = array();
-        $position = null;
+        $position = $this->scanner->getPosition();
+        $valid = true;
         while ($declaration = $this->parseLexicalBinding($in, $yield)) {
             $list[] = $declaration;
+            $valid = true;
             if (!$this->scanner->consume(",")) {
-                $position = null;
                 break;
             } else {
-                $position = $this->scanner->getPosition();
+                $valid = false;
             }
         }
-        if ($position) {
+        if ($valid) {
             $this->scanner->setPosition($position);
         }
         return count($list) ? $list : null;
@@ -1212,17 +1214,18 @@ class ES6 extends Parser
     protected function parseVariableDeclarationList($in = false, $yield = false)
     {
         $list = array();
-        $position = null;
+        $position = $this->scanner->getPosition();
+        $valid = true;
         while ($declaration = $this->parseVariableDeclaration($in, $yield)) {
             $list[] = $declaration;
+            $valid = true;
             if (!$this->scanner->consume(",")) {
-                $position = null;
                 break;
             } else {
-                $position = $this->scanner->getPosition();
+                $valid = false;
             }
         }
-        if ($position) {
+        if ($valid) {
             $this->scanner->setPosition($position);
         }
         return count($list) ? $list : null;
@@ -1333,8 +1336,9 @@ class ES6 extends Parser
             
             if ($this->scanner->consume("*")) {
                 
-                if (($source = $this->parseFromClause()) &&
-                    $this->scanner->consume(";")) {
+                $source = $this->parseFromClause();
+                
+                if ($source !== null && $this->scanner->consume(";")) {
                     
                     $node = $this->createNode("ExportAllDeclaration");
                     $node->setSource($source);
@@ -1359,6 +1363,26 @@ class ES6 extends Parser
                     $node->setDeclaration($declaration);
                     return $this->completeNode($node);
                     
+                } elseif (($specifiers = $this->parseExportClause()) !== null) {
+                    
+                    $source = $this->parseFromClause();
+                    
+                    if ($this->scanner->consume(";")) {
+                        $node = $this->createNode("ExportNamedDeclaration");
+                        $node->setSpecifiers($specifiers);
+                        if ($source !== null) {
+                            $node->setSource($source);
+                        }
+                        return $this->completeNode($node);
+                    }
+                    
+                } elseif (($dec = $this->parseVariableStatement()) ||
+                          $dec = $this->parseDeclaration()) {
+                    
+                    $node = $this->createNode("ExportNamedDeclaration");
+                    $node->setDeclaration($dec);
+                    return $this->completeNode($node);
+                    
                 }
                 
             }
@@ -1366,6 +1390,74 @@ class ES6 extends Parser
             $this->scanner->setPosition($position);
             
         }
+        
+        return null;
+    }
+    
+    protected function parseExportClause()
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("{")) {
+            
+            $list = $this->parseExportsList();
+            $this->scanner->consume(",");
+            
+            if ($this->scanner->consume("}")) {
+                return $list ? $list : array();
+            }
+        }
+        
+        $this->scanner->setPosition($position);
+        
+        return null;
+    }
+    
+    protected function parseExportsList()
+    {
+        $list = array();
+        $position = $this->scanner->getPosition();
+        $valid = true;
+        while ($param = $this->parseExportSpecifier($yield)) {
+            $list[] = $param;
+            $valid = true;
+            if (!$this->scanner->consume(",")) {
+                break;
+            } else {
+                $valid = false;
+            }
+        }
+        if ($valid) {
+            $this->scanner->setPosition($position);
+        }
+        return count($list) ? $list : null;
+    }
+    
+    protected function parseExportSpecifier()
+    {
+        if ($local = $this->parseIdentifierName()) {
+            
+            $position = $this->scanner->getPosition();
+            $node = $this->createNode("ExportSpecifier");
+            $node->setLocal($local);
+            
+            if ($this->scanner->consume("as")) {
+                
+                if ($exported = $this->parseIdentifierName()) {
+                    
+                    $node->setExported($exported);
+                    return $this->completeNode($node);
+                    
+                }
+                
+                $this->scanner->setPosition($position);
+                
+            } else {
+                return $this->completeNode($node);
+            }
+            
+        }
+        
         return null;
     }
 }
