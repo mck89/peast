@@ -203,7 +203,7 @@ class ES6 extends Parser
         $position = $this->scanner->getPosition();
         
         if ($this->scanner->consumeArray("if", "(") &&
-            $test = $this->parseExpression(true, $yield) &&
+            ($test = $this->parseExpression(true, $yield)) &&
             $this->scanner->consume(")") &&
             $consequent = $this->parseStatement($yield, $return)) {
                 
@@ -257,7 +257,7 @@ class ES6 extends Parser
         $position = $this->scanner->getPosition();
         
         if ($this->scanner->consumeArray("catch", "(") &&
-            $param = $this->parseCatchParameter($yield) &&
+            ($param = $this->parseCatchParameter($yield)) &&
             $this->scanner->consume(")") &&
             $body = $this->parseBlock()) {
             
@@ -358,7 +358,7 @@ class ES6 extends Parser
     {
         $position = $this->scanner->getPosition();
         
-        if ($label = $this->parseLabelIdentifier($yield) &&
+        if (($label = $this->parseLabelIdentifier($yield)) &&
             $this->scanner->consume(":") &&
             $body = $this->parseLabelledItem($yield, $return)) {
             
@@ -388,7 +388,7 @@ class ES6 extends Parser
         $position = $this->scanner->getPosition();
         
         if ($this->scanner->consume("throw", false) &&
-            $argument = $this->parseExpression(true, $yield) &&
+            ($argument = $this->parseExpression(true, $yield)) &&
             $this->scanner->consume(";")) {
             
             $node = $this->createNode("ThrowStatement");
@@ -406,7 +406,7 @@ class ES6 extends Parser
         $position = $this->scanner->getPosition();
         
         if ($this->scanner->consumeArray("switch", "(") &&
-            $discriminant = $this->parseExpression(true, $yield) &&
+            ($discriminant = $this->parseExpression(true, $yield)) &&
             $this->scanner->consume(")")) {
             
             $cases = $this->parseCaseBlock($yield, $return);
@@ -470,7 +470,7 @@ class ES6 extends Parser
         $position = $this->scanner->getPosition();
         
         if ($this->scanner->consume("case") &&
-            $test = $this->parseExpression(true, $yield) &&
+            ($test = $this->parseExpression(true, $yield)) &&
             $this->scanner->consume(":")) {
             
             $node = $this->createNode("SwitchCase");
@@ -515,7 +515,7 @@ class ES6 extends Parser
         $lookahead = array("{", "function", "class", array("let", "["));
         
         if ($this->scanner->notBefore($lookahead) &&
-            $expression = $this->parseExpression(true, $yield) &&
+            ($expression = $this->parseExpression(true, $yield)) &&
             $this->scanner->consume(";")) {
             
             $node = $this->createNode("ExpressionSta");
@@ -534,9 +534,9 @@ class ES6 extends Parser
 
         if ($this->scanner->consume("do")) {
             
-            if ($body = $this->parseStatement($yield, $return) &&
+            if (($body = $this->parseStatement($yield, $return)) &&
                 $this->scanner->consumeArray("while", "(") &&
-                $test = $this->parseExpression(true, $yield) &&
+                ($test = $this->parseExpression(true, $yield)) &&
                 $this->scanner->consume(")")) {
                     
                 $node = $this->createNode("DoWhileStatement");
@@ -547,7 +547,7 @@ class ES6 extends Parser
             }
         } elseif ($this->scanner->consumeArray("while", "(")) {
             
-            if ($test = $this->parseExpression(true, $yield) &&
+            if (($test = $this->parseExpression(true, $yield)) &&
                 $this->scanner->consume(")") &&
                 $body = $this->parseStatement($yield, $return)) {
                     
@@ -563,7 +563,7 @@ class ES6 extends Parser
                 
                 $subPosition = $this->scanner->getPosition();
                 
-                if ($decl = $this->parseVariableDeclarationList($yield) &&
+                if (($decl = $this->parseVariableDeclarationList($yield)) &&
                     $this->scanner->consume(";")) {
                     
                     $test = $this->parseExpression(true, $yield);
@@ -602,7 +602,7 @@ class ES6 extends Parser
                         
                         if ($this->scanner->consume("in")) {
                             
-                            if ($right = $this->parseExpression(true, $yield) &&
+                            if (($right = $this->parseExpression(true, $yield)) &&
                                 $this->scanner->consume(")") &&
                                 $body = $this->parseStatement($yield, $return)) {
                                 
@@ -616,7 +616,7 @@ class ES6 extends Parser
                             
                         } elseif ($this->scanner->consume("of")) {
                             
-                            if ($right = $this->parseAssignmentExpression(true, $yield) &&
+                            if (($right = $this->parseAssignmentExpression(true, $yield)) &&
                                 $this->scanner->consume(")") &&
                                 $body = $this->parseStatement($yield, $return)) {
                                 
@@ -654,7 +654,7 @@ class ES6 extends Parser
                 
                 if ($this->scanner->consume("in")) {
                             
-                    if ($right = $this->parseExpression(true, $yield) &&
+                    if (($right = $this->parseExpression(true, $yield)) &&
                         $this->scanner->consume(")") &&
                         $body = $this->parseStatement($yield, $return)) {
                         
@@ -668,7 +668,7 @@ class ES6 extends Parser
                     
                 } elseif ($this->scanner->consume("of")) {
                     
-                    if ($right = $this->parseAssignmentExpression(true, $yield) &&
+                    if (($right = $this->parseAssignmentExpression(true, $yield)) &&
                         $this->scanner->consume(")") &&
                         $body = $this->parseStatement($yield, $return)) {
                         
@@ -715,7 +715,7 @@ class ES6 extends Parser
                     if ($notBeforeSB && $left &&
                         $this->scanner->consume("in")) {
                         
-                        if ($right = $this->parseExpression(true, $yield) &&
+                        if (($right = $this->parseExpression(true, $yield)) &&
                             $this->scanner->consume(")") &&
                             $body = $this->parseStatement($yield, $return)) {
                             
@@ -729,7 +729,7 @@ class ES6 extends Parser
                         
                     } elseif ($left && $this->scanner->consume("of")) {
                         
-                        if ($right = $this->parseAssignmentExpression(true, $yield) &&
+                        if (($right = $this->parseAssignmentExpression(true, $yield)) &&
                             $this->scanner->consume(")") &&
                             $body = $this->parseStatement($yield, $return)) {
                             
@@ -790,9 +790,9 @@ class ES6 extends Parser
             
             if (($default || $id) &&
                 $this->scanner->consume("(") &&
-                ($params = $this->parseFormalParameters(true) || true) &&
+                (($params = $this->parseFormalParameters(true)) || true) &&
                 $this->scanner->consumeArray(array(")", "{")) &&
-                ($body = $this->parseGeneratorBody() || true) &&
+                (($body = $this->parseGeneratorBody()) || true) &&
                 $this->scanner->consume("}")) {
                 
                 $node = $this->createNode("FunctionDeclaration");
@@ -847,9 +847,9 @@ class ES6 extends Parser
             $id = $this->BindingIdentifier(true);
             
             if ($this->scanner->consume("(") &&
-                ($params = $this->parseFormalParameters(true) || true) &&
+                (($params = $this->parseFormalParameters(true)) || true) &&
                 $this->scanner->consumeArray(array(")", "{")) &&
-                ($body = $this->parseGeneratorBody() || true) &&
+                (($body = $this->parseGeneratorBody()) || true) &&
                 $this->scanner->consume("}")) {
                 
                 $node = $this->createNode("FunctionExpression");
@@ -1172,7 +1172,7 @@ class ES6 extends Parser
             
             $position = $this->scanner->getPosition();
             
-            if ($id = $this->parseBindingPattern($yield) &&
+            if (($id = $this->parseBindingPattern($yield)) &&
                 $init = $this->parseInitializer($in, $yield)) {
                 
                 $node = $this->createNode("VariableDeclarator");
@@ -1245,7 +1245,7 @@ class ES6 extends Parser
             
             $position = $this->scanner->getPosition();
             
-            if ($id = $this->parseBindingPattern($yield) &&
+            if (($id = $this->parseBindingPattern($yield)) &&
                 $init = $this->parseInitializer($in, $yield)) {
                 
                 $node = $this->createNode("VariableDeclarator");
