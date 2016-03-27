@@ -29,7 +29,7 @@ class Program extends Node
     
     public function setBody($body)
     {
-        $this->assertArrayOf($body, array("Statement", "ModuleDeclaration");
+        $this->assertArrayOf($body, array("Statement", "ModuleDeclaration"));
         $this->body = $body;
         return $this;
     }

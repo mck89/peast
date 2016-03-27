@@ -926,7 +926,7 @@ class ES6 extends Parser
         $list = array();
         $position = null;
         while ($param = $this->parseFormalParameter($yeld)) {
-            $list = array();
+            $list[] = $param;
             if (!$this->scanner->consume(",")) {
                 $position = null;
                 break;
@@ -1091,6 +1091,162 @@ class ES6 extends Parser
         }
         
         $this->scanner->setPosition($position);
+        
+        return null;
+    }
+    
+    protected function parseLexicalDeclaration($in = false, $yeld = false)
+    {
+        if ($letOrConst = $this->parseLetOrConst()) {
+            
+            $position = $this->scanner->getPosition();
+            $declarations = $this->parseBindingList($in, $yeld);
+            
+            if ($declarations && $this->scanner->match(";")) {
+                $node = $this->createNode("VariableDeclaration");
+                $node->setKind($letOrConst);
+                $node->setDeclarations($declarations);
+                return $this->completeNode($node);
+            }
+            
+            $this->scanner->setPosition($position);
+            
+        }
+        
+        return null;
+    }
+    
+    protected function parseLetOrConst()
+    {
+        if ($this->match("let")) {
+            return "let";
+        } elseif ($this->match("const")) {
+            return "const";
+        }
+        return null;
+    }
+    
+    protected function parseBindingList($in = false, $yeld = false)
+    {
+        $list = array();
+        $position = null;
+        while ($declaration = $this->parseLexicalBinding($in, $yeld)) {
+            $list[] = $declaration;
+            if (!$this->scanner->consume(",")) {
+                $position = null;
+                break;
+            } else {
+                $position = $this->scanner->getPosition();
+            }
+        }
+        if ($position) {
+            $this->scanner->setPosition($position);
+        }
+        return count($list) ? $list : null;
+    }
+    
+    protected function parseLexicalBinding($in = false, $yeld = false)
+    {
+        if ($id = $this->parseBindingIdentifier($yeld)) {
+            
+            $init = $this->parseInitializer($in, $yeld);
+            
+            $node = $this->createNode("VariableDeclarator");
+            $node->setId($id);
+            if ($init) {
+                $node->setInit($init);
+            }
+            return $this->completeNode($node);
+            
+        } else {
+            
+            $position = $this->scanner->getPosition();
+            
+            if ($id = $this->parseBindingPattern($yeld) &&
+                $init = $this->parseInitializer($in, $yeld)) {
+                
+                $node = $this->createNode("VariableDeclarator");
+                $node->setId($id);
+                $node->setInit($init);
+                return $this->completeNode($node);
+                
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        
+        return null;
+    }
+    
+    protected function parseVariableStatement($yeld = false)
+    {
+        if ($this->scanner->consume("var")) {
+            
+            $position = $this->scanner->getPosition();
+            $declarations = $this->parseVariableDeclarationList(true, $yeld);
+            
+            if ($declarations && $this->scanner->match(";")) {
+                $node = $this->createNode("VariableDeclaration");
+                $node->setKind($node::KIND_VAR);
+                $node->setDeclarations($declarations);
+                return $this->completeNode($node);
+            }
+            
+            $this->scanner->setPosition($position);
+            
+        }
+        
+        return null;
+    }
+    
+    protected function parseVariableDeclarationList($in = false, $yeld = false)
+    {
+        $list = array();
+        $position = null;
+        while ($declaration = $this->parseVariableDeclaration($in, $yeld)) {
+            $list[] = $declaration;
+            if (!$this->scanner->consume(",")) {
+                $position = null;
+                break;
+            } else {
+                $position = $this->scanner->getPosition();
+            }
+        }
+        if ($position) {
+            $this->scanner->setPosition($position);
+        }
+        return count($list) ? $list : null;
+    }
+    
+    protected function parseVariableDeclaration($in = false, $yeld = false)
+    {
+        if ($id = $this->parseBindingIdentifier($yeld)) {
+            
+            $init = $this->parseInitializer($in, $yeld);
+            
+            $node = $this->createNode("VariableDeclarator");
+            $node->setId($id);
+            if ($init) {
+                $node->setInit($init);
+            }
+            return $this->completeNode($node);
+            
+        } else {
+            
+            $position = $this->scanner->getPosition();
+            
+            if ($id = $this->parseBindingPattern($yeld) &&
+                $init = $this->parseInitializer($in, $yeld)) {
+                
+                $node = $this->createNode("VariableDeclarator");
+                $node->setId($id);
+                $node->setInit($init);
+                return $this->completeNode($node);
+                
+            }
+            
+            $this->scanner->setPosition($position);
+        }
         
         return null;
     }
