@@ -19,6 +19,6 @@ class ExportDefaultDeclaration extends ModuleDeclaration
     
     public function compile()
     {
-        return "export default " . $this->getSource()->getDeclaration() . ";";
+        return "export default " . $this->getDeclaration()->compile() . ";";
     }
 }

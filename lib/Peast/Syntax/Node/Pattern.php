@@ -1,6 +1,6 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class Pattern extends Node
+abstract class Pattern extends Node
 {
 }

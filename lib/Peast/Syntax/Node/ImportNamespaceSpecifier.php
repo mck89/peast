@@ -5,6 +5,6 @@ class ImportNamespaceSpecifier extends ModuleSpecifier
 {
     public function compile()
     {
-        return "* as " . $this->getLocal()->getSource();
+        return "* as " . $this->getLocal()->compile();
     }
 }

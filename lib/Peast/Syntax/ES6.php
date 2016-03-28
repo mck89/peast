@@ -1634,4 +1634,170 @@ class ES6 extends Parser
     {
         return $this->parseImportedBinding();
     }
+    
+    protected function parseBindingPattern($yield = false)
+    {
+        if ($pattern = $this->parseObjectBindingPattern($yield)) {
+            return $pattern;
+        } elseif ($pattern = $this->parseArrayBindingPattern($yield)) {
+            return $pattern;
+        }
+        return null;
+    }
+    
+    protected function parseElision()
+    {
+        $count = 0;
+        while ($this->scanner->consume(",")) {
+            $count ++;
+        }
+        return $count ? $count : null;
+    }
+    
+    protected function parseArrayBindingPattern($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("[")) {
+            
+            $node = $this->createNode("ArrayPattern");
+            $elements = $this->parseBindingElementList($yield);
+            
+            if (!$elements || $this->scanner->consume(",")) {
+            
+                $elision = $this->parseElision();
+                $rest = $this->BindingRestElement($yield);
+                
+                if ($this->scanner->consume("]")) {
+                    
+                    if (!$elements) {
+                        $elements = array();
+                    }
+                    
+                    if ($elision && $elision > 1) {
+                        $elements = array_merge(
+                            $elements,
+                            array_fill(0, $elision - 1, null)
+                        )
+                    }
+                    
+                    if ($rest) {
+                        $elements[] = $rest;
+                    }
+                    
+                    $node->setElements($elements);
+                    
+                    return $this->completeNode($node);
+                    
+                }
+                
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        
+        return null;
+    }
+    
+    protected function parseBindingRestElement($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("...") &&
+            $argument = $this->parseBindingIdentifier($yield)) {
+                
+            $node = $this->createNode("RestElement");
+            $node->setArgument($argument);
+            return $this->completeNode($node);
+            
+        }
+        
+        $this->scanner->setPosition($position);
+        
+        return null;
+    }
+    
+    protected function parseBindingElementList($yield = false)
+    {
+        $list = array();
+        $position = $this->scanner->getPosition();
+        $valid = true;
+        while ($els = $this->parseBindingElisionElement($yield)) {
+            $list = array_merge($list, $els);
+            $valid = true;
+            if (!$this->scanner->consume(",")) {
+                break;
+            } else {
+                $valid = false;
+            }
+        }
+        if ($valid) {
+            $this->scanner->setPosition($position);
+        }
+        return count($list) ? $list : null;
+    }
+    
+    protected function parseBindingElisionElement($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        $elision = $this->parseElision();
+        
+        if ($element = $this->parseBindingElement($yield)) {
+            $ret = $elision ? array_fill(0, $elision, null) : array();
+            $ret[] = $element;
+            return $ret;
+        }
+        
+        $this->scanner->setPosition($position);
+        
+        return null;
+    }
+    
+    protected function parseBindingElement($yield = false)
+    {
+        if ($el = $this->parseSingleNameBinding($yield)) {
+            
+            return $el;
+            
+        } elseif ($left = $this->parseBindingPattern($yield)) {
+            
+            if ($right = $this->parseInitializer(true, $yield)) {
+                
+                $node = $this->createNode("AssignmentPattern");
+                $node->setLeft($left);
+                $node->setRight($right);
+                return $this->completeNode($node);
+                
+            } else {
+                
+                return $left;
+                
+            }
+            
+        }
+        
+        return null;
+    }
+    
+    protected function parseSingleNameBinding($yield = false)
+    {
+        if ($left = $this->parseBindingIdentifier($yield)) {
+            
+            if ($right = $this->parseInitializer(true, $yield)) {
+                
+                $node = $this->createNode("AssignmentPattern");
+                $node->setLeft($left);
+                $node->setRight($right);
+                return $this->completeNode($node);
+                
+            } else {
+                
+                return $left;
+                
+            }
+            
+        }
+        
+        return null;
+    }
 }

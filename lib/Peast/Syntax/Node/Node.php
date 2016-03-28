@@ -56,7 +56,7 @@ abstract class Node
         return implode($separator, $sources);
     }
     
-    protected function assertArrayOf($params, $classes)
+    protected function assertArrayOf($params, $classes, $allowNull = false)
     {
         if (!is_array($classes)) {
             $classes = array($classes);
@@ -66,6 +66,9 @@ abstract class Node
         } else {
             foreach ($params as $param) {
                 foreach ($classes as $class) {
+                    if ($param === null && $allowNull) {
+                        continue 2;
+                    }
                     if ($param instanceof $class) {
                         continue 2;
                     }

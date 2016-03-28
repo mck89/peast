@@ -18,8 +18,8 @@ class ExportSpecifier extends ModuleSpecifier
     
     public function compile()
     {
-        $local = $this->getLocal()->getSource();
-        $exported = $this->getLocal()->getExported();
+        $local = $this->getLocal()->compile();
+        $exported = $this->getExported()->compile();
         return !$exported || $local === $exported ?
                $local :
                $local . " as " . $exported;

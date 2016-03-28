@@ -18,7 +18,7 @@ class ImportSpecifier extends ModuleSpecifier
     
     public function compile()
     {
-        $local = $this->getLocal()->getSource();
+        $local = $this->getLocal()->compile();
         $imported = $this->getLocal()->getImported();
         return !$imported || $local === $imported ?
                $local :

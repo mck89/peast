@@ -31,7 +31,7 @@ class CatchClause extends Node
     
     public function compile()
     {
-        $source = "catch(" . $this->getParam()->getSource . ")" .
+        $source = "catch(" . $this->getParam()->compile() . ")" .
                   $this->getBody()->compile();
     }
 }

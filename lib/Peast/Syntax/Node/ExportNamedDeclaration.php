@@ -47,20 +47,20 @@ class ExportNamedDeclaration extends ModuleDeclaration
     
     public function compile()
     {
-        $source = "export";
+        $ret = "export";
         
         if ($declaration = $this->getDeclaration()) {
-            return $source . " " . $declaration->compile();
+            return $ret . " " . $declaration->compile();
         }
         
-        $source .= " {" .
+        $ret .= " {" .
                    $this->compileNodeList($this->getSpecifiers(), ", ") .
                    "}";
         
         if ($source = $this->getSource()) {
-            $source .= " from ". $source->compile();
+            $ret .= " from ". $source->compile();
         }
         
-        return $source . ";";
+        return $ret . ";";
     }
 }

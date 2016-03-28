@@ -5,6 +5,6 @@ class ImportDefaultSpecifier extends ModuleSpecifier
 {
     public function compile()
     {
-        return $this->getLocal()->getSource();
+        return $this->getLocal()->compile();
     }
 }
