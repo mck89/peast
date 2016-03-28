@@ -1460,4 +1460,178 @@ class ES6 extends Parser
         
         return null;
     }
+    
+    protected function parseImportDeclaration()
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("import")) {
+            
+            if ($source = $this->parseModuleSpecifier()) {
+                
+                $node = $this->createNode("ImportDeclaration");
+                $node->setSource($source);
+                
+                if ($this->scanner->consume(";")) {
+                    return $this->completeNode($node);
+                }
+                
+            } elseif (($specifiers = $this->parseImportClause()) &&
+                      $source = $this->parseFromClause()) {
+                
+                $node = $this->createNode("ImportDeclaration");
+                $node->setSpecifiers($specifiers);
+                $node->setSource($source);
+                
+                if ($this->scanner->consume(";")) {
+                    return $this->completeNode($node);
+                }
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        
+        return null;
+    }
+    
+    protected function parseImportClause()
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($spec = $this->parseNameSpaceImport()) {
+            
+            $node = $this->createNode("ImportNamespaceSpecifier");
+            $node->setLocal($spec);
+            return array($this->completeNode($node));
+            
+        } elseif ($specs = $this->parseNamedImports()) {
+            
+            return $specs;
+            
+        } elseif ($spec = $this->parseImportedDefaultBinding()) {
+            
+            $node = $this->createNode("ImportSpecifier");
+            $node->setLocal($spec);
+            $ret = array($this->completeNode($node));
+            
+            if ($this->scanner->consume(",")) {
+                
+                if ($spec = $this->parseNameSpaceImport()) {
+                    
+                    $node = $this->createNode("ImportNamespaceSpecifier");
+                    $node->setLocal($spec);
+                    $ret[] = $this->completeNode($node);
+                    return $ret;
+                    
+                } elseif ($specs = $this->parseNamedImports()) {
+                    
+                    $ret = array_merge($ret, $specs);
+                    return $ret;
+                    
+                }
+                
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        
+        return null;
+    }
+    
+    protected function parseNameSpaceImport()
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consumeArray("*", "as") &&
+            $local = $this->parseImportedBinding()) {
+            return $local;        
+        }
+        
+        $this->scanner->setPosition($position);
+        
+        return null;
+    }
+    
+    protected function parseImportedBinding()
+    {
+        return $this->parseBindingIdentifier();
+    }
+    
+    protected function parseNamedImports()
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("{")) {
+            
+            $list = $this->parseExportsList();
+            $this->scanner->consume(",");
+            
+            if ($this->scanner->consume("}")) {
+                return $list ? $list : array();
+            }
+        }
+        
+        $this->scanner->setPosition($position);
+        
+        return null;
+    }
+    
+    protected function parseImportsList()
+    {
+        $list = array();
+        $position = $this->scanner->getPosition();
+        $valid = true;
+        while ($param = $this->parseImportSpecifier($yield)) {
+            $list[] = $param;
+            $valid = true;
+            if (!$this->scanner->consume(",")) {
+                break;
+            } else {
+                $valid = false;
+            }
+        }
+        if ($valid) {
+            $this->scanner->setPosition($position);
+        }
+        return count($list) ? $list : null;
+    }
+    
+    protected function parseImportSpecifier()
+    {
+        if ($local = $this->parseImportedBinding()) {
+            
+            $node = $this->createNode("ImportSpecifier");
+            $node->setLocal($local);
+            return $node;
+            
+        } elseif ($local = $this->parseIdentifierName()) {
+            
+            $position = $this->scanner->getPosition();
+            $node = $this->createNode("ImportSpecifier");
+            $node->setLocal($local);
+            
+            if ($this->scanner->consume("as")) {
+                
+                if ($imported = $this->parseIdentifierName()) {
+                    
+                    $node->setImported($imported);
+                    return $this->completeNode($node);
+                    
+                }
+                
+                $this->scanner->setPosition($position);
+                
+            } else {
+                return $this->completeNode($node);
+            }
+            
+        }
+        
+        return null;
+    }
+    
+    protected function parseImportedDefaultBinding()
+    {
+        return $this->parseImportedBinding();
+    }
 }
