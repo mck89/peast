@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class BreakStatement extends Statement
+class BreakStatement extends Node implements Statement
 {
     protected $label;
     

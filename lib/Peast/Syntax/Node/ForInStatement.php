@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class ForInStatement extends Statement
+class ForInStatement extends Node implements Statement
 {
     protected $left;
     

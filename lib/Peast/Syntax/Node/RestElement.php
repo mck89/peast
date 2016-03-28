@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class RestElement extends Pattern
+class RestElement extends Node implements Pattern
 {
     protected $argument;
     

@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class TryStatement extends Statement
+class TryStatement extends Node implements Statement
 {
     protected $block;
     

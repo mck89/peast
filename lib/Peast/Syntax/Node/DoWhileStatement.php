@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class DoWhileStatement extends Statement
+class DoWhileStatement extends Node implements Statement
 {
     protected $body;
     

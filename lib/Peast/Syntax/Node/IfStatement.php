@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class IfStatement extends Statement
+class IfStatement extends Node implements Statement
 {
     protected $test;
     

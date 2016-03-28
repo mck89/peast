@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class VariableDeclaration extends Declaration
+class VariableDeclaration extends Node implements Declaration
 {
     const KIND_VAR = "var";
     

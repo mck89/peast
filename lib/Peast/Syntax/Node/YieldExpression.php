@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class YieldExpression extends Expression
+class YieldExpression extends Node implements Expression
 {
     protected $argument;
     

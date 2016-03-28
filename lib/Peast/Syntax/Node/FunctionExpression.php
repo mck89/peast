@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class FunctionExpression extends Expression
+class FunctionExpression extends Node implements Expression
 {
-    use Function_;
+    use Trait\Function_;
 }

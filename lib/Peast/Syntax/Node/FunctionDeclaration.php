@@ -1,9 +1,9 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class FunctionDeclaration extends Declaration
+class FunctionDeclaration extends Node implements Declaration
 {
-    use Function_;
+    use Trait\Function_;
     
     public function setId($id)
     {

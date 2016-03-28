@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class ImportDefaultSpecifier extends ModuleSpecifier
+class ImportDefaultSpecifier extends Node implements ModuleSpecifier
 {
     public function compile()
     {

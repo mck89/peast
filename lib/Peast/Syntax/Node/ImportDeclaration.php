@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class ImportDeclaration extends ModuleDeclaration
+class ImportDeclaration extends Node implements ModuleDeclaration
 {
     protected $specifiers = array();
     

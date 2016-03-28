@@ -1678,7 +1678,7 @@ class ES6 extends Parser
                         $elements = array_merge(
                             $elements,
                             array_fill(0, $elision - 1, null)
-                        )
+                        );
                     }
                     
                     if ($rest) {

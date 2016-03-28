@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class ExportAllDeclaration extends ModuleDeclaration
+class ExportAllDeclaration extends Node implements ModuleDeclaration
 {
     protected $source;
     

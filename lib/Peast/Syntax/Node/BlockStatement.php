@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class BlockStatement extends Statement
+class BlockStatement extends Node implements Statement
 {
     protected $body = array();
     

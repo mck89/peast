@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class LabeledStatement extends Statement
+class LabeledStatement extends Node implements Statement
 {
     protected $label;
     

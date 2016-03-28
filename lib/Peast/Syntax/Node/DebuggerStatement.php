@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class DebuggerStatement extends Statement
+class DebuggerStatement extends Node implements Statement
 {
     public function compile()
     {

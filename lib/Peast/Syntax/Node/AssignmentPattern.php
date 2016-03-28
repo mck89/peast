@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class AssignmentPattern extends Pattern
+class AssignmentPattern extends Node implements Pattern
 {
     protected $left;
     

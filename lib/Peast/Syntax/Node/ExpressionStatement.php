@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class ExpressionStatement extends Statement
+class ExpressionStatement extends Node implements Statement
 {
     protected $expression;
     

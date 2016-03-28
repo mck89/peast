@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class ExportSpecifier extends ModuleSpecifier
+class ExportSpecifier extends Node implements ModuleSpecifier
 {
     protected $exported;
     

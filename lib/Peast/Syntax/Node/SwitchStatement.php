@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class SwitchStatement extends Statement
+class SwitchStatement extends Node implements Statement
 {
     protected $discriminant;
     

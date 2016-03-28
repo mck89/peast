@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class WithStatement extends Statement
+class WithStatement extends Node implements Statement
 {
     protected $object;
     

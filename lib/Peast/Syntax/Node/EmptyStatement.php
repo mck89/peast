@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class EmptyStatement extends Statement
+class EmptyStatement extends Node implements Statement
 {
     public function compile()
     {

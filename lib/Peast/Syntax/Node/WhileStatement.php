@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class WhileStatement extends Statement
+class WhileStatement extends Node implements Statement
 {
     protected $test;
     

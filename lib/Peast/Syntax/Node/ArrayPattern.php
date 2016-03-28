@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class ArrayPattern extends Pattern
+class ArrayPattern extends Node implements Pattern
 {
     protected $elements = array();
     

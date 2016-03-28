@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class ThrowStatement extends Statement
+class ThrowStatement extends Node implements Statement
 {
     protected $argument;
     

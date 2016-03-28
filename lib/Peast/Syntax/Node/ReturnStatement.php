@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class ReturnStatement extends Statement
+class ReturnStatement extends Node implements Statement
 {
     protected $argument;
     

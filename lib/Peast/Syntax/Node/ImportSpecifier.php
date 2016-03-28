@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class ImportSpecifier extends ModuleSpecifier
+class ImportSpecifier extends Node implements ModuleSpecifier
 {
     protected $imported;
     

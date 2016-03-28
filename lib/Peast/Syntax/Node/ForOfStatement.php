@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class ForOfStatement extends ForInStatement
+class ForOfStatement extends Node implements ForInStatement
 {
     public function compile()
     {
