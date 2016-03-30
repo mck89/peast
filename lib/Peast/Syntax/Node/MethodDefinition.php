@@ -100,7 +100,7 @@ class MethodDefinition extends Node
             $ret[] = $key->compile();
         }
         
-        $ret[] = preg_replace("/^\s*(?:\*?\s*)function\s*/", "", $value->compile());
+        $ret[] = preg_replace("/^[^\(]+/", "", $value->compile());
         
         return implode(" ", $ret);
     }

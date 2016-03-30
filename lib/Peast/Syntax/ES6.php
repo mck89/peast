@@ -1823,7 +1823,7 @@ class ES6 extends Parser
         return null;
     }
     
-    protected function parseComputedPropertyName()
+    protected function parseComputedPropertyName($yield = false)
     {
         
         if ($this->scanner->consume("[")) {
@@ -1839,5 +1839,51 @@ class ES6 extends Parser
             
         }
         return null;
+    }
+    
+    protected function parseMethodDefinition($yield = false)
+    {
+        if ($method = $this->parseGeneratorMethod($yield)) {
+            return $method;
+        }
+    }
+    
+    protected function parseGeneratorMethod($yield = false)
+    {
+        if ($this->scanner->consume("*")) {
+            
+            $position = $this->scanner->getPosition();
+            
+            if (($prop = $this->parsePropertyName($yield)) &&
+                $this->scanner->consume("(") &&
+                (($params = $this->parseStrictFormalParameters($yield)) || true) &&
+                $this->scanner->consume(")") &&
+                $this->scanner->consume("{") &&
+                ($body = $this->parseGeneratorBody()) &&
+                $this->scanner->consume("}")) {
+                
+                $nodeFn = $this->createNode("FunctionExpression");
+                $nodeFn->setParams($params);
+                $nodeFn->setBody($body);
+                $nodeFn->setGenerator(true);
+                
+                $node = $this->createNode("MethodDefinition");
+                $node->setKey($prop[0]);
+                $node->setValue($this->completeNode($nodeFn));
+                $node->setKind($node::KIND_METHOD);
+                $node->setComputed($prop[1]);
+                return $this->completeNode($node);
+                
+            }
+            
+            $this->scanner->setPosition($position);
+            
+        }
+        return null;
+    }
+    
+    protected function parsePropertySetParameterList()
+    {
+        return $this->parseFormalParameter();
     }
 }
