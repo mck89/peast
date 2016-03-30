@@ -3,7 +3,7 @@ namespace Peast\Syntax\Node;
 
 class FunctionDeclaration extends Node implements Declaration
 {
-    use Trait\Function_;
+    use Extension\Function_;
     
     public function setId($id)
     {

@@ -1,5 +1,5 @@
 <?php
-namespace Peast\Syntax\Node\Trait;
+namespace Peast\Syntax\Node\Extension;
 
 trait Function_
 {

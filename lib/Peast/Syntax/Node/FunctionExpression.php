@@ -3,5 +3,5 @@ namespace Peast\Syntax\Node;
 
 class FunctionExpression extends Node implements Expression
 {
-    use Trait\Function_;
+    use Extension\Function_;
 }

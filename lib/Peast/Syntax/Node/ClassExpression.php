@@ -3,5 +3,5 @@ namespace Peast\Syntax\Node;
 
 class ClassExpression extends Node implements Expression
 {
-    use Trait\Class_;
+    use Extension\Class_;
 }
