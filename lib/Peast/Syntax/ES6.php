@@ -1,6 +1,8 @@
 <?php
 namespace Peast\Syntax;
 
+use Peast\Syntax\Node;
+
 class ES6 extends Parser
 {
     protected $moduleMode = false;
@@ -1846,6 +1848,54 @@ class ES6 extends Parser
         if ($method = $this->parseGeneratorMethod($yield)) {
             return $method;
         }
+        
+        $position = $this->scanner->getPosition();
+        
+        $kind = Node\MethodDefinition::KIND_METHOD;
+        if ($this->scanner->consume("get")) {
+            $kind = Node\MethodDefinition::KIND_GET;
+        } elseif ($this->scanner->consume("set")) {
+            $kind = Node\MethodDefinition::KIND_SET;
+        }
+        
+        if (($prop = $this->parsePropertyName($yield)) &&
+            $this->scanner->consume("(")) {
+            
+            $params = array();
+            if ($kind === Node\MethodDefinition::KIND_SET) {
+                $params = $this->parsePropertySetParameterList();
+            } elseif ($kind === Node\MethodDefinition::KIND_METHOD) {
+                $params = $this->parseStrictFormalParameters();
+            }
+            
+            if ($this->scanner->consume(")") &&
+                $this->scanner->consume("{") &&
+                ($body = $this->parseFunctionBody()) &&
+                $this->scanner->consume("{")) {
+                
+                if ($prop[0] instanceof Node\Identifier &&
+                    $prop[0]->getName() === "constructor") {
+                    $kind = Node\MethodDefinition::KIND_CONSTRUCTOR;
+                }
+                
+                $nodeFn = $this->createNode("FunctionExpression");
+                $nodeFn->setParams($params);
+                $nodeFn->setBody($body);
+                
+                $node = $this->createNode("MethodDefinition");
+                $node->setKey($prop[0]);
+                $node->setValue($this->completeNode($nodeFn));
+                $node->setKind($kind);
+                $node->setComputed($prop[1]);
+                return $this->completeNode($node);
+                
+            }
+            
+        }
+        
+        $this->scanner->setPosition($position);
+        
+        return null;
     }
     
     protected function parseGeneratorMethod($yield = false)
