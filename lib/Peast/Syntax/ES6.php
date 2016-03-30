@@ -1800,4 +1800,44 @@ class ES6 extends Parser
         
         return null;
     }
+    
+    protected function parsePropertyName($yield = false)
+    {
+        if ($prop = $this->parseLiteralPropertyName()) {
+            return array($prop, false);
+        } elseif ($prop = $this->parseComputedPropertyName($yield)) {
+            return array($prop, false);
+        }
+        return null;
+    }
+    
+    protected function parseLiteralPropertyName()
+    {
+        if ($name = $this->parseIdentifierName()) {
+            return $name;
+        } elseif ($name = $this->parseStringLiteral()) {
+            return $name;
+        } elseif ($name = $this->parseNumericLiteral()) {
+            return $name;
+        }
+        return null;
+    }
+    
+    protected function parseComputedPropertyName()
+    {
+        
+        if ($this->scanner->consume("[")) {
+            
+            $position = $this->scanner->getPosition();
+            
+            if (($name = $this->parseAssignmentExpression(true, $yield)) &&
+                $this->scanner->consume("]")) {
+                return $name;
+            }
+            
+            $this->scanner->setPosition($position);
+            
+        }
+        return null;
+    }
 }
