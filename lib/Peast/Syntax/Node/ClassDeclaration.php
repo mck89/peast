@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class ClassDeclaration extends Node implements Declaration
+class ClassDeclaration extends Node implements Declaration, Class_
 {
     use Extension\Class_;
     
