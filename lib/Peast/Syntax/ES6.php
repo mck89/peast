@@ -1827,10 +1827,9 @@ class ES6 extends Parser
     
     protected function parseComputedPropertyName($yield = false)
     {
+        $position = $this->scanner->getPosition();
         
         if ($this->scanner->consume("[")) {
-            
-            $position = $this->scanner->getPosition();
             
             if (($name = $this->parseAssignmentExpression(true, $yield)) &&
                 $this->scanner->consume("]")) {
@@ -1900,9 +1899,9 @@ class ES6 extends Parser
     
     protected function parseGeneratorMethod($yield = false)
     {
+        $position = $this->scanner->getPosition();
+        
         if ($this->scanner->consume("*")) {
-            
-            $position = $this->scanner->getPosition();
             
             if (($prop = $this->parsePropertyName($yield)) &&
                 $this->scanner->consume("(") &&
@@ -1935,5 +1934,71 @@ class ES6 extends Parser
     protected function parsePropertySetParameterList()
     {
         return $this->parseFormalParameter();
+    }
+    
+    protected function parseArrowFormalParameters($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("(")) {
+            
+            $params = $this->parseStrictFormalParameters($yield);
+            
+            if ($this->scanner->consume(")")) {
+                return $params;
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        return null;
+    }
+    
+    protected function parseArrowParameters($yield = false)
+    {
+        if ($param = $this>parseBindingIdentifier($yield)) {
+            return array($param);
+        }
+        return $this->parseArrowFormalParameters($yield);
+    }
+    
+    protected function parseConciseBody($in = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("{")) {
+            
+            if (($body = $this->FunctionBody()) &&
+                $this->scanner->consume("}")) {
+                return array($body, false);
+            }
+            
+            $this->scanner->setPosition($position);
+            
+        } elseif ($this->notBefore(array("{")) &&
+                 $body = $this->parseAssignmentExpression($in)) {
+            return array($body, true);
+        }
+        return null;
+    }
+    
+    protected function parseArrowFunction($in = false, $yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if (($params = $this->parseArrowParameters($yield)) !== null &&
+            $this->scanner->notBeforeLineTerminator() &&
+            $this->scanner->consume("=>") &&
+            $body = $this->parseConciseBody($in)) {
+            
+            $node = $this->createNode("ArrowFunctionExpression");
+            $node->setParams($params);
+            $node->setBody($body[0]);
+            $node->setExpression($body[1]);
+            return $this->completeNode($node);
+        }
+        
+        $this->scanner->setPosition($position);
+        
+        return null;
     }
 }

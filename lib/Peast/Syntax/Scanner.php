@@ -85,4 +85,9 @@ class Scanner
         }
         return true;
     }
+    
+    public function notBeforeLineTerminator()
+    {
+        
+    }
 }
