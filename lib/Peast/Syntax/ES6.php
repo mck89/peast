@@ -935,22 +935,10 @@ class ES6 extends Parser
     
     protected function parseFormalsList($yield = false)
     {
-        $list = array();
-        $position = $this->scanner->getPosition();
-        $valid = true;
-        while ($param = $this->parseFormalParameter($yield)) {
-            $list[] = $param;
-            $valid = true;
-            if (!$this->scanner->consume(",")) {
-                break;
-            } else {
-                $valid = false;
-            }
-        }
-        if ($valid) {
-            $this->scanner->setPosition($position);
-        }
-        return count($list) ? $list : null;
+        return $this->commaSeparatedListOf(
+            "parseFormalParameter",
+            array($yield)
+        );
     }
     
     protected function parseFunctionRestParameter($yield = false)
@@ -1141,22 +1129,10 @@ class ES6 extends Parser
     
     protected function parseBindingList($in = false, $yield = false)
     {
-        $list = array();
-        $position = $this->scanner->getPosition();
-        $valid = true;
-        while ($declaration = $this->parseLexicalBinding($in, $yield)) {
-            $list[] = $declaration;
-            $valid = true;
-            if (!$this->scanner->consume(",")) {
-                break;
-            } else {
-                $valid = false;
-            }
-        }
-        if ($valid) {
-            $this->scanner->setPosition($position);
-        }
-        return count($list) ? $list : null;
+        return $this->commaSeparatedListOf(
+            "parseLexicalBinding",
+            array($in, $yield)
+        );
     }
     
     protected function parseLexicalBinding($in = false, $yield = false)
@@ -1215,22 +1191,10 @@ class ES6 extends Parser
     
     protected function parseVariableDeclarationList($in = false, $yield = false)
     {
-        $list = array();
-        $position = $this->scanner->getPosition();
-        $valid = true;
-        while ($declaration = $this->parseVariableDeclaration($in, $yield)) {
-            $list[] = $declaration;
-            $valid = true;
-            if (!$this->scanner->consume(",")) {
-                break;
-            } else {
-                $valid = false;
-            }
-        }
-        if ($valid) {
-            $this->scanner->setPosition($position);
-        }
-        return count($list) ? $list : null;
+        return $this->commaSeparatedListOf(
+            "parseVariableDeclaration",
+            array($in, $yield)
+        );
     }
     
     protected function parseVariableDeclaration($in = false, $yield = false)
@@ -1417,22 +1381,10 @@ class ES6 extends Parser
     
     protected function parseExportsList()
     {
-        $list = array();
-        $position = $this->scanner->getPosition();
-        $valid = true;
-        while ($param = $this->parseExportSpecifier($yield)) {
-            $list[] = $param;
-            $valid = true;
-            if (!$this->scanner->consume(",")) {
-                break;
-            } else {
-                $valid = false;
-            }
-        }
-        if ($valid) {
-            $this->scanner->setPosition($position);
-        }
-        return count($list) ? $list : null;
+        return $this->commaSeparatedListOf(
+            "parseExportSpecifier",
+            array($yield)
+        );
     }
     
     protected function parseExportSpecifier()
@@ -1580,22 +1532,10 @@ class ES6 extends Parser
     
     protected function parseImportsList()
     {
-        $list = array();
-        $position = $this->scanner->getPosition();
-        $valid = true;
-        while ($param = $this->parseImportSpecifier($yield)) {
-            $list[] = $param;
-            $valid = true;
-            if (!$this->scanner->consume(",")) {
-                break;
-            } else {
-                $valid = false;
-            }
-        }
-        if ($valid) {
-            $this->scanner->setPosition($position);
-        }
-        return count($list) ? $list : null;
+        return $this->commaSeparatedListOf(
+            "parseImportSpecifier",
+            array($yield)
+        );
     }
     
     protected function parseImportSpecifier()
@@ -1721,22 +1661,10 @@ class ES6 extends Parser
     
     protected function parseBindingElementList($yield = false)
     {
-        $list = array();
-        $position = $this->scanner->getPosition();
-        $valid = true;
-        while ($els = $this->parseBindingElisionElement($yield)) {
-            $list = array_merge($list, $els);
-            $valid = true;
-            if (!$this->scanner->consume(",")) {
-                break;
-            } else {
-                $valid = false;
-            }
-        }
-        if ($valid) {
-            $this->scanner->setPosition($position);
-        }
-        return count($list) ? $list : null;
+        return $this->commaSeparatedListOf(
+            "parseBindingElisionElement",
+            array($yield)
+        );
     }
     
     protected function parseBindingElisionElement($yield = false)
@@ -2029,22 +1957,10 @@ class ES6 extends Parser
     
     protected function parsePropertyDefinitionList($yield = false)
     {
-        $list = array();
-        $position = $this->scanner->getPosition();
-        $valid = true;
-        while ($property = $this->parsePropertyDefinition($yield)) {
-            $list[] = $property;
-            $valid = true;
-            if (!$this->scanner->consume(",")) {
-                break;
-            } else {
-                $valid = false;
-            }
-        }
-        if ($valid) {
-            $this->scanner->setPosition($position);
-        }
-        return count($list) ? $list : null;
+        return $this->commaSeparatedListOf(
+            "parsePropertyDefinition",
+            array($yield)
+        );
     }
     
     protected function parsePropertyDefinition($yield = false)
@@ -2158,22 +2074,10 @@ class ES6 extends Parser
     
     protected function parseBindingPropertyList($yield = false)
     {
-        $list = array();
-        $position = $this->scanner->getPosition();
-        $valid = true;
-        while ($property = $this->parseBindingProperty($yield)) {
-            $list[] = $property;
-            $valid = true;
-            if (!$this->scanner->consume(",")) {
-                break;
-            } else {
-                $valid = false;
-            }
-        }
-        if ($valid) {
-            $this->scanner->setPosition($position);
-        }
-        return count($list) ? $list : null;
+        return $this->commaSeparatedListOf(
+            "parseBindingProperty",
+            array($yield)
+        );
     }
     
     protected function parseBindingProperty($yield = false)
@@ -2218,5 +2122,21 @@ class ES6 extends Parser
         $this->scanner->setPosition($position);
         
         return null;
+    }
+    
+    protected function parseExpression($in = false, $yield = false)
+    {
+        return $this->commaSeparatedListOf(
+            "parseAssignmentExpression",
+            array($in, $yield)
+        );
+        
+        if (count($list) === 1) {
+            return $list[0];
+        }
+        
+        $node = $this->createNode("SequenceExpression");
+        $node->setExpressions($list);
+        return $this->completeNode($node);
     }
 }

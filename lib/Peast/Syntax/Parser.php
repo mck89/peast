@@ -26,4 +26,25 @@ abstract class Parser
     {
         return $node->setEndPosition($scanner->getPosition());
     }
+    
+    protected function commaSeparatedListOf($fn, $args)
+    {
+        $list = array();
+        $position = $this->scanner->getPosition();
+        $valid = true;
+        while ($param = $this->parseFormalParameter($yield)) {
+            $list[] = $param;
+            $valid = true;
+            if (!$this->scanner->consume(",")) {
+                break;
+            } else {
+                $valid = false;
+            }
+        }
+        if (!$valid) {
+            $this->scanner->setPosition($position);
+            return null;
+        }
+        return $list;
+    }
 }
