@@ -933,7 +933,7 @@ class ES6 extends Parser
         return $params;
     }
     
-    protected function parseFormalsList($yield)
+    protected function parseFormalsList($yield = false)
     {
         $list = array();
         $position = $this->scanner->getPosition();
@@ -953,22 +953,22 @@ class ES6 extends Parser
         return count($list) ? $list : null;
     }
     
-    protected function parseFunctionRestParameter($yield)
+    protected function parseFunctionRestParameter($yield = false)
     {
         return $this->parseBindingRestElement($yield);
     }
     
-    protected function parseFormalParameter($yield)
+    protected function parseFormalParameter($yield = false)
     {
         return $this->parseBindingElement($yield);
     }
     
-    protected function parseFunctionBody($yield)
+    protected function parseFunctionBody($yield = false)
     {
         return $this->parseFunctionStatementList($yield);
     }
     
-    protected function parseFunctionStatementList($yield)
+    protected function parseFunctionStatementList($yield = false)
     {
         $items = array();
         while ($item = $this->parseStatementList($yield, true)) {
@@ -1999,6 +1999,137 @@ class ES6 extends Parser
         
         $this->scanner->setPosition($position);
         
+        return null;
+    }
+    
+    protected function parseObjectLiteral($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("{")) {
+            
+            $properties = $this->parsePropertyDefinitionList($yield);
+            $this->scanner->consume(",");
+            
+            if ($this->scanner->consume("}")) {
+                
+                $node = $this->createNode("ObjectExpression");
+                if ($properties) {
+                    $node->setProperties($properties);
+                }
+                return $this->completeNode($node);
+                
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        
+        return null;
+    }
+    
+    protected function parsePropertyDefinitionList($yield = false)
+    {
+        $list = array();
+        $position = $this->scanner->getPosition();
+        $valid = true;
+        while ($property = $this->parsePropertyDefinition($yield)) {
+            $list[] = $property;
+            $valid = true;
+            if (!$this->scanner->consume(",")) {
+                break;
+            } else {
+                $valid = false;
+            }
+        }
+        if ($valid) {
+            $this->scanner->setPosition($position);
+        }
+        return count($list) ? $list : null;
+    }
+    
+    protected function parsePropertyDefinition($yield = false)
+    {
+        if ($property = $this->parseCoverInitializedName($yield)) {
+            
+            return $property;
+            
+        } elseif ($property = $this->parseIdentifierReference($yield)) {
+            
+            $node = $this->createNode("Property");
+            $node->setKey($property);
+            $node->setValue($property);
+            return $this->completeNode($node);
+            
+        } else {
+            
+            $position = $this->scanner->getPosition();
+            
+            if (($property = $this->parsePropertyName($yield)) &&
+                $this->scanner->consume(":") &&
+                $value = $this->parseAssignmentExpression(true, $yeld)) {
+                
+                $node = $this->createNode("Property");
+                $node->setKey($property[0]);
+                $node->setValue($value);
+                $node->setComputed($property[1]);
+                return $this->completeNode($node);
+                
+            }
+            
+            $this->scanner->setPosition($position);
+            
+            if ($property = $this->parseMethodDefinition($yeld)) {
+                
+                $node = $this->createNode("Property");
+                $node->setKey($property->getKey());
+                $node->setValue($property->getValue());
+                $node->setComputed($property->getComputed());
+                $kind = $property->getKind();
+                if ($kind !== Node\MethodDefinition::KIND_CONSTRUCTOR) {
+                    $node->setKind($kind);
+                }
+                return $this->completeNode($node);
+                
+            }
+        }
+        return null;
+    }
+    
+    protected function parseCoverInitializedName($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($key = $this->parseIdentifierReference($yield)) {
+            
+            if ($value = $this->parseInitializer(true, $yield)) {
+                
+                $node = $this->createNode("Property");
+                $node->setKey($key);
+                $node->setValue($value);
+                $node->setShorthand(true);
+                return $this->completeNode($node);
+                
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        return null;
+    }
+    
+    protected function parseInitializer($in = false, $yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("=")) {
+            
+            if ($value = $this->parseAssignmentExpression($in, $yield)) {
+                
+                return $value;
+                
+            }
+            
+            $this->scanner->setPosition($position);
+        }
         return null;
     }
 }
