@@ -685,7 +685,7 @@ class ES6 extends Parser
             } elseif ($this->scanner->notBefore(array("let"))) {
                 
                 $subPosition = $this->scanner->getPosition();
-                $notBeforeSB = $this->scanner->notBefore(array("["));
+                $notBeforeSB = $this->scanner->notBefore(array("let", "["));
                 
                 if ($notBeforeSB &&
                     (($init = $this->parseExpression(true, $yield)) || true) &&
