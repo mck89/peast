@@ -2123,13 +2123,100 @@ class ES6 extends Parser
         if ($this->scanner->consume("=")) {
             
             if ($value = $this->parseAssignmentExpression($in, $yield)) {
-                
                 return $value;
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        return null;
+    }
+    
+    protected function parseObjectBindingPattern($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("{")) {
+            
+            $properties = $this->parseBindingPropertyList($yield);
+            $this->scanner->consume(",");
+            
+            if ($this->scanner->consume("}")) {
+                
+                $node = $this->createNode("ObjectPattern");
+                if ($properties) {
+                    $node->setProperties($properties);
+                }
+                return $this->completeNode($node);
                 
             }
             
             $this->scanner->setPosition($position);
         }
+        
+        return null;
+    }
+    
+    protected function parseBindingPropertyList($yield = false)
+    {
+        $list = array();
+        $position = $this->scanner->getPosition();
+        $valid = true;
+        while ($property = $this->parseBindingProperty($yield)) {
+            $list[] = $property;
+            $valid = true;
+            if (!$this->scanner->consume(",")) {
+                break;
+            } else {
+                $valid = false;
+            }
+        }
+        if ($valid) {
+            $this->scanner->setPosition($position);
+        }
+        return count($list) ? $list : null;
+    }
+    
+    protected function parseBindingProperty($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if (($key = $this->parsePropertyName($yield)) &&
+            $this->scanner->consume(":") &&
+            $value = $this->parseBindingElement($yeld)) {
+                
+            $node = $this->createNode("AssignmentProperty");
+            $node->setKey($key);
+            $node->setValue($value);
+            return $this->completeNode($node);
+            
+        } else {
+            
+            $this->scanner->setPosition($position);
+            
+            if ($property = $this->parseSingleNameBinding($yield)) {
+                
+                $node = $this->createNode("AssignmentProperty");
+                
+                if ($property instanceof Node\AssignmentPattern) {
+                    
+                    $node->setKey($property->getLeft());
+                    $node->setValue($property->getRight());
+                    $node->setShorthand(true);
+                    
+                } else {
+                    
+                    $node->setKey($property);
+                    $node->setValue($property);
+                    
+                }
+                
+                return $this->completeNode($node);
+            }
+            
+        }
+        
+        $this->scanner->setPosition($position);
+        
         return null;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class Property extends Node implements ModuleDeclaration
+class Property extends Node
 {
     const KIND_INIT = "init";
     
