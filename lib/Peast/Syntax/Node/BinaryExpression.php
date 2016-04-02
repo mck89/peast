@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\Node;
 
-class AssignmentExpression extends Node implements Expression
+class BinaryExpression extends Node implements Expression
 {
     protected $operator;
     
@@ -25,9 +25,8 @@ class AssignmentExpression extends Node implements Expression
         return $this->left;
     }
     
-    public function setLeft($left)
+    public function setLeft(Expression $left)
     {
-        $this->assertType($left, array("Pattern", "Expression"));
         $this->left = $left;
         return $this;
     }

@@ -2232,4 +2232,34 @@ class ES6 extends Parser
             "LogicalExpression"
         );
     }
+    
+    protected function parseBitwiseORExpression($in = false, $yield = false)
+    {
+        return $this->recursiveExpression(
+            "BitwiseXORExpression",
+            array($in, $yield),
+            "|",
+            "BinaryExpression"
+        );
+    }
+    
+    protected function parseBitwiseXORExpression($in = false, $yield = false)
+    {
+        return $this->recursiveExpression(
+            "BitwiseANDExpression",
+            array($in, $yield),
+            "^",
+            "BinaryExpression"
+        );
+    }
+    
+    protected function parseBitwiseANDExpression($in = false, $yield = false)
+    {
+        return $this->recursiveExpression(
+            "EqualityExpression",
+            array($in, $yield),
+            "&",
+            "BinaryExpression"
+        );
+    }
 }
