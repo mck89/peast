@@ -32,7 +32,7 @@ abstract class Parser
         $list = array();
         $position = $this->scanner->getPosition();
         $valid = true;
-        while ($param = $this->parseFormalParameter($yield)) {
+        while ($param = call_user_func_array(array($this, $fn), $args)) {
             $list[] = $param;
             $valid = true;
             if (!$this->scanner->consume(",")) {

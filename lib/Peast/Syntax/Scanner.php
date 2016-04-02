@@ -86,6 +86,16 @@ class Scanner
         return true;
     }
     
+    public function conumeOneOf($tests)
+    {
+        foreach ($tests as $test) {
+            if ($this->scanner->consume()) {
+                return $test;
+            }
+        }
+        return null;
+    }
+    
     public function notBeforeLineTerminator()
     {
         

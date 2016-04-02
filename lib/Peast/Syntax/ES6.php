@@ -1982,7 +1982,7 @@ class ES6 extends Parser
             
             if (($property = $this->parsePropertyName($yield)) &&
                 $this->scanner->consume(":") &&
-                $value = $this->parseAssignmentExpression(true, $yeld)) {
+                $value = $this->parseAssignmentExpression(true, $yield)) {
                 
                 $node = $this->createNode("Property");
                 $node->setKey($property[0]);
@@ -1994,7 +1994,7 @@ class ES6 extends Parser
             
             $this->scanner->setPosition($position);
             
-            if ($property = $this->parseMethodDefinition($yeld)) {
+            if ($property = $this->parseMethodDefinition($yield)) {
                 
                 $node = $this->createNode("Property");
                 $node->setKey($property->getKey());
@@ -2086,7 +2086,7 @@ class ES6 extends Parser
         
         if (($key = $this->parsePropertyName($yield)) &&
             $this->scanner->consume(":") &&
-            $value = $this->parseBindingElement($yeld)) {
+            $value = $this->parseBindingElement($yield)) {
                 
             $node = $this->createNode("AssignmentProperty");
             $node->setKey($key);
@@ -2126,17 +2126,61 @@ class ES6 extends Parser
     
     protected function parseExpression($in = false, $yield = false)
     {
-        return $this->commaSeparatedListOf(
+        $list = $this->commaSeparatedListOf(
             "parseAssignmentExpression",
             array($in, $yield)
         );
         
-        if (count($list) === 1) {
+        if ($list === null) {
+            return $list;
+        } elseif (count($list) === 1) {
             return $list[0];
+        } else {
+            $node = $this->createNode("SequenceExpression");
+            $node->setExpressions($list);
+            return $this->completeNode($node);
+        }
+    }
+    
+    protected function parseAssignmentExpression($in = false, $yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($expr = $this->parseAssignmentExpression($in, $yield)) {
+            return $expr;
+        } elseif ($yield && $expr = $this->parseYieldExpression($in)) {
+            return $expr;
+        } elseif ($expr = $this->parseArrowFunction($in, $yield)) {
+            return $expr;
+        } elseif ($left = $this->parseLeftHandSideExpression($yield)) {
+            
+            if ($this->scanner->consume("=")) {
+                $operator = "=";
+            } else {
+                $operator = $this->parseAssignmentOperator();
+            }
+            
+            if ($operator &&
+                $right = $this->parseAssignmentExpression($in, $yield)) {
+                
+                $node = $this->createNode("AssignmentExpression");
+                $node->setLeft($left);
+                $node->setOperator($operator);
+                $node->setRight($right);
+                return $this->completeNode($node);
+                
+            }
+            
+            $this->scanner->setPosition($position);
         }
         
-        $node = $this->createNode("SequenceExpression");
-        $node->setExpressions($list);
-        return $this->completeNode($node);
+        return null;
+    }
+    
+    protected function parseAssignmentOperator()
+    {
+        return $this->scanner->conumeOneOf(array(
+            "*=", "/=", "%=", "+=", "-=", "<<=", ">>=", ">>>=", "&=", "^=", "|="
+        ));
     }
 }
