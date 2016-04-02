@@ -935,7 +935,7 @@ class ES6 extends Parser
     
     protected function parseFormalsList($yield = false)
     {
-        return $this->commaSeparatedListOf(
+        return $this->charSeparatedListOf(
             "parseFormalParameter",
             array($yield)
         );
@@ -1129,7 +1129,7 @@ class ES6 extends Parser
     
     protected function parseBindingList($in = false, $yield = false)
     {
-        return $this->commaSeparatedListOf(
+        return $this->charSeparatedListOf(
             "parseLexicalBinding",
             array($in, $yield)
         );
@@ -1191,7 +1191,7 @@ class ES6 extends Parser
     
     protected function parseVariableDeclarationList($in = false, $yield = false)
     {
-        return $this->commaSeparatedListOf(
+        return $this->charSeparatedListOf(
             "parseVariableDeclaration",
             array($in, $yield)
         );
@@ -1381,7 +1381,7 @@ class ES6 extends Parser
     
     protected function parseExportsList()
     {
-        return $this->commaSeparatedListOf(
+        return $this->charSeparatedListOf(
             "parseExportSpecifier",
             array($yield)
         );
@@ -1532,7 +1532,7 @@ class ES6 extends Parser
     
     protected function parseImportsList()
     {
-        return $this->commaSeparatedListOf(
+        return $this->charSeparatedListOf(
             "parseImportSpecifier",
             array($yield)
         );
@@ -1661,7 +1661,7 @@ class ES6 extends Parser
     
     protected function parseBindingElementList($yield = false)
     {
-        return $this->commaSeparatedListOf(
+        return $this->charSeparatedListOf(
             "parseBindingElisionElement",
             array($yield)
         );
@@ -1957,7 +1957,7 @@ class ES6 extends Parser
     
     protected function parsePropertyDefinitionList($yield = false)
     {
-        return $this->commaSeparatedListOf(
+        return $this->charSeparatedListOf(
             "parsePropertyDefinition",
             array($yield)
         );
@@ -2074,7 +2074,7 @@ class ES6 extends Parser
     
     protected function parseBindingPropertyList($yield = false)
     {
-        return $this->commaSeparatedListOf(
+        return $this->charSeparatedListOf(
             "parseBindingProperty",
             array($yield)
         );
@@ -2126,7 +2126,7 @@ class ES6 extends Parser
     
     protected function parseExpression($in = false, $yield = false)
     {
-        $list = $this->commaSeparatedListOf(
+        $list = $this->charSeparatedListOf(
             "parseAssignmentExpression",
             array($in, $yield)
         );
@@ -2182,5 +2182,54 @@ class ES6 extends Parser
         return $this->scanner->conumeOneOf(array(
             "*=", "/=", "%=", "+=", "-=", "<<=", ">>=", ">>>=", "&=", "^=", "|="
         ));
+    }
+    
+    protected function parseConditionalExpression($in = false, $yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($test = $this->parseLogicalORExpression($in, $yield)) {
+            
+            if ($this->scanner->consume("?")) {
+                
+                if (($consequent = $this->parseAssignmentExpression($in, $yield)) &&
+                    $this->scanner->consume(":") &&
+                    $alternate = $this->parseAssignmentExpression($in, $yield)) {
+                
+                    $node = $this->createNode("ConditionalExpression");
+                    $node->setTest($test);
+                    $node->setConsequent($consequent);
+                    $node->setAlternate($alternate);
+                    return $this->completeNode($node);
+                    
+                }
+            } else {
+                return $test;
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        
+        return null;
+    }
+    
+    protected function parseLogicalORExpression($in = false, $yield = false)
+    {
+        return $this->recursiveExpression(
+            "parseLogicalANDExpression",
+            array($in, $yield),
+            "||",
+            "LogicalExpression"
+        );
+    }
+    
+    protected function parseLogicalANDExpression($in = false, $yield = false)
+    {
+        return $this->recursiveExpression(
+            "parseLogicalANDExpression",
+            array($in, $yield),
+            "||",
+            "LogicalExpression"
+        );
     }
 }
