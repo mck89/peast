@@ -2236,7 +2236,7 @@ class ES6 extends Parser
     protected function parseBitwiseORExpression($in = false, $yield = false)
     {
         return $this->recursiveExpression(
-            "BitwiseXORExpression",
+            "parseBitwiseXORExpression",
             array($in, $yield),
             "|",
             "BinaryExpression"
@@ -2246,7 +2246,7 @@ class ES6 extends Parser
     protected function parseBitwiseXORExpression($in = false, $yield = false)
     {
         return $this->recursiveExpression(
-            "BitwiseANDExpression",
+            "parseBitwiseANDExpression",
             array($in, $yield),
             "^",
             "BinaryExpression"
@@ -2256,9 +2256,63 @@ class ES6 extends Parser
     protected function parseBitwiseANDExpression($in = false, $yield = false)
     {
         return $this->recursiveExpression(
-            "EqualityExpression",
+            "parseEqualityExpression",
             array($in, $yield),
             "&",
+            "BinaryExpression"
+        );
+    }
+    
+    protected function parseEqualityExpression($in = false, $yield = false)
+    {
+        return $this->recursiveExpression(
+            "parseRelationalExpression",
+            array($in, $yield),
+            array("===", "!==", "==", "!="),
+            "BinaryExpression"
+        );
+    }
+    
+    protected function parseRelationalExpression($in = false, $yield = false)
+    {
+        $chars = array("<=", ">=", "<", ">", "instanceof");
+        if ($in) {
+            $chars[] = "in";
+        }
+        return $this->recursiveExpression(
+            "parseShiftExpression",
+            array($yield),
+            $chars,
+            "BinaryExpression"
+        );
+    }
+    
+    protected function parseShiftExpression($yield = false)
+    {
+        return $this->recursiveExpression(
+            "parseAdditiveExpression",
+            array($yield),
+            array(">>>", "<<", ">>"),
+            "BinaryExpression"
+        );
+    }
+    
+    protected function parseAdditiveExpression($yield = false)
+    {
+        return $this->recursiveExpression(
+            "parseMultiplicativeExpression",
+            array($yield),
+            array("+", "-"),
+            "BinaryExpression"
+        );
+    }
+    
+    protected function parseMultiplicativeExpression($yield = false)
+    {
+        return $this->recursiveExpression(
+            "parseUnaryExpression",
+            array($yield),
+            array("*", "/", "%"),
             "BinaryExpression"
         );
     }

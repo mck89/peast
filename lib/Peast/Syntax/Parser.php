@@ -29,13 +29,18 @@ abstract class Parser
     
     protected function charSeparatedListOf($fn, $args, $char = ",")
     {
+        $multi = is_array($char);
         $list = array();
         $position = $this->scanner->getPosition();
         $valid = true;
+        $matchedChar = null;
         while ($param = call_user_func_array(array($this, $fn), $args)) {
-            $list[] = $param;
+            $list[] = $multi ? $param : array($param, $matchedChar);
             $valid = true;
-            if (!$this->scanner->consume($char)) {
+            $matchedChar = $multi ?
+                           $this->scanner->consumeOneOf($char) :
+                           $this->scanner->consume($char);
+            if (!$matchedChar) {
                 break;
             } else {
                 $valid = false;
@@ -50,6 +55,7 @@ abstract class Parser
     
     protected function recursiveExpression($fn, $args, $operator, $class)
     {
+        $multi = is_array($operator);
         $list = $this->charSeparatedListOf($fn, $args, $operator);
         
         if ($list === null) {
@@ -61,9 +67,11 @@ abstract class Parser
             foreach ($list as $i => $expr) {
                 if ($i) {
                     $node = $this->createNode($class);
-                    $node->setLeft($lastNode ? $lastNode : $list[0]);
-                    $node->setOperator($operator);
-                    $node->setRight($expr);
+                    $node->setLeft($lastNode ?
+                                   $lastNode :
+                                   ($multi ? $list[0][0] : $list[0]));
+                    $node->setOperator($multi ? $expr[1] : $operator);
+                    $node->setRight($multi ? $expr[0] : $multi[1]);
                     $lastNode = $this->completeNode($node);
                 }
             }
