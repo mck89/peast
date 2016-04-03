@@ -2316,4 +2316,70 @@ class ES6 extends Parser
             "BinaryExpression"
         );
     }
+    
+    protected function parseUnaryExpression($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($expr = $this->scanner->parsePostfixExpression($yield)) {
+            return $expr;
+        } else {
+            
+            $operator = $this->scanner->consumeOneOf(array(
+                "delete", "void", "typeof", "++", "--", "+", "-", "~", "!"
+            ));
+            
+            if ($operator && $argument = $this->parseUnaryExpression($yield)) {
+                
+                $node = $this->createNode("UnaryExpression");
+                $node->setOperator($operator);
+                $node->setArgument($argument);
+                return $this->completeNode($node);
+                
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        
+        return null;
+    }
+    
+    protected function parsePostfixExpression($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($expr = $this->parseLeftHandSideExpression($yield)) {
+            
+            $subPosition = $this->scanner->getPosition();
+            
+            if ($this->scanner->notBeforeLineTerminator() &&
+                $operator = $this->scanner->consumeOneOf("--", "++")) {
+                    
+                $node = $this->createNode("UpdateExpression");
+                $node->setOperator($operator);
+                $node->setArgument($argument);
+                return $this->completeNode($node);
+                
+            }
+            
+            $this->scanner->setPosition($subPosition);
+            
+            return $expr;
+        }
+        
+        $this->scanner->setPosition($position);
+        
+        return null;
+    }
+    
+    protected function parseLeftHandSideExpression($yield = false)
+    {
+        if ($expr = $this->parseNewExpression($yield)) {
+            return $expr;
+        } elseif ($expr = $this->parseCallExpression($yield)) {
+            return $expr;
+        }
+        
+        return null;
+    }
 }
