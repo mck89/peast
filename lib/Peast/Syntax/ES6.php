@@ -1077,7 +1077,7 @@ class ES6 extends Parser
     
     protected function parseClassElement($yield = false)
     {
-        if ($this->consume(";")) {
+        if ($this->scanner->consume(";")) {
             return true;
         } elseif ($def = $this->parseMethodDefinition($yield)) {
             return $def;
@@ -1103,7 +1103,7 @@ class ES6 extends Parser
             $position = $this->scanner->getPosition();
             $declarations = $this->parseBindingList($in, $yield);
             
-            if ($declarations && $this->scanner->match(";")) {
+            if ($declarations && $this->scanner->consume(";")) {
                 $node = $this->createNode("VariableDeclaration");
                 $node->setKind($letOrConst);
                 $node->setDeclarations($declarations);
@@ -1119,9 +1119,9 @@ class ES6 extends Parser
     
     protected function parseLetOrConst()
     {
-        if ($this->match("let")) {
+        if ($this->scanner->consume("let")) {
             return "let";
-        } elseif ($this->match("const")) {
+        } elseif ($this->scanner->consume("const")) {
             return "const";
         }
         return null;
@@ -1175,7 +1175,7 @@ class ES6 extends Parser
             $position = $this->scanner->getPosition();
             $declarations = $this->parseVariableDeclarationList(true, $yield);
             
-            if ($declarations && $this->scanner->match(";")) {
+            if ($declarations && $this->scanner->consume(";")) {
                 $node = $this->createNode("VariableDeclaration");
                 $node->setKind($node::KIND_VAR);
                 $node->setDeclarations($declarations);
