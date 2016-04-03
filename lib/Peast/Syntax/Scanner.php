@@ -20,7 +20,7 @@ class Scanner
         if ($encoding && !preg_match("/UTF-8/i", $encoding)) {
             $source = mb_convert_encoding($source, "UTF-8", $encoding);
         }
-        $this->source = preg_split('/(?<!^)(?!$)/u', $source);
+        $this->source = $source;
         $this->length = count($this->source);
     }
     
