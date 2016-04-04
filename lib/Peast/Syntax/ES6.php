@@ -520,7 +520,7 @@ class ES6 extends Parser
             ($expression = $this->parseExpression(true, $yield)) &&
             $this->scanner->consume(";")) {
             
-            $node = $this->createNode("ExpressionSta");
+            $node = $this->createNode("ExpressionStatement");
             $node->setExpression($expression);
             return $this->completeNode($node);
         }
@@ -2379,6 +2379,24 @@ class ES6 extends Parser
         } elseif ($expr = $this->parseCallExpression($yield)) {
             return $expr;
         }
+        
+        return null;
+    }
+    
+    protected function parseSpreadElement($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("...") &&
+            $argument = $this->parseAssignmentExpression(true, $yield)) {
+                
+            $node = $this->createNode("SpreadElement");
+            $node->setArgument($argument);
+            return $this->completeNode($node);
+            
+        }
+        
+        $this->scanner->setPosition($position);
         
         return null;
     }
