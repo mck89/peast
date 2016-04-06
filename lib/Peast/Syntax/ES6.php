@@ -2401,7 +2401,7 @@ class ES6 extends Parser
         return null;
     }
     
-    protected function parseArrayBindingPattern($yield = false)
+    protected function parseArrayLiteral($yield = false)
     {
         $position = $this->scanner->getPosition();
         
