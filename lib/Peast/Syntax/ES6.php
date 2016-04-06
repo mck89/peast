@@ -1608,7 +1608,7 @@ class ES6 extends Parser
             if (!$elements || $this->scanner->consume(",")) {
             
                 $elision = $this->parseElision();
-                $rest = $this->BindingRestElement($yield);
+                $rest = $this->parseBindingRestElement($yield);
                 
                 if ($this->scanner->consume("]")) {
                     
@@ -2399,5 +2399,75 @@ class ES6 extends Parser
         $this->scanner->setPosition($position);
         
         return null;
+    }
+    
+    protected function parseArrayBindingPattern($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("[")) {
+            
+            $node = $this->createNode("ArrayExpression");
+            $elements = $this->parseElementList($yield);
+            
+            if (!$elements || $this->scanner->consume(",")) {
+            
+                $elision = $this->parseElision();
+                
+                if ($this->scanner->consume("]")) {
+                    
+                    if (!$elements) {
+                        $elements = array();
+                    }
+                    
+                    if ($elision && $elision > 1) {
+                        $elements = array_merge(
+                            $elements,
+                            array_fill(0, $elision - 1, null)
+                        );
+                    }
+                    
+                    $node->setElements($elements);
+                    
+                    return $this->completeNode($node);
+                    
+                }
+                
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        
+        return null;
+    }
+    
+    protected function parseElementList($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        $begin = true;
+        $list = array();
+        
+        while (true) {
+            $ellision = $this->parseElision();
+            if (!($el = $this->parseSpreadElement($yield))) {
+                $el = $this->parseAssignmentExpression(true, $yield);
+            }
+            if (!$ellision && !$begin) {
+                $this->scanner->setPosition($position);
+                return null;
+            } elseif (($begin && $ellision) || ($begin && $ellision > 1)) {
+                $list = array_merge(
+                    $list,
+                    array_fill(0, $begin ? $elision : $ellision - 1, null)
+                );
+            }
+            $begin = false;
+            if (!$el) {
+                break;
+            }
+            $list[] = $el;
+        }
+        
+        return count($list) ? $list : array();
     }
 }
