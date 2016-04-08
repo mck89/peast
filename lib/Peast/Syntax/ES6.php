@@ -2549,4 +2549,28 @@ class ES6 extends Parser
         
         return null;
     }
+    
+    protected parseMetaProperty()
+    {
+        return $this->parseNewTarget();
+    }
+    
+    protected parseNewTarget()
+    {
+        if ($this->scanner->consumeArray(array("new", ".", "target"))) {
+            
+            $meta = $this->createNode("Identifier");
+            $meta->setName("new");
+            
+            $property = $this->createNode("Identifier");
+            $property->setName("target");
+            
+            $node = $this->createNode("MetaProperty");
+            $node->setMeta($this->completeNode($meta));
+            $node->setProperty($this->completeNode($property));
+            return $this->completeNode($node);
+            
+        }
+        return null;
+    }
 }
