@@ -2475,4 +2475,78 @@ class ES6 extends Parser
         
         return count($list) ? $list : array();
     }
+    
+    protected function parseArguments($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("(")) {
+            $args = $this->parseArgumentList($yield);
+            
+            if ($this->scanner->consume(")")) {
+                return $args ? $args : array();
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        
+        return null;
+    }
+    
+    protected function parseArgumentList($yield = false)
+    {
+        $list = array();
+        $position = $this->scanner->getPosition();
+        $valid = true;
+        while (true) {
+            $spread = false;
+            if ($this->scanner->consume("...")) {
+                $spread = true;
+            }
+            $exp = $this->parseAssignmentExpression(true, $yield);
+            if (!$exp) {
+                $valid = false;
+                break;
+            }
+            if ($spread) {
+                $node = $this->createNode("SpreadElement");
+                $node->setArgument($exp);
+                $list[] = $this->completeNode($node);
+            } else {
+                $list[] = $exp;
+            }
+            $valid = true;
+            if (!$this->scanner->consume(",")) {
+                break;
+            } else {
+                $valid = false;
+            }
+        }
+        if (!$valid) {
+            $this->scanner->setPosition($position);
+            return null;
+        }
+        return $list;
+    }
+    
+    protected function parseSuperCall($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("super")) {
+            $args = $this->parseArguments($yield);
+            
+            if ($args !== null) {
+                $super = $this->createNode("Super");
+                $node = $this->createNode("CallExpression");
+                $node->setArguments($args);
+                $node->setCallee($this->completeNode($super));
+                return $this->completeNode($node);
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        
+        return null;
+    }
 }
