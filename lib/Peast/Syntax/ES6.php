@@ -297,7 +297,8 @@ class ES6 extends Parser
     {
         $position = $this->scanner->getPosition();
         
-        if ($this->scanner->consume("continue", false)) {
+        if ($this->scanner->consume("continue") &&
+            $this->scanner->consumeWhitespacesAndComments(false)) {
             $node = $this->createNode("ContinueStatement");
             
             if ($label = $this->parseLabelIdentifier($yield)) {
@@ -318,7 +319,8 @@ class ES6 extends Parser
     {
         $position = $this->scanner->getPosition();
         
-        if ($this->scanner->consume("break", false)) {
+        if ($this->scanner->consume("break") &&
+            $this->scanner->consumeWhitespacesAndComments(false)) {
             $node = $this->createNode("BreakStatement");
             
             if ($label = $this->parseLabelIdentifier($yield)) {
@@ -339,7 +341,8 @@ class ES6 extends Parser
     {
         $position = $this->scanner->getPosition();
         
-        if ($this->scanner->consume("return", false)) {
+        if ($this->scanner->consume("return") &&
+            $this->scanner->consumeWhitespacesAndComments(false)) {
             $node = $this->createNode("ReturnStatement");
             
             if ($argument = $this->parseExpression(true, $yield)) {
@@ -389,7 +392,8 @@ class ES6 extends Parser
     {
         $position = $this->scanner->getPosition();
         
-        if ($this->scanner->consume("throw", false) &&
+        if ($this->scanner->consume("throw") &&
+            $this->scanner->consumeWhitespacesAndComments(false) &&
             ($argument = $this->parseExpression(true, $yield)) &&
             $this->scanner->consume(";")) {
             
@@ -876,7 +880,8 @@ class ES6 extends Parser
     
     protected function parseYieldExpression($in = false)
     {
-        if ($this->scanner->consume("yield", false)) {
+        if ($this->scanner->consume("yield") &&
+            $this->scanner->consumeWhitespacesAndComments(false)) {
             
             $position = $this->scanner->getPosition();
             $delegate = $this->scanner->consume("*") ? true : false;
@@ -1736,7 +1741,7 @@ class ES6 extends Parser
         if ($prop = $this->parseLiteralPropertyName()) {
             return array($prop, false);
         } elseif ($prop = $this->parseComputedPropertyName($yield)) {
-            return array($prop, false);
+            return array($prop, true);
         }
         return null;
     }
@@ -1914,7 +1919,7 @@ class ES6 extends Parser
         $position = $this->scanner->getPosition();
         
         if (($params = $this->parseArrowParameters($yield)) !== null &&
-            $this->scanner->notBeforeLineTerminator() &&
+            $this->scanner->consumeWhitespacesAndComments(false) &&
             $this->scanner->consume("=>") &&
             $body = $this->parseConciseBody($in)) {
             
@@ -2352,7 +2357,7 @@ class ES6 extends Parser
             
             $subPosition = $this->scanner->getPosition();
             
-            if ($this->scanner->notBeforeLineTerminator() &&
+            if ($this->scanner->consumeWhitespacesAndComments(false) &&
                 $operator = $this->scanner->consumeOneOf("--", "++")) {
                     
                 $node = $this->createNode("UpdateExpression");

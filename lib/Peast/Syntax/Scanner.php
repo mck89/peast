@@ -50,15 +50,15 @@ class Scanner
     
     public function setPosition(Position $position)
     {
-        $this->index = $position->getLine();
-        $this->index = $position->getColumn();
+        $this->line = $position->getLine();
+        $this->column = $position->getColumn();
         $this->index = $position->getIndex();
         return $this;
     }
     
-    public function consume($string, $lineTerminator = true)
+    public function consume($string)
     {
-        
+        $this->consumeWhitespacesAndComments();
     }
     
     public function consumeArray($sequence)
@@ -96,7 +96,7 @@ class Scanner
         return null;
     }
     
-    public function notBeforeLineTerminator()
+    public function consumeWhitespacesAndComments($lineTerminator = true)
     {
         
     }
