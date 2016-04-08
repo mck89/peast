@@ -2573,4 +2573,40 @@ class ES6 extends Parser
         }
         return null;
     }
+    
+    protected parseIdentifierReference($yield = false)
+    {
+        if ($identifier = $this->parseIdentifierReference($yield))) {
+            return $identifier;
+        } elseif (!$yield && $this->scanner->consume("yield")) {
+            $node = $this->createNode("Identifier");
+            $node->setName("yield");
+            return $this->completeNode($node);
+        }
+        return null;
+    }
+    
+    protected parseBindingIdentifier($yield = false)
+    {
+        if ($identifier = $this->parseIdentifierReference($yield))) {
+            return $identifier;
+        } elseif (!$yield && $this->scanner->consume("yield")) {
+            $node = $this->createNode("Identifier");
+            $node->setName("yield");
+            return $this->completeNode($node);
+        }
+        return null;
+    }
+    
+    protected parseLabelIdentifier($yield = false)
+    {
+        if ($identifier = $this->parseIdentifierReference($yield))) {
+            return $identifier;
+        } elseif (!$yield && $this->scanner->consume("yield")) {
+            $node = $this->createNode("Identifier");
+            $node->setName("yield");
+            return $this->completeNode($node);
+        }
+        return null;
+    }
 }
