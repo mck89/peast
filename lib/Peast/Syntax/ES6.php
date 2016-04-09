@@ -2677,27 +2677,70 @@ class ES6 extends Parser
             } else {
                 $lastNode = $node;
                 $node = $this->createNode("TaggedTemplateExpression");
-                $node->setTag($lastNode);
+                $node->setTag($this->completeNode($lastNode));
                 $node->setQuasi($property[0]);
             }
             if ($i !== $lastIndex) {
                 $lastNode = $node;
                 $node = $this->createNode("MemberExpression");
-                $node->setObject($lastNode);
+                $node->setObject($this->completeNode($lastNode));
             }
         }
         
-        return $node;
+        return $this->completeNode($node);
     }
     
-
-SuperProperty[Yield] :
-    super [ Expression[In, ?Yield] ]
-    super . IdentifierName
-
-
-NewExpression[Yield] :
-MemberExpression[?Yield]
-new NewExpression[?Yield]
-
+    protected function parseSuperProperty($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("super")) {
+            
+            $super = $this->createNode("Super");
+            
+            $node = $this->createNode("MemberExpression");
+            $node->setObject($this->completeNode($super));
+            
+            if ($this->scanner->consume(".") &&
+                $property = $this->parseIdentifierName()) {
+                
+                $node->setProperty($property);
+                return $this->completeNode($node);
+                
+            } elseif ($this->scanner->consume("[") &&
+                      ($property = $this->parseExpression(true, $yield)) &&
+                      $this->scanner->consume("]")) {
+                
+                $node->setProperty($property);
+                $node->setComputed(true);
+                return $this->completeNode($node);
+                
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        
+        return null;
+    }
+    
+    protected function parseNewExpression($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("new")) {
+            
+            if ($callee = $this->parseNewExpression($yield)) {
+                $node = $this->createNode("NewExpression");
+                $node->setCallee($callee);
+                return $this->completeNode($node);
+            }
+            
+            $this->scanner->setPosition($position);
+            
+        } elseif ($callee = $this->parseMemberExpression($yield)) {
+            return $callee;
+        }
+        
+        return null;
+    }
 }
