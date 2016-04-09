@@ -2743,4 +2743,42 @@ class ES6 extends Parser
         
         return null;
     }
+    
+    protected function parsePrimaryExpression($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("this")) {
+            $node = $this->createNode("ThisExpression");
+            return $this->completeNode($node);
+        } elseif ($exp = $this->parseIdentifierReference($yield)) {
+            return $exp;
+        } elseif ($exp = $this->parseLiteral()) {
+            return $exp;
+        } elseif ($exp = $this->parseArrayLiteral($yield)) {
+            return $exp;
+        } elseif ($exp = $this->parseObjectLiteral($yield)) {
+            return $exp;
+        } elseif ($exp = $this->parseFunctionExpression()) {
+            return $exp;
+        } elseif ($exp = $this->parseClassExpression($yield)) {
+            return $exp;
+        } elseif ($exp = $this->parseGeneratorExpression()) {
+            return $exp;
+        } elseif ($exp = $this->parseRegularExpressionLiteral()) {
+            return $exp;
+        } elseif ($exp = $this->parseTemplateLiteral($yield)) {
+            return $exp;
+        } elseif ($this->scanner->consume("(")) {
+            
+            if (($exp = $this->parseExpression(true, $yield)) &&
+                $this->scanner->consume(")")) {
+                return $exp;
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        
+        return null;
+    }
 }
