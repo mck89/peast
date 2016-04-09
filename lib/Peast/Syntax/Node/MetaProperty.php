@@ -31,7 +31,7 @@ class MetaProperty extends Node implements Expression
     
     public function compile()
     {
-        return $this->getMeta()->compile() . "."
+        return $this->getMeta()->compile() . "." .
                $this->getProperty()->compile();
     }
 }

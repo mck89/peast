@@ -2550,12 +2550,12 @@ class ES6 extends Parser
         return null;
     }
     
-    protected parseMetaProperty()
+    protected function parseMetaProperty()
     {
         return $this->parseNewTarget();
     }
     
-    protected parseNewTarget()
+    protected function parseNewTarget()
     {
         if ($this->scanner->consumeArray(array("new", ".", "target"))) {
             
@@ -2574,9 +2574,9 @@ class ES6 extends Parser
         return null;
     }
     
-    protected parseIdentifierReference($yield = false)
+    protected function parseIdentifierReference($yield = false)
     {
-        if ($identifier = $this->parseIdentifierReference($yield))) {
+        if ($identifier = $this->parseIdentifierReference($yield)) {
             return $identifier;
         } elseif (!$yield && $this->scanner->consume("yield")) {
             $node = $this->createNode("Identifier");
@@ -2586,9 +2586,9 @@ class ES6 extends Parser
         return null;
     }
     
-    protected parseBindingIdentifier($yield = false)
+    protected function parseBindingIdentifier($yield = false)
     {
-        if ($identifier = $this->parseIdentifierReference($yield))) {
+        if ($identifier = $this->parseIdentifierReference($yield)) {
             return $identifier;
         } elseif (!$yield && $this->scanner->consume("yield")) {
             $node = $this->createNode("Identifier");
@@ -2598,9 +2598,9 @@ class ES6 extends Parser
         return null;
     }
     
-    protected parseLabelIdentifier($yield = false)
+    protected function parseLabelIdentifier($yield = false)
     {
-        if ($identifier = $this->parseIdentifierReference($yield))) {
+        if ($identifier = $this->parseIdentifierReference($yield)) {
             return $identifier;
         } elseif (!$yield && $this->scanner->consume("yield")) {
             $node = $this->createNode("Identifier");
@@ -2609,4 +2609,95 @@ class ES6 extends Parser
         }
         return null;
     }
+    
+    protected function parseMemberExpression($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("new")) {
+            
+            if (($callee = $this->parseMemberExpression($yield)) &&
+                $args = $this->parseArguments($yield)) {
+                    
+                $node = $this->createNode("NewExpression");
+                $node->setCallee($callee);
+                $node->setArguments($args);
+                return $this->completeNode($node);
+                
+            }
+            
+            $this->scanner->setPosition($position);
+            return null;
+            
+        } elseif (!($object = $this->parsePrimaryExpression($yield)) && 
+            !($object = $this->parseSuperProperty($yield)) &&
+            !($object = $this->parseMetaProperty())) {
+            return null;
+        }
+        
+        $valid = true;
+        $properties = array();
+        while (true) {
+            if ($this->scanner->consume(".")) {
+                if ($property = $this->parseIdentifierName()) {
+                    $properties[] = array($property, false);
+                } else {
+                    $valid = false;
+                    break;
+                }
+            } elseif ($this->scanner->consume("[")) {
+                if (($property = $this->parseExpression(true, $yield)) &&
+                    $this->scanner->consume("]")) {
+                    $properties[] = array($property, true);
+                } else {
+                    $valid = false;
+                    break;
+                }
+            } elseif ($property = $this->parseTemplateLiteral($yield)) {
+                $properties[] = $property;
+            } else {
+                break;
+            }
+        }
+        
+        if (!$valid || !count($properties)) {
+            $this->scanner->setPosition($position);
+            return null;
+        }
+        
+        $lastIndex = count($properties) - 1;
+        $node = $this->createNode("MemberExpression");
+        $node->setObject($object);
+        foreach ($properties as $i => $property) {
+            if (is_array($property)) {
+                $node->setProperty($property[0]);
+                if ($property[1]) {
+                    $node->setComputed(true);
+                }
+            } else {
+                $lastNode = $node;
+                $node = $this->createNode("TaggedTemplateExpression");
+                $node->setTag($lastNode);
+                $node->setQuasi($property[0]);
+            }
+            if ($i !== $lastIndex) {
+                $lastNode = $node;
+                $node = $this->createNode("MemberExpression");
+                $node->setObject($lastNode);
+            }
+        }
+        
+        return $node;
+    }
+    
+
+SuperProperty[Yield] :
+    super [ Expression[In, ?Yield] ]
+    super . IdentifierName
+
+
+NewExpression[Yield] :
+MemberExpression[?Yield]
+new NewExpression[?Yield]
+
 }
