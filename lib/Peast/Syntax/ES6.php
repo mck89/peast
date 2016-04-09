@@ -692,7 +692,7 @@ class ES6 extends Parser
                 $notBeforeSB = $this->scanner->notBefore(array("let", "["));
                 
                 if ($notBeforeSB &&
-                    (($init = $this->parseExpression(true, $yield)) || true) &&
+                    (($init = $this->parseExpression(false, $yield)) || true) &&
                     $this->scanner->consume(";")) {
                 
                     $test = $this->parseExpression(true, $yield);
