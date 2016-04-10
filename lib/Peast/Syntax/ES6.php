@@ -2162,7 +2162,10 @@ class ES6 extends Parser
             if ($this->scanner->consume("=")) {
                 $operator = "=";
             } else {
-                $operator = $this->parseAssignmentOperator();
+                $operator = $this->scanner->conumeOneOf(array(
+                    "*=", "/=", "%=", "+=", "-=", "<<=",
+                    ">>=", ">>>=", "&=", "^=", "|="
+                ));
             }
             
             if ($operator &&
@@ -2180,13 +2183,6 @@ class ES6 extends Parser
         }
         
         return null;
-    }
-    
-    protected function parseAssignmentOperator()
-    {
-        return $this->scanner->conumeOneOf(array(
-            "*=", "/=", "%=", "+=", "-=", "<<=", ">>=", ">>>=", "&=", "^=", "|="
-        ));
     }
     
     protected function parseConditionalExpression($in = false, $yield = false)
