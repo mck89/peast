@@ -106,7 +106,7 @@ class Scanner
             }
         }
         if ($buffer !== "") {
-            $len = $this->index - $index;
+            $len = $index - $this->index;
             $this->index = $index;
             return array($buffer, $len);
         }
@@ -164,7 +164,7 @@ class Scanner
             }
         }
         if ($buffer !== "") {
-            $len = $this->index - $index;
+            $len = $index - $this->index;
             $this->index = $index;
             return array($buffer, $len);
         }
@@ -336,7 +336,8 @@ class Scanner
             $start = false;
         }
         
-        if ($buffer !== "") {
+        if ($buffer !== "") { 
+            $this->column += $index - $this->index;
             $this->index = $index; 
             return $buffer;
         }
