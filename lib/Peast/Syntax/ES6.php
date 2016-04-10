@@ -7,20 +7,40 @@ class ES6 extends Parser
 {
     protected $moduleMode = false;
     
+    protected $reservedWords = array(
+        "break", "do", "in", "typeof", "case", "else", "instanceof", "var",
+        "catch", "export", "new", "void", "class", "extends", "return", "while",
+        "const", "finally", "super", "with", "continue", "for", "switch",
+        "yield", "debugger", "function", "this", "default", "if", "throw",
+        "delete", "import", "try", "enum", "implements", "package", "protected",
+        "interface", "private", "public", "null", "true", "false"
+    );
+    
     public function __construct($module = false)
     {
         $this->moduleMode = $module;
+        if ($module) {
+            $this->reservedWords[] = "await";
+        }
     }
     
     public function setScanner(Scanner $scanner)
     {
-        $scanner->setSymbols(array(
-            "{", "}", "(", ")", "[", "]", ".", ";", ",", "<", ">", "<=",
-            ">=", "==", "!=", "===", "!==", "+", "-", "*", "%", "++", "--",
-            "<<", ">>", ">>>", "&", "|", "^", "!", "~", "&&", "||", "?", ":",
-            "=", "+=", "-=", "*=", "%=", "<<=", ">>=", ">>>=", "&=", "|=",
-            "^=", "=>", "...", "/*", "*/", "//", '"', "'", "`", "${"
+        $idStart = "\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\x{2118}\x{212E}\x{309B}\x{309C}";
+        $idPart = "$idStart\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{00B7}\x{0387}\x{1369}\x{136A}\x{136B}\x{136C}\x{136D}\x{136E}\x{136F}\x{1370}\x{1371}\x{19DA}\x{200C}\x{200D}";
+        $scanner->configure(array(
+            "idStart" => "[$idStart]",
+            "idPart" => "[$idContinue]",
+            "symbols" => array(
+                "{", "}", "(", ")", "[", "]", ".", ";", ",", "<", ">", "<=",
+                ">=", "==", "!=", "===", "!==", "+", "-", "*", "%", "++", "--",
+                "<<", ">>", ">>>", "&", "|", "^", "!", "~", "&&", "||", "?",
+                ":", "=", "+=", "-=", "*=", "%=", "<<=", ">>=", ">>>=", "&=",
+                "|=", "^=", "=>", "...", "/*", "*/", "//", '"', "'", "`", "${",
+                "/", "/="
+            )
         ));
+        return parent::setScanner($scanner);
     }
     
     public function parse()
@@ -2583,7 +2603,7 @@ class ES6 extends Parser
     
     protected function parseIdentifierReference($yield = false)
     {
-        if ($identifier = $this->parseIdentifierReference($yield)) {
+        if ($identifier = $this->parseIdentifier()) {
             return $identifier;
         } elseif (!$yield && $this->scanner->consume("yield")) {
             $node = $this->createNode("Identifier");
@@ -2595,7 +2615,7 @@ class ES6 extends Parser
     
     protected function parseBindingIdentifier($yield = false)
     {
-        if ($identifier = $this->parseIdentifierReference($yield)) {
+        if ($identifier = $this->parseIdentifier()) {
             return $identifier;
         } elseif (!$yield && $this->scanner->consume("yield")) {
             $node = $this->createNode("Identifier");
@@ -2607,7 +2627,7 @@ class ES6 extends Parser
     
     protected function parseLabelIdentifier($yield = false)
     {
-        if ($identifier = $this->parseIdentifierReference($yield)) {
+        if ($identifier = $this->parseIdentifier()) {
             return $identifier;
         } elseif (!$yield && $this->scanner->consume("yield")) {
             $node = $this->createNode("Identifier");
@@ -2786,6 +2806,31 @@ class ES6 extends Parser
             $this->scanner->setPosition($position);
         }
         
+        return null;
+    }
+    
+    protected function parseIdentifierName()
+    {
+        if ($identifier = $this->scanner->consumeIdentifier()) {
+            $node = $this->createNode("Identifier");
+            $node->setName($identifier);
+            return $this->completeNode($node);
+        }
+        return null;
+    }
+    
+    protected function parseIdentifier()
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($identifier = $this->parseIdentifierName()) {
+            
+            if (!in_array($identifier->getName(), $this->reservedWords)) {
+                return $identifier;
+            }
+            
+            $this->scanner->setPosition($position);
+        }
         return null;
     }
 }

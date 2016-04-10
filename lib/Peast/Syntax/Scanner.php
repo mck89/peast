@@ -19,6 +19,12 @@ class Scanner
     
     protected $maxSymbolLength;
     
+    protected $idStart;
+    
+    protected $idPart;
+    
+    protected $hexChar = "/[0-9a-fA-F]/";
+    
     function __construct($source, $encoding = null)
     {
         if ($encoding && !preg_match("/UTF-?8/i", $encoding)) {
@@ -28,13 +34,13 @@ class Scanner
         $this->length = count($this->chars);
     }
     
-    public function setSymbols($symbols)
+    public function configure($config)
     {
-        $map = "";
+        $symbolMap = "";
         $this->symbols = array();
         $this->maxSymbolLength = -1;
-        foreach ($symbols as $symbol) {
-            $map .= $symbol;
+        foreach ($config["symbols"] as $symbol) {
+            $symbolMap .= $symbol;
             $len = strlen($symbol);
             $this->maxSymbolLength = max($len, $this->maxSymbolLength);
             if (!isset($this->symbols[$len])) {
@@ -42,7 +48,10 @@ class Scanner
             }
             $this->symbols[$len][] = $symbol;
         }
-        $this->symbolChars = array_unique(explode("", $map));
+        $this->symbolChars = array_unique(explode("", $symbolMap));
+        
+        $this->idStart = "/" . $config["idStart"] . "/u";
+        $this->idPart = "/" . $config["idPart"] . "/u";
         return $this;
     }
     
@@ -254,6 +263,85 @@ class Scanner
         $this->consumeToken($token);
         
         return true;
+    }
+    
+    public function consumeIdentifier()
+    {
+        $this->consumeWhitespacesAndComments();
+        
+        $start = true;
+        $index = $this->index;
+        $buffer = "";
+        while ($index < $this->length) {
+            $char = $this->chars[$index];
+            if ($char === "$" || $char === "_" ||
+                ($char >= "A" && $char <= "Z") ||
+                ($char >= "a" && $char <= "z") ||
+                (!$start && $char >= "0" && $char <= "9")) {
+                $index++;
+                $buffer .= $char;
+            } elseif ($start && preg_match($this->idStart, $char)) {
+                $index++;
+                $buffer .= $char;
+            } elseif (!$start && preg_match($this->idPart, $char)) {
+                $index++;
+                $buffer .= $char;
+            } elseif ($char === "\\" &&
+                      isset($this->chars[$index + 1]) &&
+                      $this->chars[$index + 1] === "u") {
+                //UnicodeEscapeSequence
+                $valid = true;
+                $subBuffer = "\\u";
+                if (isset($this->chars[$index + 2]) &&
+                    $this->chars[$index + 2] === "{" &&
+                    isset($this->chars[$index + 3])) {
+                    
+                    $oneMatched = false;
+                    $subBuffer .= "{";
+                    for ($i = $index + 4; $i < $this->length; $i++) {
+                        if (preg_match($this->hexChar, $this->chars[$index])) {
+                            $oneMatched = true;
+                            $subBuffer .= $this->chars[$index];
+                        } elseif ($oneMatched && $this->chars[$index] === "}") {
+                            $subBuffer .= $this->chars[$index];
+                            break;
+                        } else {
+                            $valid = false;
+                            break;
+                        }
+                    }
+                    
+                } else {
+                    for ($i = $index + 3; $i <= $index + 7; $i++) {
+                        if (isset($this->chars[$i]) &&
+                            preg_match($this->hexChar, $this->chars[$i])) {
+                            $subBuffer .= $this->chars[$i];
+                        } else {
+                            $valid = false;
+                            break;
+                        }
+                    }
+                }
+                
+                if (!$valid) {
+                    break;
+                }
+                
+                $buffer .= $subBuffer;
+                $index += strlen($subBuffer);
+                
+            } else {
+                break;
+            }
+            $start = false;
+        }
+        
+        if ($buffer !== "") {
+            $this->index = $index; 
+            return $buffer;
+        }
+        
+        return null;
     }
     
     public function consumeArray($sequence)
