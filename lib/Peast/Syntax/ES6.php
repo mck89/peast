@@ -12,6 +12,17 @@ class ES6 extends Parser
         $this->moduleMode = $module;
     }
     
+    public function setScanner(Scanner $scanner)
+    {
+        $scanner->setSymbols(array(
+            "{", "}", "(", ")", "[", "]", ".", ";", ",", "<", ">", "<=",
+            ">=", "==", "!=", "===", "!==", "+", "-", "*", "%", "++", "--",
+            "<<", ">>", ">>>", "&", "|", "^", "!", "~", "&&", "||", "?", ":",
+            "=", "+=", "-=", "*=", "%=", "<<=", ">>=", ">>>=", "&=", "|=",
+            "^=", "=>", "...", "/*", "*/", "//", '"', "'", "`", "${"
+        ));
+    }
+    
     public function parse()
     {
         if ($this->$this->moduleMode) {

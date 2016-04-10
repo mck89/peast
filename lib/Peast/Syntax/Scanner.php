@@ -11,50 +11,39 @@ class Scanner
     
     protected $length;
     
-    protected $tokens = array();
+    protected $chars = array();
+    
+    protected $symbols = array();
+    
+    protected $symbolChars = array();
+    
+    protected $maxSymbolLength;
     
     function __construct($source, $encoding = null)
     {
-        if ($encoding && !preg_match("/UTF-8/i", $encoding)) {
+        if ($encoding && !preg_match("/UTF-?8/i", $encoding)) {
             $source = mb_convert_encoding($source, "UTF-8", $encoding);
         }
-        
-        $tokenizer =
-            "(" .
-                "\p{Zs}|\s" . //Whitespaces
-            ")" .
-            "|" .
-            "(" .
-                    "[()[\]{}]" . //Brackets
-                "|" .
-                    "[+\-*/%|&<>^=!]?=" .  // +=, -=, *= ...
-                "|" .
-                    "/\*" . // /*
-                "|" .
-                    "\*/" . // */
-                "|" .
-                    "\|\|" . // ||
-                "|" .
-                    "&&" .  // &&
-                "|" .
-                    "\+\+" . // ++
-                "|" .
-                    "--" . // --
-                "|" .
-                    "[=!]==" . // ==, ===, !=, !==
-                "|" .
-                    "(?:<<|>>>?)=?" . // >>, >>>, >>=, >>>=, <<, <<=
-                "|" .
-                    "\.(?:\.\.)?" . // ., ...
-                "|" .
-                    "[;\"':~+\-*/%|&<>^!,?\\\\]" . // Single character symbols
-                "|" .
-                    "[^,?;\.:\"'|&=+\-*/%<>^!~\p{Zs}\s(){}[\]\\\\]+" . // Other
-            ")";
-        
-        preg_match_all("#$tokenizer#u", $source, $this->tokens, PREG_SET_ORDER);
-        
-        $this->length = count($this->tokens);
+        $this->chars = preg_split('/(?<!^)(?!$)/u', $source);
+        $this->length = count($this->chars);
+    }
+    
+    public function setSymbols($symbols)
+    {
+        $map = "";
+        $this->symbols = array();
+        $this->maxSymbolLength = -1;
+        foreach ($symbols as $symbol) {
+            $map .= $symbol;
+            $len = strlen($symbol);
+            $this->maxSymbolLength = max($len, $this->maxSymbolLength);
+            if (!isset($this->symbols[$len])) {
+                $this->symbols[$len] = array();
+            }
+            $this->symbols[$len][] = $symbol;
+        }
+        $this->symbolChars = array_unique(explode("", $map));
+        return $this;
     }
     
     public function getColumn()
@@ -89,21 +78,113 @@ class Scanner
         return $this;
     }
     
+    protected function isWhitespace($char)
+    {
+        return preg_match("/^[\s\p{Zs}]$/u", $char);
+    }
+    
+    protected function scanWhitespaces()
+    {
+        $index = $this->index;
+        $buffer = "";
+        while ($index < $this->length) {
+            $char = $this->chars[$index];
+            if ($this->isWhitespace($char)) {
+                $buffer .= $char;
+                $index++;
+            } else {
+                break;
+            }
+        }
+        if ($buffer !== "") {
+            $len = $this->index - $index;
+            $this->index = $index;
+            return array($buffer, $len);
+        }
+        return null;
+    }
+    
+    protected function isSymbol($char)
+    {
+        return in_array($char, $this->symbolChars);
+    }
+    
+    protected function scanSymbols()
+    {
+        $index = $this->index;
+        $buffer = "";
+        $bufferLen = 0;
+        while ($index < $this->length && $bufferLen < $this->maxSymbolLength) {
+            $char = $this->chars[$index];
+            if ($this->isSymbol($char)) {
+                $buffer .= $char;
+                $index++;
+                $bufferLen++;
+            } else {
+                break;
+            }
+        }
+        if ($buffer !== "") {
+            for ($len = $bufferLen; $i > 0; $i--) {
+                if (!isset($this->symbols[$len]) ||
+                    !in_array($buffer, $this->symbols[$len])) {
+                    $bufferLen--;
+                    $buffer = substr($buffer, 0, $bufferLen);
+                }
+                break;
+            }
+            if ($buffer !== "") {
+                $this->index += $bufferLen;
+                return array($buffer, $bufferLen);
+            }
+        }
+        return null;
+    }
+    
+    protected function scanOther()
+    {
+        $index = $this->index;
+        $buffer = "";
+        while ($index < $this->length) {
+            $char = $this->chars[$index];
+            if (!$this->isWhitespace($char) && !$this->isSymbol($char)) {
+                $buffer .= $char;
+                $index++;
+            } else {
+                break;
+            }
+        }
+        if ($buffer !== "") {
+            $len = $this->index - $index;
+            $this->index = $index;
+            return array($buffer, $len);
+        }
+        return null;
+    }
+    
     protected function getToken()
     {
         if ($this->index < $this->length) {
-            $token = $this->token[$this->index];
-            $this->index++;
-            $ws = false;
-            $source = $token[0];
-            if (!isset($token[2])) {
-                $ws = true;
-                $source = preg_split("#\n|\r\n?|\x{2028}|\x{2029}#u", $source);
+            if (($source = $this->scanWhitespaces()) !== null) {
+                $lines = preg_split("#\n|\r\n?|\x{2028}|\x{2029}#u", $source[0]);
+                return array(
+                    "source" => $lines,
+                    "length" => $source[1],
+                    "whitespace" => true
+                );
+            } elseif(($source = $this->scanSymbol()) !== null) {
+                return array(
+                    "source" => $source[0],
+                    "length" => $source[1],
+                    "whitespace" => false
+                );
+            } elseif(($source = $this->scanOther()) !== null) {
+                return array(
+                    "source" => $source[0],
+                    "length" => $source[1],
+                    "whitespace" => false
+                );
             }
-            return array(
-                "source" => $source,
-                "whitespace" => $ws
-            );
         }
         return null;
     }
@@ -113,15 +194,15 @@ class Scanner
         if ($token["whitespace"]) {
             $lines = count($token["source"]) - 1;
             $this->line += $lines;
-            $this->column += strlen($token["source"][$lines]);
+            $this->column += mb_strlen($token["source"][$lines]);
         } else {
-            $this->column += strlen($token["source"]);
+            $this->column += $token["length"];
         }
     }
     
-    protected function unconsumeToken()
+    protected function unconsumeToken($token)
     {
-        $this->index--;
+        $this->index -= $token["length"];
     }
     
     public function consumeWhitespacesAndComments($lineTerminator = true)
@@ -153,7 +234,7 @@ class Scanner
                 $comment = 0;
                 $this->consumeToken($token);
             } else {
-                $this->unconsumeToken();
+                $this->unconsumeToken($token);
                 return $processed > 1;
             }
         }
@@ -166,7 +247,7 @@ class Scanner
         
         $token = $this->getToken();
         if (!$token || $token["source"] !== $string) {
-            $this->unconsumeToken();
+            $this->unconsumeToken($token);
             return false;
         }
         
