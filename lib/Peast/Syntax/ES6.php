@@ -2833,4 +2833,20 @@ class ES6 extends Parser
         }
         return null;
     }
+    
+    protected function parseLiteral()
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($literal = $this->scanner->consumeOneOf(
+                array("null", "true", "false")
+            )) {
+            
+            $node = $this->createNode("Literal");
+            $node->setValue($literal);
+            $node->setRaw($literal === "null" ? null : ($literal === "true"));
+            return $this->completeNode($node);
+        }
+        return null;
+    }
 }
