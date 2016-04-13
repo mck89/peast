@@ -22,9 +22,21 @@ class Literal extends Node implements Expression
         return $this->value;
     }
     
+    public function setValue($value)
+    {
+        $this->value = $value;
+        return $this;
+    }
+    
     public function getKind()
     {
         return $this->kind;
+    }
+    
+    public function setKind($kind)
+    {
+        $this->kind = $kind;
+        return $this;
     }
     
     public function getRawValue()
@@ -35,18 +47,18 @@ class Literal extends Node implements Expression
     public function setRawValue($rawValue)
     {
         if ($rawValue === "null") {
-            $this->value = null;
-            $this->kind = self::KIND_NULL;
+            $this->setValue(null);
+            $this->setKind(self::KIND_NULL);
         } elseif ($rawValue === "true" || $rawValue === "false") {
-            $this->value = $rawValue === "true";
-            $this->kind = self::KIND_BOOLEAN;
+            $this->setValue($rawValue === "true");
+            $this->setKind(self::KIND_BOOLEAN);
         } elseif (isset($rawValue[0]) &&
                  ($rawValue[0] === "'" || $rawValue[0] === '"')) {
-            $this->value = substr($rawValue, 1, strlen($rawValue) - 2);
-            $this->kind = self::KIND_STRING;
+            $this->setValue(substr($rawValue, 1, strlen($rawValue) - 2));
+            $this->setKind(self::KIND_STRING);
         } else {
-            $this->value = $rawValue;
-            $this->kind = self::KIND_NUMBER;
+            $this->setValue($rawValue);
+            $this->setKind(self::KIND_NUMBER);
         }
         $this->rawValue = $rawValue;
         return $this;
