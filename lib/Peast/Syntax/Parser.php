@@ -17,7 +17,9 @@ abstract class Parser
     
     public function createNode($nodeType)
     {
-        $nodeClass = "Peast\\Syntax\\Node\\$nodeType";
+        $parts = explode("\\", get_class($this));
+        array_pop($parts);
+        $nodeClass = implode("\\", $parts) . "\\Node\\$nodeType";
         $node = new $nodeClass;
         return $node->setStartPosition($scanner->getPosition());
     }
