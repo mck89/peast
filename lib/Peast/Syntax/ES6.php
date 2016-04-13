@@ -47,7 +47,8 @@ class ES6 extends Parser
                 0x1680, 0x2000, 0x2001, 0x2002, 0x2003, 0x2004, 0x2005, 0x2006,
                 0x2007, 0x2008, 0x2009, 0x200A, 0x202F, 0x205F, 0x3000, 0x2028,
                 0x2029
-            )
+            ),
+            "lineTerminators" => array("\n", "\r\n", "\r", 0x2028, 0x2029)
         ));
         return parent::setScanner($scanner);
     }

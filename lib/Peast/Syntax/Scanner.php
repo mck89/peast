@@ -25,6 +25,10 @@ class Scanner
     
     protected $whitespaces = array();
     
+    protected $lineTerminators = array();
+    
+    protected $lineTerminatorsSplitter;
+    
     protected $hexChar = "/[0-9a-fA-F]/";
     
     function __construct($source, $encoding = null)
@@ -61,6 +65,16 @@ class Scanner
                                    $ws :
                                    $this->unicodeToUtf8($ws);
         }
+        
+        $this->lineTerminators = array();
+        foreach ($config["lineTerminators"] as $lt) {
+            $this->lineTerminators[] = is_string($lt) ?
+                                       $lt :
+                                       $this->unicodeToUtf8($lt);
+        }
+        $this->lineTerminatorsSplitter = "/" .
+                                         implode("|", $this->lineTerminators) .
+                                         "/u";
         
         return $this;
     }
@@ -206,7 +220,7 @@ class Scanner
     {
         if ($this->index < $this->length) {
             if (($source = $this->scanWhitespaces()) !== null) {
-                $lines = preg_split("#\n|\r\n?|\x{2028}|\x{2029}#u", $source[0]);
+                $lines = preg_split($this->lineTerminatorsSplitter, $source[0]);
                 return array(
                     "source" => $lines,
                     "length" => $source[1],
