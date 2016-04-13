@@ -2853,8 +2853,7 @@ class ES6 extends Parser
             )) {
             
             $node = $this->createNode("Literal");
-            $node->setValue($literal);
-            $node->setRaw($literal === "null" ? null : ($literal === "true"));
+            $node->setRawValue($literal);
             return $this->completeNode($node);
         }
         return null;
