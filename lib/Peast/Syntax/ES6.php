@@ -26,8 +26,11 @@ class ES6 extends Parser
     
     public function setScanner(Scanner $scanner)
     {
-        $idStart = "\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\x{2118}\x{212E}\x{309B}\x{309C}";
-        $idPart = "$idStart\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{00B7}\x{0387}\x{1369}\x{136A}\x{136B}\x{136C}\x{136D}\x{136E}\x{136F}\x{1370}\x{1371}\x{19DA}\x{200C}\x{200D}";
+        $idStart = "\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}".
+                   "\x{2118}\x{212E}\x{309B}\x{309C}";
+        $idPart = "$idStart\p{Mn}\p{Mc}\p{Nd}\p{Pc}" .
+                  "\x{00B7}\x{0387}\x{1369}\x{136A}\x{136B}\x{136C}\x{136D}" .
+                  "\x{136E}\x{136F}\x{1370}\x{1371}\x{19DA}\x{200C}\x{200D}";
         $scanner->configure(array(
             "idStart" => "[$idStart]",
             "idPart" => "[$idContinue]",
@@ -38,6 +41,12 @@ class ES6 extends Parser
                 ":", "=", "+=", "-=", "*=", "%=", "<<=", ">>=", ">>>=", "&=",
                 "|=", "^=", "=>", "...", "/*", "*/", "//", '"', "'", "`", "${",
                 "/", "/="
+            ),
+            "whitespaces" => array(
+                " ", "\t", "\n", "\r", 0x000B, 0x000C, 0x00A0, 0xFEFF, 0x00A0,
+                0x1680, 0x2000, 0x2001, 0x2002, 0x2003, 0x2004, 0x2005, 0x2006,
+                0x2007, 0x2008, 0x2009, 0x200A, 0x202F, 0x205F, 0x3000, 0x2028,
+                0x2029
             )
         ));
         return parent::setScanner($scanner);
