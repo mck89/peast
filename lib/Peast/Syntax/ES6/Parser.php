@@ -2827,6 +2827,15 @@ class Parser extends Peast\Syntax\Parser
             $node = $this->createNode("Literal");
             $node->setRawValue($literal);
             return $this->completeNode($node);
+        } elseif ($quote = $this->scanner->consumeOneOf(array("'", '"'))) {
+            
+            if ($string = $this->scanner->consumeUntil(array($quote), false)) {
+                $node = $this->createNode("Literal");
+                $node->setRawValue($quote . $string);
+                return $this->completeNode($node);
+            }
+            
+            $this->scanner->setPosition($position);
         }
         return null;
     }
