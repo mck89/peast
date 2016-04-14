@@ -392,9 +392,6 @@ class Scanner
     
     public function consumeUntil($stop, $allowLineTerminator = true)
     {
-        if (!is_array($stop)) {
-            $stop = array($stop);
-        }
         foreach ($stop as $s) {
             $stopMap[$s[0]] = array(strlen($s), $s);
         }
