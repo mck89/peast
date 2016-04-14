@@ -50,8 +50,8 @@ class Scanner
         }
         $this->symbolChars = array_unique(explode("", $symbolMap));
         
-        $terminators = implode("|", $config->getLineTerminators());
-        $this->lineTerminatorsSplitter = "/$terminators/u";
+        $terminatorsSeq = implode("|", $config->getLineTerminatorsSequences());
+        $this->lineTerminatorsSplitter = "/$terminatorsSeq/u";
         
         $this->config = $config;
         

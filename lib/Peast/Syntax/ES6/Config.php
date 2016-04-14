@@ -30,7 +30,7 @@ class Config extends Peast\Syntax\Config
         0x2029
     );
     
-    protected $lineTerminators = array("\n", "\r\n", "\r", 0x2028, 0x2029);
+    protected $lineTerminators = array("\n", "\r", 0x2028, 0x2029);
     
     static public function getInstance()
     {
@@ -74,5 +74,10 @@ class Config extends Peast\Syntax\Config
     public function getLineTerminators()
     {
         return $this->cachedCompiledUnicodeArray("lineTerminators");
+    }
+    
+    public function getLineTerminatorsSequences()
+    {
+        return array_merge(array("\r\n"), $this->getLineTerminators());
     }
 }
