@@ -13,19 +13,13 @@ class Scanner
     
     protected $chars = array();
     
+    protected $config;
+    
     protected $symbols = array();
     
     protected $symbolChars = array();
     
     protected $maxSymbolLength;
-    
-    protected $idStart;
-    
-    protected $idPart;
-    
-    protected $whitespaces = array();
-    
-    protected $lineTerminators = array();
     
     protected $lineTerminatorsSplitter;
     
@@ -40,12 +34,12 @@ class Scanner
         $this->length = count($this->chars);
     }
     
-    public function configure($config)
+    public function setConfig(Config $config)
     {
         $symbolMap = "";
         $this->symbols = array();
         $this->maxSymbolLength = -1;
-        foreach ($config["symbols"] as $symbol) {
+        foreach ($config["symbols"] as $config->getSymbols) {
             $symbolMap .= $symbol;
             $len = strlen($symbol);
             $this->maxSymbolLength = max($len, $this->maxSymbolLength);
@@ -56,48 +50,12 @@ class Scanner
         }
         $this->symbolChars = array_unique(explode("", $symbolMap));
         
-        $this->idStart = "/" . $config["idStart"] . "/u";
-        $this->idPart = "/" . $config["idPart"] . "/u";
+        $terminators = implode("|", $config->getLineTerminators());
+        $this->lineTerminatorsSplitter = "/$terminators/u";
         
-        $this->whitespaces = array();
-        foreach ($config["whitespaces"] as $ws) {
-            $this->whitespaces[] = is_string($ws) ?
-                                   $ws :
-                                   $this->unicodeToUtf8($ws);
-        }
-        
-        $this->lineTerminators = array();
-        foreach ($config["lineTerminators"] as $lt) {
-            $this->lineTerminators[] = is_string($lt) ?
-                                       $lt :
-                                       $this->unicodeToUtf8($lt);
-        }
-        $this->lineTerminatorsSplitter = "/" .
-                                         implode("|", $this->lineTerminators) .
-                                         "/u";
+        $this->config = $config;
         
         return $this;
-    }
-    
-    protected function unicodeToUtf8($num)
-    {
-        //From: http://stackoverflow.com/questions/1805802/php-convert-unicode-codepoint-to-utf-8
-        if($num <= 0x7F) {
-            return chr($num);
-        } elseif ($num <= 0x7FF) {
-            return chr(($num >> 6) + 192) .
-                   chr(($num & 63) + 128);
-        } elseif ($num <= 0xFFFF) {
-            return chr(($num >> 12) + 224) .
-                   chr((($num >> 6) & 63) + 128) .
-                   chr(($num & 63) + 128);
-        } elseif ($num <= 0x1FFFFF) {
-            return chr(($num >> 18) + 240) .
-                   chr((($num >> 12) & 63) + 128) .
-                   chr((($num >> 6) & 63) + 128) .
-                   chr(($num & 63) + 128);
-        }
-        return '';
     }
     
     public function getColumn()
@@ -134,7 +92,7 @@ class Scanner
     
     protected function isWhitespace($char)
     {
-        return in_array($char, $this->whitespaces, true);
+        return in_array($char, $this->config->getWhitespaces(), true);
     }
     
     protected function scanWhitespaces()
@@ -325,10 +283,12 @@ class Scanner
                 (!$start && $char >= "0" && $char <= "9")) {
                 $index++;
                 $buffer .= $char;
-            } elseif ($start && preg_match($this->idStart, $char)) {
+            } elseif ($start &&
+                      preg_match($this->config->getIdRegex(), $char)) {
                 $index++;
                 $buffer .= $char;
-            } elseif (!$start && preg_match($this->idPart, $char)) {
+            } elseif (!$start &&
+                      preg_match($this->config->getIdRegex(true), $char)) {
                 $index++;
                 $buffer .= $char;
             } elseif ($char === "\\" &&
