@@ -1,21 +1,23 @@
 <?php
 namespace Peast\Syntax\ES6\Node;
 
+use Peast\Syntax\ES6\Parser;
+
 class Literal extends Node implements Expression
 {
     const KIND_NULL = "null";
     
     const KIND_BOOLEAN = "boolean";
     
-    const KIND_STRING = "string";
+    const KIND_DOUBLE_QUOTE_STRING = "dq-string";
+    
+    const KIND_SINGLE_QUOTE_STRING = "sq-string";
     
     const KIND_NUMBER = "number";
     
     protected $value;
     
     protected $kind;
-    
-    protected $rawValue;
     
     public function getValue()
     {
@@ -39,11 +41,6 @@ class Literal extends Node implements Expression
         return $this;
     }
     
-    public function getRawValue()
-    {
-        return $this->rawValue;
-    }
-    
     public function setRawValue($rawValue)
     {
         if ($rawValue === "null") {
@@ -54,18 +51,26 @@ class Literal extends Node implements Expression
             $this->setKind(self::KIND_BOOLEAN);
         } elseif (isset($rawValue[0]) &&
                  ($rawValue[0] === "'" || $rawValue[0] === '"')) {
-            $this->setValue(substr($rawValue, 1, strlen($rawValue) - 2));
-            $this->setKind(self::KIND_STRING);
+            $this->setValue(Parser::unquoteLiteralString($rawValue));
+            $this->setKind($rawValue[0] === "'" ?
+                           self::KIND_SINGLE_QUOTE_STRING :
+                           self::KIND_DOUBLE_QUOTE_STRING);
         } else {
             $this->setValue($rawValue);
             $this->setKind(self::KIND_NUMBER);
         }
-        $this->rawValue = $rawValue;
         return $this;
     }
     
     public function compile()
     {
-        return $this->getRawValue();
+        $value = $this->getValue();
+        $kind = $this->getKind();
+        if ($kind === self::KIND_SINGLE_QUOTE_STRING ||
+            $kind === self::KIND_DOUBLE_QUOTE_STRING) {
+            $quote = $kind === self::KIND_SINGLE_QUOTE_STRING ? "'" : '"';
+            Parser::quoteLiteralString($value, $quote);
+        }
+        return $value;
     }
 }

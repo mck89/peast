@@ -13,6 +13,8 @@ abstract class Parser
     
     abstract public function parse();
     
+    abstract public function getConfig();
+    
     public function createNode($nodeType)
     {
         $parts = explode("\\", get_class($this));
@@ -78,5 +80,61 @@ abstract class Parser
         }
         
         return $lastNode;
+    }
+    
+    static public function unquoteLiteralString($str)
+    {
+        //Remove quotes
+        $str = substr($str, 1, strlen($str) - 2);
+        
+        //Handle escapes
+        $patterns = array(
+            "u{[a-fA-F0-9]+\}",
+            "u[a-fA-F0-9]{1,4}",
+            "x[a-fA-F0-9]{1,2}",
+            "[0-7]{1,3}",
+            "."
+        );
+        $reg = "/\\\\(" . implode("|", $patterns) . ")/";
+        $simpleSequence = array(
+            "n" => "\n",
+            "f" => "\f",
+            "r" => "\r",
+            "t" => "\t",
+            "v" => "\v",
+            "b" => "\x8"
+        );
+        $replacement = function ($m) use ($simpleSequence) {
+            $type = $m[1][0];
+            if (isset($simpleSequence[$type])) {
+                // \n, \r, \t ...
+                return $simpleSequence[$type];
+            } elseif ($type === "u" || $type === "x") {
+                // \uFFFF, \u{FFFF}, \xFF
+                $code = substr($m[1], 1);
+                $code = str_replace(array("{", "}"), "");
+                return Utils::unicodeToUtf8(hexdec($code));
+            } elseif ($type >= "0" && $type <= "7") {
+                // \123
+                return Utils::unicodeToUtf8(octdec($code));
+            } else {
+                // Escaped characters
+                return $m[1];
+            }
+        };
+        $str = preg_replace_callback($reg, $replacement, $str);
+        
+        return $str;
+    }
+    
+    static public function quoteLiteralString($str, $quote)
+    {
+        $config = self::getConfig();
+        $escape = $config->getLineTerminators();
+        $escape[] = $quote;
+        $escape[] = "\\";
+        $reg = "/(" . implode("|", $escape) . ")/";
+        $str = preg_replace($reg, "\\$1", $str);
+        return $quote . $str . $quote;
     }
 }

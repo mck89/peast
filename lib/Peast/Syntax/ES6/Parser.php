@@ -9,8 +9,13 @@ class Parser extends Peast\Syntax\Parser
     
     public function __construct($module = false)
     {
-        $this->config = Config::getInstance();
+        $this->config = self::getConfig();
         $this->moduleMode = $module;
+    }
+    
+    public function getConfig()
+    {
+        return Config::getInstance();
     }
     
     public function setScanner(Scanner $scanner)
