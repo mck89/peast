@@ -1,8 +1,6 @@
 <?php
 namespace Peast\Syntax;
 
-use Peast\Syntax\Node\Node;
-
 abstract class Parser
 {
     protected $scanner;
