@@ -1,5 +1,5 @@
 <?php
-namespace Peast\Syntax\Node;
+namespace Peast\Syntax;
 
 abstract class Node
 {
