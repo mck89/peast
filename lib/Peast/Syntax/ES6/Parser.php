@@ -2843,7 +2843,9 @@ class Parser extends Peast\Syntax\Parser
         $valid = true;
         $properties = array();
         while (true) {
-            if ($this->scanner->consume(".")) {
+            if ($args = $this->parseArguments($yield)) {
+                $properties[] = array($args, false);
+            } elseif ($this->scanner->consume(".")) {
                 if ($property = $this->parseIdentifierName()) {
                     $properties[] = array($property, false);
                 } else {
@@ -2877,9 +2879,15 @@ class Parser extends Peast\Syntax\Parser
         $node->setObject($object);
         foreach ($properties as $i => $property) {
             if (is_array($property)) {
-                $node->setProperty($property[0]);
-                if ($property[1]) {
-                    $node->setComputed(true);
+                if (is_array($property[0])) {
+                    $node = $this->createNode("CallExpression");
+                    $node->setCallee($this->completeNode($lastNode));
+                    $node->setArguments($property[0]);
+                } else {
+                    $node->setProperty($property[0]);
+                    if ($property[1]) {
+                        $node->setComputed(true);
+                    }
                 }
             } else {
                 $lastNode = $node;
