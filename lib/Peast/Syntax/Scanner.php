@@ -174,11 +174,16 @@ class Scanner
         return null;
     }
     
+    protected function splitLines($str)
+    {
+        return preg_split($this->lineTerminatorsSplitter, $str);
+    }
+    
     protected function getToken()
     {
         if ($this->index < $this->length) {
             if (($source = $this->scanWhitespaces()) !== null) {
-                $lines = preg_split($this->lineTerminatorsSplitter, $source[0]);
+                $lines = $this->splitLines($source[0]);
                 return array(
                     "source" => $lines,
                     "length" => $source[1],
@@ -204,9 +209,9 @@ class Scanner
     protected function consumeToken($token)
     {
         if ($token["whitespace"]) {
-            $lines = count($token["source"]) - 1;
-            $this->line += $lines;
-            $this->column += mb_strlen($token["source"][$lines]);
+            $linesCount = count($token["source"]) - 1;
+            $this->line += $linesCount;
+            $this->column += mb_strlen($token["source"][$linesCount]);
         } else {
             $this->column += $token["length"];
         }
@@ -383,5 +388,60 @@ class Scanner
             }
         }
         return null;
+    }
+    
+    public function consumeUntil($stop, $allowLineTerminator = true)
+    {
+        if (!is_array($stop)) {
+            $stop = array($stop);
+        }
+        foreach ($stop as $s) {
+            $stopMap[$s[0]] = array(strlen($s), $s);
+        }
+    	$index = $this->index;
+    	$escaped = false;
+    	$buffer = "";
+    	$lineTerminators = $this->config->getLineTerminators();
+    	$valid = false;
+    	while ($this->index < $this->length) {
+    		$char = $this->chars[$index];
+    		$buffer .= $char;
+    		if ($escaped) {
+    		    $escaped = false;
+    		} elseif ($char === "\\") {
+    		    $escaped = true;
+    		} elseif (!$allowLineTerminator &&
+    		          in_array($char, $lineTerminators, true)) {
+    		    break;
+    		} elseif (isset($stopMap[$char])) {
+    		    $len = $stopMap[$char][0];
+    		    if ($len === 1) {
+    		        $valid = true;
+    		        break;
+    		    }
+    		    $seq = array_slice($this->chars, $index, $len);
+    		    if (implode("", $seq) === $stopMap[$char][1]) {
+    		        $valid = true;
+    		        break;
+    		    }
+    		}
+    		$index++;
+    	}
+    	
+    	if (!$valid) {
+    	    return null;
+    	}
+    	
+	    if (!$lineTerminators) {
+	        $this->column += ($index - $this->index);
+	    } else {
+	        $lines = $this->splitLines($buffer);
+	        $linesCount = count($lines) - 1;
+	        $this->line += $linesCount;
+            $this->column += mb_strlen($lines[$linesCount]);
+	    }
+	    $this->index = $index;
+	    
+	    return $buffer;
     }
 }
