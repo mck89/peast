@@ -3,6 +3,16 @@ namespace Peast\Syntax;
 
 abstract class Config
 {
+    abstract public function getIdRegex($part = false);
+    
+    abstract public function getSymbols();
+    
+    abstract public function getWhitespaces();
+    
+    abstract public function getLineTerminators();
+    
+    abstract public function getLineTerminatorsSequences();
+    
     protected $compiledUnicodeArray = array();
     
     protected function cachedCompiledUnicodeArray($name)
