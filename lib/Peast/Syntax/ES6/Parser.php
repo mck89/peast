@@ -2668,7 +2668,9 @@ class Parser extends Peast\Syntax\Parser
             }
         }
         
-        if (!$valid || !count($properties)) {
+        if (!count($properties)) {
+            return $object;
+        } elseif (!$valid) {
             $this->scanner->setPosition($position);
             return null;
         }
@@ -2814,6 +2816,85 @@ class Parser extends Peast\Syntax\Parser
             $this->scanner->setPosition($position);
         }
         return null;
+    }
+    
+    protected function parseCallExpression($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        $object = $this->parseSuperCall($yield);
+        
+        if (!$object) {
+            
+            $callee = $this->parseMemberExpression($yield);
+            $args = $callee ? $this->parseArguments($yield) : null ;
+            
+            if ($callee === null || $args === null) {
+                $this->scanner->setPosition($position);
+                return null;
+            }
+            
+            $object = $this->createNode("CallExpression");
+            $object->setCallee($callee);
+            $object->setArguments($args);
+            $object = $this->completeNode($object);
+        }
+        
+        $valid = true;
+        $properties = array();
+        while (true) {
+            if ($this->scanner->consume(".")) {
+                if ($property = $this->parseIdentifierName()) {
+                    $properties[] = array($property, false);
+                } else {
+                    $valid = false;
+                    break;
+                }
+            } elseif ($this->scanner->consume("[")) {
+                if (($property = $this->parseExpression(true, $yield)) &&
+                    $this->scanner->consume("]")) {
+                    $properties[] = array($property, true);
+                } else {
+                    $valid = false;
+                    break;
+                }
+            } elseif ($property = $this->parseTemplateLiteral($yield)) {
+                $properties[] = $property;
+            } else {
+                break;
+            }
+        }
+        
+        if (!count($properties)) {
+            return $object;
+        } elseif (!$valid) {
+            $this->scanner->setPosition($position);
+            return null;
+        }
+        
+        $lastIndex = count($properties) - 1;
+        $node = $this->createNode("MemberExpression");
+        $node->setObject($object);
+        foreach ($properties as $i => $property) {
+            if (is_array($property)) {
+                $node->setProperty($property[0]);
+                if ($property[1]) {
+                    $node->setComputed(true);
+                }
+            } else {
+                $lastNode = $node;
+                $node = $this->createNode("TaggedTemplateExpression");
+                $node->setTag($this->completeNode($lastNode));
+                $node->setQuasi($property[0]);
+            }
+            if ($i !== $lastIndex) {
+                $lastNode = $node;
+                $node = $this->createNode("MemberExpression");
+                $node->setObject($this->completeNode($lastNode));
+            }
+        }
+        
+        return $this->completeNode($node);
     }
     
     protected function parseLiteral()
