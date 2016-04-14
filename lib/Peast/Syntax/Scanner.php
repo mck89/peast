@@ -23,7 +23,11 @@ class Scanner
     
     protected $lineTerminatorsSplitter;
     
-    protected $hexChar = "/[0-9a-fA-F]/";
+    protected $hexDigits = array(
+        "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+        "a", "b", "c", "d", "e", "f",
+        "A", "B", "C", "D", "E", "F"
+    );
     
     function __construct($source, $encoding = null)
     {
@@ -179,6 +183,11 @@ class Scanner
         return preg_split($this->lineTerminatorsSplitter, $str);
     }
     
+    protected function isHexDigit($char)
+    {
+        return in_array($char, $this->hexDigits, true);
+    }
+    
     protected function getToken()
     {
         if ($this->index < $this->length) {
@@ -309,7 +318,7 @@ class Scanner
                     $oneMatched = false;
                     $subBuffer .= "{";
                     for ($i = $index + 4; $i < $this->length; $i++) {
-                        if (preg_match($this->hexChar, $this->chars[$index])) {
+                        if ($this->isHexDigit($this->chars[$index])) {
                             $oneMatched = true;
                             $subBuffer .= $this->chars[$index];
                         } elseif ($oneMatched && $this->chars[$index] === "}") {
@@ -324,7 +333,7 @@ class Scanner
                 } else {
                     for ($i = $index + 3; $i <= $index + 7; $i++) {
                         if (isset($this->chars[$i]) &&
-                            preg_match($this->hexChar, $this->chars[$i])) {
+                            $this->isHexDigit($this->chars[$index])) {
                             $subBuffer .= $this->chars[$i];
                         } else {
                             $valid = false;
