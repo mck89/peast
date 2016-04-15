@@ -85,7 +85,7 @@ abstract class Parser
     static public function unquoteLiteralString($str)
     {
         //Remove quotes
-        $str = substr($str, 1, strlen($str) - 2);
+        $str = substr($str, 1, -1);
         
         //Handle escapes
         $patterns = array(

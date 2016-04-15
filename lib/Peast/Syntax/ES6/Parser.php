@@ -2928,4 +2928,51 @@ class Parser extends Peast\Syntax\Parser
         }
         return null;
     }
+    
+    protected function parseTemplateLiteral($yield = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consume("`")) {
+            
+            $stops = array("`", "${");
+            $quasis = $expressions = array();
+            while (true) {
+                if (!$part = $this->scanner->consumeUntil($stops)) {
+                    break;
+                }
+                if ($part[strlen($part) - 1] === "`") {
+                    
+                    $part = substr($part, 0, -1);
+                    $quasi = $this->createNode("TemplateElement");
+                    $quasi->setRawValue($part);
+                    $quasi->setTail(true);
+                    $quasis[] = $this->completeNode($quasi);
+                    
+                    $node = $this->createNode("TemplateLiteral");
+                    $node->setQuasis($quasis);
+                    $node->setExpressions($expressions);
+                    return $this->completeNode($node);
+                    
+                } else {
+                    
+                    $part = preg_replace("/\{\$$/", "", $part);
+                    
+                    if (!($exp = $this->parseExpression(true, $yield))) {
+                        break;
+                    }
+                    
+                    $quasi = $this->createNode("TemplateElement");
+                    $quasi->setRawValue($part);
+                    $quasis[] = $this->completeNode($quasi);
+                    $expressions[] = $exp;
+                    
+                }
+            }
+            
+            $this->scanner->setPosition($position);
+        }
+        
+        return null;
+    }
 }
