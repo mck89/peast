@@ -41,6 +41,18 @@ class Literal extends Node implements Expression
         return $this;
     }
     
+    public function getRawValue()
+    {
+        $value = $this->getValue();
+        $kind = $this->getKind();
+        if ($kind === self::KIND_SINGLE_QUOTE_STRING ||
+            $kind === self::KIND_DOUBLE_QUOTE_STRING) {
+            $quote = $kind === self::KIND_SINGLE_QUOTE_STRING ? "'" : '"';
+            $value = Parser::quoteLiteralString($value, $quote);
+        }
+        return $value;
+    }
+    
     public function setRawValue($rawValue)
     {
         if ($rawValue === "null") {
@@ -64,13 +76,6 @@ class Literal extends Node implements Expression
     
     public function compile()
     {
-        $value = $this->getValue();
-        $kind = $this->getKind();
-        if ($kind === self::KIND_SINGLE_QUOTE_STRING ||
-            $kind === self::KIND_DOUBLE_QUOTE_STRING) {
-            $quote = $kind === self::KIND_SINGLE_QUOTE_STRING ? "'" : '"';
-            Parser::quoteLiteralString($value, $quote);
-        }
-        return $value;
+        return $this->getRawValue();
     }
 }
