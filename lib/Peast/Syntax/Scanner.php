@@ -31,9 +31,14 @@ class Scanner
     
     function __construct($source, $encoding = null)
     {
+        if (!$encoding) {
+            $encoding = mb_detect_encoding($source);
+        }
+        
         if ($encoding && !preg_match("/UTF-?8/i", $encoding)) {
             $source = mb_convert_encoding($source, "UTF-8", $encoding);
         }
+        
         $this->chars = preg_split('/(?<!^)(?!$)/u', $source);
         $this->length = count($this->chars);
     }
