@@ -2975,4 +2975,14 @@ class Parser extends Peast\Syntax\Parser
         
         return null;
     }
+    
+    protected function parseRegularExpressionLiteral()
+    {
+        if ($regex = $this->scanner->parseRelationalExpression()) {
+            $node = $this->createNode("RegExpLiteral");
+            $node->setRawValue($regex);
+            return $this->completeNode($node);
+        }
+        return null;
+    }
 }

@@ -287,7 +287,7 @@ class Scanner
         $this->consumeWhitespacesAndComments();
         
         $start = true;
-        $index = $this->index;
+        $index = $this->index + 1;
         $buffer = "";
         while ($index < $this->length) {
             $char = $this->chars[$index];
@@ -364,6 +364,67 @@ class Scanner
         return null;
     }
     
+    public function consumeRegularExpression()
+    {
+        $postion = $this->getPosition();
+        
+        if ($this->index + 2 < $this->length &&
+            $this->chars[$this->index + 1] === "/" &&
+            in_array($this->chars[$this->index + 2], array("/", "*"), true)) {
+            
+            $this->index++;
+            $this->column++;
+            
+            $inClass = false;
+            $source = "/";
+            $valid = true;
+            while (true) {
+                if ($inClass) {
+                    $sub = $this->consumeUntil(array("]"), false);
+                    if (!$sub) {
+                        $valid = false;
+                        break;
+                    } else {
+                        $source .= $sub;
+                        $inClass = false;
+                    }
+                } else {
+                    $sub = $this->consumeUntil(array("[", "/"), false);
+                    if (!$sub) {
+                        $valid = false;
+                        break;
+                    } else {
+                        $source .= $sub;
+                        $lastChar = substr($sub, -1);
+                        if ($lastChar === "/") {
+                            break;
+                        } else {
+                            $inClass = true;
+                        }
+                    }
+                }
+            }
+            
+            if (!$inClass && $valid) {
+                while ($this->index + 1 < $this->length) {
+                    $char = $this->chars[$this->index + 1];
+                    if ($char >= "a" && $char <= "z") {
+                        $source .= $char;
+                        $this->index++;
+                        $this->column++;
+                    } else {
+                        break;
+                    }
+                }
+                return $source;
+            }
+        }
+        
+        $postion = $this->setPosition($postion);
+        
+        return null;
+    }
+    
     public function consumeArray($sequence)
     {
         $position = $this->getPosition();
@@ -404,7 +465,7 @@ class Scanner
         foreach ($stop as $s) {
             $stopMap[$s[0]] = array(strlen($s), $s);
         }
-    	$index = $this->index;
+    	$index = $this->index + 1;
     	$escaped = false;
     	$buffer = "";
     	$lineTerminators = $this->config->getLineTerminators();
