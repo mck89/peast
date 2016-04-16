@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\ES6;
 
-class Parser extends Peast\Syntax\Parser
+class Parser extends \Peast\Syntax\Parser
 {
     protected $moduleMode = false;
     
@@ -2939,10 +2939,10 @@ class Parser extends Peast\Syntax\Parser
         
         if ($this->scanner->consume("`")) {
             
-            $stops = array("`", "${");
+            $stops = array("`", "\${");
             $quasis = $expressions = array();
             while (true) {
-                if (!$part = $this->scanner->consumeUntil($stops)) {
+                if (!($part = $this->scanner->consumeUntil($stops))) {
                     break;
                 }
                 if ($part[strlen($part) - 1] === "`") {
