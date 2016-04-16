@@ -216,7 +216,7 @@ class Parser extends \Peast\Syntax\Parser
     {
         $position = $this->scanner->getPosition();
         
-        if ($this->scanner->consumeArray("if", "(") &&
+        if ($this->scanner->consumeArray(array("if", "(")) &&
             ($test = $this->parseExpression(true, $yield)) &&
             $this->scanner->consume(")") &&
             $consequent = $this->parseStatement($yield, $return)) {
@@ -270,7 +270,7 @@ class Parser extends \Peast\Syntax\Parser
     {
         $position = $this->scanner->getPosition();
         
-        if ($this->scanner->consumeArray("catch", "(") &&
+        if ($this->scanner->consumeArray(array("catch", "(")) &&
             ($param = $this->parseCatchParameter($yield)) &&
             $this->scanner->consume(")") &&
             $body = $this->parseBlock()) {
@@ -423,7 +423,7 @@ class Parser extends \Peast\Syntax\Parser
     {
         $position = $this->scanner->getPosition();
         
-        if ($this->scanner->consumeArray("switch", "(") &&
+        if ($this->scanner->consumeArray(array("switch", "(")) &&
             ($discriminant = $this->parseExpression(true, $yield)) &&
             $this->scanner->consume(")")) {
             
@@ -438,6 +438,29 @@ class Parser extends \Peast\Syntax\Parser
         }
         
         $this->scanner->setPosition($position);
+        
+        return null;
+    }
+    
+    protected function parseWithStatement($yield, $return)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consumeArray(array("with", "("))) {
+            
+            if (($object = $this->parseExpression(true, $yield)) &&
+                $this->scanner->consume(")") &&
+                $body = $this->parseStatement($yield, $return)) {
+                
+                $node = $this->createNode("SwitchStatement");
+                $node->setObject($object);
+                $node->setBody($body);
+                return $this->completeNode($node);
+                 
+            }
+            
+            $this->scanner->setPosition($position);
+        }
         
         return null;
     }
@@ -510,7 +533,7 @@ class Parser extends \Peast\Syntax\Parser
     {
         $position = $this->scanner->getPosition();
         
-        if ($this->scanner->consumeArray("default", ":")) {
+        if ($this->scanner->consumeArray(array("default", ":"))) {
             
             $node = $this->createNode("SwitchCase");
             
@@ -553,7 +576,7 @@ class Parser extends \Peast\Syntax\Parser
         if ($this->scanner->consume("do")) {
             
             if (($body = $this->parseStatement($yield, $return)) &&
-                $this->scanner->consumeArray("while", "(") &&
+                $this->scanner->consumeArray(array("while", "(")) &&
                 ($test = $this->parseExpression(true, $yield)) &&
                 $this->scanner->consume(")")) {
                     
@@ -563,7 +586,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
                 
             }
-        } elseif ($this->scanner->consumeArray("while", "(")) {
+        } elseif ($this->scanner->consumeArray(array("while", "("))) {
             
             if (($test = $this->parseExpression(true, $yield)) &&
                 $this->scanner->consume(")") &&
@@ -575,7 +598,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
                     
             }
-        } elseif ($this->scanner->consumeArray("for", "(")) {
+        } elseif ($this->scanner->consumeArray(array("for", "("))) {
             
             if ($this->scanner->consume("var")) {
                 
@@ -1513,7 +1536,7 @@ class Parser extends \Peast\Syntax\Parser
     {
         $position = $this->scanner->getPosition();
         
-        if ($this->scanner->consumeArray("*", "as") &&
+        if ($this->scanner->consumeArray(array("*", "as")) &&
             $local = $this->parseImportedBinding()) {
             return $local;        
         }
@@ -1900,7 +1923,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseArrowParameters($yield = false)
     {
-        if ($param = $this>parseBindingIdentifier($yield)) {
+        if ($param = $this->parseBindingIdentifier($yield)) {
             return array($param);
         }
         return $this->parseArrowFormalParameters($yield);
@@ -2982,7 +3005,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseRegularExpressionLiteral()
     {
-        if ($regex = $this->parseRelationalExpression()) {
+        if ($regex = $this->scanner->consumeRegularExpression()) {
             $node = $this->createNode("RegExpLiteral");
             $node->setRawValue($regex);
             return $this->completeNode($node);

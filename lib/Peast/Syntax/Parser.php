@@ -21,12 +21,12 @@ abstract class Parser
         array_pop($parts);
         $nodeClass = implode("\\", $parts) . "\\Node\\$nodeType";
         $node = new $nodeClass;
-        return $node->setStartPosition($scanner->getPosition());
+        return $node->setStartPosition($this->scanner->getPosition());
     }
     
     public function completeNode(Node $node)
     {
-        return $node->setEndPosition($scanner->getPosition());
+        return $node->setEndPosition($this->scanner->getPosition());
     }
     
     protected function charSeparatedListOf($fn, $args, $char = ",")

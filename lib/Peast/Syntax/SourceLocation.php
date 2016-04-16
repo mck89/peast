@@ -9,23 +9,23 @@ class SourceLocation
     
     protected $end;
     
-    public getStart()
+    public function getStart()
     {
         return $this->start;
     }
     
-    public setStart(Position $position)
+    public function setStart(Position $position)
     {
         $this->start = $position;
         return $this;
     }
     
-    public getEnd()
+    public function getEnd()
     {
         return $this->end;
     }
     
-    public setEnd(Position $position)
+    public function setEnd(Position $position)
     {
         $this->end = $position;
         return $this;
