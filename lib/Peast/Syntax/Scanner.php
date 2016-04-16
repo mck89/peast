@@ -48,7 +48,7 @@ class Scanner
         $symbolMap = "";
         $this->symbols = array();
         $this->maxSymbolLength = -1;
-        foreach ($config["symbols"] as $config->getSymbols) {
+        foreach ($config->getSymbols() as $symbol) {
             $symbolMap .= $symbol;
             $len = strlen($symbol);
             $this->maxSymbolLength = max($len, $this->maxSymbolLength);
