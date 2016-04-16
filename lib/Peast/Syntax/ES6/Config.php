@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\ES6;
 
-class Config extends Peast\Syntax\Config
+class Config extends \Peast\Syntax\Config
 {
     static protected $instance;
     

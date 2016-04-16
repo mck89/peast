@@ -18,7 +18,7 @@ class Parser extends \Peast\Syntax\Parser
         return Config::getInstance();
     }
     
-    public function setScanner(Scanner $scanner)
+    public function setScanner(\Peast\Syntax\Scanner $scanner)
     {
         $scanner->setConfig($this->config);
         return parent::setScanner($scanner);
