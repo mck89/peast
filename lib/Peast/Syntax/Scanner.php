@@ -45,11 +45,11 @@ class Scanner
     
     public function setConfig(Config $config)
     {
-        $symbolMap = "";
+        $symbolMap = array();
         $this->symbols = array();
         $this->maxSymbolLength = -1;
         foreach ($config->getSymbols() as $symbol) {
-            $symbolMap .= $symbol;
+            $symbolMap[] = $symbol;
             $len = strlen($symbol);
             $this->maxSymbolLength = max($len, $this->maxSymbolLength);
             if (!isset($this->symbols[$len])) {
@@ -57,7 +57,7 @@ class Scanner
             }
             $this->symbols[$len][] = $symbol;
         }
-        $this->symbolChars = array_unique(explode("", $symbolMap));
+        $this->symbolChars = array_unique($symbolMap);
         
         $terminatorsSeq = implode("|", $config->getLineTerminatorsSequences());
         $this->lineTerminatorsSplitter = "/$terminatorsSeq/u";
@@ -571,10 +571,10 @@ class Scanner
         return true;
     }
     
-    public function conumeOneOf($tests)
+    public function consumeOneOf($tests)
     {
         foreach ($tests as $test) {
-            if ($this->scanner->consume($test)) {
+            if ($this->consume($test)) {
                 return $test;
             }
         }

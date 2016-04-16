@@ -2239,7 +2239,7 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseLogicalANDExpression($in = false, $yield = false)
     {
         return $this->recursiveExpression(
-            "parseLogicalANDExpression",
+            "parseBitwiseORExpression",
             array($in, $yield),
             "||",
             "LogicalExpression"
@@ -2334,7 +2334,7 @@ class Parser extends \Peast\Syntax\Parser
     {
         $position = $this->scanner->getPosition();
         
-        if ($expr = $this->scanner->parsePostfixExpression($yield)) {
+        if ($expr = $this->parsePostfixExpression($yield)) {
             return $expr;
         } else {
             
@@ -2982,7 +2982,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseRegularExpressionLiteral()
     {
-        if ($regex = $this->scanner->parseRelationalExpression()) {
+        if ($regex = $this->parseRelationalExpression()) {
             $node = $this->createNode("RegExpLiteral");
             $node->setRawValue($regex);
             return $this->completeNode($node);
