@@ -2163,7 +2163,7 @@ class Parser extends \Peast\Syntax\Parser
     {
         $position = $this->scanner->getPosition();
         
-        if ($expr = $this->parseAssignmentExpression($in, $yield)) {
+        if ($expr = $this->parseConditionalExpression($in, $yield)) {
             return $expr;
         } elseif ($yield && $expr = $this->parseYieldExpression($in)) {
             return $expr;
