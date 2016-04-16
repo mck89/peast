@@ -79,4 +79,14 @@ class Config extends Peast\Syntax\Config
     {
         return array_merge(array("\r\n"), $this->getLineTerminators());
     }
+    
+    public function supportsBinaryNumberForm()
+    {
+        return true;
+    }
+    
+    public function supportsOctalNumberForm()
+    {
+        return true;
+    }
 }

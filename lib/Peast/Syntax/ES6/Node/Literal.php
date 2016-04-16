@@ -13,7 +13,13 @@ class Literal extends Node implements Expression
     
     const KIND_SINGLE_QUOTE_STRING = "sq-string";
     
-    const KIND_NUMBER = "number";
+    const KIND_DECIMAL_NUMBER = "decimal";
+    
+    const KIND_HEXADECIMAL_NUMBER = "hexadecimal";
+    
+    const KIND_OCTAL_NUMBER = "octal";
+    
+    const KIND_BINARY_NUMBER = "binary";
     
     protected $value;
     
@@ -49,6 +55,18 @@ class Literal extends Node implements Expression
             $kind === self::KIND_DOUBLE_QUOTE_STRING) {
             $quote = $kind === self::KIND_SINGLE_QUOTE_STRING ? "'" : '"';
             $value = Parser::quoteLiteralString($value, $quote);
+        } elseif ($kind === self::KIND_NULL) {
+            $value = "null";
+        } elseif ($kind === self::KIND_BOOLEAN) {
+            $value = $value ? "true" : "false";
+        } elseif ($kind === self::KIND_HEXADECIMAL_NUMBER) {
+            $value = "0x" . dechex($value);
+        } elseif ($kind === self::KIND_BINARY_NUMBER) {
+            $value = "0b" . decbin($value);
+        } elseif ($kind === self::KIND_OCTAL_NUMBER) {
+            $value = "0o" . decoct($value);
+        } else {
+            $value = "$value";
         }
         return $value;
     }
@@ -68,8 +86,29 @@ class Literal extends Node implements Expression
                            self::KIND_SINGLE_QUOTE_STRING :
                            self::KIND_DOUBLE_QUOTE_STRING);
         } else {
-            $this->setValue($rawValue);
-            $this->setKind(self::KIND_NUMBER);
+            $kind = self::KIND_DECIMAL_NUMBER;
+            $value = $rawValue;
+            if ($value[0] === "0" && isset($value[1])) {
+                $secondChar = strtolower($value[1]);
+                $parts = preg_split("/e/i", $value);
+                $value = $parts[0];
+                if ($secondChar === "b") {
+                    $kind = self::KIND_BINARY_NUMBER;
+                    $value = bindec($value);
+                } elseif ($secondChar === "x") {
+                    $kind = self::KIND_HEXADECIMAL_NUMBER;
+                    $value = hexdec($value);
+                } elseif ($secondChar === "o" ||
+                          preg_match("/^0[0-7]+$/", $parts[0])) {
+                    $kind = self::KIND_OCTAL_NUMBER;
+                    $value = octdec($value);
+                }
+                if (isset($parts[1])) {
+                    $value = $value . "e" . $parts[1];
+                }
+            }
+            $this->setKind($kind);
+            $this->setValue((float) $rawValue);
         }
         return $this;
     }

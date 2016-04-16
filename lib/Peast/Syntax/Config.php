@@ -13,6 +13,10 @@ abstract class Config
     
     abstract public function getLineTerminatorsSequences();
     
+    abstract public function supportsBinaryNumberForm();
+    
+    abstract public function supportsOctalNumberForm();
+    
     protected $compiledUnicodeArray = array();
     
     protected function cachedCompiledUnicodeArray($name)

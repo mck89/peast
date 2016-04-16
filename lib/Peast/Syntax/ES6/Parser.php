@@ -2925,6 +2925,10 @@ class Parser extends Peast\Syntax\Parser
             }
             
             $this->scanner->setPosition($position);
+        } elseif ($num = $this->scanner->consumeNumber()) {
+            $node = $this->createNode("Literal");
+            $node->setRawValue($num);
+            return $this->completeNode($node);
         }
         return null;
     }
