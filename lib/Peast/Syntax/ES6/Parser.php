@@ -26,7 +26,7 @@ class Parser extends \Peast\Syntax\Parser
     
     public function parse()
     {
-        if ($this->$this->moduleMode) {
+        if ($this->moduleMode) {
             return $this->parseModule();
         } else {
             return $this->parseScript();

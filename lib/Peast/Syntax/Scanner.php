@@ -203,7 +203,7 @@ class Scanner
                     "length" => $source[1],
                     "whitespace" => true
                 );
-            } elseif(($source = $this->scanSymbol()) !== null) {
+            } elseif(($source = $this->scanSymbols()) !== null) {
                 return array(
                     "source" => $source[0],
                     "length" => $source[1],
