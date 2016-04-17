@@ -72,9 +72,11 @@ abstract class Node
                 foreach ($classes as $class) {
                     if ($param === null && $allowNull) {
                         continue 2;
-                    }
-                    if ($param instanceof $class) {
-                        continue 2;
+                    } else {
+                        $c = $this->addNamespace($class);
+                        if ($param instanceof $c) {
+                            continue 2;
+                        }
                     }
                 }
                 $this->typeError($params, $classes, $allowNull, true);
@@ -91,12 +93,20 @@ abstract class Node
             $this->typeError($param, $classes, $allowNull);
         } else {
             foreach ($classes as $class) {
-                if ($param instanceof $class) {
+                $c = $this->addNamespace($class);
+                if ($param instanceof $c) {
                     return;
                 }
             }
             $this->typeError($param, $classes, $allowNull);
         }
+    }
+    
+    protected function addNamespace($class)
+    {
+        $parts = explode("\\", get_class($this));
+        $parts[count($parts) -1] = $class;
+        return implode("\\", $parts);
     }
     
     protected function typeError($var, $allowedTypes, $allowNull = false,
