@@ -46,7 +46,7 @@ class AssignmentExpression extends Node implements Expression
     public function compile()
     {
         return $this->getLeft()->compile() .
-               $this->getOperator()->compile() .
+               $this->getOperator() .
                $this->getRight()->compile();
     }
 }

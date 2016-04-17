@@ -150,7 +150,7 @@ class Scanner
             }
         }
         if ($buffer !== "") {
-            for ($len = $bufferLen; $i > 0; $i--) {
+            for ($len = $bufferLen; $len > 0; $len--) {
                 if (!isset($this->symbols[$len]) ||
                     !in_array($buffer, $this->symbols[$len])) {
                     $bufferLen--;
