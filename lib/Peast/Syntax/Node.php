@@ -79,7 +79,7 @@ abstract class Node
                         }
                     }
                 }
-                $this->typeError($params, $classes, $allowNull, true);
+                $this->typeError($param, $classes, $allowNull, true);
             }
         }
     }
@@ -116,15 +116,15 @@ abstract class Node
         $method = $backtrace[2]["class"] . "::" . $backtrace[2]["function"];
         $msg = "Argument 0 passed to $method must be ";
         if ($array) {
-            $msg .= "array of $allowedTypes";
-        } else {
-            $msg .= implode(" or ", $allowedTypes);
+            $msg .= "an array of ";
         }
+        $msg .= implode(" or ", $allowedTypes);
         if ($allowNull) {
             $msg .= " or null";
         }
         if (is_object($var)) {
-            $type = get_class($var);
+            $parts = explode("\\", get_class($var));
+            $type = array_pop($parts);
         } else {
             $type = gettype($var);
         }

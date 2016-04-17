@@ -1,6 +1,6 @@
 <?php
 namespace Peast\Syntax\ES6\Node;
 
-interface Declaration
+interface Declaration extends Statement
 {
 }
