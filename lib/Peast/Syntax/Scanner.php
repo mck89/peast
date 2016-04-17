@@ -248,7 +248,7 @@ class Scanner
                 if (count($source) > 1) {
                     if (!$lineTerminator) {
                         $this->setPosition($position);
-                        return false;
+                        return null;
                     } elseif ($comment === 1) {
                         $comment = 0;
                     }
@@ -268,7 +268,7 @@ class Scanner
                 return $processed > 1;
             }
         }
-        return false;
+        return $comment ? null : $processed;
     }
     
     public function consume($string)

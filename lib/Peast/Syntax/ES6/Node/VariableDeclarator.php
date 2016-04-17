@@ -32,10 +32,10 @@ class VariableDeclarator extends Node
     
     public function compile()
     {
-        $source = $this->getId()->compile() . " = ";
+        $source = $this->getId()->compile();
         
         if ($init = $this->getInit()) {
-            $source .= $init->compile();
+            $source .= " = " . $init->compile();
         }
         
         return $source;

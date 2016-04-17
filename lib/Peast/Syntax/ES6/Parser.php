@@ -2388,9 +2388,9 @@ class Parser extends \Peast\Syntax\Parser
             
             $subPosition = $this->scanner->getPosition();
             
-            if ($this->scanner->consumeWhitespacesAndComments(false) &&
-                $operator = $this->scanner->consumeOneOf("--", "++")) {
-                    
+            if ($this->scanner->consumeWhitespacesAndComments(false) !== null &&
+                $operator = $this->scanner->consumeOneOf(array("--", "++"))) {
+                
                 $node = $this->createNode("UpdateExpression");
                 $node->setOperator($operator);
                 $node->setArgument($argument);
@@ -2948,7 +2948,7 @@ class Parser extends \Peast\Syntax\Parser
             }
             
             $this->scanner->setPosition($position);
-        } elseif ($num = $this->scanner->consumeNumber()) {
+        } elseif (($num = $this->scanner->consumeNumber()) !== null) {
             $node = $this->createNode("Literal");
             $node->setRawValue($num);
             return $this->completeNode($node);
