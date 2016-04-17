@@ -128,7 +128,7 @@ abstract class Node
         } else {
             $type = gettype($var);
         }
-        $msg .= ",  $type given";
+        $msg .= ", $type given";
         if (version_compare(phpversion(), '7', '>=')) {
             throw new \TypeError($msg);
         } else {

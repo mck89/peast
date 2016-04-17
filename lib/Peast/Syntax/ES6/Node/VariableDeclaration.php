@@ -13,12 +13,12 @@ class VariableDeclaration extends Node implements Declaration
     
     protected $kind = self::KIND_VAR;
     
-    public function getDeclaration()
+    public function getDeclarations()
     {
         return $this->declarations;
     }
     
-    public function setBody($declarations)
+    public function setDeclarations($declarations)
     {
         $this->assertArrayOf($declarations, "VariableDeclarator");
         $this->declarations = $declarations;
