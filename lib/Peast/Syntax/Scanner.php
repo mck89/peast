@@ -292,7 +292,7 @@ class Scanner
         $this->consumeWhitespacesAndComments();
         
         $start = true;
-        $index = $this->index + 1;
+        $index = $this->index;
         $buffer = "";
         while ($index < $this->length) {
             $char = $this->chars[$index];
@@ -432,7 +432,7 @@ class Scanner
     
     public function consumeNumber()
     {
-        $nextChar = $this->chars[$this->index + 1];
+        $nextChar = $this->chars[$this->index];
         if (!(($nextChar >= "0" && $nextChar <= "9") || $nextChar === ".")) {
             return null;
         }
@@ -444,7 +444,7 @@ class Scanner
         $num = $this->scanOther();
         if ($num) {
             //Split exponent part
-            $parts = preg_split("/e/i", $num["source"]);
+            $parts = preg_split("/e/i", $num[0]);
             $n = $parts[0];
             //If it begins with 0 it can be a binary (0b), an octal (0o)
             //an hexdecimal (0x) or a integer number with no decimal part
@@ -474,21 +474,21 @@ class Scanner
                 return null;
             }
             $this->consumeToken($num);
-            $source .= $num["source"];
+            $source .= $num[0];
             //Validate exponent part
             if (isset($parts[1])) {
                 $expPart = $parts[1];
                 if ($expPart === "") {
                     $sign = $this->scanSymbols();
-                    if ($sign["source"] !== "+" && $sign["source"] !== "-") {
+                    if ($sign[0] !== "+" && $sign[0] !== "-") {
                         $this->setPosition($position);
                         return null;
                     }
                     $this->consumeToken($sign);
                     $expNum = $this->scanOther();
                     $this->consumeToken($expNum);
-                    $expPart = $expNum["source"];
-                    $source .= $sign["source"] . $expNum["source"];
+                    $expPart = $expNum[0];
+                    $source .= $sign[0] . $expNum[0];
                 }
                 if (!preg_match("/^\d+$/", $expPart)) {
                     $this->setPosition($position);
@@ -498,7 +498,7 @@ class Scanner
         }
         //Validate decimal part
         $dot = $this->scanSymbols();
-        if (!$dot || $dot["source"] !== ".") {
+        if (!$dot || $dot[0] !== ".") {
             if ($dot) {
                 $this->unconsumeToken($dot);
             }
@@ -515,27 +515,27 @@ class Scanner
                 return null;
             }
             //Split exponent part
-            $parts = preg_split("/e/i", $dot["source"]);
+            $parts = preg_split("/e/i", $dot[0]);
             if (!preg_match("/^\d+$/", $parts[0])) {
                 $this->setPosition($position);
                 return null;
             }
             $this->consumeToken($decPart);
-            $source .= $decPart["source"];
+            $source .= $decPart[0];
             //Validate exponent part
             if (isset($parts[1])) {
                 $expPart = $parts[1];
                 if ($expPart === "") {
                     $sign = $this->scanSymbols();
-                    if ($sign["source"] !== "+" && $sign["source"] !== "-") {
+                    if ($sign[0] !== "+" && $sign[0] !== "-") {
                         $this->setPosition($position);
                         return null;
                     }
                     $this->consumeToken($sign);
                     $expNum = $this->scanOther();
                     $this->consumeToken($expNum);
-                    $expPart = $expNum["source"];
-                    $source .= $sign["source"] . $expNum["source"];
+                    $expPart = $expNum[0];
+                    $source .= $sign[0] . $expNum[0];
                 }
                 if (!preg_match("/^\d+$/", $expPart)) {
                     $this->setPosition($position);

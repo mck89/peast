@@ -41,6 +41,13 @@ abstract class Node
         return $this;
     }
     
+    abstract public function compile();
+    
+    public function __toString()
+    {
+        return $this->compile();
+    }
+    
     protected function compileNodeList($list, $separator = "")
     {
         if (!count($list)) {
@@ -59,7 +66,7 @@ abstract class Node
             $classes = array($classes);
         }
         if (!is_array($params)) {
-            $this->typeError($classes, true);
+            $this->typeError($params, $classes, $allowNull, true);
         } else {
             foreach ($params as $param) {
                 foreach ($classes as $class) {
@@ -70,7 +77,7 @@ abstract class Node
                         continue 2;
                     }
                 }
-                $this->typeError($classes, true);
+                $this->typeError($params, $classes, $allowNull, true);
             }
         }
     }
@@ -81,17 +88,19 @@ abstract class Node
             $classes = array($classes);
         }
         if ($param === null && !$allowNull) {
-            $this->typeError($classes, false);
-        }
-        foreach ($classes as $class) {
-            if ($param instanceof $class) {
-                return;
+            $this->typeError($param, $classes, $allowNull);
+        } else {
+            foreach ($classes as $class) {
+                if ($param instanceof $class) {
+                    return;
+                }
             }
+            $this->typeError($param, $classes, $allowNull);
         }
-        $this->typeError($classes, false, $allowNull);
     }
     
-    protected function typeError($allowedTypes, $array = false, $allowNull = false)
+    protected function typeError($var, $allowedTypes, $allowNull = false,
+                                 $array = false)
     {
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         $method = $backtrace[2]["class"] . "::" . $backtrace[2]["function"];
@@ -104,12 +113,16 @@ abstract class Node
         if ($allowNull) {
             $msg .= " or null";
         }
+        if (is_object($var)) {
+            $type = get_class($var);
+        } else {
+            $type = gettype($var);
+        }
+        $msg .= ",  $type given";
         if (version_compare(phpversion(), '7', '>=')) {
             throw new \TypeError($msg);
         } else {
-            trigger_error($msg, E_RECOVERABLE_ERROR);
+            trigger_error($msg, E_USER_ERROR);
         }
     }
-    
-    abstract public function compile();
 }

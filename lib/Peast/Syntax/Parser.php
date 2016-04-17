@@ -37,7 +37,7 @@ abstract class Parser
         $valid = true;
         $matchedChar = null;
         while ($param = call_user_func_array(array($this, $fn), $args)) {
-            $list[] = $multi ? $param : array($param, $matchedChar);
+            $list[] = $multi ? array($param, $matchedChar) : $param;
             $valid = true;
             $matchedChar = $multi ?
                            $this->scanner->consumeOneOf($char) :
@@ -63,7 +63,7 @@ abstract class Parser
         if ($list === null) {
             return null;
         } elseif (count($list) === 1) {
-            return $list[0];
+            return $multi ? $list[0][0] : $list[0];
         } else {
             $lastNode = null;
             foreach ($list as $i => $expr) {
@@ -73,7 +73,7 @@ abstract class Parser
                                    $lastNode :
                                    ($multi ? $list[0][0] : $list[0]));
                     $node->setOperator($multi ? $expr[1] : $operator);
-                    $node->setRight($multi ? $expr[0] : $multi[1]);
+                    $node->setRight($multi ? $expr[0] : $expr);
                     $lastNode = $this->completeNode($node);
                 }
             }

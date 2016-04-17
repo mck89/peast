@@ -2384,7 +2384,7 @@ class Parser extends \Peast\Syntax\Parser
     {
         $position = $this->scanner->getPosition();
         
-        if ($expr = $this->parseLeftHandSideExpression($yield)) {
+        if ($argument = $this->parseLeftHandSideExpression($yield)) {
             
             $subPosition = $this->scanner->getPosition();
             
@@ -2400,7 +2400,7 @@ class Parser extends \Peast\Syntax\Parser
             
             $this->scanner->setPosition($subPosition);
             
-            return $expr;
+            return $argument;
         }
         
         $this->scanner->setPosition($position);
