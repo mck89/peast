@@ -994,7 +994,12 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseFunctionBody($yield = false)
     {
-        return $this->parseFunctionStatementList($yield);
+        if (($body = $this->parseFunctionStatementList($yield)) !== null) {
+            $node = $this->createNode("BlockStatement");
+            $node->setBody($body);
+            return $this->completeNode($node);
+        }
+        return null;
     }
     
     protected function parseFunctionStatementList($yield = false)
@@ -1216,7 +1221,8 @@ class Parser extends \Peast\Syntax\Parser
             $position = $this->scanner->getPosition();
             $declarations = $this->parseVariableDeclarationList(true, $yield);
             
-            if ($declarations && $this->scanner->consume(";")) {
+            if ($declarations) {
+                $this->scanner->consume(";");
                 $node = $this->createNode("VariableDeclaration");
                 $node->setKind($node::KIND_VAR);
                 $node->setDeclarations($declarations);

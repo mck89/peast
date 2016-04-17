@@ -40,8 +40,9 @@ trait Function_
         return $this->body;
     }
     
-    public function setBody(BlockStatement $body)
+    public function setBody($body)
     {
+        $this->assertType($body, "BlockStatement");
         $this->body = $body;
         return $this;
     }
