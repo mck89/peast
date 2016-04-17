@@ -585,14 +585,15 @@ class Scanner
         foreach ($stop as $s) {
             $stopMap[$s[0]] = array(strlen($s), $s);
         }
-    	$index = $this->index + 1;
+    	$index = $this->index;
     	$escaped = false;
     	$buffer = "";
     	$lineTerminators = $this->config->getLineTerminators();
     	$valid = false;
-    	while ($this->index < $this->length) {
+    	while ($index < $this->length) {
     		$char = $this->chars[$index];
     		$buffer .= $char;
+    		$index++;
     		if ($escaped) {
     		    $escaped = false;
     		} elseif ($char === "\\") {
@@ -608,11 +609,11 @@ class Scanner
     		    }
     		    $seq = array_slice($this->chars, $index, $len);
     		    if (implode("", $seq) === $stopMap[$char][1]) {
+    		        $index += $len - 1;
     		        $valid = true;
     		        break;
     		    }
     		}
-    		$index++;
     	}
     	
     	if (!$valid) {

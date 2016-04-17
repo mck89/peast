@@ -13,7 +13,7 @@ abstract class Parser
     
     abstract public function parse();
     
-    abstract public function getConfig();
+    abstract static public function getConfig();
     
     public function createNode($nodeType)
     {
@@ -129,10 +129,10 @@ abstract class Parser
     
     static public function quoteLiteralString($str, $quote)
     {
-        $config = self::getConfig();
+        $config = static::getConfig();
         $escape = $config->getLineTerminators();
         $escape[] = $quote;
-        $escape[] = "\\";
+        $escape[] = "\\\\";
         $reg = "/(" . implode("|", $escape) . ")/";
         $str = preg_replace($reg, "\\$1", $str);
         return $quote . $str . $quote;

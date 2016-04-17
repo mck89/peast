@@ -13,7 +13,7 @@ class Parser extends \Peast\Syntax\Parser
         $this->moduleMode = $module;
     }
     
-    public function getConfig()
+    static public function getConfig()
     {
         return Config::getInstance();
     }
@@ -2410,12 +2410,11 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseLeftHandSideExpression($yield = false)
     {
-        if ($expr = $this->parseNewExpression($yield)) {
+        if ($expr = $this->parseCallExpression($yield)) {
             return $expr;
-        } elseif ($expr = $this->parseCallExpression($yield)) {
+        } elseif ($expr = $this->parseNewExpression($yield)) {
             return $expr;
         }
-        
         return null;
     }
     
@@ -2512,10 +2511,10 @@ class Parser extends \Peast\Syntax\Parser
         $position = $this->scanner->getPosition();
         
         if ($this->scanner->consume("(")) {
-            $args = $this->parseArgumentList($yield);
             
-            if ($this->scanner->consume(")")) {
-                return $args ? $args : array();
+            if (($args = $this->parseArgumentList($yield)) !== null &&
+                $this->scanner->consume(")")) {
+                return $args;
             }
             
             $this->scanner->setPosition($position);
@@ -2850,7 +2849,7 @@ class Parser extends \Peast\Syntax\Parser
         if (!$object) {
             
             $callee = $this->parseMemberExpression($yield);
-            $args = $callee ? $this->parseArguments($yield) : null ;
+            $args = $callee ? $this->parseArguments($yield) : null;
             
             if ($callee === null || $args === null) {
                 $this->scanner->setPosition($position);
