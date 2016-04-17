@@ -124,7 +124,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseDeclaration($yield)
+    protected function parseDeclaration($yield = false)
     {
         if ($declaration = $this->parseHoistableDeclaration($yield)) {
             return $declaration;
@@ -266,7 +266,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseCatch($yield, $return)
+    protected function parseCatch($yield = false, $return = false)
     {
         $position = $this->scanner->getPosition();
         
@@ -286,7 +286,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseCatchParameter($yield)
+    protected function parseCatchParameter($yield = false)
     {
         if ($param = $this->parseBindingIdentifier($yield)) {
             return $param;
@@ -296,7 +296,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseFinally($yield, $return)
+    protected function parseFinally($yield = false, $return = false)
     {
         if ($this->scanner->consume("finally") &&
             $block = $this->parseBlock($yield, $return)) {
@@ -305,7 +305,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseContinueStatement($yield)
+    protected function parseContinueStatement($yield = false)
     {
         $position = $this->scanner->getPosition();
         
@@ -327,7 +327,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseBreakStatement($yield)
+    protected function parseBreakStatement($yield = false)
     {
         $position = $this->scanner->getPosition();
         
@@ -349,7 +349,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseReturnStatement($yield)
+    protected function parseReturnStatement($yield = false)
     {
         $position = $this->scanner->getPosition();
         
@@ -371,7 +371,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseLabelledStatement($yield, $return)
+    protected function parseLabelledStatement($yield = false, $return = false)
     {
         $position = $this->scanner->getPosition();
         
@@ -390,7 +390,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseLabelledItem($yield, $return)
+    protected function parseLabelledItem($yield = false, $return = false)
     {
         if ($statement = $this->parseStatement($yield, $return)) {
             return $statement;
@@ -400,7 +400,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseThrowStatement($yield)
+    protected function parseThrowStatement($yield = false)
     {
         $position = $this->scanner->getPosition();
         
@@ -419,7 +419,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseSwitchStatement($yield, $return)
+    protected function parseSwitchStatement($yield = false, $return = false)
     {
         $position = $this->scanner->getPosition();
         
@@ -442,7 +442,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseWithStatement($yield, $return)
+    protected function parseWithStatement($yield = false, $return = false)
     {
         $position = $this->scanner->getPosition();
         
@@ -465,7 +465,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseCaseBlock($yield, $return)
+    protected function parseCaseBlock($yield = false, $return = false)
     {
         $position = $this->scanner->getPosition();
         
@@ -497,7 +497,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseCaseClauses($yield, $return)
+    protected function parseCaseClauses($yield = false, $return = false)
     {
         $cases = array();
         while ($case = $this->parseCaseClauses($yield, $return)) {
@@ -506,7 +506,7 @@ class Parser extends \Peast\Syntax\Parser
         return count($cases) ? $cases : null;
     }
     
-    protected function parseCaseClause($yield, $return)
+    protected function parseCaseClause($yield = false, $return = false)
     {
         $position = $this->scanner->getPosition();
         
@@ -529,7 +529,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseDefaultClause($yield, $return)
+    protected function parseDefaultClause($yield = false, $return = false)
     {
         $position = $this->scanner->getPosition();
         
@@ -549,7 +549,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseExpressionStatement($yield)
+    protected function parseExpressionStatement($yield = false)
     {
         $position = $this->scanner->getPosition();
         
@@ -794,16 +794,16 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseFunctionDeclaration($yield = false, $default = false)
     {
+        $position = $this->scanner->getPosition();
         if ($this->scanner->consume("function")) {
             
-            $position = $this->scanner->getPosition();
-            $id = $this->BindingIdentifier($yield);
+            $id = $this->parseBindingIdentifier($yield);
             
             if (($default || $id) &&
                 $this->scanner->consume("(") &&
-                ($params = $this->parseFormalParameters() || true) &&
+                (($params = $this->parseFormalParameters()) || true) &&
                 $this->scanner->consumeArray(array(")", "{")) &&
-                ($body = $this->parseFunctionBody() || true) &&
+                (($body = $this->parseFunctionBody()) || true) &&
                 $this->scanner->consume("}")) {
                 
                 $node = $this->createNode("FunctionDeclaration");
@@ -855,15 +855,16 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseFunctionExpression()
     {
+        $position = $this->scanner->getPosition();
+        
         if ($this->scanner->consume("function")) {
             
-            $position = $this->scanner->getPosition();
-            $id = $this->BindingIdentifier();
+            $id = $this->parseBindingIdentifier();
             
             if ($this->scanner->consume("(") &&
-                ($params = $this->parseFormalParameters() || true) &&
+                (($params = $this->parseFormalParameters()) || true) &&
                 $this->scanner->consumeArray(array(")", "{")) &&
-                ($body = $this->parseFunctionBody() || true) &&
+                (($body = $this->parseFunctionBody()) || true) &&
                 $this->scanner->consume("}")) {
                 
                 $node = $this->createNode("FunctionExpression");
@@ -941,18 +942,18 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseFormalParameters($yield)
+    protected function parseFormalParameters($yield = false)
     {
-        $list = $this->parseFormalParametersList($yield);
+        $list = $this->parseFormalParameterList($yield);
         return $list ? $list : array();
     }
     
-    protected function parseStrictFormalParameters($yield)
+    protected function parseStrictFormalParameters($yield = false)
     {
         return $this->parseFormalParameters($yield);
     }
     
-    protected function parseFormalParameterList($yield)
+    protected function parseFormalParameterList($yield = false)
     {
         $params = $this->parseFormalsList($yield);
         if ($params) {

@@ -149,16 +149,17 @@ class Scanner
                 break;
             }
         }
-        if ($buffer !== "") {
-            for ($len = $bufferLen; $len > 0; $len--) {
-                if (!isset($this->symbols[$len]) ||
-                    !in_array($buffer, $this->symbols[$len])) {
+        if ($bufferLen) {
+            while ($bufferLen > 0) {
+                if (!isset($this->symbols[$bufferLen]) ||
+                    !in_array($buffer, $this->symbols[$bufferLen])) {
                     $bufferLen--;
                     $buffer = substr($buffer, 0, $bufferLen);
+                } else {
+                    break;
                 }
-                break;
             }
-            if ($buffer !== "") {
+            if ($bufferLen) {
                 $this->index += $bufferLen;
                 return array(
                     "source" => $buffer,

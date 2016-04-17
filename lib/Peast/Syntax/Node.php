@@ -89,8 +89,10 @@ abstract class Node
         if (!is_array($classes)) {
             $classes = array($classes);
         }
-        if ($param === null && !$allowNull) {
-            $this->typeError($param, $classes, $allowNull);
+        if ($param === null) {
+            if (!$allowNull) {
+                $this->typeError($param, $classes, $allowNull);
+            }
         } else {
             foreach ($classes as $class) {
                 $c = $this->addNamespace($class);
