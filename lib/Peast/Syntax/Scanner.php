@@ -120,7 +120,11 @@ class Scanner
         if ($buffer !== "") {
             $len = $index - $this->index;
             $this->index = $index;
-            return array($buffer, $len);
+            return array(
+                "source" => $this->splitLines($buffer),
+                "length" => $len,
+                "whitespace" => true
+            );
         }
         return null;
     }
@@ -156,7 +160,11 @@ class Scanner
             }
             if ($buffer !== "") {
                 $this->index += $bufferLen;
-                return array($buffer, $bufferLen);
+                return array(
+                    "source" => $buffer,
+                    "length" => $bufferLen,
+                    "whitespace" => false
+                );
             }
         }
         return null;
@@ -178,7 +186,11 @@ class Scanner
         if ($buffer !== "") {
             $len = $index - $this->index;
             $this->index = $index;
-            return array($buffer, $len);
+            return array(
+                "source" => $buffer,
+                "length" => $len,
+                "whitespace" => false
+            );
         }
         return null;
     }
@@ -196,25 +208,12 @@ class Scanner
     protected function getToken()
     {
         if ($this->index < $this->length) {
-            if (($source = $this->scanWhitespaces()) !== null) {
-                $lines = $this->splitLines($source[0]);
-                return array(
-                    "source" => $lines,
-                    "length" => $source[1],
-                    "whitespace" => true
-                );
-            } elseif(($source = $this->scanSymbols()) !== null) {
-                return array(
-                    "source" => $source[0],
-                    "length" => $source[1],
-                    "whitespace" => false
-                );
-            } elseif(($source = $this->scanOther()) !== null) {
-                return array(
-                    "source" => $source[0],
-                    "length" => $source[1],
-                    "whitespace" => false
-                );
+            if ($source = $this->scanWhitespaces()) {
+                return $source;
+            } elseif ($source = $this->scanSymbols()) {
+                return $source;
+            } elseif ($source = $this->scanOther()) {
+                return $source;
             }
         }
         return null;
@@ -444,7 +443,7 @@ class Scanner
         $num = $this->scanOther();
         if ($num) {
             //Split exponent part
-            $parts = preg_split("/e/i", $num[0]);
+            $parts = preg_split("/e/i", $num["source"]);
             $n = $parts[0];
             //If it begins with 0 it can be a binary (0b), an octal (0o)
             //an hexdecimal (0x) or a integer number with no decimal part
@@ -474,21 +473,21 @@ class Scanner
                 return null;
             }
             $this->consumeToken($num);
-            $source .= $num[0];
+            $source .= $num["source"];
             //Validate exponent part
             if (isset($parts[1])) {
                 $expPart = $parts[1];
                 if ($expPart === "") {
                     $sign = $this->scanSymbols();
-                    if ($sign[0] !== "+" && $sign[0] !== "-") {
+                    if ($sign["source"] !== "+" && $sign["source"] !== "-") {
                         $this->setPosition($position);
                         return null;
                     }
                     $this->consumeToken($sign);
                     $expNum = $this->scanOther();
                     $this->consumeToken($expNum);
-                    $expPart = $expNum[0];
-                    $source .= $sign[0] . $expNum[0];
+                    $expPart = $expNum["source"];
+                    $source .= $sign["source"] . $expPart;
                 }
                 if (!preg_match("/^\d+$/", $expPart)) {
                     $this->setPosition($position);
@@ -498,7 +497,7 @@ class Scanner
         }
         //Validate decimal part
         $dot = $this->scanSymbols();
-        if (!$dot || $dot[0] !== ".") {
+        if (!$dot || $dot["source"] !== ".") {
             if ($dot) {
                 $this->unconsumeToken($dot);
             }
@@ -515,27 +514,27 @@ class Scanner
                 return null;
             }
             //Split exponent part
-            $parts = preg_split("/e/i", $dot[0]);
+            $parts = preg_split("/e/i", $decPart["source"]);
             if (!preg_match("/^\d+$/", $parts[0])) {
                 $this->setPosition($position);
                 return null;
             }
             $this->consumeToken($decPart);
-            $source .= $decPart[0];
+            $source .= $decPart["source"];
             //Validate exponent part
             if (isset($parts[1])) {
                 $expPart = $parts[1];
                 if ($expPart === "") {
                     $sign = $this->scanSymbols();
-                    if ($sign[0] !== "+" && $sign[0] !== "-") {
+                    if ($sign["source"] !== "+" && $sign["source"] !== "-") {
                         $this->setPosition($position);
                         return null;
                     }
                     $this->consumeToken($sign);
                     $expNum = $this->scanOther();
                     $this->consumeToken($expNum);
-                    $expPart = $expNum[0];
-                    $source .= $sign[0] . $expNum[0];
+                    $expPart = $expNum["source"];
+                    $source .= $sign["source"] . $expPart;
                 }
                 if (!preg_match("/^\d+$/", $expPart)) {
                     $this->setPosition($position);
