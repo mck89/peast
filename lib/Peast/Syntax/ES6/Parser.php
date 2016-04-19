@@ -801,7 +801,7 @@ class Parser extends \Peast\Syntax\Parser
             
             if (($default || $id) &&
                 $this->scanner->consume("(") &&
-                (($params = $this->parseFormalParameters()) || true) &&
+                ($params = $this->parseFormalParameters()) !== null &&
                 $this->scanner->consumeArray(array(")", "{")) &&
                 (($body = $this->parseFunctionBody()) || true) &&
                 $this->scanner->consume("}")) {
@@ -831,7 +831,7 @@ class Parser extends \Peast\Syntax\Parser
             
             if (($default || $id) &&
                 $this->scanner->consume("(") &&
-                (($params = $this->parseFormalParameters(true)) || true) &&
+                ($params = $this->parseFormalParameters(true)) !== null  &&
                 $this->scanner->consumeArray(array(")", "{")) &&
                 (($body = $this->parseGeneratorBody()) || true) &&
                 $this->scanner->consume("}")) {
@@ -862,7 +862,7 @@ class Parser extends \Peast\Syntax\Parser
             $id = $this->parseBindingIdentifier();
             
             if ($this->scanner->consume("(") &&
-                (($params = $this->parseFormalParameters()) || true) &&
+                ($params = $this->parseFormalParameters()) !== null &&
                 $this->scanner->consumeArray(array(")", "{")) &&
                 (($body = $this->parseFunctionBody()) || true) &&
                 $this->scanner->consume("}")) {
@@ -889,7 +889,7 @@ class Parser extends \Peast\Syntax\Parser
             $id = $this->BindingIdentifier(true);
             
             if ($this->scanner->consume("(") &&
-                (($params = $this->parseFormalParameters(true)) || true) &&
+                ($params = $this->parseFormalParameters(true)) !== null &&
                 $this->scanner->consumeArray(array(")", "{")) &&
                 (($body = $this->parseGeneratorBody()) || true) &&
                 $this->scanner->consume("}")) {
@@ -944,8 +944,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseFormalParameters($yield = false)
     {
-        $list = $this->parseFormalParameterList($yield);
-        return $list ? $list : array();
+        return $this->parseFormalParameterList($yield);
     }
     
     protected function parseStrictFormalParameters($yield = false)
@@ -955,23 +954,29 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseFormalParameterList($yield = false)
     {
-        $params = $this->parseFormalsList($yield);
-        if ($params) {
-            
-            $position = $this->scanner->getPosition();
-            
-            if ($this->scanner->consume(",") &&
-                $rest = $this->parseFunctionRestParameter($yield)) {
-                $params[] = $rest;
+        $list = array();
+        $position = $this->scanner->getPosition();
+        $rest = true;
+        $restMandatory = false;
+        while ($param = $this->parseFormalParameter($yield)) {
+            $list[] = $param;
+            $rest = false;
+            if ($this->scanner->consume(",")) {
+                $rest = true;
+                $restMandatory = true;
             } else {
-                $this->scanner->setPosition($position);
+                break;
             }
-            
-        } elseif ($rest = $this->parseFunctionRestParameter($yield)) {
-            $params = array($rest);
         }
-        
-        return $params;
+        if ($rest) {
+            if ($restParam = $this->parseFunctionRestParameter($yield)) {
+                $list[] = $restParam;
+            } elseif ($restMandatory) {
+                $this->scanner->setPosition($position);
+                return null;
+            }
+        }
+        return $list;
     }
     
     protected function parseFormalsList($yield = false)
@@ -1842,7 +1847,8 @@ class Parser extends \Peast\Syntax\Parser
                 $params = $this->parseStrictFormalParameters();
             }
             
-            if ($this->scanner->consume(")") &&
+            if ($params !== null &&
+                $this->scanner->consume(")") &&
                 $this->scanner->consume("{") &&
                 ($body = $this->parseFunctionBody()) &&
                 $this->scanner->consume("{")) {
@@ -1880,7 +1886,7 @@ class Parser extends \Peast\Syntax\Parser
             
             if (($prop = $this->parsePropertyName($yield)) &&
                 $this->scanner->consume("(") &&
-                (($params = $this->parseStrictFormalParameters($yield)) || true) &&
+                ($params = $this->parseStrictFormalParameters($yield)) !== null &&
                 $this->scanner->consume(")") &&
                 $this->scanner->consume("{") &&
                 ($body = $this->parseGeneratorBody()) &&
@@ -1919,7 +1925,7 @@ class Parser extends \Peast\Syntax\Parser
             
             $params = $this->parseStrictFormalParameters($yield);
             
-            if ($this->scanner->consume(")")) {
+            if ($params !== null && $this->scanner->consume(")")) {
                 return $params;
             }
             
