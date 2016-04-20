@@ -1009,11 +1009,8 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseFunctionStatementList($yield = false)
     {
-        $items = array();
-        while ($item = $this->parseStatementList($yield, true)) {
-            $items[] = $item;
-        }
-        return $items;
+        $list = $this->parseStatementList($yield, true);
+        return $list ? $list : array();
     }
     
     protected function parseClassDeclaration($yield = false, $default = false)

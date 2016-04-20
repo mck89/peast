@@ -79,7 +79,7 @@ abstract class Node
                         }
                     }
                 }
-                $this->typeError($param, $classes, $allowNull, true);
+                $this->typeError($param, $classes, $allowNull, true, true);
             }
         }
     }
@@ -112,7 +112,7 @@ abstract class Node
     }
     
     protected function typeError($var, $allowedTypes, $allowNull = false,
-                                 $array = false)
+                                 $array = false, $inArray = false)
     {
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         $method = $backtrace[2]["class"] . "::" . $backtrace[2]["function"];
@@ -129,6 +129,9 @@ abstract class Node
             $type = array_pop($parts);
         } else {
             $type = gettype($var);
+        }
+        if ($inArray) {
+            $type = "array of $type";
         }
         $msg .= ", $type given";
         if (version_compare(phpversion(), '7', '>=')) {
