@@ -8,6 +8,7 @@ class ClassDeclaration extends Node implements Declaration, Class_
     public function setId($id)
     {
         $this->assertType($id, "Identifier");
-        return parent::setId($id);
+        $this->id = $id;
+        return $this;
     }
 }

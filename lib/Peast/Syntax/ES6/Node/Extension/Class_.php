@@ -38,8 +38,9 @@ trait Class_
         return $this->body;
     }
     
-    public function setBody(ClassBody $body)
+    public function setBody($body)
     {
+        $this->assertType($body, "ClassBody");
         $this->body = $body;
         return $this;
     }

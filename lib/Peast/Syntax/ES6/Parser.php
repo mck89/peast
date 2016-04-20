@@ -1021,7 +1021,7 @@ class Parser extends \Peast\Syntax\Parser
         if ($this->scanner->consume("class")) {
             
             $position = $this->scanner->getPosition();
-            $id = $this->BindingIdentifier($yield);
+            $id = $this->parseBindingIdentifier($yield);
             
             if (($default || $id) &&
                 $tail = $this->parseClassTail($yield)) {
@@ -1107,7 +1107,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseClassBody($yield = false)
     {
-        $body = $this->getClassElementList($yield);
+        $body = $this->parseClassElementList($yield);
         $node = $this->createNode("ClassBody");
         if ($body) {
             $node->setBody($body);
@@ -2942,16 +2942,25 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseLiteral()
     {
-        $position = $this->scanner->getPosition();
-        
-        if ($literal = $this->scanner->consumeOneOf(
-                array("null", "true", "false")
-            )) {
-            
+        if ($literal = $this->scanner->consumeOneOf(array(
+                "null", "true", "false"
+            ))) {
             $node = $this->createNode("Literal");
             $node->setRawValue($literal);
             return $this->completeNode($node);
-        } elseif ($quote = $this->scanner->consumeOneOf(array("'", '"'))) {
+        } elseif ($literal = $this->parseStringLiteral()) {
+            return $literal;
+        } elseif ($literal = $this->parseNumericLiteral()) {
+            return $literal;
+        }
+        return null;
+    }
+    
+    protected function parseStringLiteral()
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($quote = $this->scanner->consumeOneOf(array("'", '"'))) {
             
             if ($string = $this->scanner->consumeUntil(array($quote), false)) {
                 $node = $this->createNode("Literal");
@@ -2960,11 +2969,19 @@ class Parser extends \Peast\Syntax\Parser
             }
             
             $this->scanner->setPosition($position);
-        } elseif (($num = $this->scanner->consumeNumber()) !== null) {
+        }
+        
+        return null;
+    }
+    
+    protected function parseNumericLiteral()
+    {
+        if (($num = $this->scanner->consumeNumber()) !== null) {
             $node = $this->createNode("Literal");
             $node->setRawValue($num);
             return $this->completeNode($node);
         }
+        
         return null;
     }
     
