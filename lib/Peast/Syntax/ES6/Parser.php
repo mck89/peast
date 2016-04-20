@@ -331,17 +331,17 @@ class Parser extends \Peast\Syntax\Parser
     {
         $position = $this->scanner->getPosition();
         
-        if ($this->scanner->consume("break") &&
-            $this->scanner->consumeWhitespacesAndComments(false)) {
+        if ($this->scanner->consume("break")) {
             $node = $this->createNode("BreakStatement");
             
-            if ($label = $this->parseLabelIdentifier($yield)) {
+            if ($this->scanner->consumeWhitespacesAndComments(false) &&
+                $label = $this->parseLabelIdentifier($yield)) {
                 $node->setLabel($label);
             }
             
-            if ($this->scanner->consume(";")) {
-                return $this->completeNode($node);
-            }
+            $this->scanner->consume(";");
+            
+            return $this->completeNode($node);
         }
         
         $this->scanner->setPosition($position);
@@ -419,29 +419,6 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseSwitchStatement($yield = false, $return = false)
-    {
-        $position = $this->scanner->getPosition();
-        
-        if ($this->scanner->consumeArray(array("switch", "(")) &&
-            ($discriminant = $this->parseExpression(true, $yield)) &&
-            $this->scanner->consume(")")) {
-            
-            $cases = $this->parseCaseBlock($yield, $return);
-            
-            if ($cases !== null) {
-                $node = $this->createNode("SwitchStatement");
-                $node->setDiscriminant($discriminant);
-                $node->setCases($cases);
-                return $this->completeNode($node);
-            }
-        }
-        
-        $this->scanner->setPosition($position);
-        
-        return null;
-    }
-    
     protected function parseWithStatement($yield = false, $return = false)
     {
         $position = $this->scanner->getPosition();
@@ -461,6 +438,29 @@ class Parser extends \Peast\Syntax\Parser
             
             $this->scanner->setPosition($position);
         }
+        
+        return null;
+    }
+    
+    protected function parseSwitchStatement($yield = false, $return = false)
+    {
+        $position = $this->scanner->getPosition();
+        
+        if ($this->scanner->consumeArray(array("switch", "(")) &&
+            ($discriminant = $this->parseExpression(true, $yield)) &&
+            $this->scanner->consume(")")) {
+            
+            $cases = $this->parseCaseBlock($yield, $return);
+            
+            if ($cases !== null) {
+                $node = $this->createNode("SwitchStatement");
+                $node->setDiscriminant($discriminant);
+                $node->setCases($cases);
+                return $this->completeNode($node);
+            }
+        }
+        
+        $this->scanner->setPosition($position);
         
         return null;
     }

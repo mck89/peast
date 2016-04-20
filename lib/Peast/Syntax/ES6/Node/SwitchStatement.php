@@ -25,7 +25,7 @@ class SwitchStatement extends Node implements Statement
     
     public function setCases($cases)
     {
-        $this->assertArrayOf($body, "SwitchCase");
+        $this->assertArrayOf($cases, "SwitchCase");
         $this->cases = $cases;
         return $this;
     }
