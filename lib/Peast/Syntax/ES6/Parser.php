@@ -1300,8 +1300,8 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseForBinding($yield = false)
     {
-        if (($init = $this->parseBindingIdentifier($yield)) ||
-            ($init = $this->parseBindingPattern($yield))) {
+        if (($id = $this->parseBindingIdentifier($yield)) ||
+            ($id = $this->parseBindingPattern($yield))) {
             
             $node = $this->createNode("VariableDeclarator");
             $node->setId($id);
