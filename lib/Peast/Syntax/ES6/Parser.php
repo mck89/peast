@@ -452,7 +452,7 @@ class Parser extends \Peast\Syntax\Parser
                 $this->scanner->consume(")") &&
                 $body = $this->parseStatement($yield, $return)) {
                 
-                $node = $this->createNode("SwitchStatement");
+                $node = $this->createNode("WithStatement");
                 $node->setObject($object);
                 $node->setBody($body);
                 return $this->completeNode($node);
@@ -500,7 +500,7 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseCaseClauses($yield = false, $return = false)
     {
         $cases = array();
-        while ($case = $this->parseCaseClauses($yield, $return)) {
+        while ($case = $this->parseCaseClause($yield, $return)) {
             $cases[] = $case;
         }
         return count($cases) ? $cases : null;
@@ -517,8 +517,8 @@ class Parser extends \Peast\Syntax\Parser
             $node = $this->createNode("SwitchCase");
             $node->setTest($test);
             
-            if ($cases = $this->parseStatementList($yield, $return)) {
-                $node->setCases($cases);
+            if ($consequent = $this->parseStatementList($yield, $return)) {
+                $node->setConsequent($consequent);
             }
             
             return $this->completeNode($node);
@@ -537,8 +537,8 @@ class Parser extends \Peast\Syntax\Parser
             
             $node = $this->createNode("SwitchCase");
             
-            if ($cases = $this->parseStatementList($yield, $return)) {
-                $node->setCases($cases);
+            if ($consequent = $this->parseStatementList($yield, $return)) {
+                $node->setConsequent($consequent);
             }
             
             return $this->completeNode($node);

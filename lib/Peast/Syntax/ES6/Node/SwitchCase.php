@@ -26,7 +26,7 @@ class SwitchCase extends Node
     
     public function setConsequent($consequent)
     {
-        $this->assertArrayOf($body, "Statement");
+        $this->assertArrayOf($consequent, "Statement");
         $this->consequent = $consequent;
         return $this;
     }
