@@ -373,9 +373,9 @@ class Scanner
     {
         $postion = $this->getPosition();
         
-        if ($this->index + 2 < $this->length &&
-            $this->chars[$this->index + 1] === "/" &&
-            in_array($this->chars[$this->index + 2], array("/", "*"), true)) {
+        if ($this->index + 1 < $this->length &&
+            $this->chars[$this->index] === "/" &&
+            !in_array($this->chars[$this->index + 1], array("/", "*"), true)) {
             
             $this->index++;
             $this->column++;
@@ -411,8 +411,8 @@ class Scanner
             }
             
             if (!$inClass && $valid) {
-                while ($this->index + 1 < $this->length) {
-                    $char = $this->chars[$this->index + 1];
+                while ($this->index < $this->length) {
+                    $char = $this->chars[$this->index];
                     if ($char >= "a" && $char <= "z") {
                         $source .= $char;
                         $this->index++;

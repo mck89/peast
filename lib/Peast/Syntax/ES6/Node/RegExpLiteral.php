@@ -39,10 +39,10 @@ class RegExpLiteral extends Literal
     
     public function setRawValue($rawValue)
     {
-        $rawValue = substr($rawValue, 1);
-        $parts = preg_split("#/(?=\w+$)#", $rawValue);
-        $this->setPattern($parts[0]);
-        $this->setPattern($parts[1]);
+        $parts = explode("/", substr($rawValue, 1));
+        $flags = array_pop($parts);
+        $this->setPattern(implode("/", $parts));
+        $this->setFlags($flags);
         return $this;
     }
 }
