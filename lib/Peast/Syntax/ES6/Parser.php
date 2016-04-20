@@ -1850,8 +1850,8 @@ class Parser extends \Peast\Syntax\Parser
             if ($params !== null &&
                 $this->scanner->consume(")") &&
                 $this->scanner->consume("{") &&
-                ($body = $this->parseFunctionBody()) &&
-                $this->scanner->consume("{")) {
+                (($body = $this->parseFunctionBody()) || true) &&
+                $this->scanner->consume("}")) {
                 
                 if ($prop[0] instanceof Node\Identifier &&
                     $prop[0]->getName() === "constructor") {
