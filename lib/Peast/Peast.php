@@ -10,7 +10,7 @@ class Peast
     {
         $source = @file_get_contents($file);
         if ($source === false) {
-            throw new Exception("Can't read $file");
+            throw new \Exception("Can't read $file");
         }
         return self::fromString($parser, $source, $encoding);
     }

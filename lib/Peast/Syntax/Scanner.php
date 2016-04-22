@@ -432,7 +432,9 @@ class Scanner
     
     public function consumeNumber()
     {
-        $nextChar = $this->chars[$this->index];
+        $nextChar = $this->index < $this->length ?
+                    $this->chars[$this->index] :
+                    null;
         if (!(($nextChar >= "0" && $nextChar <= "9") || $nextChar === ".")) {
             return null;
         }

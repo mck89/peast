@@ -13,8 +13,6 @@ abstract class Parser
     
     abstract public function parse();
     
-    abstract static public function getConfig();
-    
     public function createNode($nodeType)
     {
         $parts = explode("\\", get_class($this));
