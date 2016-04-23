@@ -39,13 +39,13 @@ class TestBase extends \PHPUnit_Framework_TestCase
                         $fn = "get" . ucfirst($k);
                         $objValue = $obj->$fn();
                     }
-                    $this->objectTestRecursive($v, $objValue, "$message->$k");
+                    $this->objectTestRecursive($v, $objValue, "$message" . "->$k");
                 }
             break;
             case "array":
                 $this->assertSame(count($compare), count($obj), "count($message)");
                 foreach ($compare as $k => $v) {
-                    $this->objectTestRecursive($v, $obj[$k], "$message[$k]");
+                    $this->objectTestRecursive($v, $obj[$k], "$message" . "[$k]");
                 }
             break;
             default:

@@ -1,4 +1,8 @@
 {
+    "range": [
+        0,
+        6
+    ],
     "loc": {
         "start": {
             "line": 1,
@@ -12,6 +16,10 @@
     "type": "Program",
     "body": [
         {
+            "range": [
+                0,
+                6
+            ],
             "loc": {
                 "start": {
                     "line": 1,
@@ -25,6 +33,10 @@
             "type": "VariableDeclaration",
             "declarations": [
                 {
+                    "range": [
+                        4,
+                        5
+                    ],
                     "loc": {
                         "start": {
                             "line": 1,
@@ -37,6 +49,10 @@
                     },
                     "type": "VariableDeclarator",
                     "id": {
+                        "range": [
+                            4,
+                            5
+                        ],
                         "loc": {
                             "start": {
                                 "line": 1,
