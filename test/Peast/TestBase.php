@@ -16,18 +16,41 @@ class TestBase extends \PHPUnit_Framework_TestCase
     protected function compareJSFile($tree, $compareFile)
     {
         $compareTree = json_decode(file_get_contents($compareFile));
-        $this->objectTestRecursive($tree, $compareTree);
+        $this->objectTestRecursive($compareTree, $tree);
     }
     
-    protected function objectTestRecursive($obj, $compare)
+    protected function objectTestRecursive($compare, $obj, $message = "")
     {
-        if (gettype($obj) === "object") {
-            foreach ($compare as $k => $v) {
-                $fn = "get" . ucfirst($k);
-                $this->objectTestRecursive($v, $obj->$fn());
-            }
-        } elseif ($compare === null) {
-            $this->assertSame($compare, $obj);
+        $objType = gettype($obj);
+        $this->assertSame(gettype($compare), $objType, "gettype($message)");
+        switch ($objType)
+        {
+            case "object":
+                foreach ($compare as $k => $v) {
+                    if ($k === "loc") {
+                        $objValue = $obj->getLocation();
+                    } elseif ($k === "range") {
+                        $loc = $obj->getLocation();
+                        $objValue = array(
+                            $loc->getStart()->getIndex(),
+                            $loc->getEnd()->getIndex()
+                        );
+                    } else {
+                        $fn = "get" . ucfirst($k);
+                        $objValue = $obj->$fn();
+                    }
+                    $this->objectTestRecursive($v, $objValue, "$message->$k");
+                }
+            break;
+            case "array":
+                $this->assertSame(count($compare), count($obj), "count($message)");
+                foreach ($compare as $k => $v) {
+                    $this->objectTestRecursive($v, $obj[$k], "$message[$k]");
+                }
+            break;
+            default:
+                $this->assertSame($compare, $obj, $message);
+            break;
         }
     }
 }

@@ -5,17 +5,10 @@ abstract class Node
 {
     protected $loc;
     
-    protected $type;
-    
-    function __construct()
-    {
-        $class = explode("\\", __CLASS__);
-        $this->type = array_pop($class);
-    }
-    
     public function getType()
     {
-        return $this->type;
+        $class = explode("\\", get_class($this));
+        return array_pop($class);
     }
     
     public function getLocation()
