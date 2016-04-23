@@ -27,7 +27,7 @@ abstract class Parser
         return $node->setEndPosition($this->scanner->getPosition());
     }
     
-    protected function charSeparatedListOf($fn, $args, $char = ",")
+    protected function charSeparatedListOf($fn, $args = array(), $char = ",")
     {
         $multi = is_array($char);
         $list = array();

@@ -188,7 +188,7 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseModuleItemList()
     {
         $items = array();
-        while ($item = $this->parseModuleItem($yield, $return)) {
+        while ($item = $this->parseModuleItem()) {
             $items[] = $item;
         }
         return count($items) ? $items : null;
@@ -273,7 +273,7 @@ class Parser extends \Peast\Syntax\Parser
         if ($this->scanner->consumeArray(array("catch", "(")) &&
             ($param = $this->parseCatchParameter($yield)) &&
             $this->scanner->consume(")") &&
-            $body = $this->parseBlock()) {
+            $body = $this->parseBlock($yield, $return)) {
             
             $node = $this->createNode("CatchClause");
             $node->setParam($param);
@@ -1041,7 +1041,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseClassExpression($yield = false, $default = false)
+    protected function parseClassExpression($yield = false)
     {
         if ($this->scanner->consume("class")) {
             
@@ -1430,10 +1430,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseExportsList()
     {
-        return $this->charSeparatedListOf(
-            "parseExportSpecifier",
-            array($yield)
-        );
+        return $this->charSeparatedListOf("parseExportSpecifier");
     }
     
     protected function parseExportSpecifier()
@@ -1581,10 +1578,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseImportsList()
     {
-        return $this->charSeparatedListOf(
-            "parseImportSpecifier",
-            array($yield)
-        );
+        return $this->charSeparatedListOf("parseImportSpecifier");
     }
     
     protected function parseImportSpecifier()
@@ -2503,7 +2497,7 @@ class Parser extends \Peast\Syntax\Parser
             } elseif (($begin && $ellision) || ($begin && $ellision > 1)) {
                 $list = array_merge(
                     $list,
-                    array_fill(0, $begin ? $elision : $ellision - 1, null)
+                    array_fill(0, $begin ? $ellision : $ellision - 1, null)
                 );
             }
             $begin = false;
@@ -2912,6 +2906,7 @@ class Parser extends \Peast\Syntax\Parser
         foreach ($properties as $i => $property) {
             if (is_array($property)) {
                 if (is_array($property[0])) {
+                    $lastNode = $node;
                     $node = $this->createNode("CallExpression");
                     $node->setCallee($this->completeNode($lastNode));
                     $node->setArguments($property[0]);
