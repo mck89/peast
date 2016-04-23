@@ -1563,7 +1563,7 @@ class Parser extends \Peast\Syntax\Parser
         
         if ($this->scanner->consume("{")) {
             
-            $list = $this->parseExportsList();
+            $list = $this->parseImportsList();
             $this->scanner->consume(",");
             
             if ($this->scanner->consume("}")) {
