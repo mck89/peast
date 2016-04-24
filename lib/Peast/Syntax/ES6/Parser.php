@@ -35,6 +35,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseScript()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         $body = $this->parseStatementList();
         $node = $this->createNode("Program", $position);
@@ -47,6 +48,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseModule()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         $body = $this->parseModuleItemList();
         $node = $this->createNode("Program", $position);
@@ -144,6 +146,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseBlockStatement($yield = false, $return = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if (($body = $this->parseBlock($yield, $return)) !== null) {
             $node = $this->createNode("BlockStatement", $position);
@@ -155,6 +158,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseBlock($yield = false, $return = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("{")) {
             $statements = $this->parseStatementList($yield, $return);
@@ -178,6 +182,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseEmptyStatement()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume(";")) {
             $node = $this->createNode("BlockStatement", $position);
@@ -188,6 +193,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseDebuggerStatement()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("debugger")) {
             $this->scanner->consume(";");
@@ -199,6 +205,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseIfStatement($yield = false, $return = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("if")) {
             
@@ -229,6 +236,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseTryStatement($yield = false, $return = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("try")) {
             
@@ -258,6 +266,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseCatch($yield = false, $return = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("catch")) {
             
@@ -290,6 +299,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseFinally($yield = false, $return = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("finally")) {
             
@@ -305,6 +315,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseContinueStatement($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("continue")) {
             
@@ -330,6 +341,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseBreakStatement($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("break")) {
             
@@ -355,6 +367,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseReturnStatement($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("return")) {
             
@@ -380,6 +393,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseLabelledStatement($yield = false, $return = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($label = $this->parseIdentifierReference($yield)) {
             
@@ -413,7 +427,8 @@ class Parser extends \Peast\Syntax\Parser
     }
     
     protected function parseThrowStatement($yield = false)
-    {        
+    {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("throw")) {
             
@@ -434,6 +449,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseWithStatement($yield = false, $return = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("with")) {
             
@@ -456,6 +472,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseSwitchStatement($yield = false, $return = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("switch")) {
             
@@ -478,6 +495,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseCaseBlock($yield = false, $return = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("{")) {
             
@@ -520,6 +538,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseCaseClause($yield = false, $return = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("case")) {
             
@@ -544,6 +563,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseDefaultClause($yield = false, $return = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("default")) {
             
@@ -566,6 +586,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseExpressionStatement($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         $lookahead = array("{", "function", "class", array("let", "["));
         if ($this->scanner->notBefore($lookahead) &&
@@ -582,6 +603,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseIterationStatement($yield = false, $return = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("do")) {
             
@@ -616,12 +638,14 @@ class Parser extends \Peast\Syntax\Parser
         } elseif ($this->scanner->consume("for")) {
             
             $hasBracket = $this->consume(")");
+            $this->scanner->consumeWhitespacesAndComments();
             $innerPosition = $this->scanner->getPosition();
             
             if (!$hasBracket) {
                 $this->error();
             } elseif ($this->scanner->consume("var")) {
                 
+                $this->scanner->consumeWhitespacesAndComments();
                 $subPosition = $this->scanner->getPosition();
                 
                 if (($decl = $this->parseVariableDeclarationList($yield)) &&
@@ -745,6 +769,7 @@ class Parser extends \Peast\Syntax\Parser
                 }
             } elseif ($this->scanner->notBefore(array("let"))) {
                 
+                $this->scanner->consumeWhitespacesAndComments();
                 $subPosition = $this->scanner->getPosition();
                 $notBeforeSB = $this->scanner->notBefore(array("let", "["));
                 
@@ -816,6 +841,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseFunctionDeclaration($yield = false, $default = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("function")) {
             
@@ -845,6 +871,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseGeneratorDeclaration($yield = false, $default = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consumeArray(array("function", "*"))) {
             
@@ -875,8 +902,8 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseFunctionExpression()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
-        
         if ($this->scanner->consume("function")) {
             
             $id = $this->parseIdentifierReference();
@@ -902,6 +929,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseGeneratorExpression()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consumeArray(array("function", "*"))) {
             
@@ -929,6 +957,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseYieldExpression($in = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("yield")) {
             
@@ -953,8 +982,9 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseFormalParameterList($yield = false)
     {
-        $list = array();
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
+        $list = array();
         $rest = true;
         $restMandatory = false;
         while ($param = $this->parseBindingElement($yield)) {
@@ -981,6 +1011,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseFunctionBody($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         $node = $this->createNode("BlockStatement", $position);
         if ($body = $this->parseStatementList($yield, true)) {
@@ -991,6 +1022,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseClassDeclaration($yield = false, $default = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("class")) {
             
@@ -1018,6 +1050,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseClassExpression($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("class")) {
             
@@ -1044,6 +1077,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseClassTail($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         $heritage = $this->parseClassHeritage($yield);
         if ($this->scanner->consume("{")) {
@@ -1062,6 +1096,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseClassHeritage($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("extends")) {
             
@@ -1077,6 +1112,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseClassBody($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         $node = $this->createNode("ClassBody", $position);
         if ($body = $this->parseClassElementList($yield)) {
@@ -1104,6 +1140,7 @@ class Parser extends \Peast\Syntax\Parser
             return $def;
         }
         
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("static")) {
             
@@ -1121,6 +1158,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseLexicalDeclaration($in = false, $yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($letOrConst = $this->scanner->consumeOneOf(array("let", "const"))) {
             
@@ -1145,6 +1183,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseVariableStatement($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("var")) {
             
@@ -1174,6 +1213,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseVariableDeclaration($in = false, $yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($id = $this->parseIdentifierReference($yield)) {
             
@@ -1201,6 +1241,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseForDeclaration($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($letOrConst = $this->scanner->consumeOneOf(array("let", "const"))) {
             
@@ -1220,6 +1261,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseForBinding($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if (($id = $this->parseIdentifierReference($yield)) ||
             ($id = $this->parseBindingPattern($yield))) {
@@ -1245,6 +1287,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseFromClause()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("from")) {
             if ($spec = $this->parseStringLiteral()) {
@@ -1258,6 +1301,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseExportDeclaration()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("export")) {
             
@@ -1320,6 +1364,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseExportClause()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("{")) {
             
@@ -1338,6 +1383,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseExportSpecifier()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($local = $this->parseIdentifierName()) {
             
@@ -1362,6 +1408,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseImportDeclaration()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("import")) {
             
@@ -1391,6 +1438,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseImportClause()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($spec = $this->parseNameSpaceImport()) {
             
@@ -1429,6 +1477,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseNameSpaceImport()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("*")) {
             
@@ -1445,6 +1494,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseNamedImports()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("{")) {
             
@@ -1465,6 +1515,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseImportSpecifier()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($local = $this->parseIdentifierReference()) {
             
@@ -1513,6 +1564,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseArrayBindingPattern($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("[")) {
             
@@ -1557,6 +1609,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseBindingRestElement($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("...")) {
             
@@ -1574,6 +1627,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseBindingElisionElement($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         $elision = $this->parseElision();
         
@@ -1590,6 +1644,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseBindingElement($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($el = $this->parseSingleNameBinding($yield)) {
             return $el;
@@ -1609,6 +1664,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseSingleNameBinding($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($left = $this->parseIdentifierReference($yield)) {
             if ($right = $this->parseInitializer(true, $yield)) {
@@ -1647,6 +1703,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseComputedPropertyName($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("[")) {
             
@@ -1667,6 +1724,7 @@ class Parser extends \Peast\Syntax\Parser
             return $method;
         }
         
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         $error = false;
         $kind = Node\MethodDefinition::KIND_METHOD;
@@ -1680,6 +1738,7 @@ class Parser extends \Peast\Syntax\Parser
         
         if ($prop = $this->parsePropertyName($yield)) {
             
+            $this->scanner->consumeWhitespacesAndComments();
             $fnPosition = $this->scanner->getPosition();
             $error = true;
             
@@ -1728,11 +1787,13 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseGeneratorMethod($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("*")) {
             
             if ($prop = $this->parsePropertyName($yield)) {
                 
+                $this->scanner->consumeWhitespacesAndComments();
                 $fnPosition = $this->scanner->getPosition();
                 
                 if ($this->scanner->consume("(") &&
@@ -1766,6 +1827,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseArrowFormalParameters($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("(")) {
             
@@ -1791,6 +1853,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseConciseBody($in = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("{")) {
             
@@ -1810,6 +1873,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseArrowFunction($in = false, $yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if (($params = $this->parseArrowParameters($yield)) !== null &&
             $this->scanner->consumeWhitespacesAndComments(false) &&
@@ -1830,6 +1894,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseObjectLiteral($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("{")) {
             
@@ -1857,6 +1922,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parsePropertyDefinition($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($property = $this->parseCoverInitializedName($yield)) {
             return $property;
@@ -1900,6 +1966,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseCoverInitializedName($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($key = $this->parseIdentifierReference($yield)) {
             
@@ -1920,6 +1987,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseInitializer($in = false, $yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("=")) {
             
@@ -1935,6 +2003,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseObjectBindingPattern($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("{")) {
             
@@ -1960,6 +2029,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseBindingProperty($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if (($key = $this->parsePropertyName($yield)) &&
             $this->scanner->consume(":")) {
@@ -1996,6 +2066,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseExpression($in = false, $yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         $list = $this->charSeparatedListOf(
             "parseAssignmentExpression",
@@ -2015,6 +2086,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseAssignmentExpression($in = false, $yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($expr = $this->parseConditionalExpression($in, $yield)) {
             return $expr;
@@ -2051,6 +2123,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseConditionalExpression($in = false, $yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($test = $this->parseLogicalORExpression($in, $yield)) {
             
@@ -2184,6 +2257,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseUnaryExpression($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($expr = $this->parsePostfixExpression($yield)) {
             return $expr;
@@ -2210,9 +2284,11 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parsePostfixExpression($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($argument = $this->parseLeftHandSideExpression($yield)) {
             
+            $this->scanner->consumeWhitespacesAndComments();
             $subPosition = $this->scanner->getPosition();
             if ($this->scanner->consumeWhitespacesAndComments(false) !== null &&
                 $operator = $this->scanner->consumeOneOf(array("--", "++"))) {
@@ -2241,6 +2317,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseSpreadElement($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("...")) {
             
@@ -2258,6 +2335,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseArrayLiteral($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("[")) {
             
@@ -2294,6 +2372,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseElementList($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         $begin = true;
         $list = array();
@@ -2322,6 +2401,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseArguments($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("(")) {
             
@@ -2338,11 +2418,13 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseArgumentList($yield = false)
     {
-        $list = array();
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
+        $list = array();
         $valid = true;
         while (true) {
             $spread = false;
+            $this->scanner->consumeWhitespacesAndComments();
             $spreadPosition = $this->scanner->getPosition();
             if ($this->scanner->consume("...")) {
                 $spread = true;
@@ -2376,6 +2458,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseSuperCall($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("super")) {
             
@@ -2395,11 +2478,13 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseNewTarget()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("new")) {
             
             if ($this->scanner->consume(".")) {
                 
+                $this->scanner->consumeWhitespacesAndComments();
                 $targetPosition = $this->scanner->getPosition();
                 
                 if ($this->scanner->consume("target")) {
@@ -2424,6 +2509,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseIdentifierReference($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($identifier = $this->parseIdentifier()) {
             return $identifier;
@@ -2437,6 +2523,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseMemberExpression($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("new")) {
             
@@ -2519,6 +2606,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseSuperProperty($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("super")) {
             
@@ -2550,6 +2638,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseNewExpression($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("new")) {
             
@@ -2569,6 +2658,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parsePrimaryExpression($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("this")) {
             $node = $this->createNode("ThisExpression", $position);
@@ -2606,6 +2696,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseIdentifierName()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($identifier = $this->scanner->consumeIdentifier()) {
             $node = $this->createNode("Identifier", $position);
@@ -2617,6 +2708,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseIdentifier()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($identifier = $this->parseIdentifierName()) {
             
@@ -2633,6 +2725,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseCallExpression($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         $object = $this->parseSuperCall($yield);
         if (!$object) {
@@ -2719,6 +2812,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseLiteral()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($literal = $this->scanner->consumeOneOf(array(
                 "null", "true", "false"
@@ -2736,6 +2830,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseStringLiteral()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($quote = $this->scanner->consumeOneOf(array("'", '"'))) {
             
@@ -2753,6 +2848,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseNumericLiteral()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if (($num = $this->scanner->consumeNumber()) !== null) {
             $node = $this->createNode("Literal", $position);
@@ -2764,12 +2860,14 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseTemplateLiteral($yield = false)
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("`")) {
             
             $stops = array("`", "\${");
             $quasis = $expressions = array();
             while (true) {
+                $this->scanner->consumeWhitespacesAndComments();
                 $subPosition = $this->scanner->getPosition();
                 if (!($part = $this->scanner->consumeUntil($stops))) {
                     break;
@@ -2810,6 +2908,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseRegularExpressionLiteral()
     {
+        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($regex = $this->scanner->consumeRegularExpression()) {
             $node = $this->createNode("RegExpLiteral", $position);
