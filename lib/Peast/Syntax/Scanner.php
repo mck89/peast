@@ -206,7 +206,7 @@ class Scanner
         return in_array($char, $this->hexDigits, true);
     }
     
-    protected function getToken()
+    public function getToken()
     {
         if ($this->index < $this->length) {
             if ($source = $this->scanWhitespaces()) {

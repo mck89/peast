@@ -13,18 +13,34 @@ abstract class Parser
     
     abstract public function parse();
     
-    public function createNode($nodeType)
+    public function createNode($nodeType, $position)
     {
         $parts = explode("\\", get_class($this));
         array_pop($parts);
         $nodeClass = implode("\\", $parts) . "\\Node\\$nodeType";
         $node = new $nodeClass;
-        return $node->setStartPosition($this->scanner->getPosition());
+        return $node->setStartPosition($position);
     }
     
     public function completeNode(Node $node)
     {
         return $node->setEndPosition($this->scanner->getPosition());
+    }
+    
+    public function error($message = "", $position = null)
+    {
+        if (!$position) {
+            $position = $this->scanner->getPosition();
+        }
+        if (!$message) {
+            $token = $this->scanner->getToken();
+            if ($token === null) {
+                $message = "Unexpected end of input";
+            } else {
+                $message = "Unexpected token " . $token["source"];
+            }
+        }
+        throw new Exception($message, $position);
     }
     
     protected function charSeparatedListOf($fn, $args = array(), $char = ",")
