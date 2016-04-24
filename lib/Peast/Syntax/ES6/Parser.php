@@ -583,7 +583,6 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseIterationStatement($yield = false, $return = false)
     {
         $position = $this->scanner->getPosition();
-
         if ($this->scanner->consume("do")) {
             
             if (($body = $this->parseStatement($yield, $return)) &&
@@ -591,27 +590,37 @@ class Parser extends \Peast\Syntax\Parser
                 ($test = $this->parseExpression(true, $yield)) &&
                 $this->scanner->consume(")")) {
                     
-                $node = $this->createNode("DoWhileStatement");
+                $node = $this->createNode("DoWhileStatement", $position);
                 $node->setBody($body);
                 $node->setTest($test);
                 return $this->completeNode($node);
-                
             }
-        } elseif ($this->scanner->consumeArray(array("while", "("))) {
+            $this->error();
+            $this->scanner->setPosition($position);
             
-            if (($test = $this->parseExpression(true, $yield)) &&
+        } elseif ($this->scanner->consume("while")) {
+            
+            if ($this->scanner->consume("(") &&
+                ($test = $this->parseExpression(true, $yield)) &&
                 $this->scanner->consume(")") &&
                 $body = $this->parseStatement($yield, $return)) {
                     
-                $node = $this->createNode("WhileStatement");
+                $node = $this->createNode("WhileStatement", $position);
                 $node->setTest($test);
                 $node->setBody($body);
                 return $this->completeNode($node);
-                    
             }
-        } elseif ($this->scanner->consumeArray(array("for", "("))) {
+            $this->error();
+            $this->scanner->setPosition($position);
             
-            if ($this->scanner->consume("var")) {
+        } elseif ($this->scanner->consume("for")) {
+            
+            $hasBracket = $this->consume(")");
+            $innerPosition = $this->scanner->getPosition();
+            
+            if (!$hasBracket) {
+                $this->error();
+            } elseif ($this->scanner->consume("var")) {
                 
                 $subPosition = $this->scanner->getPosition();
                 
@@ -627,18 +636,21 @@ class Parser extends \Peast\Syntax\Parser
                         if ($this->scanner->consume(")") &&
                             $body = $this->parseStatement($yield, $return)) {
                             
-                            $init = $this->createNode("VariableDeclaration");
+                            $init = $this->createNode(
+                                "VariableDeclaration", $innerPosition
+                            );
                             $init->setKind($init::KIND_VAR);
                             $init->setDeclarations($decl);
                             $init = $this->completeNode($init);
                             
-                            $node = $this->createNode("ForStatement");
+                            $node = $this->createNode(
+                                "ForStatement", $position
+                            );
                             $node->setInit($init);
                             $node->setTest($test);
                             $node->setUpdate($update);
                             $node->setBody($body);
                             return $this->completeNode($node);
-                            
                         }
                     }
                 } else {
@@ -647,7 +659,9 @@ class Parser extends \Peast\Syntax\Parser
                     
                     if ($decl = $this->parseForBinding($yield)) {
                         
-                        $left = $this->createNode("VariableDeclaration");
+                        $left = $this->createNode(
+                            "VariableDeclaration", $innerPosition
+                        );
                         $left->setKind($left::KIND_VAR);
                         $left->setDeclarations(array($decl));
                         $left = $this->completeNode($left);
@@ -658,26 +672,27 @@ class Parser extends \Peast\Syntax\Parser
                                 $this->scanner->consume(")") &&
                                 $body = $this->parseStatement($yield, $return)) {
                                 
-                                $node = $this->createNode("ForInStatement");
+                                $node = $this->createNode(
+                                    "ForInStatement", $position
+                                );
                                 $node->setLeft($left);
                                 $node->setRight($right);
                                 $node->setBody($body);
                                 return $this->completeNode($node);
-                                
                             }
-                            
                         } elseif ($this->scanner->consume("of")) {
                             
                             if (($right = $this->parseAssignmentExpression(true, $yield)) &&
                                 $this->scanner->consume(")") &&
                                 $body = $this->parseStatement($yield, $return)) {
                                 
-                                $node = $this->createNode("ForOfStatement");
+                                $node = $this->createNode(
+                                    "ForOfStatement", $position
+                                );
                                 $node->setLeft($left);
                                 $node->setRight($right);
                                 $node->setBody($body);
                                 return $this->completeNode($node);
-                                
                             }
                         }
                     }
@@ -693,13 +708,12 @@ class Parser extends \Peast\Syntax\Parser
                     if ($this->scanner->consume(")") &&
                         $body = $this->parseStatement($yield, $return)) {
                         
-                        $node = $this->createNode("ForStatement");
+                        $node = $this->createNode("ForStatement", $position);
                         $node->setInit($init);
                         $node->setTest($test);
                         $node->setUpdate($update);
                         $node->setBody($body);
                         return $this->completeNode($node);
-                        
                     }
                 }
             } elseif ($left = $this->parseForDeclaration($yield)) {
@@ -710,26 +724,23 @@ class Parser extends \Peast\Syntax\Parser
                         $this->scanner->consume(")") &&
                         $body = $this->parseStatement($yield, $return)) {
                         
-                        $node = $this->createNode("ForInStatement");
+                        $node = $this->createNode("ForInStatement", $position);
                         $node->setLeft($left);
                         $node->setRight($right);
                         $node->setBody($body);
                         return $this->completeNode($node);
-                        
                     }
-                    
                 } elseif ($this->scanner->consume("of")) {
                     
                     if (($right = $this->parseAssignmentExpression(true, $yield)) &&
                         $this->scanner->consume(")") &&
                         $body = $this->parseStatement($yield, $return)) {
                         
-                        $node = $this->createNode("ForOfStatement");
+                        $node = $this->createNode("ForOfStatement", $position);
                         $node->setLeft($left);
                         $node->setRight($right);
                         $node->setBody($body);
                         return $this->completeNode($node);
-                        
                     }
                 }
             } elseif ($this->scanner->notBefore(array("let"))) {
@@ -750,13 +761,14 @@ class Parser extends \Peast\Syntax\Parser
                         if ($this->scanner->consume(")") &&
                             $body = $this->parseStatement($yield, $return)) {
                             
-                            $node = $this->createNode("ForStatement");
+                            $node = $this->createNode(
+                                "ForStatement", $position
+                            );
                             $node->setInit($init);
                             $node->setTest($test);
                             $node->setUpdate($update);
                             $node->setBody($body);
                             return $this->completeNode($node);
-                            
                         }
                     }
                 } else {
@@ -771,35 +783,34 @@ class Parser extends \Peast\Syntax\Parser
                             $this->scanner->consume(")") &&
                             $body = $this->parseStatement($yield, $return)) {
                             
-                            $node = $this->createNode("ForInStatement");
+                            $node = $this->createNode(
+                                "ForInStatement", $position
+                            );
                             $node->setLeft($left);
                             $node->setRight($right);
                             $node->setBody($body);
                             return $this->completeNode($node);
-                            
                         }
-                        
                     } elseif ($left && $this->scanner->consume("of")) {
                         
                         if (($right = $this->parseAssignmentExpression(true, $yield)) &&
                             $this->scanner->consume(")") &&
                             $body = $this->parseStatement($yield, $return)) {
                             
-                            $node = $this->createNode("ForOfStatement");
+                            $node = $this->createNode(
+                                "ForOfStatement", $position
+                            );
                             $node->setLeft($left);
                             $node->setRight($right);
                             $node->setBody($body);
                             return $this->completeNode($node);
-                            
                         }
-                    
                     }
                 }
             }
+            $this->error();
+            $this->scanner->setPosition($position);
         }
-        
-        $this->scanner->setPosition($position);
-        
         return null;
     }
     
@@ -812,42 +823,41 @@ class Parser extends \Peast\Syntax\Parser
             
             if (($default || $id) &&
                 $this->scanner->consume("(") &&
-                ($params = $this->parseFormalParameters()) !== null &&
+                ($params = $this->parseFormalParameterList()) !== null &&
                 $this->scanner->consumeArray(array(")", "{")) &&
                 (($body = $this->parseFunctionBody()) || true) &&
                 $this->scanner->consume("}")) {
                 
-                $node = $this->createNode("FunctionDeclaration");
+                $node = $this->createNode("FunctionDeclaration", $position);
                 if ($id) {
                     $node->setId($id);
                 }
                 $node->setParams($params);
                 $node->setBody($body);
                 return $this->completeNode($node);
-                
             }
             
+            $this->error();
             $this->scanner->setPosition($position);
         }
-        
         return null;
     }
     
     protected function parseGeneratorDeclaration($yield = false, $default = false)
     {
+        $position = $this->scanner->getPosition();
         if ($this->scanner->consumeArray(array("function", "*"))) {
             
-            $position = $this->scanner->getPosition();
             $id = $this->BindingIdentifier($yield);
             
             if (($default || $id) &&
                 $this->scanner->consume("(") &&
                 ($params = $this->parseFormalParameters(true)) !== null  &&
                 $this->scanner->consumeArray(array(")", "{")) &&
-                (($body = $this->parseGeneratorBody()) || true) &&
+                (($body = $this->parseFunctionBody(true)) || true) &&
                 $this->scanner->consume("}")) {
                 
-                $node = $this->createNode("FunctionDeclaration");
+                $node = $this->createNode("FunctionDeclaration", $position);
                 if ($id) {
                     $node->setId($id);
                 }
@@ -855,12 +865,11 @@ class Parser extends \Peast\Syntax\Parser
                 $node->setBody($body);
                 $node->setGenerator(true);
                 return $this->completeNode($node);
-                
             }
             
+            $this->error();
             $this->scanner->setPosition($position);
         }
-        
         return null;
     }
     
@@ -878,89 +887,68 @@ class Parser extends \Peast\Syntax\Parser
                 (($body = $this->parseFunctionBody()) || true) &&
                 $this->scanner->consume("}")) {
                 
-                $node = $this->createNode("FunctionExpression");
+                $node = $this->createNode("FunctionExpression", $position);
                 $node->setId($id);
                 $node->setParams($params);
                 $node->setBody($body);
                 return $this->completeNode($node);
-                
             }
             
+            $this->error();
             $this->scanner->setPosition($position);
         }
-        
         return null;
     }
     
     protected function parseGeneratorExpression()
     {
+        $position = $this->scanner->getPosition();
         if ($this->scanner->consumeArray(array("function", "*"))) {
             
-            $position = $this->scanner->getPosition();
             $id = $this->BindingIdentifier(true);
             
             if ($this->scanner->consume("(") &&
                 ($params = $this->parseFormalParameters(true)) !== null &&
                 $this->scanner->consumeArray(array(")", "{")) &&
-                (($body = $this->parseGeneratorBody()) || true) &&
+                (($body = $this->parseFunctionBody(true)) || true) &&
                 $this->scanner->consume("}")) {
                 
-                $node = $this->createNode("FunctionExpression");
+                $node = $this->createNode("FunctionExpression", $position);
                 $node->setId($id);
                 $node->setParams($params);
                 $node->setBody($body);
                 $node->setGenerator(true);
                 return $this->completeNode($node);
-                
             }
             
+            $this->error();
             $this->scanner->setPosition($position);
         }
-        
         return null;
-    }
-    
-    protected function parseGeneratorBody()
-    {
-        return $this->parseFunctionBody(true);
     }
     
     protected function parseYieldExpression($in = false)
     {
-        if ($this->scanner->consume("yield") &&
-            $this->scanner->consumeWhitespacesAndComments(false)) {
+        $position = $this->scanner->getPosition();
+        if ($this->scanner->consume("yield")) {
             
-            $position = $this->scanner->getPosition();
-            $delegate = $this->scanner->consume("*") ? true : false;
-            
-            if ($argument = $this->parseAssignmentExpression($in, true)) {
-                
-                $node = $this->createNode("YieldExpression");
-                $node->setArgument($argument);
-                $node->setDelegate($delegate);
+            $node = $this->createNode("YieldExpression", $position);
+            if ($this->scanner->consumeWhitespacesAndComments(false)) {
+                $delegate = $this->scanner->consume("*") ? true : false;
+                if ($argument = $this->parseAssignmentExpression($in, true)) {
+                    
+                    $node->setArgument($argument);
+                    $node->setDelegate($delegate);
+                    return $this->completeNode($node);
+                }
+            } else {
                 return $this->completeNode($node);
-                
             }
             
+            $this->error();
             $this->scanner->setPosition($position);
-            
-        } elseif ($this->scanner->consume("yield")) {
-            
-            $node = $this->createNode("YieldExpression");
-            return $this->completeNode($node);
         }
-        
         return null;
-    }
-    
-    protected function parseFormalParameters($yield = false)
-    {
-        return $this->parseFormalParameterList($yield);
-    }
-    
-    protected function parseStrictFormalParameters($yield = false)
-    {
-        return $this->parseFormalParameters($yield);
     }
     
     protected function parseFormalParameterList($yield = false)
@@ -969,7 +957,7 @@ class Parser extends \Peast\Syntax\Parser
         $position = $this->scanner->getPosition();
         $rest = true;
         $restMandatory = false;
-        while ($param = $this->parseFormalParameter($yield)) {
+        while ($param = $this->parseBindingElement($yield)) {
             $list[] = $param;
             $rest = false;
             if ($this->scanner->consume(",")) {
@@ -980,9 +968,10 @@ class Parser extends \Peast\Syntax\Parser
             }
         }
         if ($rest) {
-            if ($restParam = $this->parseFunctionRestParameter($yield)) {
+            if ($restParam = $this->parseBindingRestElement($yield)) {
                 $list[] = $restParam;
             } elseif ($restMandatory) {
+                $this->error();
                 $this->scanner->setPosition($position);
                 return null;
             }
@@ -990,51 +979,27 @@ class Parser extends \Peast\Syntax\Parser
         return $list;
     }
     
-    protected function parseFormalsList($yield = false)
-    {
-        return $this->charSeparatedListOf(
-            "parseFormalParameter",
-            array($yield)
-        );
-    }
-    
-    protected function parseFunctionRestParameter($yield = false)
-    {
-        return $this->parseBindingRestElement($yield);
-    }
-    
-    protected function parseFormalParameter($yield = false)
-    {
-        return $this->parseBindingElement($yield);
-    }
-    
     protected function parseFunctionBody($yield = false)
     {
-        if (($body = $this->parseFunctionStatementList($yield)) !== null) {
-            $node = $this->createNode("BlockStatement");
+        $position = $this->scanner->getPosition();
+        $node = $this->createNode("BlockStatement", $position);
+        if ($body = $this->parseStatementList($yield, true)) {
             $node->setBody($body);
-            return $this->completeNode($node);
         }
-        return null;
-    }
-    
-    protected function parseFunctionStatementList($yield = false)
-    {
-        $list = $this->parseStatementList($yield, true);
-        return $list ? $list : array();
+        return $this->completeNode($node);
     }
     
     protected function parseClassDeclaration($yield = false, $default = false)
     {
+        $position = $this->scanner->getPosition();
         if ($this->scanner->consume("class")) {
             
-            $position = $this->scanner->getPosition();
             $id = $this->parseBindingIdentifier($yield);
             
             if (($default || $id) &&
                 $tail = $this->parseClassTail($yield)) {
                 
-                $node = $this->createNode("ClassDeclaration");
+                $node = $this->createNode("ClassDeclaration", $position);
                 if ($id) {
                     $node->setId($id);
                 }
@@ -1043,25 +1008,24 @@ class Parser extends \Peast\Syntax\Parser
                 }
                 $node->setBody($tail[1]);
                 return $this->completeNode($node);
-                
             }
             
+            $this->error();
             $this->scanner->setPosition($position);
         }
-        
         return null;
     }
     
     protected function parseClassExpression($yield = false)
     {
+        $position = $this->scanner->getPosition();
         if ($this->scanner->consume("class")) {
             
-            $position = $this->scanner->getPosition();
             $id = $this->BindingIdentifier($yield);
             
             if ($tail = $this->parseClassTail($yield)) {
                 
-                $node = $this->createNode("ClassExpression");
+                $node = $this->createNode("ClassExpression", $position);
                 if ($id) {
                     $node->setId($id);
                 }
@@ -1070,21 +1034,18 @@ class Parser extends \Peast\Syntax\Parser
                 }
                 $node->setBody($tail[1]);
                 return $this->completeNode($node);
-                
             }
             
+            $this->error();
             $this->scanner->setPosition($position);
         }
-        
         return null;
     }
     
     protected function parseClassTail($yield = false)
     {
         $position = $this->scanner->getPosition();
-        
         $heritage = $this->parseClassHeritage($yield);
-        
         if ($this->scanner->consume("{")) {
             
             $body = $this->parseClassBody($yield);
@@ -1092,32 +1053,33 @@ class Parser extends \Peast\Syntax\Parser
             if ($this->scanner->consume("}")) {
                 return array($heritage, $body);
             }
+            
+            $this->error();
         }
-        
         $this->scanner->setPosition($position);
-        
         return null;
     }
     
     protected function parseClassHeritage($yield = false)
     {
         $position = $this->scanner->getPosition();
-        
-        if ($this->scanner->consume("extends") &&
-            $superClass = $this->parseLeftHandSideExpression($yield)) {
-            return $superClass;
+        if ($this->scanner->consume("extends")) {
+            
+            if ($superClass = $this->parseLeftHandSideExpression($yield)) {
+                return $superClass;
+            }
+            
+            $this->error();
+            $this->scanner->setPosition($position);
         }
-        
-        $this->scanner->setPosition($position);
-        
         return null;
     }
     
     protected function parseClassBody($yield = false)
     {
-        $body = $this->parseClassElementList($yield);
-        $node = $this->createNode("ClassBody");
-        if ($body) {
+        $position = $this->scanner->getPosition();
+        $node = $this->createNode("ClassBody", $position);
+        if ($body = $this->parseClassElementList($yield)) {
             $node->setBody($body);
         }
         return $this->completeNode($node);
@@ -1143,109 +1105,62 @@ class Parser extends \Peast\Syntax\Parser
         }
         
         $position = $this->scanner->getPosition();
-        
-        if ($this->scanner->consume("static") &&
-            $def = $this->parseMethodDefinition($yield)) {
-            $def->setStatic(true);
-            return $def;        
+        if ($this->scanner->consume("static")) {
+            
+            if ($def = $this->parseMethodDefinition($yield)) {
+                $def->setStatic(true);
+                $def->setStartPosition($position);
+                return $def;        
+            }
+
+            $this->error();
+            $this->scanner->setPosition($position);
         }
-        
-        $this->scanner->setPosition($position);
-        
         return null;
     }
     
     protected function parseLexicalDeclaration($in = false, $yield = false)
     {
-        if ($letOrConst = $this->parseLetOrConst()) {
+        $position = $this->scanner->getPosition();
+        if ($letOrConst = $this->scanner->consumeOneOf("let", "const")) {
             
-            $position = $this->scanner->getPosition();
-            $declarations = $this->parseBindingList($in, $yield);
+            $declarations = $this->charSeparatedListOf(
+                "parseVariableDeclaration",
+                array($in, $yield)
+            );
             
-            if ($declarations && $this->scanner->consume(";")) {
-                $node = $this->createNode("VariableDeclaration");
+            if ($declarations) {
+                $this->scanner->consume(";");
+                $node = $this->createNode("VariableDeclaration", $position);
                 $node->setKind($letOrConst);
                 $node->setDeclarations($declarations);
                 return $this->completeNode($node);
             }
             
-            $this->scanner->setPosition($position);
-            
-        }
-        
-        return null;
-    }
-    
-    protected function parseLetOrConst()
-    {
-        if ($this->scanner->consume("let")) {
-            return "let";
-        } elseif ($this->scanner->consume("const")) {
-            return "const";
-        }
-        return null;
-    }
-    
-    protected function parseBindingList($in = false, $yield = false)
-    {
-        return $this->charSeparatedListOf(
-            "parseLexicalBinding",
-            array($in, $yield)
-        );
-    }
-    
-    protected function parseLexicalBinding($in = false, $yield = false)
-    {
-        if ($id = $this->parseBindingIdentifier($yield)) {
-            
-            $init = $this->parseInitializer($in, $yield);
-            
-            $node = $this->createNode("VariableDeclarator");
-            $node->setId($id);
-            if ($init) {
-                $node->setInit($init);
-            }
-            return $this->completeNode($node);
-            
-        } else {
-            
-            $position = $this->scanner->getPosition();
-            
-            if (($id = $this->parseBindingPattern($yield)) &&
-                $init = $this->parseInitializer($in, $yield)) {
-                
-                $node = $this->createNode("VariableDeclarator");
-                $node->setId($id);
-                $node->setInit($init);
-                return $this->completeNode($node);
-                
-            }
-            
+            $this->error();
             $this->scanner->setPosition($position);
         }
-        
         return null;
     }
     
     protected function parseVariableStatement($yield = false)
     {
+        $position = $this->scanner->getPosition();
         if ($this->scanner->consume("var")) {
             
-            $position = $this->scanner->getPosition();
             $declarations = $this->parseVariableDeclarationList(true, $yield);
             
             if ($declarations) {
                 $this->scanner->consume(";");
-                $node = $this->createNode("VariableDeclaration");
+                $node = $this->createNode("VariableDeclaration", $position);
                 $node->setKind($node::KIND_VAR);
                 $node->setDeclarations($declarations);
                 return $this->completeNode($node);
             }
             
+            $this->error();
             $this->scanner->setPosition($position);
-            
         }
-        
         return null;
     }
     
@@ -1259,67 +1174,60 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseVariableDeclaration($in = false, $yield = false)
     {
+        $position = $this->scanner->getPosition();
         if ($id = $this->parseBindingIdentifier($yield)) {
             
-            $init = $this->parseInitializer($in, $yield);
-            
-            $node = $this->createNode("VariableDeclarator");
+            $node = $this->createNode("VariableDeclarator", $position);
             $node->setId($id);
-            if ($init) {
+            if ($init = $this->parseInitializer($in, $yield)) {
                 $node->setInit($init);
             }
             return $this->completeNode($node);
             
-        } else {
+        } elseif ($id = $this->parseBindingPattern($yield)) {
             
-            $position = $this->scanner->getPosition();
-            
-            if (($id = $this->parseBindingPattern($yield)) &&
-                $init = $this->parseInitializer($in, $yield)) {
-                
-                $node = $this->createNode("VariableDeclarator");
+            if ($init = $this->parseInitializer($in, $yield)) {
+                $node = $this->createNode("VariableDeclarator", $position);
                 $node->setId($id);
                 $node->setInit($init);
                 return $this->completeNode($node);
-                
             }
             
+            $this->error();
             $this->scanner->setPosition($position);
         }
-        
         return null;
     }
     
     protected function parseForDeclaration($yield = false)
     {
-         $position = $this->scanner->getPosition();
-        
-        if ($letOrConst = $this->parseLetOrConst() &&
-            $declaration = $this->parseForBinding($yield)) {
+        $position = $this->scanner->getPosition();
+        if ($letOrConst = $this->scanner->consumeOneOf("let", "const")) {
             
-            $node = $this->createNode("VariableDeclaration");
-            $node->setKind($letOrConst);
-            $node->setDeclarations(array($declaration));
-            return $this->completeNode($node);
+            if ($declaration = $this->parseForBinding($yield)) {
+
+                $node = $this->createNode("VariableDeclaration", $position);
+                $node->setKind($letOrConst);
+                $node->setDeclarations(array($declaration));
+                return $this->completeNode($node);
+            }
             
+            $this->error();
+            $this->scanner->setPosition($position);
         }
-        
-        $this->scanner->setPosition($position);
-        
         return null;
     }
     
     protected function parseForBinding($yield = false)
     {
+        $position = $this->scanner->getPosition();
         if (($id = $this->parseBindingIdentifier($yield)) ||
             ($id = $this->parseBindingPattern($yield))) {
             
-            $node = $this->createNode("VariableDeclarator");
+            $node = $this->createNode("VariableDeclarator", $position);
             $node->setId($id);
             return $this->completeNode($node);
-            
         }
-        
         return null;
     }
     
@@ -1338,38 +1246,30 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseFromClause()
     {
         $position = $this->scanner->getPosition();
-        
-        if ($this->scanner->consume("from") &&
-            $spec = $this->parseModuleSpecifier()) {
-            return $spec;
+        if ($this->scanner->consume("from")) {
+            if ($spec = $this->parseStringLiteral()) {
+                return $spec;
+            }
+            $this->error();
+            $this->scanner->setPosition($position);
         }
-        
-        $this->scanner->setPosition($position);
-        
         return null;
-    }
-    
-    protected function parseModuleSpecifier()
-    {
-        return $this->parseStringLiteral();
     }
     
     protected function parseExportDeclaration()
     {
+        $position = $this->scanner->getPosition();
         if ($this->scanner->consume("export")) {
-            
-            $position = $this->scanner->getPosition();
             
             if ($this->scanner->consume("*")) {
                 
-                $source = $this->parseFromClause();
-                
-                if ($source !== null && $this->scanner->consume(";")) {
-                    
-                    $node = $this->createNode("ExportAllDeclaration");
+                if ($source = $this->parseFromClause()) {
+                    $this->scanner->consume(";");
+                    $node = $this->createNode(
+                        "ExportAllDeclaration", $position
+                    );
                     $node->setSource($source);
                     return $this->completeNode($node);
-                    
                 }
                 
             } elseif ($this->scanner->consume("default")) {
@@ -1377,73 +1277,65 @@ class Parser extends \Peast\Syntax\Parser
                 if (($declaration = $this->parseHoistableDeclaration(true)) ||
                     ($declaration = $this->parseClassDeclaration(true))) {
                     
-                    $node = $this->createNode("ExportDefaultDeclaration");
+                    $node = $this->createNode(
+                        "ExportDefaultDeclaration", $position
+                    );
                     $node->setDeclaration($declaration);
                     return $this->completeNode($node);
                     
                 } elseif ($this->scanner->notBefore(array("function", "class")) &&
-                          ($declaration = $this->parseAssignmentExpression(true)) &&
-                          $this->scanner->consume(";")) {
+                          ($declaration = $this->parseAssignmentExpression(true))) {
                     
-                    $node = $this->createNode("ExportDefaultDeclaration");
+                    $this->scanner->consume(";");
+                    $node = $this->createNode(
+                        "ExportDefaultDeclaration", $position
+                    );
                     $node->setDeclaration($declaration);
                     return $this->completeNode($node);
-                    
-                } elseif (($specifiers = $this->parseExportClause()) !== null) {
-                    
-                    $source = $this->parseFromClause();
-                    
-                    if ($this->scanner->consume(";")) {
-                        $node = $this->createNode("ExportNamedDeclaration");
-                        $node->setSpecifiers($specifiers);
-                        if ($source !== null) {
-                            $node->setSource($source);
-                        }
-                        return $this->completeNode($node);
-                    }
-                    
-                } elseif (($dec = $this->parseVariableStatement()) ||
-                          $dec = $this->parseDeclaration()) {
-                    
-                    $node = $this->createNode("ExportNamedDeclaration");
-                    $node->setDeclaration($dec);
-                    return $this->completeNode($node);
-                    
                 }
                 
+            } elseif (($specifiers = $this->parseExportClause()) !== null) {
+                
+                $node = $this->createNode("ExportNamedDeclaration", $position);
+                $node->setSpecifiers($specifiers);
+                if ($source = $this->parseFromClause()) {
+                    $node->setSource($source);
+                }
+                $this->scanner->consume(";");
+                return $this->completeNode($node);
+
+            } elseif (($dec = $this->parseVariableStatement()) ||
+                      $dec = $this->parseDeclaration()) {
+
+                $node = $this->createNode("ExportNamedDeclaration", $position);
+                $node->setDeclaration($dec);
+                return $this->completeNode($node);
             }
             
+            $this->error();
             $this->scanner->setPosition($position);
-            
         }
-        
         return null;
     }
     
     protected function parseExportClause()
     {
         $position = $this->scanner->getPosition();
-        
         if ($this->scanner->consume("{")) {
             
-            $list = $this->parseExportsList();
+            $list = $this->charSeparatedListOf("parseExportSpecifier");
             $this->scanner->consume(",");
             
             if ($this->scanner->consume("}")) {
                 return $list ? $list : array();
             }
+            
+            $this->error();
+            $this->scanner->setPosition($position);
         }
-        
-        $this->scanner->setPosition($position);
-        
         return null;
     }
-    
-    protected function parseExportsList()
-    {
-        return $this->charSeparatedListOf("parseExportSpecifier");
-    }
-    
+    //TODO
     protected function parseExportSpecifier()
     {
         if ($local = $this->parseIdentifierName()) {
@@ -1478,7 +1370,7 @@ class Parser extends \Peast\Syntax\Parser
         
         if ($this->scanner->consume("import")) {
             
-            if ($source = $this->parseModuleSpecifier()) {
+            if ($source = $this->parseStringLiteral()) {
                 
                 $node = $this->createNode("ImportDeclaration");
                 $node->setSource($source);
@@ -1844,9 +1736,9 @@ class Parser extends \Peast\Syntax\Parser
             
             $params = array();
             if ($kind === Node\MethodDefinition::KIND_SET) {
-                $params = $this->parsePropertySetParameterList();
+                $params = $this->parseBindingElement();
             } elseif ($kind === Node\MethodDefinition::KIND_METHOD) {
-                $params = $this->parseStrictFormalParameters();
+                $params = $this->parseFormalParameterList();
             }
             
             if ($params !== null &&
@@ -1888,10 +1780,10 @@ class Parser extends \Peast\Syntax\Parser
             
             if (($prop = $this->parsePropertyName($yield)) &&
                 $this->scanner->consume("(") &&
-                ($params = $this->parseStrictFormalParameters($yield)) !== null &&
+                ($params = $this->parseFormalParameterList($yield)) !== null &&
                 $this->scanner->consume(")") &&
                 $this->scanner->consume("{") &&
-                ($body = $this->parseGeneratorBody()) &&
+                ($body = $this->parseFunctionBody(true)) &&
                 $this->scanner->consume("}")) {
                 
                 $nodeFn = $this->createNode("FunctionExpression");
@@ -1914,18 +1806,13 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parsePropertySetParameterList()
-    {
-        return $this->parseFormalParameter();
-    }
-    
     protected function parseArrowFormalParameters($yield = false)
     {
         $position = $this->scanner->getPosition();
         
         if ($this->scanner->consume("(")) {
             
-            $params = $this->parseStrictFormalParameters($yield);
+            $params = $this->parseFormalParameterList($yield);
             
             if ($params !== null && $this->scanner->consume(")")) {
                 return $params;
