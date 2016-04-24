@@ -1122,7 +1122,7 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseLexicalDeclaration($in = false, $yield = false)
     {
         $position = $this->scanner->getPosition();
-        if ($letOrConst = $this->scanner->consumeOneOf("let", "const")) {
+        if ($letOrConst = $this->scanner->consumeOneOf(array("let", "const"))) {
             
             $declarations = $this->charSeparatedListOf(
                 "parseVariableDeclaration",
@@ -1202,7 +1202,7 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseForDeclaration($yield = false)
     {
         $position = $this->scanner->getPosition();
-        if ($letOrConst = $this->scanner->consumeOneOf("let", "const")) {
+        if ($letOrConst = $this->scanner->consumeOneOf(array("let", "const"))) {
             
             if ($declaration = $this->parseForBinding($yield)) {
 
@@ -2002,7 +2002,7 @@ class Parser extends \Peast\Syntax\Parser
             array($in, $yield)
         );
         
-        if ($list === null) {
+        if (!$list) {
             return $list;
         } elseif (count($list) === 1) {
             return $list[0];
@@ -2023,7 +2023,6 @@ class Parser extends \Peast\Syntax\Parser
         } elseif ($expr = $this->parseArrowFunction($in, $yield)) {
             return $expr;
         } elseif ($left = $this->parseLeftHandSideExpression($yield)) {
-            
             if ($this->scanner->consume("=")) {
                 $operator = "=";
             } else {
