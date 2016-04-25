@@ -32,12 +32,12 @@ class RegExpLiteral extends Literal
         return $this;
     }
     
-    public function getRawValue()
+    public function getRaw()
     {
         return "/" . $this->getPattern() . "/" . $this->getFlags();
     }
     
-    public function setRawValue($rawValue)
+    public function setRaw($rawValue)
     {
         $parts = explode("/", substr($rawValue, 1));
         $flags = array_pop($parts);

@@ -2818,7 +2818,7 @@ class Parser extends \Peast\Syntax\Parser
                 "null", "true", "false"
             ))) {
             $node = $this->createNode("Literal", $position);
-            $node->setRawValue($literal);
+            $node->setRaw($literal);
             return $this->completeNode($node);
         } elseif ($literal = $this->parseStringLiteral()) {
             return $literal;
@@ -2836,7 +2836,7 @@ class Parser extends \Peast\Syntax\Parser
             
             if ($string = $this->scanner->consumeUntil(array($quote), false)) {
                 $node = $this->createNode("Literal", $position);
-                $node->setRawValue($quote . $string);
+                $node->setRaw($quote . $string);
                 return $this->completeNode($node);
             }
             
@@ -2852,7 +2852,7 @@ class Parser extends \Peast\Syntax\Parser
         $position = $this->scanner->getPosition();
         if (($num = $this->scanner->consumeNumber()) !== null) {
             $node = $this->createNode("Literal", $position);
-            $node->setRawValue($num);
+            $node->setRaw($num);
             return $this->completeNode($node);
         }
         return null;
@@ -2912,7 +2912,7 @@ class Parser extends \Peast\Syntax\Parser
         $position = $this->scanner->getPosition();
         if ($regex = $this->scanner->consumeRegularExpression()) {
             $node = $this->createNode("RegExpLiteral", $position);
-            $node->setRawValue($regex);
+            $node->setRaw($regex);
             return $this->completeNode($node);
         }
         return null;

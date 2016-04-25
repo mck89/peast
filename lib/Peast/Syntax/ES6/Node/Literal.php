@@ -47,7 +47,7 @@ class Literal extends Node implements Expression
         return $this;
     }
     
-    public function getRawValue()
+    public function getRaw()
     {
         $value = $this->getValue();
         $kind = $this->getKind();
@@ -71,7 +71,7 @@ class Literal extends Node implements Expression
         return $value;
     }
     
-    public function setRawValue($rawValue)
+    public function setRaw($rawValue)
     {
         if ($rawValue === "null") {
             $this->setValue(null);
@@ -118,6 +118,6 @@ class Literal extends Node implements Expression
     
     public function compile()
     {
-        return $this->getRawValue();
+        return $this->getRaw();
     }
 }
