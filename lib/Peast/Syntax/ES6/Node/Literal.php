@@ -107,8 +107,14 @@ class Literal extends Node implements Expression
                     $value = $value . "e" . $parts[1];
                 }
             }
+            if (strpos("$value", ".")) {
+                
+            }
+            $value = strpos("$value", ".") === false ?
+                     (int) $value :
+                     (float) $value;
             $this->setKind($kind);
-            $this->setValue((float) $rawValue);
+            $this->setValue($value);
         }
         return $this;
     }
