@@ -3,12 +3,21 @@ namespace test\Peast;
 
 class TestBase extends \PHPUnit_Framework_TestCase
 {
-    protected function getJsTestFiles($dir)
+    protected function getJsTestFiles($dir, $invalid = false)
     {
         $ds = DIRECTORY_SEPARATOR;
         $testFiles = array();
-        foreach (glob($dir . $ds . "files" . $ds . "*.js") as $jsFile) {
-            $testFiles[] = array($jsFile, str_replace(".js", ".json", $jsFile));
+        $files = glob($dir . $ds . "files" . $ds . "*" . $ds . "*.js");
+        foreach ($files as $jsFile) {
+            $isInvalid = strpos($jsFile, "Invalid");
+            if ($isInvalid && $invalid) {
+                $testFiles[] = array($jsFile);
+            } elseif (!$isInvalid && !$invalid) {
+                $testFiles[] = array(
+                    $jsFile,
+                    str_replace(".js", ".json", $jsFile)
+                );
+            }
         }
         return $testFiles;
     }

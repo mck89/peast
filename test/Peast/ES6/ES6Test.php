@@ -17,4 +17,19 @@ class ES6Test extends \test\Peast\TestBase
         $tree = \Peast\Peast::fromFile($parser, $sourceFile);
         $this->compareJSFile($tree, $compareFile);
     }
+    
+    public function invalidJsTestFilesProvider()
+    {
+        return parent::getJsTestFiles(__DIR__, true);
+    }
+    
+    /**
+     * @expectedException \Peast\Syntax\Exception
+     * @dataProvider invalidJsTestFilesProvider
+     */
+    public function testParserException($sourceFile)
+    {
+        $parser = new \Peast\Syntax\ES6\Parser();
+        \Peast\Peast::fromFile($parser, $sourceFile);
+    }
 }

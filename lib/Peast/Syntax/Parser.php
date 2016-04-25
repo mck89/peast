@@ -63,6 +63,7 @@ abstract class Parser
             }
         }
         if (!$valid) {
+            $this->error();
             $this->scanner->setPosition($position);
             return null;
         }
