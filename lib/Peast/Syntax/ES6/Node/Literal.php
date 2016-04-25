@@ -107,9 +107,6 @@ class Literal extends Node implements Expression
                     $value = $value . "e" . $parts[1];
                 }
             }
-            if (strpos("$value", ".")) {
-                
-            }
             $value = strpos("$value", ".") === false ?
                      (int) $value :
                      (float) $value;
