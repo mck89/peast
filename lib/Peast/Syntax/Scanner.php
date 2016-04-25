@@ -225,7 +225,12 @@ class Scanner
         if ($token["whitespace"]) {
             $linesCount = count($token["source"]) - 1;
             $this->line += $linesCount;
-            $this->column += mb_strlen($token["source"][$linesCount]);
+            $columns = mb_strlen($token["source"][$linesCount]);
+            if ($linesCount === 0) {
+                $this->column += $columns;
+            } else {
+                $this->column = $columns;
+            }
         } else {
             $this->column += $token["length"];
         }
@@ -263,6 +268,8 @@ class Scanner
                 $this->consumeToken($token);
             } elseif ($comment === 2 && $source === "*/") {
                 $comment = 0;
+                $this->consumeToken($token);
+            } elseif ($comment) {
                 $this->consumeToken($token);
             } else {
                 $this->unconsumeToken($token);
@@ -360,7 +367,7 @@ class Scanner
             $start = false;
         }
         
-        if ($buffer !== "") { 
+        if ($buffer !== "") {
             $this->column += $index - $this->index;
             $this->index = $index; 
             return $buffer;
