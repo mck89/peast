@@ -13,12 +13,23 @@ abstract class Parser
     
     abstract public function parse();
     
-    public function createNode($nodeType, $position)
+    public function createNode($nodeType, $position = null)
     {
         $parts = explode("\\", get_class($this));
         array_pop($parts);
         $nodeClass = implode("\\", $parts) . "\\Node\\$nodeType";
         $node = new $nodeClass;
+        if (!$position) {
+            $position = $this->scanner->getConsumedTokenPosition();
+        } elseif ($position instanceof Node) {
+            $position = $position->getStartPosition();
+        } elseif (is_array($position)) {
+            if (count($position)) {
+                $position = $position[0]->getStartPosition();
+            } else {
+                $position = $this->scaner->getPosition();
+            }
+        }
         return $node->setStartPosition($position);
     }
     
