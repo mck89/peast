@@ -56,7 +56,6 @@ abstract class Parser
     {
         $multi = is_array($char);
         $list = array();
-        $position = $this->scanner->getPosition();
         $valid = true;
         $matchedChar = null;
         while ($param = call_user_func_array(array($this, $fn), $args)) {
@@ -73,7 +72,6 @@ abstract class Parser
         }
         if (!$valid) {
             $this->error();
-            $this->scanner->setPosition($position);
             return null;
         }
         return $list;
@@ -81,7 +79,6 @@ abstract class Parser
     
     protected function recursiveExpression($fn, $args, $operator, $class)
     {
-        $position = $this->scanner->getPosition();
         $multi = is_array($operator);
         $list = $this->charSeparatedListOf($fn, $args, $operator);
         
@@ -93,10 +90,11 @@ abstract class Parser
             $lastNode = null;
             foreach ($list as $i => $expr) {
                 if ($i) {
-                    $node = $this->createNode($class, $position);
-                    $node->setLeft($lastNode ?
-                                   $lastNode :
-                                   ($multi ? $list[0][0] : $list[0]));
+                    $left = $lastNode ?
+                            $lastNode :
+                            ($multi ? $list[0][0] : $list[0]);
+                    $node = $this->createNode($class, $left);
+                    $node->setLeft($left);
                     $node->setOperator($multi ? $expr[1] : $operator);
                     $node->setRight($multi ? $expr[0] : $expr);
                     $lastNode = $this->completeNode($node);
