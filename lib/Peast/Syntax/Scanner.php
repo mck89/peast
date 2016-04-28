@@ -371,6 +371,8 @@ class Scanner
     {
         $postion = $this->getPosition();
         
+        $this->consumeWhitespacesAndComments();
+        
         if ($this->index + 1 < $this->length &&
             $this->chars[$this->index] === "/" &&
             !in_array($this->chars[$this->index + 1], array("/", "*"), true)) {
@@ -430,14 +432,16 @@ class Scanner
     
     public function consumeNumber()
     {
+        $postion = $this->getPosition();
+        
+        $this->consumeWhitespacesAndComments();
+        
         $nextChar = $this->index < $this->length ?
                     $this->chars[$this->index] :
                     null;
         if (!(($nextChar >= "0" && $nextChar <= "9") || $nextChar === ".")) {
             return null;
         }
-        
-        $postion = $this->getPosition();
         
         $decimal = true;
         $source = "";
