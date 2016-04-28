@@ -11,6 +11,10 @@ class Scanner
     
     protected $length;
     
+    protected $consumedTokenPosition;
+    
+    protected $wsCache;
+    
     protected $chars = array();
     
     protected $config;
@@ -96,7 +100,19 @@ class Scanner
         $this->line = $position->getLine();
         $this->column = $position->getColumn();
         $this->index = $position->getIndex();
+        $this->clearCache();
         return $this;
+    }
+    
+    public function getConsumedTokenPosition()
+    {
+        return $this->consumedTokenPosition;
+    }
+    
+    protected function clearCache()
+    {
+        $this->wsCache = null;
+        $this->consumedTokenPosition = null;
     }
     
     protected function isWhitespace($char)
@@ -238,6 +254,9 @@ class Scanner
     {
         if (!$lineTerminator) {
             $position = $this->getPosition();
+        } elseif ($this->wsCache) {
+            $this->setPosition($this->wsCache[0]);
+            return $this->wsCache[1];
         }
         $comment = $processed = 0;
         while ($token = $this->getToken()) {
@@ -273,13 +292,32 @@ class Scanner
     
     public function consume($string)
     {
-        $this->consumeWhitespacesAndComments();
+        //Store current position so that it can be restored if the token does
+        //not match
+        $initPosition = $this->getPosition();
         
+        //Consume any whitespace and comment before checking
+        $ws = $this->consumeWhitespacesAndComments();
+        
+        //Store the position after whitespaces and comments
+        $trimmedPosition = $this->getPosition();
+        
+        //Check the token
         $token = $this->getToken();
         if (!$token || $token["source"] !== $string) {
+            //Token does not match. Get back to initial position and fill the
+            //whitespaces cache
+            $this->setPosition($initPosition);
+            $this->wsCache = array($trimmedPosition, $ws);
             return false;
         }
         
+        //The token matches so consumedTokenPosition becomes the position after
+        //whitespaces and the whitespaces cache must be cleared
+        $this->clearCache();
+        $this->consumedTokenPosition = $trimmedPosition;
+        
+        //Finally consume the matching token
         $this->consumeToken($token);
         
         return true;
@@ -287,7 +325,10 @@ class Scanner
     
     public function consumeIdentifier()
     {
-        $this->consumeWhitespacesAndComments();
+        $ws = $this->consumeWhitespacesAndComments();
+        
+        $trimmedPosition = $this->getPosition();
+        $this->clearCache();
         
         $start = true;
         $index = $this->index;
@@ -359,9 +400,12 @@ class Scanner
         }
         
         if ($buffer !== "") {
+            $this->consumedTokenPosition = $trimmedPosition;
             $this->column += $index - $this->index;
             $this->index = $index; 
             return $buffer;
+        } else {
+            $this->wsCache = array($trimmedPosition, $ws);
         }
         
         return null;
@@ -371,7 +415,10 @@ class Scanner
     {
         $postion = $this->getPosition();
         
-        $this->consumeWhitespacesAndComments();
+        $ws = $this->consumeWhitespacesAndComments();
+        
+        $trimmedPosition = $this->getPosition();
+        $this->clearCache();
         
         if ($this->index + 1 < $this->length &&
             $this->chars[$this->index] === "/" &&
@@ -421,11 +468,13 @@ class Scanner
                         break;
                     }
                 }
+                $this->consumedTokenPosition = $trimmedPosition;
                 return $source;
             }
         }
         
         $this->setPosition($postion);
+        $this->wsCache = array($trimmedPosition, $ws);
         
         return null;
     }
@@ -434,12 +483,17 @@ class Scanner
     {
         $postion = $this->getPosition();
         
-        $this->consumeWhitespacesAndComments();
+        $ws = $this->consumeWhitespacesAndComments();
+        
+        $trimmedPosition = $this->getPosition();
+        $this->clearCache();
         
         $nextChar = $this->index < $this->length ?
                     $this->chars[$this->index] :
                     null;
         if (!(($nextChar >= "0" && $nextChar <= "9") || $nextChar === ".")) {
+            $this->setPosition($postion);
+            $this->wsCache = array($trimmedPosition, $ws);
             return null;
         }
         
@@ -470,9 +524,13 @@ class Scanner
                         $char >= "0" && $char <= "9" &&
                         !preg_match("/^\d+$/", $n)
                     )) {
+                    $this->setPosition($postion);
+                    $this->wsCache = array($trimmedPosition, $ws);
                     return null;
                 }
             } elseif (!preg_match("/^\d+$/", $n)) {
+                $this->setPosition($postion);
+                $this->wsCache = array($trimmedPosition, $ws);
                 return null;
             }
             $this->consumeToken($num);
@@ -483,7 +541,8 @@ class Scanner
                 if ($expPart === "") {
                     $sign = $this->scanSymbols();
                     if ($sign["source"] !== "+" && $sign["source"] !== "-") {
-                        $this->setPosition($position);
+                        $this->setPosition($postion);
+                        $this->wsCache = array($trimmedPosition, $ws);
                         return null;
                     }
                     $this->consumeToken($sign);
@@ -493,7 +552,8 @@ class Scanner
                     $source .= $sign["source"] . $expPart;
                 }
                 if (!preg_match("/^\d+$/", $expPart)) {
-                    $this->setPosition($position);
+                    $this->setPosition($postion);
+                    $this->wsCache = array($trimmedPosition, $ws);
                     return null;
                 }
             }
@@ -503,20 +563,23 @@ class Scanner
         if ($dot && $dot["source"] === ".") {
             if (!$decimal) {
                 //If decimal part is not allowed exit
-                $this->setPosition($position);
+                $this->setPosition($postion);
+                $this->wsCache = array($trimmedPosition, $ws);
                 return null;
             } else {
                 $this->consumeToken($dot);
                 $source .= ".";
                 $decPart = $this->scanOther();
                 if (!$decPart) {
-                    $this->setPosition($position);
+                    $this->setPosition($postion);
+                    $this->wsCache = array($trimmedPosition, $ws);
                     return null;
                 }
                 //Split exponent part
                 $parts = preg_split("/e/i", $decPart["source"]);
                 if (!preg_match("/^\d+$/", $parts[0])) {
-                    $this->setPosition($position);
+                    $this->setPosition($postion);
+                    $this->wsCache = array($trimmedPosition, $ws);
                     return null;
                 }
                 $this->consumeToken($decPart);
@@ -527,7 +590,8 @@ class Scanner
                     if ($expPart === "") {
                         $sign = $this->scanSymbols();
                         if ($sign["source"] !== "+" && $sign["source"] !== "-") {
-                            $this->setPosition($position);
+                            $this->setPosition($postion);
+                            $this->wsCache = array($trimmedPosition, $ws);
                             return null;
                         }
                         $this->consumeToken($sign);
@@ -537,24 +601,31 @@ class Scanner
                         $source .= $sign["source"] . $expPart;
                     }
                     if (!preg_match("/^\d+$/", $expPart)) {
-                        $this->setPosition($position);
+                        $this->setPosition($postion);
+                        $this->wsCache = array($trimmedPosition, $ws);
                         return null;
                     }
                 }
             }
         }
+        $this->consumedTokenPosition = $trimmedPosition;
         return $source;
     }
     
     public function consumeArray($sequence)
     {
         $position = $this->getPosition();
+        $firstConsumedTokenPosition = null;
         foreach ($sequence as $string) {
             if ($this->consume($string) === false) {
                 $this->setPosition($position);
                 return false;
             }
+            if (!$firstConsumedTokenPosition) {
+                $firstConsumedTokenPosition = $this->consumedTokenPosition;
+            }
         }
+        $this->consumedTokenPosition = $firstConsumedTokenPosition;
         return true;
     }
     
@@ -583,6 +654,7 @@ class Scanner
     
     public function consumeUntil($stop, $allowLineTerminator = true)
     {
+        $this->clearCache();
         foreach ($stop as $s) {
             $stopMap[$s[0]] = array(strlen($s), $s);
         }
