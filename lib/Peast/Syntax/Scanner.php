@@ -119,7 +119,6 @@ class Scanner
         }
         if ($buffer !== "") {
             $len = $index - $this->index;
-            $this->index = $index;
             return array(
                 "source" => $this->splitLines($buffer),
                 "length" => $len,
@@ -160,7 +159,6 @@ class Scanner
                 }
             }
             if ($bufferLen) {
-                $this->index += $bufferLen;
                 return array(
                     "source" => $buffer,
                     "length" => $bufferLen,
@@ -186,7 +184,6 @@ class Scanner
         }
         if ($buffer !== "") {
             $len = $index - $this->index;
-            $this->index = $index;
             return array(
                 "source" => $buffer,
                 "length" => $len,
@@ -222,6 +219,7 @@ class Scanner
     
     protected function consumeToken($token)
     {
+        $this->index += $token["length"];
         if ($token["whitespace"]) {
             $linesCount = count($token["source"]) - 1;
             $this->line += $linesCount;
@@ -234,11 +232,6 @@ class Scanner
         } else {
             $this->column += $token["length"];
         }
-    }
-    
-    protected function unconsumeToken($token)
-    {
-        $this->index -= $token["length"];
     }
     
     public function consumeWhitespacesAndComments($lineTerminator = true)
@@ -272,7 +265,6 @@ class Scanner
             } elseif ($comment) {
                 $this->consumeToken($token);
             } else {
-                $this->unconsumeToken($token);
                 return $processed > 1;
             }
         }
@@ -285,7 +277,6 @@ class Scanner
         
         $token = $this->getToken();
         if (!$token || $token["source"] !== $string) {
-            $this->unconsumeToken($token);
             return false;
         }
         
@@ -475,11 +466,9 @@ class Scanner
                         $char >= "0" && $char <= "9" &&
                         !preg_match("/^\d+$/", $n)
                     )) {
-                    $this->unconsumeToken($num);
                     return null;
                 }
             } elseif (!preg_match("/^\d+$/", $n)) {
-                $this->unconsumeToken($num);
                 return null;
             }
             $this->consumeToken($num);
@@ -507,48 +496,46 @@ class Scanner
         }
         //Validate decimal part
         $dot = $this->scanSymbols();
-        if (!$dot || $dot["source"] !== ".") {
-            if ($dot) {
-                $this->unconsumeToken($dot);
-            }
-        } elseif (!$decimal) {
-            //If decimal part is not allowed exit
-            $this->setPosition($position);
-            return null;
-        } else {
-            $this->consumeToken($dot);
-            $source .= ".";
-            $decPart = $this->scanOther();
-            if (!$decPart) {
+        if ($dot && $dot["source"] === ".") {
+            if (!$decimal) {
+                //If decimal part is not allowed exit
                 $this->setPosition($position);
                 return null;
-            }
-            //Split exponent part
-            $parts = preg_split("/e/i", $decPart["source"]);
-            if (!preg_match("/^\d+$/", $parts[0])) {
-                $this->setPosition($position);
-                return null;
-            }
-            $this->consumeToken($decPart);
-            $source .= $decPart["source"];
-            //Validate exponent part
-            if (isset($parts[1])) {
-                $expPart = $parts[1];
-                if ($expPart === "") {
-                    $sign = $this->scanSymbols();
-                    if ($sign["source"] !== "+" && $sign["source"] !== "-") {
+            } else {
+                $this->consumeToken($dot);
+                $source .= ".";
+                $decPart = $this->scanOther();
+                if (!$decPart) {
+                    $this->setPosition($position);
+                    return null;
+                }
+                //Split exponent part
+                $parts = preg_split("/e/i", $decPart["source"]);
+                if (!preg_match("/^\d+$/", $parts[0])) {
+                    $this->setPosition($position);
+                    return null;
+                }
+                $this->consumeToken($decPart);
+                $source .= $decPart["source"];
+                //Validate exponent part
+                if (isset($parts[1])) {
+                    $expPart = $parts[1];
+                    if ($expPart === "") {
+                        $sign = $this->scanSymbols();
+                        if ($sign["source"] !== "+" && $sign["source"] !== "-") {
+                            $this->setPosition($position);
+                            return null;
+                        }
+                        $this->consumeToken($sign);
+                        $expNum = $this->scanOther();
+                        $this->consumeToken($expNum);
+                        $expPart = $expNum["source"];
+                        $source .= $sign["source"] . $expPart;
+                    }
+                    if (!preg_match("/^\d+$/", $expPart)) {
                         $this->setPosition($position);
                         return null;
                     }
-                    $this->consumeToken($sign);
-                    $expNum = $this->scanOther();
-                    $this->consumeToken($expNum);
-                    $expPart = $expNum["source"];
-                    $source .= $sign["source"] . $expPart;
-                }
-                if (!preg_match("/^\d+$/", $expPart)) {
-                    $this->setPosition($position);
-                    return null;
                 }
             }
         }
