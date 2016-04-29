@@ -3,6 +3,10 @@ namespace test\Peast;
 
 class TestBase extends \PHPUnit_Framework_TestCase
 {
+    protected $ignoredKeys = array(
+        "TryStatement" => array("guardedHandlers", "handlers")
+    );
+    
     protected function getJsTestFiles($dir, $invalid = false)
     {
         $ds = DIRECTORY_SEPARATOR;
@@ -35,8 +39,13 @@ class TestBase extends \PHPUnit_Framework_TestCase
         switch ($objType)
         {
             case "object":
+                $ignored = isset($compare->type) && isset($this->ignoredKeys[$compare->type]) ?
+                           $this->ignoredKeys[$compare->type] :
+                           array();
                 foreach ($compare as $k => $v) {
-                    if ($k === "loc") {
+                    if (in_array($k, $ignored)) {
+                        continue;
+                    } elseif ($k === "loc") {
                         $objValue = $obj->getLocation();
                     } elseif ($k === "range") {
                         $loc = $obj->getLocation();

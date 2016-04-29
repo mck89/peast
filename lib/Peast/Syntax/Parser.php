@@ -42,6 +42,7 @@ abstract class Parser
             $position = $this->scanner->getPosition();
         }
         if (!$message) {
+            $this->scanner->consumeWhitespacesAndComments();
             $token = $this->scanner->getToken();
             if ($token === null) {
                 $message = "Unexpected end of input";

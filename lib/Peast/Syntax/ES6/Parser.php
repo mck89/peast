@@ -80,13 +80,11 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseStatement($yield = false, $return = false)
     {
-        if ($statement = $this->parseBlockStatement($yield, $return)) {
+        if ($statement = $this->parseBlock($yield, $return)) {
             return $statement;
         } elseif ($statement = $this->parseVariableStatement($yield)) {
             return $statement;
         } elseif ($statement = $this->parseEmptyStatement()) {
-            return $statement;
-        } elseif ($statement = $this->parseExpressionStatement($yield)) {
             return $statement;
         } elseif ($statement = $this->parseIfStatement($yield, $return)) {
             return $statement;
@@ -100,13 +98,15 @@ class Parser extends \Peast\Syntax\Parser
             return $statement;
         } elseif ($statement = $this->parseWithStatement($yield, $return)) {
             return $statement;
-        } elseif ($statement = $this->parseLabelledStatement($yield, $return)) {
-            return $statement;
         } elseif ($statement = $this->parseThrowStatement($yield)) {
             return $statement;
         } elseif ($statement = $this->parseTryStatement($yield, $return)) {
             return $statement;
         } elseif ($statement = $this->parseDebuggerStatement()) {
+            return $statement;
+        } elseif ($statement = $this->parseExpressionStatement($yield)) {
+            return $statement;
+        } elseif ($statement = $this->parseLabelledStatement($yield, $return)) {
             return $statement;
         }
         return null;
@@ -144,22 +144,18 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseBlockStatement($yield = false, $return = false)
-    {
-        if (($body = $this->parseBlock($yield, $return)) !== null) {
-            $node = $this->createNode("BlockStatement", $body);
-            $node->setBody($body);
-            return $this->completeNode($node);
-        }
-        return null;
-    }
-    
     protected function parseBlock($yield = false, $return = false)
     {
         if ($this->scanner->consume("{")) {
+            
+            $position = $this->scanner->getConsumedTokenPosition();
             $statements = $this->parseStatementList($yield, $return);
             if ($this->scanner->consume("}")) {
-                return $statements ? $statements : array();
+                $node = $this->createNode("BlockStatement", $position);
+                if ($statements) {
+                    $node->setBody($statements);
+                }
+                return $this->completeNode($node);
             }
             $this->error();
         }
@@ -189,10 +185,10 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseDebuggerStatement()
     {
         if ($this->scanner->consume("debugger")) {
-            $this->scanner->consume(";");
             $node = $this->createNode(
                 "DebuggerStatement", $this->scanner->getConsumedTokenPosition()
             );
+            $this->scanner->consume(";");
             return $this->completeNode($node);
         }
         return null;
@@ -2266,7 +2262,7 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseArgumentList($yield = false)
     {
         $list = array();
-        $valid = true;
+        $start = $valid = true;
         while (true) {
             $spread = false;
             if ($this->scanner->consume("...")) {
@@ -2275,7 +2271,7 @@ class Parser extends \Peast\Syntax\Parser
             }
             $exp = $this->parseAssignmentExpression(true, $yield);
             if (!$exp) {
-                $valid = false;
+                $valid = $start && !$spread;
                 break;
             }
             if ($spread) {
@@ -2292,6 +2288,7 @@ class Parser extends \Peast\Syntax\Parser
                 $valid = false;
             }
         }
+        $start = false;
         if (!$valid) {
             $this->error();
             return null;
@@ -2565,7 +2562,7 @@ class Parser extends \Peast\Syntax\Parser
                 return null;
             }
             
-            $object = $this->createNode("CallExpression", $object);
+            $object = $this->createNode("CallExpression", $callee);
             $object->setCallee($callee);
             $object->setArguments($args);
             $object = $this->completeNode($object);
