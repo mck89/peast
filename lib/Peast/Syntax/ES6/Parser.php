@@ -376,8 +376,6 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseLabelledStatement($yield = false, $return = false)
     {
-        //TODO
-        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($label = $this->parseIdentifierReference($yield)) {
             
@@ -385,14 +383,14 @@ class Parser extends \Peast\Syntax\Parser
                 
                 if ($body = $this->parseLabelledItem($yield, $return)) {
                     
-                    $node = $this->createNode("LabeledStatement", $position);
+                    $node = $this->createNode("LabeledStatement", $label);
                     $node->setLabel($label);
                     $node->setBody($body);
                     return $this->completeNode($node);
                     
-                } else {
-                    $this->error();
                 }
+                
+                $this->error();
             }
             
             $this->scanner->setPosition($position);
@@ -941,9 +939,6 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseFormalParameterList($yield = false)
     {
-        //TODO
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         $list = array();
         $rest = true;
         $restMandatory = false;
@@ -962,7 +957,6 @@ class Parser extends \Peast\Syntax\Parser
                 $list[] = $restParam;
             } elseif ($restMandatory) {
                 $this->error();
-                $this->scanner->setPosition($position);
                 return null;
             }
         }
@@ -1817,13 +1811,11 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parsePropertyDefinition($yield = false)
     {
-        //TODO
-        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($property = $this->parseCoverInitializedName($yield)) {
             return $property;
         } elseif ($property = $this->parseIdentifierReference($yield)) {
-            $node = $this->createNode("Property", $position);
+            $node = $this->createNode("Property", $property);
             $node->setKey($property);
             $node->setValue($property);
             return $this->completeNode($node);
@@ -1831,7 +1823,7 @@ class Parser extends \Peast\Syntax\Parser
                   $this->scanner->consume(":")) {
 
             if ($value = $this->parseAssignmentExpression(true, $yield)) {
-                $node = $this->createNode("Property", $position);
+                $node = $this->createNode("Property", $property);
                 $node->setKey($property[0]);
                 $node->setValue($value);
                 $node->setComputed($property[1]);
@@ -1846,7 +1838,7 @@ class Parser extends \Peast\Syntax\Parser
             $this->scanner->setPosition($position);
             if ($property = $this->parseMethodDefinition($yield)) {
 
-                $node = $this->createNode("Property", $position);
+                $node = $this->createNode("Property", $property);
                 $node->setKey($property->getKey());
                 $node->setValue($property->getValue());
                 $node->setComputed($property->getComputed());
