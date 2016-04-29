@@ -1769,17 +1769,16 @@ class Parser extends \Peast\Syntax\Parser
         }
         return null;
     }
-    //TODO
+    
     protected function parseArrowFunction($in = false, $yield = false)
     {
-        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if (($params = $this->parseArrowParameters($yield)) !== null &&
             $this->scanner->consumeWhitespacesAndComments(false) &&
             $this->scanner->consume("=>")) {
             
             if ($body = $this->parseConciseBody($in)) {
-                $node = $this->createNode("ArrowFunctionExpression", $position);
+                $node = $this->createNode("ArrowFunctionExpression", $params);
                 $node->setParams($params);
                 $node->setBody($body[0]);
                 $node->setExpression($body[1]);
@@ -1793,10 +1792,9 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseObjectLiteral($yield = false)
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($this->scanner->consume("{")) {
             
+            $position = $this->scanner->getConsumedTokenPosition();
             $properties = $this->charSeparatedListOf(
                 "parsePropertyDefinition",
                 array($yield)
@@ -1813,14 +1811,13 @@ class Parser extends \Peast\Syntax\Parser
             }
             
             $this->error();
-            $this->scanner->setPosition($position);
         }
-        
         return null;
     }
     
     protected function parsePropertyDefinition($yield = false)
     {
+        //TODO
         $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($property = $this->parseCoverInitializedName($yield)) {
@@ -1865,13 +1862,12 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseCoverInitializedName($yield = false)
     {
-        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($key = $this->parseIdentifierReference($yield)) {
             
             if ($value = $this->parseInitializer(true, $yield)) {
                 
-                $node = $this->createNode("Property");
+                $node = $this->createNode("Property", $key);
                 $node->setKey($key);
                 $node->setValue($value);
                 $node->setShorthand(true);
@@ -1886,8 +1882,6 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseInitializer($in = false, $yield = false)
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($this->scanner->consume("=")) {
             
             if ($value = $this->parseAssignmentExpression($in, $yield)) {
@@ -1895,17 +1889,15 @@ class Parser extends \Peast\Syntax\Parser
             }
             
             $this->error();
-            $this->scanner->setPosition($position);
         }
         return null;
     }
     
     protected function parseObjectBindingPattern($yield = false)
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($this->scanner->consume("{")) {
             
+            $position = $this->scanner->getConsumedTokenPosition();
             $properties = $this->charSeparatedListOf(
                 "parseBindingProperty",
                 array($yield)
@@ -1921,33 +1913,31 @@ class Parser extends \Peast\Syntax\Parser
             }
             
             $this->error();
-            $this->scanner->setPosition($position);
         }
         return null;
     }
     
     protected function parseBindingProperty($yield = false)
     {
-        $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if (($key = $this->parsePropertyName($yield)) &&
             $this->scanner->consume(":")) {
             
             if ($value = $this->parseBindingElement($yield)) {
-                $node = $this->createNode("AssignmentProperty", $position);
+                $node = $this->createNode("AssignmentProperty", $key);
                 $node->setKey($key);
                 $node->setValue($value);
                 return $this->completeNode($node);
             }
             
             $this->error();
-            $this->scanner->setPosition($position);
             
         } else {
             
             $this->scanner->setPosition($position);
             if ($property = $this->parseSingleNameBinding($yield)) {
-                $node = $this->createNode("AssignmentProperty", $position);
+                
+                $node = $this->createNode("AssignmentProperty", $property);
                 if ($property instanceof Node\AssignmentPattern) {
                     $node->setKey($property->getLeft());
                     $node->setValue($property->getRight());
@@ -1965,8 +1955,6 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseExpression($in = false, $yield = false)
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         $list = $this->charSeparatedListOf(
             "parseAssignmentExpression",
             array($in, $yield)
@@ -1977,7 +1965,7 @@ class Parser extends \Peast\Syntax\Parser
         } elseif (count($list) === 1) {
             return $list[0];
         } else {
-            $node = $this->createNode("SequenceExpression", $position);
+            $node = $this->createNode("SequenceExpression", $list);
             $node->setExpressions($list);
             return $this->completeNode($node);
         }
@@ -1985,8 +1973,6 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseAssignmentExpression($in = false, $yield = false)
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($expr = $this->parseConditionalExpression($in, $yield)) {
             return $expr;
         } elseif ($yield && $expr = $this->parseYieldExpression($in)) {
@@ -2006,7 +1992,7 @@ class Parser extends \Peast\Syntax\Parser
             if ($operator &&
                 $right = $this->parseAssignmentExpression($in, $yield)) {
                 
-                $node = $this->createNode("AssignmentExpression", $position);
+                $node = $this->createNode("AssignmentExpression", $left);
                 $node->setLeft($left);
                 $node->setOperator($operator);
                 $node->setRight($right);
@@ -2015,15 +2001,12 @@ class Parser extends \Peast\Syntax\Parser
             }
             
             $this->error();
-            $this->scanner->setPosition($position);
         }
         return null;
     }
     
     protected function parseConditionalExpression($in = false, $yield = false)
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($test = $this->parseLogicalORExpression($in, $yield)) {
             
             if ($this->scanner->consume("?")) {
@@ -2032,9 +2015,7 @@ class Parser extends \Peast\Syntax\Parser
                     $this->scanner->consume(":") &&
                     $alternate = $this->parseAssignmentExpression($in, $yield)) {
                 
-                    $node = $this->createNode(
-                        "ConditionalExpression", $position
-                    );
+                    $node = $this->createNode("ConditionalExpression", $test);
                     $node->setTest($test);
                     $node->setConsequent($consequent);
                     $node->setAlternate($alternate);
@@ -2042,7 +2023,6 @@ class Parser extends \Peast\Syntax\Parser
                 }
                 
                 $this->error();
-                $this->scanner->setPosition($position);
             } else {
                 return $test;
             }
@@ -2156,8 +2136,6 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseUnaryExpression($yield = false)
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($expr = $this->parsePostfixExpression($yield)) {
             return $expr;
         } else {
@@ -2165,6 +2143,7 @@ class Parser extends \Peast\Syntax\Parser
             $operator = $this->scanner->consumeOneOf(array(
                 "delete", "void", "typeof", "++", "--", "+", "-", "~", "!"
             ));
+            $position = $this->scanner->getConsumedTokenPosition();
             
             if ($operator) {
                 if ($argument = $this->parseUnaryExpression($yield)) {
@@ -2175,7 +2154,6 @@ class Parser extends \Peast\Syntax\Parser
                 }
             
                 $this->error();
-                $this->scanner->setPosition($position);
             }
         }
         return null;
@@ -2183,16 +2161,13 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parsePostfixExpression($yield = false)
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($argument = $this->parseLeftHandSideExpression($yield)) {
             
-            $this->scanner->consumeWhitespacesAndComments();
             $subPosition = $this->scanner->getPosition();
             if ($this->scanner->consumeWhitespacesAndComments(false) !== null &&
                 $operator = $this->scanner->consumeOneOf(array("--", "++"))) {
                 
-                $node = $this->createNode("UpdateExpression", $position);
+                $node = $this->createNode("UpdateExpression", $argument);
                 $node->setOperator($operator);
                 $node->setArgument($argument);
                 return $this->completeNode($node);
@@ -2216,10 +2191,9 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseSpreadElement($yield = false)
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($this->scanner->consume("...")) {
             
+            $position = $this->scanner->getConsumedTokenPosition();
             if ($argument = $this->parseAssignmentExpression(true, $yield)) {
                 $node = $this->createNode("SpreadElement", $position);
                 $node->setArgument($argument);
@@ -2227,18 +2201,17 @@ class Parser extends \Peast\Syntax\Parser
             }
             
             $this->error();
-            $this->scanner->setPosition($position);
         }
         return null;
     }
     
     protected function parseArrayLiteral($yield = false)
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($this->scanner->consume("[")) {
             
-            $node = $this->createNode("ArrayExpression", $position);
+            $node = $this->createNode(
+                "ArrayExpression", $this->scanner->getConsumedTokenPosition()
+            );
             $elements = $this->parseElementList($yield);
             
             if (!$elements || $this->scanner->consume(",")) {
@@ -2264,13 +2237,13 @@ class Parser extends \Peast\Syntax\Parser
             }
             
             $this->error();
-            $this->scanner->setPosition($position);
         }
         return null;
     }
     
     protected function parseElementList($yield = false)
     {
+        //TODO
         $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         $begin = true;
@@ -2300,8 +2273,6 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseArguments($yield = false)
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($this->scanner->consume("(")) {
             
             if (($args = $this->parseArgumentList($yield)) !== null &&
@@ -2310,13 +2281,13 @@ class Parser extends \Peast\Syntax\Parser
             }
             
             $this->error();
-            $this->scanner->setPosition($position);
         }
         return null;
     }
     
     protected function parseArgumentList($yield = false)
     {
+        //TODO
         $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         $list = array();
@@ -2357,10 +2328,9 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseSuperCall($yield = false)
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($this->scanner->consume("super")) {
             
+            $position = $this->scanner->getConsumedTokenPosition();
             if (($args = $this->parseArguments($yield)) !== null) {
                 $super = $this->createNode("Super", $position);
                 $node = $this->createNode("CallExpression", $position);
@@ -2370,23 +2340,21 @@ class Parser extends \Peast\Syntax\Parser
             }
             
             $this->error();
-            $this->scanner->setPosition($position);
         }
         return null;
     }
     
     protected function parseNewTarget()
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($this->scanner->consume("new")) {
             
+            $position = $this->scanner->getConsumedTokenPosition();
             if ($this->scanner->consume(".")) {
                 
-                $this->scanner->consumeWhitespacesAndComments();
-                $targetPosition = $this->scanner->getPosition();
-                
                 if ($this->scanner->consume("target")) {
+                    
+                    $targetPosition = $this->scanner->getConsumedTokenPosition();
+                    
                     $meta = $this->createNode("Identifier", $position);
                     $meta->setName("new");
 
@@ -2401,19 +2369,18 @@ class Parser extends \Peast\Syntax\Parser
             }
             
             $this->error();
-            $this->scanner->setPosition($position);
         }
         return null;
     }
     
     protected function parseIdentifierReference($yield = false)
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($identifier = $this->parseIdentifier()) {
             return $identifier;
         } elseif (!$yield && $this->scanner->consume("yield")) {
-            $node = $this->createNode("Identifier", $position);
+            $node = $this->createNode(
+                "Identifier", $this->scanner->getConsumedTokenPosition()
+            );
             $node->setName("yield");
             return $this->completeNode($node);
         }
@@ -2422,6 +2389,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseMemberExpression($yield = false)
     {
+        //TODO
         $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("new")) {
@@ -2505,10 +2473,9 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseSuperProperty($yield = false)
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($this->scanner->consume("super")) {
             
+            $position = $this->scanner->getConsumedTokenPosition();
             $super = $this->createNode("Super", $position);
             
             $node = $this->createNode("MemberExpression", $position);
@@ -2530,17 +2497,15 @@ class Parser extends \Peast\Syntax\Parser
             }
             
             $this->error();
-            $this->scanner->setPosition($position);
         }
         return null;
     }
     
     protected function parseNewExpression($yield = false)
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($this->scanner->consume("new")) {
             
+            $position = $this->scanner->getConsumedTokenPosition();
             if ($callee = $this->parseNewExpression($yield)) {
                 $node = $this->createNode("NewExpression", $position);
                 $node->setCallee($callee);
@@ -2548,7 +2513,6 @@ class Parser extends \Peast\Syntax\Parser
             }
             
             $this->error();
-            $this->scanner->setPosition($position);
         } elseif ($callee = $this->parseMemberExpression($yield)) {
             return $callee;
         }
@@ -2557,10 +2521,10 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parsePrimaryExpression($yield = false)
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($this->scanner->consume("this")) {
-            $node = $this->createNode("ThisExpression", $position);
+            $node = $this->createNode(
+                "ThisExpression", $this->scanner->getConsumedTokenPosition()
+            );
             return $this->completeNode($node);
         } elseif ($exp = $this->parseIdentifierReference($yield)) {
             return $exp;
@@ -2588,17 +2552,16 @@ class Parser extends \Peast\Syntax\Parser
             }
             
             $this->error();
-            $this->scanner->setPosition($position);
         }
         return null;
     }
     
     protected function parseIdentifierName()
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($identifier = $this->scanner->consumeIdentifier()) {
-            $node = $this->createNode("Identifier", $position);
+            $node = $this->createNode(
+                "Identifier", $this->scanner->getConsumedTokenPosition()
+            );
             $node->setName($identifier);
             return $this->completeNode($node);
         }
@@ -2607,8 +2570,6 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseIdentifier()
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($identifier = $this->parseIdentifierName()) {
             
             $reserverWords = $this->config->getReservedWords($this->moduleMode);
@@ -2617,13 +2578,13 @@ class Parser extends \Peast\Syntax\Parser
             }
             
             $this->error();
-            $this->scanner->setPosition($position);
         }
         return null;
     }
     
     protected function parseCallExpression($yield = false)
     {
+        //TODO
         $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         $object = $this->parseSuperCall($yield);
@@ -2711,12 +2672,12 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseLiteral()
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($literal = $this->scanner->consumeOneOf(array(
                 "null", "true", "false"
             ))) {
-            $node = $this->createNode("Literal", $position);
+            $node = $this->createNode(
+                "Literal", $this->scanner->getConsumedTokenPosition()
+            );
             $node->setRaw($literal);
             return $this->completeNode($node);
         } elseif ($literal = $this->parseStringLiteral()) {
@@ -2729,10 +2690,9 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseStringLiteral()
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($quote = $this->scanner->consumeOneOf(array("'", '"'))) {
             
+            $position = $this->scanner->getConsumedTokenPosition();
             if ($string = $this->scanner->consumeUntil(array($quote), false)) {
                 $node = $this->createNode("Literal", $position);
                 $node->setRaw($quote . $string);
@@ -2740,17 +2700,16 @@ class Parser extends \Peast\Syntax\Parser
             }
             
             $this->error();
-            $this->scanner->setPosition($position);
         }
         return null;
     }
     
     protected function parseNumericLiteral()
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if (($num = $this->scanner->consumeNumber()) !== null) {
-            $node = $this->createNode("Literal", $position);
+            $node = $this->createNode(
+                "Literal", $this->scanner->getConsumedTokenPosition()
+            );
             $node->setRaw($num);
             return $this->completeNode($node);
         }
@@ -2759,6 +2718,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseTemplateLiteral($yield = false)
     {
+        //TODO
         $this->scanner->consumeWhitespacesAndComments();
         $position = $this->scanner->getPosition();
         if ($this->scanner->consume("`")) {
@@ -2807,10 +2767,10 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseRegularExpressionLiteral()
     {
-        $this->scanner->consumeWhitespacesAndComments();
-        $position = $this->scanner->getPosition();
         if ($regex = $this->scanner->consumeRegularExpression()) {
-            $node = $this->createNode("RegExpLiteral", $position);
+            $node = $this->createNode(
+                "RegExpLiteral", $this->scanner->getConsumedTokenPosition()
+            );
             $node->setRaw($regex);
             return $this->completeNode($node);
         }
