@@ -20,10 +20,10 @@ abstract class Parser
         $nodeClass = implode("\\", $parts) . "\\Node\\$nodeType";
         $node = new $nodeClass;
         if ($position instanceof Node) {
-            $position = $position->getStartPosition();
+            $position = $position->getLocation()->getStart();
         } elseif (is_array($position)) {
             if (count($position)) {
-                $position = $position[0]->getStartPosition();
+                $position = $position[0]->getLocation()->getStart();
             } else {
                 $position = $this->scaner->getPosition();
             }
