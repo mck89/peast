@@ -157,7 +157,7 @@ class Parser extends \Peast\Syntax\Parser
                 }
                 return $this->completeNode($node);
             }
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -218,7 +218,7 @@ class Parser extends \Peast\Syntax\Parser
                 }
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -246,7 +246,7 @@ class Parser extends \Peast\Syntax\Parser
                 }
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -267,7 +267,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -290,7 +290,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $block;
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -308,7 +308,7 @@ class Parser extends \Peast\Syntax\Parser
                 if ($label = $this->parseIdentifierReference($yield)) {
                     $node->setLabel($label);
                 } elseif (!$this->scanner->consume(";")) {
-                    $this->error();
+                    return $this->error();
                 }
                 
             } else {
@@ -333,7 +333,7 @@ class Parser extends \Peast\Syntax\Parser
                 if ($label = $this->parseIdentifierReference($yield)) {
                     $node->setLabel($label);
                 } elseif (!$this->scanner->consume(";")) {
-                    $this->error();
+                    return $this->error();
                 }
                 
             } else {
@@ -358,7 +358,7 @@ class Parser extends \Peast\Syntax\Parser
                 if ($argument = $this->parseExpression(true, $yield)) {
                     $node->setArgument($argument);
                 } elseif (!$this->scanner->consume(";")) {
-                    $this->error();
+                    return $this->error();
                 }
                 
             } else {
@@ -386,7 +386,7 @@ class Parser extends \Peast\Syntax\Parser
                     
                 }
                 
-                $this->error();
+                return $this->error();
             }
             
             $this->scanner->setPosition($position);
@@ -418,7 +418,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -439,7 +439,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -460,7 +460,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -490,7 +490,7 @@ class Parser extends \Peast\Syntax\Parser
             } elseif ($this->parseDefaultClause($yield, $return)) {
                 $this->error("Multiple default clause in switch statement");
             } else {
-                $this->error();
+                return $this->error();
             }
         }
         return null;
@@ -523,7 +523,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -544,7 +544,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -578,7 +578,7 @@ class Parser extends \Peast\Syntax\Parser
                 $node->setTest($test);
                 return $this->completeNode($node);
             }
-            $this->error();
+            return $this->error();
             
         } elseif ($this->scanner->consume("while")) {
             
@@ -593,7 +593,7 @@ class Parser extends \Peast\Syntax\Parser
                 $node->setBody($body);
                 return $this->completeNode($node);
             }
-            $this->error();
+            return $this->error();
             
         } elseif ($this->scanner->consume("for")) {
             
@@ -601,7 +601,7 @@ class Parser extends \Peast\Syntax\Parser
             $hasBracket = $this->consume("(");
             
             if (!$hasBracket) {
-                $this->error();
+                return $this->error();
             } elseif ($this->scanner->consume("var")) {
                 
                 $subPosition = $this->scanner->getConsumedTokenPosition();
@@ -790,7 +790,7 @@ class Parser extends \Peast\Syntax\Parser
                     }
                 }
             }
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -818,7 +818,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -847,7 +847,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -872,7 +872,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -898,7 +898,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -921,7 +921,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -945,8 +945,7 @@ class Parser extends \Peast\Syntax\Parser
             if ($restParam = $this->parseBindingRestElement($yield)) {
                 $list[] = $restParam;
             } elseif ($restMandatory) {
-                $this->error();
-                return null;
+                return $this->error();
             }
         }
         return $list;
@@ -985,7 +984,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1010,7 +1009,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1025,8 +1024,7 @@ class Parser extends \Peast\Syntax\Parser
                 return array($heritage, $body);
             }
         }
-        $this->error();
-        return null;
+        return $this->error();
     }
     
     protected function parseClassHeritage($yield = false)
@@ -1037,7 +1035,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $superClass;
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1082,7 +1080,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $def;        
             }
 
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1105,7 +1103,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1125,7 +1123,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1158,7 +1156,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1176,7 +1174,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1211,7 +1209,7 @@ class Parser extends \Peast\Syntax\Parser
             if ($spec = $this->parseStringLiteral()) {
                 return $spec;
             }
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1272,8 +1270,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
-            $this->scanner->setPosition($position);
+            return $this->error();
         }
         return null;
     }
@@ -1289,7 +1286,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $list ? $list : array();
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1308,7 +1305,7 @@ class Parser extends \Peast\Syntax\Parser
                     return $this->completeNode($node);
                 }
                 
-                $this->error();
+                return $this->error();
             } else {
                 return $this->completeNode($node);
             }
@@ -1339,7 +1336,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1375,7 +1372,7 @@ class Parser extends \Peast\Syntax\Parser
                 }
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1389,7 +1386,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $local;  
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1408,7 +1405,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $list ? $list : array();
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1432,7 +1429,7 @@ class Parser extends \Peast\Syntax\Parser
                     return $this->completeNode($node);
                 }
                 
-                $this->error();
+                return $this->error();
             } else {
                 return $this->completeNode($node);
             }
@@ -1498,7 +1495,7 @@ class Parser extends \Peast\Syntax\Parser
                 }
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1514,7 +1511,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1529,8 +1526,7 @@ class Parser extends \Peast\Syntax\Parser
             return $ret;
         }
         
-        $this->error();
-        return null;
+        return $this->error();
     }
     
     protected function parseBindingElement($yield = false)
@@ -1597,7 +1593,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $name;
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1665,8 +1661,7 @@ class Parser extends \Peast\Syntax\Parser
         }
         
         if ($error) {
-            $this->error();
-            $this->scanner->setPosition($position);
+            return $this->error();
         }
         return null;
     }
@@ -1703,7 +1698,7 @@ class Parser extends \Peast\Syntax\Parser
                 }
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1718,7 +1713,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $params;
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1740,7 +1735,7 @@ class Parser extends \Peast\Syntax\Parser
                 return array($body, false);
             }
             
-            $this->error();
+            return $this->error();
         } elseif ($this->notBefore(array("{")) &&
                   $body = $this->parseAssignmentExpression($in)) {
             return array($body, true);
@@ -1762,7 +1757,7 @@ class Parser extends \Peast\Syntax\Parser
                 $node->setExpression($body[1]);
                 return $this->completeNode($node);
             }
-            $this->error();
+            return $this->error();
         }
         $this->scanner->setPosition($position);
         return null;
@@ -1788,7 +1783,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1814,8 +1809,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
 
-            $this->error();
-            $this->scanner->setPosition($position);
+            return $this->error();
             
         } else {
             
@@ -1864,7 +1858,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $value;
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1888,7 +1882,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1906,7 +1900,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
             
         } else {
             
@@ -1976,7 +1970,7 @@ class Parser extends \Peast\Syntax\Parser
                 
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -1998,7 +1992,7 @@ class Parser extends \Peast\Syntax\Parser
                     return $this->completeNode($node);
                 }
                 
-                $this->error();
+                return $this->error();
             } else {
                 return $test;
             }
@@ -2129,7 +2123,7 @@ class Parser extends \Peast\Syntax\Parser
                     return $this->completeNode($node);
                 }
             
-                $this->error();
+                return $this->error();
             }
         }
         return null;
@@ -2176,7 +2170,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -2212,7 +2206,7 @@ class Parser extends \Peast\Syntax\Parser
                 }
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -2254,7 +2248,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $args;
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -2290,8 +2284,7 @@ class Parser extends \Peast\Syntax\Parser
         }
         $start = false;
         if (!$valid) {
-            $this->error();
-            return null;
+            return $this->error();
         }
         return $list;
     }
@@ -2309,7 +2302,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -2338,7 +2331,7 @@ class Parser extends \Peast\Syntax\Parser
                 }
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -2371,8 +2364,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
-            return null;
+            return $this->error();
             
         } elseif (!($object = $this->parsePrimaryExpression($yield)) && 
             !($object = $this->parseSuperProperty($yield)) &&
@@ -2408,8 +2400,7 @@ class Parser extends \Peast\Syntax\Parser
         if (!count($properties)) {
             return $object;
         } elseif (!$valid) {
-            $this->error();
-            return null;
+            return $this->error();
         }
         
         $lastIndex = count($properties) - 1;
@@ -2462,7 +2453,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -2478,7 +2469,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         } elseif ($callee = $this->parseMemberExpression($yield)) {
             return $callee;
         }
@@ -2517,7 +2508,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $exp;
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -2543,7 +2534,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $identifier;
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -2598,8 +2589,7 @@ class Parser extends \Peast\Syntax\Parser
         if (!count($properties)) {
             return $object;
         } elseif (!$valid) {
-            $this->error();
-            return null;
+            return $this->error();
         }
         
         $lastIndex = count($properties) - 1;
@@ -2663,7 +2653,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
@@ -2726,7 +2716,7 @@ class Parser extends \Peast\Syntax\Parser
                 }
             }
             
-            $this->error();
+            return $this->error();
         }
         return null;
     }
