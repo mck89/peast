@@ -1,7 +1,7 @@
 {
     "range": [
         0,
-        93
+        91
     ],
     "loc": {
         "start": {
@@ -18,7 +18,7 @@
         {
             "range": [
                 0,
-                93
+                91
             ],
             "loc": {
                 "start": {
@@ -91,7 +91,7 @@
                 {
                     "range": [
                         24,
-                        65
+                        63
                     ],
                     "loc": {
                         "start": {
@@ -125,7 +125,7 @@
                     "body": {
                         "range": [
                             33,
-                            65
+                            63
                         ],
                         "loc": {
                             "start": {
@@ -141,8 +141,8 @@
                         "body": [
                             {
                                 "range": [
-                                    37,
-                                    62
+                                    36,
+                                    61
                                 ],
                                 "loc": {
                                     "start": {
@@ -157,8 +157,8 @@
                                 "type": "ExpressionStatement",
                                 "expression": {
                                     "range": [
-                                        37,
-                                        61
+                                        36,
+                                        60
                                     ],
                                     "loc": {
                                         "start": {
@@ -173,8 +173,8 @@
                                     "type": "CallExpression",
                                     "callee": {
                                         "range": [
-                                            37,
-                                            47
+                                            36,
+                                            46
                                         ],
                                         "loc": {
                                             "start": {
@@ -190,8 +190,8 @@
                                         "computed": false,
                                         "object": {
                                             "range": [
-                                                37,
-                                                43
+                                                36,
+                                                42
                                             ],
                                             "loc": {
                                                 "start": {
@@ -208,8 +208,8 @@
                                         },
                                         "property": {
                                             "range": [
-                                                44,
-                                                47
+                                                43,
+                                                46
                                             ],
                                             "loc": {
                                                 "start": {
@@ -228,8 +228,8 @@
                                     "arguments": [
                                         {
                                             "range": [
-                                                48,
-                                                60
+                                                47,
+                                                59
                                             ],
                                             "loc": {
                                                 "start": {
@@ -244,8 +244,8 @@
                                             "type": "CallExpression",
                                             "callee": {
                                                 "range": [
-                                                    48,
-                                                    58
+                                                    47,
+                                                    57
                                                 ],
                                                 "loc": {
                                                     "start": {
@@ -261,8 +261,8 @@
                                                 "computed": false,
                                                 "object": {
                                                     "range": [
-                                                        48,
-                                                        49
+                                                        47,
+                                                        48
                                                     ],
                                                     "loc": {
                                                         "start": {
@@ -279,8 +279,8 @@
                                                 },
                                                 "property": {
                                                     "range": [
-                                                        50,
-                                                        58
+                                                        49,
+                                                        57
                                                     ],
                                                     "loc": {
                                                         "start": {
@@ -308,7 +308,7 @@
             "handler": {
                 "range": [
                     24,
-                    65
+                    63
                 ],
                 "loc": {
                     "start": {
@@ -342,7 +342,7 @@
                 "body": {
                     "range": [
                         33,
-                        65
+                        63
                     ],
                     "loc": {
                         "start": {
@@ -358,8 +358,8 @@
                     "body": [
                         {
                             "range": [
-                                37,
-                                62
+                                36,
+                                61
                             ],
                             "loc": {
                                 "start": {
@@ -374,8 +374,8 @@
                             "type": "ExpressionStatement",
                             "expression": {
                                 "range": [
-                                    37,
-                                    61
+                                    36,
+                                    60
                                 ],
                                 "loc": {
                                     "start": {
@@ -390,8 +390,8 @@
                                 "type": "CallExpression",
                                 "callee": {
                                     "range": [
-                                        37,
-                                        47
+                                        36,
+                                        46
                                     ],
                                     "loc": {
                                         "start": {
@@ -407,8 +407,8 @@
                                     "computed": false,
                                     "object": {
                                         "range": [
-                                            37,
-                                            43
+                                            36,
+                                            42
                                         ],
                                         "loc": {
                                             "start": {
@@ -425,8 +425,8 @@
                                     },
                                     "property": {
                                         "range": [
-                                            44,
-                                            47
+                                            43,
+                                            46
                                         ],
                                         "loc": {
                                             "start": {
@@ -445,8 +445,8 @@
                                 "arguments": [
                                     {
                                         "range": [
-                                            48,
-                                            60
+                                            47,
+                                            59
                                         ],
                                         "loc": {
                                             "start": {
@@ -461,8 +461,8 @@
                                         "type": "CallExpression",
                                         "callee": {
                                             "range": [
-                                                48,
-                                                58
+                                                47,
+                                                57
                                             ],
                                             "loc": {
                                                 "start": {
@@ -478,8 +478,8 @@
                                             "computed": false,
                                             "object": {
                                                 "range": [
-                                                    48,
-                                                    49
+                                                    47,
+                                                    48
                                                 ],
                                                 "loc": {
                                                     "start": {
@@ -496,8 +496,8 @@
                                             },
                                             "property": {
                                                 "range": [
-                                                    50,
-                                                    58
+                                                    49,
+                                                    57
                                                 ],
                                                 "loc": {
                                                     "start": {
@@ -523,8 +523,8 @@
             },
             "finalizer": {
                 "range": [
-                    74,
-                    93
+                    72,
+                    91
                 ],
                 "loc": {
                     "start": {
@@ -540,8 +540,8 @@
                 "body": [
                     {
                         "range": [
-                            77,
-                            91
+                            75,
+                            89
                         ],
                         "loc": {
                             "start": {
@@ -556,8 +556,8 @@
                         "type": "ExpressionStatement",
                         "expression": {
                             "range": [
-                                77,
-                                90
+                                75,
+                                88
                             ],
                             "loc": {
                                 "start": {
@@ -572,8 +572,8 @@
                             "type": "CallExpression",
                             "callee": {
                                 "range": [
-                                    77,
-                                    82
+                                    75,
+                                    80
                                 ],
                                 "loc": {
                                     "start": {
@@ -591,8 +591,8 @@
                             "arguments": [
                                 {
                                     "range": [
-                                        83,
-                                        89
+                                        81,
+                                        87
                                     ],
                                     "loc": {
                                         "start": {
