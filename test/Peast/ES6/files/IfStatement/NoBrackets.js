@@ -1,0 +1,2 @@
+if (failed) error();
+finish();

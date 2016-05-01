@@ -175,7 +175,7 @@ class Parser extends \Peast\Syntax\Parser
     {
         if ($this->scanner->consume(";")) {
             $node = $this->createNode(
-                "BlockStatement", $this->scanner->getConsumedTokenPosition()
+                "EmptyStatement", $this->scanner->getConsumedTokenPosition()
             );
             return $this->completeNode($node);
         }

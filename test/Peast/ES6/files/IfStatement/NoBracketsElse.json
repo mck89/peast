@@ -1,0 +1,214 @@
+{
+    "range": [
+        0,
+        41
+    ],
+    "loc": {
+        "start": {
+            "line": 1,
+            "column": 0
+        },
+        "end": {
+            "line": 3,
+            "column": 9
+        }
+    },
+    "type": "Program",
+    "body": [
+        {
+            "range": [
+                0,
+                31
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
+                    "column": 10
+                }
+            },
+            "type": "IfStatement",
+            "test": {
+                "range": [
+                    4,
+                    10
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 10
+                    }
+                },
+                "type": "Identifier",
+                "name": "failed"
+            },
+            "consequent": {
+                "range": [
+                    12,
+                    20
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 12
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 20
+                    }
+                },
+                "type": "ExpressionStatement",
+                "expression": {
+                    "range": [
+                        12,
+                        19
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 12
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 19
+                        }
+                    },
+                    "type": "CallExpression",
+                    "callee": {
+                        "range": [
+                            12,
+                            17
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 12
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 17
+                            }
+                        },
+                        "type": "Identifier",
+                        "name": "error"
+                    },
+                    "arguments": []
+                }
+            },
+            "alternate": {
+                "range": [
+                    26,
+                    31
+                ],
+                "loc": {
+                    "start": {
+                        "line": 2,
+                        "column": 5
+                    },
+                    "end": {
+                        "line": 2,
+                        "column": 10
+                    }
+                },
+                "type": "ExpressionStatement",
+                "expression": {
+                    "range": [
+                        26,
+                        30
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 2,
+                            "column": 5
+                        },
+                        "end": {
+                            "line": 2,
+                            "column": 9
+                        }
+                    },
+                    "type": "CallExpression",
+                    "callee": {
+                        "range": [
+                            26,
+                            28
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 5
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 7
+                            }
+                        },
+                        "type": "Identifier",
+                        "name": "ok"
+                    },
+                    "arguments": []
+                }
+            }
+        },
+        {
+            "range": [
+                32,
+                41
+            ],
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 9
+                }
+            },
+            "type": "ExpressionStatement",
+            "expression": {
+                "range": [
+                    32,
+                    40
+                ],
+                "loc": {
+                    "start": {
+                        "line": 3,
+                        "column": 0
+                    },
+                    "end": {
+                        "line": 3,
+                        "column": 8
+                    }
+                },
+                "type": "CallExpression",
+                "callee": {
+                    "range": [
+                        32,
+                        38
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 3,
+                            "column": 0
+                        },
+                        "end": {
+                            "line": 3,
+                            "column": 6
+                        }
+                    },
+                    "type": "Identifier",
+                    "name": "finish"
+                },
+                "arguments": []
+            }
+        }
+    ],
+    "sourceType": "script"
+}
