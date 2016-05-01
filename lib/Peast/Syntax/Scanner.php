@@ -325,6 +325,8 @@ class Scanner
     
     public function consumeIdentifier()
     {
+        $postion = $this->getPosition();
+        
         $ws = $this->consumeWhitespacesAndComments();
         
         $trimmedPosition = $this->getPosition();
@@ -405,6 +407,7 @@ class Scanner
             $this->index = $index; 
             return $buffer;
         } else {
+            $this->setPosition($postion);
             $this->wsCache = array($trimmedPosition, $ws);
         }
         

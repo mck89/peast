@@ -43,7 +43,12 @@ class Parser extends \Peast\Syntax\Parser
         if ($body) {
             $node->setBody($body);
         }
-        return $this->completeNode($node);
+        $program = $this->completeNode($node);
+        $this->scanner->consumeWhitespacesAndComments();
+        if (($tail = $this->scanner->getToken()) && !$tail["whitespace"]) {
+            return $this->error();
+        }
+        return $program;
     }
     
     protected function parseModule()
@@ -56,7 +61,12 @@ class Parser extends \Peast\Syntax\Parser
         if ($body) {
             $node->setBody($body);
         }
-        return $this->completeNode($node);
+        $program = $this->completeNode($node);
+        $this->scanner->consumeWhitespacesAndComments();
+        if (($tail = $this->scanner->getToken()) && !$tail["whitespace"]) {
+            return $this->error();
+        }
+        return $program;
     }
     
     protected function parseStatementList($yield = false, $return = false)
@@ -488,7 +498,7 @@ class Parser extends \Peast\Syntax\Parser
                 }
                 return $cases;
             } elseif ($this->parseDefaultClause($yield, $return)) {
-                $this->error("Multiple default clause in switch statement");
+                return $this->error("Multiple default clause in switch statement");
             } else {
                 return $this->error();
             }
@@ -2527,14 +2537,15 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseIdentifier()
     {
+        $position = $this->scanner->getPosition();
         if ($identifier = $this->parseIdentifierName()) {
             
-            $reserverWords = $this->config->getReservedWords($this->moduleMode);
-            if (!in_array($identifier->getName(), $reserverWords)) {
+            $reservedWords = $this->config->getReservedWords($this->moduleMode);
+            if (!in_array($identifier->getName(), $reservedWords)) {
                 return $identifier;
             }
             
-            return $this->error();
+            $this->scanner->setPosition($position);
         }
         return null;
     }
