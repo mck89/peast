@@ -1,0 +1,1 @@
+while (num in rows) printRow(rows[num++]);

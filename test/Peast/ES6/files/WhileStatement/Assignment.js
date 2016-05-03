@@ -1,0 +1,3 @@
+while (row = getRow()) {
+    rowNumber++;
+}
