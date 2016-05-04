@@ -1,24 +1,136 @@
 {
+    "range": [
+        0,
+        40
+    ],
+    "loc": {
+        "start": {
+            "line": 1,
+            "column": 0
+        },
+        "end": {
+            "line": 3,
+            "column": 20
+        }
+    },
     "type": "Program",
     "body": [
         {
+            "range": [
+                0,
+                40
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 20
+                }
+            },
             "type": "DoWhileStatement",
             "body": {
+                "range": [
+                    3,
+                    21
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 3
+                    },
+                    "end": {
+                        "line": 3,
+                        "column": 1
+                    }
+                },
                 "type": "BlockStatement",
                 "body": [
                     {
+                        "range": [
+                            6,
+                            19
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 1
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 14
+                            }
+                        },
                         "type": "ExpressionStatement",
                         "expression": {
+                            "range": [
+                                6,
+                                19
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 1
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 14
+                                }
+                            },
                             "type": "MemberExpression",
                             "computed": true,
                             "object": {
+                                "range": [
+                                    6,
+                                    10
+                                ],
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 1
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 5
+                                    }
+                                },
                                 "type": "Identifier",
                                 "name": "rows"
                             },
                             "property": {
+                                "range": [
+                                    11,
+                                    18
+                                ],
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 6
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 13
+                                    }
+                                },
                                 "type": "UpdateExpression",
                                 "operator": "--",
                                 "argument": {
+                                    "range": [
+                                        13,
+                                        18
+                                    ],
+                                    "loc": {
+                                        "start": {
+                                            "line": 2,
+                                            "column": 8
+                                        },
+                                        "end": {
+                                            "line": 2,
+                                            "column": 13
+                                        }
+                                    },
                                     "type": "Identifier",
                                     "name": "index"
                                 },
@@ -29,16 +141,72 @@
                 ]
             },
             "test": {
+                "range": [
+                    29,
+                    39
+                ],
+                "loc": {
+                    "start": {
+                        "line": 3,
+                        "column": 9
+                    },
+                    "end": {
+                        "line": 3,
+                        "column": 19
+                    }
+                },
                 "type": "BinaryExpression",
                 "operator": ">",
                 "left": {
+                    "range": [
+                        29,
+                        34
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 3,
+                            "column": 9
+                        },
+                        "end": {
+                            "line": 3,
+                            "column": 14
+                        }
+                    },
                     "type": "Identifier",
                     "name": "index"
                 },
                 "right": {
+                    "range": [
+                        37,
+                        39
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 3,
+                            "column": 17
+                        },
+                        "end": {
+                            "line": 3,
+                            "column": 19
+                        }
+                    },
                     "type": "UnaryExpression",
                     "operator": "-",
                     "argument": {
+                        "range": [
+                            38,
+                            39
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 3,
+                                "column": 18
+                            },
+                            "end": {
+                                "line": 3,
+                                "column": 19
+                            }
+                        },
                         "type": "Literal",
                         "value": 1,
                         "raw": "1"

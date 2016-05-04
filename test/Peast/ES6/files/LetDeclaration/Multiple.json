@@ -1,28 +1,140 @@
 {
+    "range": [
+        0,
+        28
+    ],
+    "loc": {
+        "start": {
+            "line": 1,
+            "column": 0
+        },
+        "end": {
+            "line": 1,
+            "column": 28
+        }
+    },
     "type": "Program",
     "body": [
         {
+            "range": [
+                0,
+                28
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 28
+                }
+            },
             "type": "VariableDeclaration",
             "declarations": [
                 {
+                    "range": [
+                        4,
+                        14
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 4
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 14
+                        }
+                    },
                     "type": "VariableDeclarator",
                     "id": {
+                        "range": [
+                            4,
+                            5
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 4
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 5
+                            }
+                        },
                         "type": "Identifier",
                         "name": "a"
                     },
                     "init": {
+                        "range": [
+                            8,
+                            14
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 8
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 14
+                            }
+                        },
                         "type": "Literal",
                         "value": "test",
                         "raw": "'test'"
                     }
                 },
                 {
+                    "range": [
+                        16,
+                        27
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 16
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 27
+                        }
+                    },
                     "type": "VariableDeclarator",
                     "id": {
+                        "range": [
+                            16,
+                            17
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 16
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 17
+                            }
+                        },
                         "type": "Identifier",
                         "name": "b"
                     },
                     "init": {
+                        "range": [
+                            20,
+                            27
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 20
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 27
+                            }
+                        },
                         "type": "Literal",
                         "value": 123.456,
                         "raw": "123.456"
