@@ -1,0 +1,52 @@
+{
+    "type": "Program",
+    "body": [
+        {
+            "type": "DoWhileStatement",
+            "body": {
+                "type": "BlockStatement",
+                "body": [
+                    {
+                        "type": "ExpressionStatement",
+                        "expression": {
+                            "type": "MemberExpression",
+                            "computed": true,
+                            "object": {
+                                "type": "Identifier",
+                                "name": "rows"
+                            },
+                            "property": {
+                                "type": "UpdateExpression",
+                                "operator": "--",
+                                "argument": {
+                                    "type": "Identifier",
+                                    "name": "index"
+                                },
+                                "prefix": true
+                            }
+                        }
+                    }
+                ]
+            },
+            "test": {
+                "type": "BinaryExpression",
+                "operator": ">",
+                "left": {
+                    "type": "Identifier",
+                    "name": "index"
+                },
+                "right": {
+                    "type": "UnaryExpression",
+                    "operator": "-",
+                    "argument": {
+                        "type": "Literal",
+                        "value": 1,
+                        "raw": "1"
+                    },
+                    "prefix": true
+                }
+            }
+        }
+    ],
+    "sourceType": "script"
+}
