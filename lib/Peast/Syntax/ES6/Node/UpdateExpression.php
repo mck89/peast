@@ -27,6 +27,7 @@ class UpdateExpression extends Node implements Expression
     
     public function setPrefix($prefix)
     {
+        $this->prefix = $prefix;
         return $this;
     }
     

@@ -2125,7 +2125,12 @@ class Parser extends \Peast\Syntax\Parser
             
             if ($operator) {
                 if ($argument = $this->parseUnaryExpression($yield)) {
-                    $node = $this->createNode("UnaryExpression", $position);
+                    if ($operator === "++" || $operator === "--") {
+                        $node = $this->createNode("UpdateExpression", $position);
+                        $node->setPrefix(true);
+                    } else {
+                        $node = $this->createNode("UnaryExpression", $position);
+                    }
                     $node->setOperator($operator);
                     $node->setArgument($argument);
                     return $this->completeNode($node);
