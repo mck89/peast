@@ -1,0 +1,1 @@
+const a = 2, b = "constant";
