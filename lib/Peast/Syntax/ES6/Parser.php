@@ -80,10 +80,10 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseStatementListItem($yield = false, $return = false)
     {
-        if ($statement = $this->parseStatement($yield, $return)) {
-            return $statement;
-        } elseif ($declaration = $this->parseDeclaration($yield)) {
+        if ($declaration = $this->parseDeclaration($yield)) {
             return $declaration;
+        } elseif ($statement = $this->parseStatement($yield, $return)) {
+            return $statement;
         }
         return null;
     }
@@ -1953,24 +1953,15 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseAssignmentExpression($in = false, $yield = false)
     {
-        if ($expr = $this->parseConditionalExpression($in, $yield)) {
-            return $expr;
-        } elseif ($yield && $expr = $this->parseYieldExpression($in)) {
-            return $expr;
-        } elseif ($expr = $this->parseArrowFunction($in, $yield)) {
-            return $expr;
-        } elseif ($left = $this->parseLeftHandSideExpression($yield)) {
-            if ($this->scanner->consume("=")) {
-                $operator = "=";
-            } else {
-                $operator = $this->scanner->conumeOneOf(array(
-                    "*=", "/=", "%=", "+=", "-=", "<<=",
-                    ">>=", ">>>=", "&=", "^=", "|="
-                ));
-            }
-            
-            if ($operator &&
-                $right = $this->parseAssignmentExpression($in, $yield)) {
+        $position = $this->scanner->getPosition();
+        $operators = array(
+            "=", "+=", "-=", "*=", "/=", "%=", "<<=", ">>=",
+            ">>>=", "&=", "^=", "|="
+        );
+        if (($left = $this->parseLeftHandSideExpression($yield)) &&
+            $operator = $this->scanner->consumeOneOf($operators)) {
+                
+            if ($right = $this->parseAssignmentExpression($in, $yield)) {
                 
                 $node = $this->createNode("AssignmentExpression", $left);
                 $node->setLeft($left);
@@ -1979,8 +1970,15 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
                 
             }
-            
             return $this->error();
+        }
+        $this->scanner->setPosition($position);
+        if ($expr = $this->parseConditionalExpression($in, $yield)) {
+            return $expr;
+        } elseif ($yield && $expr = $this->parseYieldExpression($in)) {
+            return $expr;
+        } elseif ($expr = $this->parseArrowFunction($in, $yield)) {
+            return $expr;
         }
         return null;
     }
@@ -2025,7 +2023,7 @@ class Parser extends \Peast\Syntax\Parser
         return $this->recursiveExpression(
             "parseBitwiseORExpression",
             array($in, $yield),
-            "||",
+            "&&",
             "LogicalExpression"
         );
     }

@@ -1,1 +1,1 @@
-let a = 'test', b = /regex/;
+let a = 'test', b = 123.456;

@@ -14,10 +14,12 @@ class TestBase extends \PHPUnit_Framework_TestCase
         $files = glob($dir . $ds . "files" . $ds . "*" . $ds . "*.js");
         foreach ($files as $jsFile) {
             $isInvalid = strpos($jsFile, "Invalid");
+            $parts = explode($ds, $jsFile);
+            $testName = implode($ds, array_slice($parts, -2));
             if ($isInvalid && $invalid) {
-                $testFiles[] = array($jsFile);
+                $testFiles[$testName] = array($jsFile);
             } elseif (!$isInvalid && !$invalid) {
-                $testFiles[] = array(
+                $testFiles[$testName] = array(
                     $jsFile,
                     str_replace(".js", ".json", $jsFile)
                 );
