@@ -109,6 +109,11 @@ class Scanner
         return $this->consumedTokenPosition;
     }
     
+    public function isEOF()
+    {
+        return $this->index >= $this->length;
+    }
+    
     protected function clearCache()
     {
         $this->wsCache = null;
@@ -221,7 +226,7 @@ class Scanner
     
     public function getToken()
     {
-        if ($this->index < $this->length) {
+        if (!$this->isEOF()) {
             if ($source = $this->scanWhitespaces()) {
                 return $source;
             } elseif ($source = $this->scanSymbols()) {
@@ -275,7 +280,7 @@ class Scanner
             } elseif (!$comment && $source === "//") {
                 $comment = 1;
                 $this->consumeToken($token);
-            }elseif (!$comment && $source === "/*") {
+            } elseif (!$comment && $source === "/*") {
                 $comment = 2;
                 $this->consumeToken($token);
             } elseif ($comment === 2 && $source === "*/") {
@@ -461,7 +466,7 @@ class Scanner
             }
             
             if (!$inClass && $valid) {
-                while ($this->index < $this->length) {
+                while (!$this->isEOF()) {
                     $char = $this->chars[$this->index];
                     if ($char >= "a" && $char <= "z") {
                         $source .= $char;
@@ -491,7 +496,7 @@ class Scanner
         $trimmedPosition = $this->getPosition();
         $this->clearCache();
         
-        $nextChar = $this->index < $this->length ?
+        $nextChar = !$this->isEOF() ?
                     $this->chars[$this->index] :
                     null;
         if (!(($nextChar >= "0" && $nextChar <= "9") || $nextChar === ".")) {

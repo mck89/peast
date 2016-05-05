@@ -53,6 +53,24 @@ abstract class Parser
         throw new Exception($message, $position);
     }
     
+    protected function assertEndOfStatement()
+    {
+        $position = $this->scanner->getPosition();
+        if ($this->scanner->consumeWhitespacesAndComments(false) === null) {
+            $this->scanner->setPosition($position);
+            return true;
+        } else {
+            if ($this->scanner->isEOF() ||
+                $this->scanner->consume(";")) {
+                return true;
+            } elseif ($this->scanner->consume("}")) {
+                $this->scanner->setPosition($position);
+                return true;
+            }
+        }
+        return $this->error();
+    }
+    
     protected function charSeparatedListOf($fn, $args = array(), $char = ",")
     {
         $multi = is_array($char);

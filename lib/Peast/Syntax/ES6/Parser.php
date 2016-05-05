@@ -198,7 +198,7 @@ class Parser extends \Peast\Syntax\Parser
             $node = $this->createNode(
                 "DebuggerStatement", $this->scanner->getConsumedTokenPosition()
             );
-            $this->scanner->consume(";");
+            $this->assertEndOfStatement();
             return $this->completeNode($node);
         }
         return null;
@@ -314,16 +314,12 @@ class Parser extends \Peast\Syntax\Parser
             );
             
             if ($this->scanner->consumeWhitespacesAndComments(false)) {
-                
                 if ($label = $this->parseIdentifierReference($yield)) {
                     $node->setLabel($label);
-                } elseif (!$this->scanner->consume(";")) {
-                    return $this->error();
                 }
-                
-            } else {
-                $this->scanner->consume(";");
             }
+            
+            $this->assertEndOfStatement();
             
             return $this->completeNode($node);
         }
@@ -339,16 +335,12 @@ class Parser extends \Peast\Syntax\Parser
             );
             
             if ($this->scanner->consumeWhitespacesAndComments(false)) {
-                
                 if ($label = $this->parseIdentifierReference($yield)) {
                     $node->setLabel($label);
-                } elseif (!$this->scanner->consume(";")) {
-                    return $this->error();
                 }
-                
-            } else {
-                $this->scanner->consume(";");
             }
+            
+            $this->assertEndOfStatement();
             
             return $this->completeNode($node);
         }
@@ -364,16 +356,12 @@ class Parser extends \Peast\Syntax\Parser
             );
             
             if ($this->scanner->consumeWhitespacesAndComments(false)) {
-                
                 if ($argument = $this->parseExpression(true, $yield)) {
                     $node->setArgument($argument);
-                } elseif (!$this->scanner->consume(";")) {
-                    return $this->error();
                 }
-                
-            } else {
-                $this->scanner->consume(";");
             }
+            
+            $this->assertEndOfStatement();
             
             return $this->completeNode($node);
         }
@@ -422,7 +410,7 @@ class Parser extends \Peast\Syntax\Parser
             if ($this->scanner->consumeWhitespacesAndComments(false) &&
                 ($argument = $this->parseExpression(true, $yield))) {
                 
-                $this->scanner->consume(";");
+                $this->assertEndOfStatement();
                 $node = $this->createNode("ThrowStatement", $position);
                 $node->setArgument($argument);
                 return $this->completeNode($node);
@@ -565,7 +553,7 @@ class Parser extends \Peast\Syntax\Parser
         if ($this->scanner->notBefore($lookahead) &&
             $expression = $this->parseExpression(true, $yield)) {
             
-            $this->scanner->consume(";");
+            $this->assertEndOfStatement();
             $node = $this->createNode("ExpressionStatement", $expression);
             $node->setExpression($expression);
             return $this->completeNode($node);
@@ -1106,7 +1094,7 @@ class Parser extends \Peast\Syntax\Parser
             );
             
             if ($declarations) {
-                $this->scanner->consume(";");
+                $this->assertEndOfStatement();
                 $node = $this->createNode("VariableDeclaration", $position);
                 $node->setKind($letOrConst);
                 $node->setDeclarations($declarations);
@@ -1126,7 +1114,7 @@ class Parser extends \Peast\Syntax\Parser
             $declarations = $this->parseVariableDeclarationList(true, $yield);
             
             if ($declarations) {
-                $this->scanner->consume(";");
+                $this->assertEndOfStatement();
                 $node = $this->createNode("VariableDeclaration", $position);
                 $node->setKind($node::KIND_VAR);
                 $node->setDeclarations($declarations);
@@ -1232,7 +1220,7 @@ class Parser extends \Peast\Syntax\Parser
             if ($this->scanner->consume("*")) {
                 
                 if ($source = $this->parseFromClause()) {
-                    $this->scanner->consume(";");
+                    $this->assertEndOfStatement();
                     $node = $this->createNode(
                         "ExportAllDeclaration", $position
                     );
@@ -1254,7 +1242,7 @@ class Parser extends \Peast\Syntax\Parser
                 } elseif ($this->scanner->notBefore(array("function", "class")) &&
                           ($declaration = $this->parseAssignmentExpression(true))) {
                     
-                    $this->scanner->consume(";");
+                    $this->assertEndOfStatement();
                     $node = $this->createNode(
                         "ExportDefaultDeclaration", $position
                     );
@@ -1269,7 +1257,7 @@ class Parser extends \Peast\Syntax\Parser
                 if ($source = $this->parseFromClause()) {
                     $node->setSource($source);
                 }
-                $this->scanner->consume(";");
+                $this->assertEndOfStatement();
                 return $this->completeNode($node);
 
             } elseif (($dec = $this->parseVariableStatement()) ||
@@ -1330,7 +1318,7 @@ class Parser extends \Peast\Syntax\Parser
             $position = $this->scanner->getConsumedTokenPosition();
             if ($source = $this->parseStringLiteral()) {
                 
-                $this->scanner->consume(";");
+                $this->assertEndOfStatement();
                 $node = $this->createNode("ImportDeclaration", $position);
                 $node->setSource($source);
                 return $this->completeNode($node);
@@ -1338,7 +1326,7 @@ class Parser extends \Peast\Syntax\Parser
             } elseif (($specifiers = $this->parseImportClause()) &&
                       $source = $this->parseFromClause()) {
                 
-                $this->scanner->consume(";");
+                $this->assertEndOfStatement();
                 $node = $this->createNode("ImportDeclaration", $position);
                 $node->setSpecifiers($specifiers);
                 $node->setSource($source);
