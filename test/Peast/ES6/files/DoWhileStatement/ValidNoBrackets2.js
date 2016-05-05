@@ -1,0 +1,2 @@
+do something();
+while (true)
