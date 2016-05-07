@@ -1,0 +1,1 @@
+foo.bar()["ba" + "z"](arg1).bar()`template${exp}string`.test`other``value`(arg2, ...spread)()(arg3)

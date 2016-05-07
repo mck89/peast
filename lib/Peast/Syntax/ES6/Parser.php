@@ -2410,6 +2410,7 @@ class Parser extends \Peast\Syntax\Parser
         $lastIndex = count($properties) - 1;
         $node = $this->createNode("MemberExpression", $object);
         $node->setObject($object);
+        $endPos = $object->getLocation()->getEnd();
         foreach ($properties as $i => $property) {
             if (is_array($property)) {
                 $node->setProperty($property[0]);
@@ -2570,11 +2571,14 @@ class Parser extends \Peast\Syntax\Parser
         $valid = true;
         $properties = array();
         while (true) {
-            if ($args = $this->parseArguments($yield)) {
-                $properties[] = array($args, false);
+            if (($args = $this->parseArguments($yield)) !== null) {
+                $properties[] = array(
+                    $args,
+                    $this->scanner->getPosition()
+                );
             } elseif ($this->scanner->consume(".")) {
                 if ($property = $this->parseIdentifierName()) {
-                    $properties[] = array($property, false);
+                    $properties[] = array($property);
                 } else {
                     $valid = false;
                     break;
@@ -2582,7 +2586,10 @@ class Parser extends \Peast\Syntax\Parser
             } elseif ($this->scanner->consume("[")) {
                 if (($property = $this->parseExpression(true, $yield)) &&
                     $this->scanner->consume("]")) {
-                    $properties[] = array($property, true);
+                    $properties[] = array(
+                        $property,
+                        $this->scanner->getPosition()
+                    );
                 } else {
                     $valid = false;
                     break;
@@ -2600,32 +2607,33 @@ class Parser extends \Peast\Syntax\Parser
             return $object;
         }
         
-        $lastIndex = count($properties) - 1;
-        $node = $this->createNode("MemberExpression", $object);
-        $node->setObject($object);
+        $node = $object;
+        $endPos = $object->getLocation()->getEnd();
         foreach ($properties as $i => $property) {
             if (is_array($property)) {
                 if (is_array($property[0])) {
                     $lastNode = $node;
                     $node = $this->createNode("CallExpression", $object);
-                    $node->setCallee($this->completeNode($lastNode));
+                    $node->setCallee($this->completeNode($lastNode, $endPos));
                     $node->setArguments($property[0]);
+                    $endPos = $property[1];
                 } else {
+                    $lastNode = $node;
+                    $node = $this->createNode("MemberExpression", $position);
+                    $node->setObject($this->completeNode($lastNode, $endPos));
                     $node->setProperty($property[0]);
-                    if ($property[1]) {
+                    $endPos = $property[0]->getLocation()->getEnd();
+                    if (isset($property[1])) {
                         $node->setComputed(true);
+                        $endPos = $property[1];
                     }
                 }
             } else {
                 $lastNode = $node;
                 $node = $this->createNode("TaggedTemplateExpression", $object);
-                $node->setTag($this->completeNode($lastNode));
-                $node->setQuasi($property[0]);
-            }
-            if ($i !== $lastIndex) {
-                $lastNode = $node;
-                $node = $this->createNode("MemberExpression", $position);
-                $node->setObject($this->completeNode($lastNode));
+                $node->setTag($this->completeNode($lastNode, $endPos));
+                $node->setQuasi($property);
+                $endPos = $property->getLocation()->getEnd();
             }
         }
         
