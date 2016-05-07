@@ -7,6 +7,8 @@ class TemplateElement extends Node
 {
     protected $value;
     
+    protected $tail = false;
+    
     public function getValue()
     {
         return $this->value;
@@ -15,6 +17,17 @@ class TemplateElement extends Node
     public function setValue($value)
     {
         $this->value = $value;
+        return $this;
+    }
+    
+    public function getTail()
+    {
+        return $this->tail;
+    }
+    
+    public function setTail($tail)
+    {
+        $this->tail = (bool) $tail;
         return $this;
     }
     

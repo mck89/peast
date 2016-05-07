@@ -2378,7 +2378,7 @@ class Parser extends \Peast\Syntax\Parser
         while (true) {
             if ($this->scanner->consume(".")) {
                 if ($property = $this->parseIdentifierName()) {
-                    $properties[] = array($property, false);
+                    $properties[] = array($property);
                 } else {
                     $valid = false;
                     break;
@@ -2386,7 +2386,10 @@ class Parser extends \Peast\Syntax\Parser
             } elseif ($this->scanner->consume("[")) {
                 if (($property = $this->parseExpression(true, $yield)) &&
                     $this->scanner->consume("]")) {
-                    $properties[] = array($property, true);
+                    $properties[] = array(
+                        $property,
+                        $this->scanner->getPosition()
+                    );
                 } else {
                     $valid = false;
                     break;
@@ -2410,19 +2413,22 @@ class Parser extends \Peast\Syntax\Parser
         foreach ($properties as $i => $property) {
             if (is_array($property)) {
                 $node->setProperty($property[0]);
-                if ($property[1]) {
+                $endPos = $property[0]->getLocation()->getEnd();
+                if (isset($property[1])) {
                     $node->setComputed(true);
+                    $endPos = $property[1];
                 }
             } else {
-                $lastNode = $node;
+                $lastNode = $node->getObject();
                 $node = $this->createNode("TaggedTemplateExpression", $object);
-                $node->setTag($this->completeNode($lastNode));
-                $node->setQuasi($property[0]);
+                $node->setTag($this->completeNode($lastNode, $endPos));
+                $node->setQuasi($property);
+                $endPos = $property->getLocation()->getEnd();
             }
             if ($i !== $lastIndex) {
                 $lastNode = $node;
                 $node = $this->createNode("MemberExpression", $object);
-                $node->setObject($this->completeNode($lastNode));
+                $node->setObject($this->completeNode($lastNode, $endPos));
             }
         }
         
@@ -2675,7 +2681,6 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseTemplateLiteral($yield = false)
     {
         if ($this->scanner->consume("`")) {
-            
             $position = $this->scanner->getConsumedTokenPosition();
             $stops = array("`", "\${");
             $quasis = $expressions = array();
@@ -2685,36 +2690,35 @@ class Parser extends \Peast\Syntax\Parser
                 }
                 if ($part[strlen($part) - 1] === "`") {
                     
+                    if (count($expressions)) {
+                        $part = substr($part, 1);
+                    }
+                    
                     $part = substr($part, 0, -1);
-                    $quasi = $this->createNode(
-                        "TemplateElement",
-                        count($expressions) ?
-                        $this->scanner->getConsumedTokenPosition() :
-                        $position
-                    );
+                    $quasi = $this->createNode("TemplateElement", $position);
                     $quasi->setRawValue($part);
                     $quasi->setTail(true);
                     $quasis[] = $this->completeNode($quasi);
                     
-                    $node = $this->createNode("TemplateLiteral", $position);
+                    $node = $this->createNode("TemplateLiteral", $quasis[0]);
                     $node->setQuasis($quasis);
                     $node->setExpressions($expressions);
                     return $this->completeNode($node);
                     
                 } else {
                     
-                    $part = preg_replace("/\{\$$/", "", $part);
+                    $part = preg_replace('/\$\{$/', "", $part);
+                    
+                    $quasi = $this->createNode("TemplateElement", $position);
+                    $quasi->setRawValue($part);
+                    $quasis[] = $this->completeNode($quasi);
                     
                     if (!($exp = $this->parseExpression(true, $yield))) {
                         break;
                     }
                     
-                    $quasi = $this->createNode(
-                        "TemplateElement", $$this->scanner->getPosition()
-                    );
-                    $quasi->setRawValue($part);
-                    $quasis[] = $this->completeNode($quasi);
                     $expressions[] = $exp;
+                    $position = $this->scanner->getPosition();
                 }
             }
             

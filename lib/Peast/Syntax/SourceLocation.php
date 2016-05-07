@@ -3,8 +3,6 @@ namespace Peast\Syntax;
 
 class SourceLocation
 {
-    protected $source;
-    
     protected $start;
     
     protected $end;

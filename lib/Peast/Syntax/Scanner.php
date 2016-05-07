@@ -688,8 +688,9 @@ class Scanner
     		        $valid = true;
     		        break;
     		    }
-    		    $seq = array_slice($this->chars, $index, $len);
+    		    $seq = array_slice($this->chars, $index - 1, $len);
     		    if (implode("", $seq) === $stopMap[$char][1]) {
+                    $buffer .= substr($stopMap[$char][1], 1);
     		        $index += $len - 1;
     		        $valid = true;
     		        break;

@@ -31,9 +31,11 @@ abstract class Parser
         return $node->setStartPosition($position);
     }
     
-    public function completeNode(Node $node)
+    public function completeNode(Node $node, $position = null)
     {
-        return $node->setEndPosition($this->scanner->getPosition());
+        return $node->setEndPosition(
+            $position ? $position : $this->scanner->getPosition()
+        );
     }
     
     public function error($message = "", $position = null)

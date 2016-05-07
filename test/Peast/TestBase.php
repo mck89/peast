@@ -41,12 +41,19 @@ class TestBase extends \PHPUnit_Framework_TestCase
         switch ($objType)
         {
             case "object":
-                $ignored = isset($compare->type) && isset($this->ignoredKeys[$compare->type]) ?
-                           $this->ignoredKeys[$compare->type] :
+                $type = isset($compare->type) ? $compare->type : "";
+                $ignored = isset($this->ignoredKeys[$type]) ?
+                           $this->ignoredKeys[$type] :
                            array();
                 foreach ($compare as $k => $v) {
                     if (in_array($k, $ignored)) {
                         continue;
+                    } elseif ($type === "TemplateElement" && $k === "value") {
+                        $objValue = array(
+                            "raw" => $obj->getRawValue(),
+                            "cooked" => $obj->getValue(),
+                        );
+                        $v = (array) $v;
                     } elseif ($k === "loc") {
                         $objValue = $obj->getLocation();
                     } elseif ($k === "range") {
