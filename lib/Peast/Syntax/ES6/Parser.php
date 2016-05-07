@@ -2401,10 +2401,10 @@ class Parser extends \Peast\Syntax\Parser
             }
         }
         
-        if (!count($properties)) {
-            return $object;
-        } elseif (!$valid) {
+        if (!$valid) {
             return $this->error();
+        } elseif (!count($properties)) {
+            return $object;
         }
         
         $lastIndex = count($properties) - 1;
@@ -2594,10 +2594,10 @@ class Parser extends \Peast\Syntax\Parser
             }
         }
         
-        if (!count($properties)) {
-            return $object;
-        } elseif (!$valid) {
+        if (!$valid) {
             return $this->error();
+        } elseif (!count($properties)) {
+            return $object;
         }
         
         $lastIndex = count($properties) - 1;
