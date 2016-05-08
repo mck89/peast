@@ -1458,39 +1458,31 @@ class Parser extends \Peast\Syntax\Parser
     {
         if ($this->scanner->consume("[")) {
             
-            $node = $this->createNode(
-                "ArrayPattern", $this->scanner->getConsumedTokenPosition()
-            );
-            $elements = $this->charSeparatedListOf(
-                "parseBindingElisionElement",
-                array($yield)
-            );
-            
-            if (!$elements || $this->scanner->consume(",")) {
-            
-                $elision = $this->parseElision();
-                $rest = $this->parseBindingRestElement($yield);
-                
-                if ($this->scanner->consume("]")) {
-                    
-                    if (!$elements) {
-                        $elements = array();
-                    }
-                    
-                    if ($elision && $elision > 1) {
-                        $elements = array_merge(
-                            $elements,
-                            array_fill(0, $elision - 1, null)
-                        );
-                    }
-                    
-                    if ($rest) {
-                        $elements[] = $rest;
-                    }
-                    
-                    $node->setElements($elements);
-                    return $this->completeNode($node);
+            $startPos = $this->scanner->getConsumedTokenPosition();
+            $elements = array();
+            while (true) {
+                if ($elision = $this->parseElision()) {
+                    $elements = array_merge(
+                        $elements, array_fill(0, $elision, null)
+                    );
                 }
+                if ($element = $this->parseBindingElement($yield)) {
+                    $elements[] = $element;
+                    if (!$this->scanner->consume(",")) {
+                        break;
+                    }
+                } elseif ($rest = $this->parseBindingRestElement($yield)) {
+                    $elements[] = $rest;
+                    break;
+                } else {
+                    break;
+                }
+            }
+            
+            if ($this->scanner->consume("]")) {
+                $node = $this->createNode("ArrayPattern", $startPos);
+                $node->setElements($elements);
+                return $this->completeNode($node);
             }
             
             return $this->error();
@@ -1512,19 +1504,6 @@ class Parser extends \Peast\Syntax\Parser
             return $this->error();
         }
         return null;
-    }
-    
-    protected function parseBindingElisionElement($yield = false)
-    {
-        $elision = $this->parseElision();
-        
-        if ($element = $this->parseBindingElement($yield)) {
-            $ret = $elision ? array_fill(0, $elision, null) : array();
-            $ret[] = $element;
-            return $ret;
-        }
-        
-        return $this->error();
     }
     
     protected function parseBindingElement($yield = false)
@@ -2609,7 +2588,7 @@ class Parser extends \Peast\Syntax\Parser
         
         $node = $object;
         $endPos = $object->getLocation()->getEnd();
-        foreach ($properties as $i => $property) {
+        foreach ($properties as $property) {
             if (is_array($property)) {
                 if (is_array($property[0])) {
                     $lastNode = $node;
