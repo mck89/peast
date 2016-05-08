@@ -8,6 +8,6 @@ class FunctionDeclaration extends Node implements Declaration, Function_
     public function setId($id)
     {
         $this->assertType($id, "Identifier");
-        return parent::setId($id);
+        return $this->id = $id;
     }
 }

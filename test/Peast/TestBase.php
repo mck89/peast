@@ -4,7 +4,9 @@ namespace test\Peast;
 class TestBase extends \PHPUnit_Framework_TestCase
 {
     protected $ignoredKeys = array(
-        "TryStatement" => array("guardedHandlers", "handlers")
+        "TryStatement" => array("guardedHandlers", "handlers"),
+        "FunctionDeclaration" => array("defaults", "expression"),
+        "FunctionExpression" => array("defaults", "expression")
     );
     
     protected function getJsTestFiles($dir, $invalid = false)

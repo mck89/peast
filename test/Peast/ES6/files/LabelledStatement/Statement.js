@@ -1,0 +1,14 @@
+loop1:
+while (row = getRow()) {
+    if (row["status"] === "error") {
+        break;
+    }
+    while (prop = getProps(row)) {
+        if (prop.readonly) {
+            continue loop1;
+        } else if (prop.status === "error") {
+            break loop1;
+        }
+        continue;
+    }
+}

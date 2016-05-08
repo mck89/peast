@@ -114,9 +114,9 @@ class Parser extends \Peast\Syntax\Parser
             return $statement;
         } elseif ($statement = $this->parseDebuggerStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseExpressionStatement($yield)) {
-            return $statement;
         } elseif ($statement = $this->parseLabelledStatement($yield, $return)) {
+            return $statement;
+        } elseif ($statement = $this->parseExpressionStatement($yield)) {
             return $statement;
         }
         return null;
@@ -375,7 +375,8 @@ class Parser extends \Peast\Syntax\Parser
             
             if ($this->scanner->consume(":")) {
                 
-                if ($body = $this->parseLabelledItem($yield, $return)) {
+                if (($body = $this->parseStatement($yield, $return)) ||
+                    ($body = $this->parseFunctionDeclaration($yield))) {
                     
                     $node = $this->createNode("LabeledStatement", $label);
                     $node->setLabel($label);
@@ -388,16 +389,6 @@ class Parser extends \Peast\Syntax\Parser
             }
             
             $this->scanner->setPosition($position);
-        }
-        return null;
-    }
-    
-    protected function parseLabelledItem($yield = false, $return = false)
-    {
-        if ($statement = $this->parseStatement($yield, $return)) {
-            return $statement;
-        } elseif ($function = $this->parseFunctionDeclaration($yield)) {
-            return $function;
         }
         return null;
     }
@@ -596,7 +587,7 @@ class Parser extends \Peast\Syntax\Parser
         } elseif ($this->scanner->consume("for")) {
             
             $position = $this->scanner->getConsumedTokenPosition();
-            $hasBracket = $this->consume("(");
+            $hasBracket = $this->scanner->consume("(");
             
             if (!$hasBracket) {
                 return $this->error();
@@ -803,17 +794,23 @@ class Parser extends \Peast\Syntax\Parser
             if (($default || $id) &&
                 $this->scanner->consume("(") &&
                 ($params = $this->parseFormalParameterList()) !== null &&
-                $this->scanner->consumeArray(array(")", "{")) &&
-                (($body = $this->parseFunctionBody()) || true) &&
-                $this->scanner->consume("}")) {
+                $this->scanner->consume(")") &&
+                $this->scanner->consume("{")) {
                 
-                $node = $this->createNode("FunctionDeclaration", $position);
-                if ($id) {
-                    $node->setId($id);
+                $bodyStart = $this->scanner->getConsumedTokenPosition();
+                if ((($body = $this->parseFunctionBody()) || true) &&
+                    $this->scanner->consume("}")) {
+
+                    $body->setStartPosition($bodyStart);
+                    $body->setEndPosition($this->scanner->getPosition());
+                    $node = $this->createNode("FunctionDeclaration", $position);
+                    if ($id) {
+                        $node->setId($id);
+                    }
+                    $node->setParams($params);
+                    $node->setBody($body);
+                    return $this->completeNode($node);
                 }
-                $node->setParams($params);
-                $node->setBody($body);
-                return $this->completeNode($node);
             }
             
             return $this->error();
@@ -831,18 +828,24 @@ class Parser extends \Peast\Syntax\Parser
             if (($default || $id) &&
                 $this->scanner->consume("(") &&
                 ($params = $this->parseFormalParameters(true)) !== null  &&
-                $this->scanner->consumeArray(array(")", "{")) &&
-                (($body = $this->parseFunctionBody(true)) || true) &&
-                $this->scanner->consume("}")) {
+                $this->scanner->consume(")") &&
+                $this->scanner->consume("{")) {
                 
-                $node = $this->createNode("FunctionDeclaration", $position);
-                if ($id) {
-                    $node->setId($id);
+                $bodyStart = $this->scanner->getConsumedTokenPosition();
+                if ((($body = $this->parseFunctionBody(true)) || true) &&
+                    $this->scanner->consume("}")) {
+                    
+                    $body->setStartPosition($bodyStart);
+                    $body->setEndPosition($this->scanner->getPosition());
+                    $node = $this->createNode("FunctionDeclaration", $position);
+                    if ($id) {
+                        $node->setId($id);
+                    }
+                    $node->setParams($params);
+                    $node->setBody($body);
+                    $node->setGenerator(true);
+                    return $this->completeNode($node);
                 }
-                $node->setParams($params);
-                $node->setBody($body);
-                $node->setGenerator(true);
-                return $this->completeNode($node);
             }
             
             return $this->error();
@@ -859,15 +862,21 @@ class Parser extends \Peast\Syntax\Parser
             
             if ($this->scanner->consume("(") &&
                 ($params = $this->parseFormalParameters()) !== null &&
-                $this->scanner->consumeArray(array(")", "{")) &&
-                (($body = $this->parseFunctionBody()) || true) &&
-                $this->scanner->consume("}")) {
+                $this->scanner->consume(")") &&
+                $this->scanner->consume("{")) {
                 
-                $node = $this->createNode("FunctionExpression", $position);
-                $node->setId($id);
-                $node->setParams($params);
-                $node->setBody($body);
-                return $this->completeNode($node);
+                $bodyStart = $this->scanner->getConsumedTokenPosition();
+                if ((($body = $this->parseFunctionBody()) || true) &&
+                    $this->scanner->consume("}")) {
+                    
+                    $body->setStartPosition($bodyStart);
+                    $body->setEndPosition($this->scanner->getPosition());
+                    $node = $this->createNode("FunctionExpression", $position);
+                    $node->setId($id);
+                    $node->setParams($params);
+                    $node->setBody($body);
+                    return $this->completeNode($node);
+                }
             }
             
             return $this->error();
@@ -884,16 +893,22 @@ class Parser extends \Peast\Syntax\Parser
             
             if ($this->scanner->consume("(") &&
                 ($params = $this->parseFormalParameters(true)) !== null &&
-                $this->scanner->consumeArray(array(")", "{")) &&
-                (($body = $this->parseFunctionBody(true)) || true) &&
-                $this->scanner->consume("}")) {
+                $this->scanner->consume(")") &&
+                $this->scanner->consume("{")) {
                 
-                $node = $this->createNode("FunctionExpression", $position);
-                $node->setId($id);
-                $node->setParams($params);
-                $node->setBody($body);
-                $node->setGenerator(true);
-                return $this->completeNode($node);
+                $bodyStart = $this->scanner->getConsumedTokenPosition();
+                if ((($body = $this->parseFunctionBody(true)) || true) &&
+                    $this->scanner->consume("}")) {
+                    
+                    $body->setStartPosition($bodyStart);
+                    $body->setEndPosition($this->scanner->getPosition());
+                    $node = $this->createNode("FunctionExpression", $position);
+                    $node->setId($id);
+                    $node->setParams($params);
+                    $node->setBody($body);
+                    $node->setGenerator(true);
+                    return $this->completeNode($node);
+                }
             }
             
             return $this->error();
