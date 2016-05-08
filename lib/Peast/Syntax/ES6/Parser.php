@@ -2159,64 +2159,34 @@ class Parser extends \Peast\Syntax\Parser
     {
         if ($this->scanner->consume("[")) {
             
-            $node = $this->createNode(
-                "ArrayExpression", $this->scanner->getConsumedTokenPosition()
-            );
-            $elements = $this->parseElementList($yield);
-            
-            if (!$elements || $this->scanner->consume(",")) {
-            
-                $elision = $this->parseElision();
-                
-                if ($this->scanner->consume("]")) {
-                    
-                    if (!$elements) {
-                        $elements = array();
-                    }
-                    
-                    if ($elision && $elision > 1) {
-                        $elements = array_merge(
-                            $elements,
-                            array_fill(0, $elision - 1, null)
-                        );
-                    }
-                    
-                    $node->setElements($elements);
-                    return $this->completeNode($node);
+            $startPos = $this->scanner->getConsumedTokenPosition();
+            $elements = array();
+            while (true) {
+                if ($elision = $this->parseElision()) {
+                    $elements = array_merge(
+                        $elements, array_fill(0, $elision, null)
+                    );
                 }
+                if (($element = $this->parseSpreadElement($yield)) ||
+                    ($element = $this->parseAssignmentExpression(true, $yield))) {
+                    $elements[] = $element;
+                    if (!$this->scanner->consume(",")) {
+                        break;
+                    }
+                } else {
+                    break;
+                }
+            }
+            
+            if ($this->scanner->consume("]")) {
+                $node = $this->createNode("ArrayExpression", $startPos);
+                $node->setElements($elements);
+                return $this->completeNode($node);
             }
             
             return $this->error();
         }
         return null;
-    }
-    
-    protected function parseElementList($yield = false)
-    {
-        $position = $this->scanner->getPosition();
-        $begin = true;
-        $list = array();
-        while (true) {
-            $ellision = $this->parseElision();
-            if (!($el = $this->parseSpreadElement($yield))) {
-                $el = $this->parseAssignmentExpression(true, $yield);
-            }
-            if (!$ellision && !$begin) {
-                $this->scanner->setPosition($position);
-                return null;
-            } elseif (($begin && $ellision) || (!$begin && $ellision > 1)) {
-                $list = array_merge(
-                    $list,
-                    array_fill(0, $begin ? $ellision : $ellision - 1, null)
-                );
-            }
-            $begin = false;
-            if (!$el) {
-                break;
-            }
-            $list[] = $el;
-        }
-        return count($list) ? $list : array();
     }
     
     protected function parseArguments($yield = false)

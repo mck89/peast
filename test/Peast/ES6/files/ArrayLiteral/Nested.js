@@ -1,0 +1,1 @@
+var arr = [a, b, ...spread, [c, ...spread2,,,],,];
