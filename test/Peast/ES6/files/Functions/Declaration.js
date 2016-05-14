@@ -1,0 +1,2 @@
+function simple(){}
+function *generator(){}

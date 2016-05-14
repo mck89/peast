@@ -10,7 +10,7 @@ class ObjectPattern extends Node implements Pattern
         return $this->properties;
     }
     
-    public function setBody($properties)
+    public function setProperties($properties)
     {
         $this->assertArrayOf($properties, "AssignmentProperty");
         $this->properties = $properties;

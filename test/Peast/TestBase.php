@@ -3,12 +3,6 @@ namespace test\Peast;
 
 class TestBase extends \PHPUnit_Framework_TestCase
 {
-    protected $ignoredKeys = array(
-        "TryStatement" => array("guardedHandlers", "handlers"),
-        "FunctionDeclaration" => array("defaults", "expression"),
-        "FunctionExpression" => array("defaults", "expression")
-    );
-    
     protected function getJsTestFiles($dir, $invalid = false)
     {
         $ds = DIRECTORY_SEPARATOR;
@@ -43,31 +37,12 @@ class TestBase extends \PHPUnit_Framework_TestCase
         switch ($objType)
         {
             case "object":
-                $type = isset($compare->type) ? $compare->type : "";
-                $ignored = isset($this->ignoredKeys[$type]) ?
-                           $this->ignoredKeys[$type] :
-                           array();
+                if (isset($compare->type)) {
+                    $this->fixComparison($compare);
+                }
                 foreach ($compare as $k => $v) {
-                    if (in_array($k, $ignored)) {
-                        continue;
-                    } elseif ($type === "TemplateElement" && $k === "value") {
-                        $objValue = array(
-                            "raw" => $obj->getRawValue(),
-                            "cooked" => $obj->getValue(),
-                        );
-                        $v = (array) $v;
-                    } elseif ($k === "loc") {
-                        $objValue = $obj->getLocation();
-                    } elseif ($k === "range") {
-                        $loc = $obj->getLocation();
-                        $objValue = array(
-                            $loc->getStart()->getIndex(),
-                            $loc->getEnd()->getIndex()
-                        );
-                    } else {
-                        $fn = "get" . ucfirst($k);
-                        $objValue = $obj->$fn();
-                    }
+                    $fn = "get" . ucfirst($k);
+                    $objValue = $obj->$fn();
                     $this->objectTestRecursive($v, $objValue, "$message" . "->$k");
                 }
             break;
@@ -79,6 +54,46 @@ class TestBase extends \PHPUnit_Framework_TestCase
             break;
             default:
                 $this->assertSame($compare, $obj, $message);
+            break;
+        }
+    }
+    
+    protected function fixComparison($compare)
+    {
+        //Fix location
+        if (isset($compare->loc)) {
+            $compare->location = $compare->loc;
+            $compare->location->start->index = $compare->range[0];
+            $compare->location->end->index = $compare->range[1];
+            unset($compare->loc);
+            unset($compare->range);
+        }
+        
+        //Fix properties
+        switch ($compare->type) {
+            case "TryStatement":
+                unset($compare->guardedHandlers);
+                unset($compare->handlers);
+            break;
+            case "FunctionDeclaration":
+            case "FunctionExpression":
+                for ($i = 0; $i < count($compare->params); $i++) {
+                    if (!isset($compare->defaults[$i]) ||
+                        $compare->defaults[$i] === null) {
+                        continue;
+                    }
+                    $compare->params[$i] = (object) array(
+                        "type" => "AssignmentPattern",
+                        "left" => $compare->params[$i],
+                        "right" => $compare->defaults[$i]
+                    );
+                }
+                unset($compare->defaults);
+                unset($compare->expression);
+            break;
+            case "TemplateElement":
+                $compare->rawValue = $compare->value->raw;
+                $compare->value = $compare->value->cooked;
             break;
         }
     }

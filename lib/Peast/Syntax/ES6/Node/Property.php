@@ -37,8 +37,9 @@ class Property extends Node
         return $this->value;
     }
     
-    public function setValue(Expression $value)
+    public function setValue($value)
     {
+        $this->assertType($value, "Expression");
         $this->value = $value;
         return $this;
     }

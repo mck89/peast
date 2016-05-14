@@ -8,8 +8,9 @@ class AssignmentProperty extends Property
         return "Property";
     }
     
-    public function setValue(Pattern $value)
+    public function setValue($value)
     {
+        $this->assertType($value, "Pattern");
         $this->value = $value;
         return $this;
     }
