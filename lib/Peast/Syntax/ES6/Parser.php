@@ -2232,19 +2232,22 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseMemberExpression($yield = false)
     {
+        $position = $this->scanner->getPosition();
         if ($this->scanner->consume("new")) {
             
-            $position = $this->scanner->getConsumedTokenPosition();
+            $newPosition = $this->scanner->getConsumedTokenPosition();
             if (($callee = $this->parseMemberExpression($yield)) &&
-                $args = $this->parseArguments($yield)) {
-                    
-                $node = $this->createNode("NewExpression", $position);
+                ($args = $this->parseArguments($yield)) !== null) {
+                
+                $node = $this->createNode("NewExpression", $newPosition);
                 $node->setCallee($callee);
                 $node->setArguments($args);
-                return $this->completeNode($node);
+                $object = $this->completeNode($node);
+                
+            } else {
+                $this->scanner->setPosition($position);
+                return null;
             }
-            
-            return $this->error();
             
         } elseif (!($object = $this->parsePrimaryExpression($yield)) && 
             !($object = $this->parseSuperProperty($yield)) &&
@@ -2350,7 +2353,8 @@ class Parser extends \Peast\Syntax\Parser
         if ($this->scanner->consume("new")) {
             
             $position = $this->scanner->getConsumedTokenPosition();
-            if ($callee = $this->parseNewExpression($yield)) {
+            if (($callee = $this->parseMemberExpression($yield)) ||
+                $callee = $this->parseNewExpression($yield)) {
                 $node = $this->createNode("NewExpression", $position);
                 $node->setCallee($callee);
                 return $this->completeNode($node);
@@ -2435,6 +2439,9 @@ class Parser extends \Peast\Syntax\Parser
             $args = $callee ? $this->parseArguments($yield) : null;
             
             if ($callee === null || $args === null) {
+                if ($callee !== null && $callee instanceof Node\NewExpression) {
+                    return $callee;
+                }
                 $this->scanner->setPosition($position);
                 return null;
             }

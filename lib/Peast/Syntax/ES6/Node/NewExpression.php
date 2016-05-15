@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\ES6\Node;
 
-class NewExpression extends Node implements Expression
+class NewExpression extends CallExpression
 {
     public function compile()
     {
