@@ -1610,14 +1610,17 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseArrowFormalParameters($yield = false)
+    protected function parseArrowParameters($yield = false)
     {
-        if ($this->scanner->consume("(")) {
+        if ($param = $this->parseIdentifierReference($yield)) {
+            return $param;
+        } elseif ($this->scanner->consume("(")) {
             
+            $startPos = $this->scanner->getConsumedTokenPosition();
             $params = $this->parseFormalParameterList($yield);
             
             if ($params !== null && $this->scanner->consume(")")) {
-                return $params;
+                return array($params, $startPos);
             }
             
             return $this->error();
@@ -1625,25 +1628,20 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseArrowParameters($yield = false)
-    {
-        if ($param = $this->parseIdentifierReference($yield)) {
-            return array($param);
-        }
-        return $this->parseArrowFormalParameters($yield);
-    }
-    
     protected function parseConciseBody($in = false)
     {
         if ($this->scanner->consume("{")) {
             
+            $bodyStart = $this->scanner->getConsumedTokenPosition();
             if (($body = $this->parseFunctionBody()) &&
                 $this->scanner->consume("}")) {
+                $body->setStartPosition($bodyStart);
+                $body->setEndPosition($this->scanner->getPosition());
                 return array($body, false);
             }
             
             return $this->error();
-        } elseif ($this->notBefore(array("{")) &&
+        } elseif ($this->scanner->notBefore(array("{")) &&
                   $body = $this->parseAssignmentExpression($in)) {
             return array($body, true);
         }
@@ -1658,7 +1656,14 @@ class Parser extends \Peast\Syntax\Parser
             $this->scanner->consume("=>")) {
             
             if ($body = $this->parseConciseBody($in)) {
-                $node = $this->createNode("ArrowFunctionExpression", $params);
+                if (is_array($params)) {
+                    $pos = $params[1];
+                    $params = $params[0];
+                } else {
+                    $pos = $params;
+                    $params = array($params);
+                }
+                $node = $this->createNode("ArrowFunctionExpression", $pos);
                 $node->setParams($params);
                 $node->setBody($body[0]);
                 $node->setExpression($body[1]);
@@ -1855,7 +1860,11 @@ class Parser extends \Peast\Syntax\Parser
             "=", "+=", "-=", "*=", "/=", "%=", "<<=", ">>=",
             ">>>=", "&=", "^=", "|="
         );
-        if (($left = $this->parseLeftHandSideExpression($yield)) &&
+        if ($expr = $this->parseArrowFunction($in, $yield)) {
+            return $expr;
+        } elseif ($yield && $expr = $this->parseYieldExpression($in)) {
+            return $expr;
+        } elseif (($left = $this->parseLeftHandSideExpression($yield)) &&
             $operator = $this->scanner->consumeOneOf($operators)) {
                 
             if ($right = $this->parseAssignmentExpression($in, $yield)) {
@@ -1871,10 +1880,6 @@ class Parser extends \Peast\Syntax\Parser
         }
         $this->scanner->setPosition($position);
         if ($expr = $this->parseConditionalExpression($in, $yield)) {
-            return $expr;
-        } elseif ($yield && $expr = $this->parseYieldExpression($in)) {
-            return $expr;
-        } elseif ($expr = $this->parseArrowFunction($in, $yield)) {
             return $expr;
         }
         return null;

@@ -1,0 +1,1 @@
+var logger = a,b => console.log(a);

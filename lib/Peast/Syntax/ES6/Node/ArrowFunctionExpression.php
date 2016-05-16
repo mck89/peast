@@ -7,7 +7,7 @@ class ArrowFunctionExpression extends Node implements Expression, Function_
     
     protected $expression = false;
     
-    public function setBody(BlockStatement $body)
+    public function setBody($body)
     {
         $this->assertType($body, array("BlockStatement", "Expression"));
         $this->body = $body;

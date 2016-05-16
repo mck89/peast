@@ -25,7 +25,7 @@ abstract class Parser
             if (count($position)) {
                 $position = $position[0]->getLocation()->getStart();
             } else {
-                $position = $this->scaner->getPosition();
+                $position = $this->scanner->getPosition();
             }
         }
         return $node->setStartPosition($position);

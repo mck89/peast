@@ -77,6 +77,7 @@ class TestBase extends \PHPUnit_Framework_TestCase
             break;
             case "FunctionDeclaration":
             case "FunctionExpression":
+            case "ArrowFunctionExpression":
                 for ($i = 0; $i < count($compare->params); $i++) {
                     if (!isset($compare->defaults[$i]) ||
                         $compare->defaults[$i] === null) {
