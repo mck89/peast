@@ -14,7 +14,7 @@ class ImportDeclaration extends Node implements ModuleDeclaration
     
     public function setSpecifiers($specifiers)
     {
-        $this->assertArrayOf($body, array(
+        $this->assertArrayOf($specifiers, array(
             "ImportSpecifier",
             "ImportDefaultSpecifier",
             "ImportNamespaceSpecifier"

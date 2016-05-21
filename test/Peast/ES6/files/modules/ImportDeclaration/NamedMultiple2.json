@@ -1,0 +1,270 @@
+{
+    "range": [
+        0,
+        81
+    ],
+    "loc": {
+        "start": {
+            "line": 1,
+            "column": 0
+        },
+        "end": {
+            "line": 1,
+            "column": 81
+        }
+    },
+    "type": "Program",
+    "body": [
+        {
+            "range": [
+                0,
+                81
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 81
+                }
+            },
+            "type": "ImportDeclaration",
+            "specifiers": [
+                {
+                    "range": [
+                        8,
+                        15
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 15
+                        }
+                    },
+                    "type": "ImportSpecifier",
+                    "local": {
+                        "range": [
+                            8,
+                            15
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 8
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 15
+                            }
+                        },
+                        "type": "Identifier",
+                        "name": "member1"
+                    },
+                    "imported": {
+                        "range": [
+                            8,
+                            15
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 8
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 15
+                            }
+                        },
+                        "type": "Identifier",
+                        "name": "member1"
+                    }
+                },
+                {
+                    "range": [
+                        17,
+                        35
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 17
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 35
+                        }
+                    },
+                    "type": "ImportSpecifier",
+                    "local": {
+                        "range": [
+                            28,
+                            35
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 28
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 35
+                            }
+                        },
+                        "type": "Identifier",
+                        "name": "newname"
+                    },
+                    "imported": {
+                        "range": [
+                            17,
+                            24
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 17
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 24
+                            }
+                        },
+                        "type": "Identifier",
+                        "name": "member2"
+                    }
+                },
+                {
+                    "range": [
+                        37,
+                        53
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 37
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 53
+                        }
+                    },
+                    "type": "ImportSpecifier",
+                    "local": {
+                        "range": [
+                            48,
+                            53
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 48
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 53
+                            }
+                        },
+                        "type": "Identifier",
+                        "name": "other"
+                    },
+                    "imported": {
+                        "range": [
+                            37,
+                            44
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 37
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 44
+                            }
+                        },
+                        "type": "Identifier",
+                        "name": "member3"
+                    }
+                },
+                {
+                    "range": [
+                        55,
+                        62
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 55
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 62
+                        }
+                    },
+                    "type": "ImportSpecifier",
+                    "local": {
+                        "range": [
+                            55,
+                            62
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 55
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 62
+                            }
+                        },
+                        "type": "Identifier",
+                        "name": "member4"
+                    },
+                    "imported": {
+                        "range": [
+                            55,
+                            62
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 55
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 62
+                            }
+                        },
+                        "type": "Identifier",
+                        "name": "member4"
+                    }
+                }
+            ],
+            "source": {
+                "range": [
+                    69,
+                    80
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 69
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 80
+                    }
+                },
+                "type": "Literal",
+                "value": "my-module",
+                "raw": "\"my-module\""
+            }
+        }
+    ],
+    "sourceType": "module"
+}

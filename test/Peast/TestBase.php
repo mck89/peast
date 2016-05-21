@@ -7,7 +7,10 @@ class TestBase extends \PHPUnit_Framework_TestCase
     {
         $ds = DIRECTORY_SEPARATOR;
         $testFiles = array();
-        $files = glob($dir . $ds . "files" . $ds . "*" . $ds . "*.js");
+        $files = array_merge(
+            glob($dir . $ds . "files" . $ds . "*" . $ds . "*.js"),
+            glob($dir . $ds . "files" . $ds . "*" . $ds . "*" . $ds . "*.js")
+        );
         foreach ($files as $jsFile) {
             $isInvalid = strpos($jsFile, "Invalid");
             $parts = explode($ds, $jsFile);

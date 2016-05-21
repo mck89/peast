@@ -57,7 +57,7 @@ class Parser extends \Peast\Syntax\Parser
         $node = $this->createNode(
             "Program", $body ? $body : $this->scanner->getPosition()
         );
-        $node->setSourceType($node::SOURCE_TYPE_SCRIPT);
+        $node->setSourceType($node::SOURCE_TYPE_MODULE);
         if ($body) {
             $node->setBody($body);
         }
@@ -1272,35 +1272,29 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseImportClause()
     {
         if ($spec = $this->parseNameSpaceImport()) {
-            
-            $node = $this->createNode("ImportNamespaceSpecifier", $spec);
-            $node->setLocal($spec);
-            return array($this->completeNode($node));
-            
+            return array($spec);
         } elseif ($specs = $this->parseNamedImports()) {
             return $specs;
         } elseif ($spec = $this->parseIdentifierReference()) {
             
-            $node = $this->createNode("ImportSpecifier", $spec);
+            $node = $this->createNode("ImportDefaultSpecifier", $spec);
             $node->setLocal($spec);
             $ret = array($this->completeNode($node));
             
             if ($this->scanner->consume(",")) {
                 
                 if ($spec = $this->parseNameSpaceImport()) {
-                    $node = $this->createNode(
-                        "ImportNamespaceSpecifier", $spec
-                    );
-                    $node->setLocal($spec);
-                    $ret[] = $this->completeNode($node);
+                    $ret[] = $spec;
                     return $ret;
                 } elseif ($specs = $this->parseNamedImports()) {
                     $ret = array_merge($ret, $specs);
                     return $ret;
                 }
+                
+                return $this->error();
+            } else {
+                return $ret;
             }
-            
-            return $this->error();
         }
         return null;
     }
@@ -1309,9 +1303,12 @@ class Parser extends \Peast\Syntax\Parser
     {
         if ($this->scanner->consume("*")) {
             
+            $position = $this->scanner->getConsumedTokenPosition();
             if ($this->scanner->consume("as") &&
                 $local = $this->parseIdentifierReference()) {
-                return $local;  
+                $node = $this->createNode("ImportNamespaceSpecifier", $position);
+                $node->setLocal($local);
+                return $this->completeNode($node);  
             }
             
             return $this->error();
@@ -1323,14 +1320,16 @@ class Parser extends \Peast\Syntax\Parser
     {
         if ($this->scanner->consume("{")) {
             
-            $position = $this->scanner->getConsumedTokenPosition();
-            $list = $this->charSeparatedListOf(
-                "parseImportSpecifier", $position
-            );
-            $this->scanner->consume(",");
+            $list = array();
+            while ($spec = $this->parseImportSpecifier()) {
+                $list[] = $spec;
+                if (!$this->scanner->consume(",")) {
+                    break;
+                }
+            }
             
             if ($this->scanner->consume("}")) {
-                return $list ? $list : array();
+                return $list;
             }
             
             return $this->error();
@@ -1340,25 +1339,20 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseImportSpecifier()
     {
-        if ($local = $this->parseIdentifierReference()) {
+        if ($imported = $this->parseIdentifierName()) {
             
-            $node = $this->createNode("ImportSpecifier", $local);
-            $node->setLocal($local);
-            return $node;
-            
-        } elseif ($local = $this->parseIdentifierName()) {
-            
-            $node = $this->createNode("ImportSpecifier", $local);
-            $node->setLocal($local);
+            $node = $this->createNode("ImportSpecifier", $imported);
+            $node->setImported($imported);
             if ($this->scanner->consume("as")) {
                 
-                if ($imported = $this->parseIdentifierName()) {
-                    $node->setImported($imported);
+                if ($local = $this->parseIdentifierName()) {
+                    $node->setLocal($local);
                     return $this->completeNode($node);
                 }
                 
                 return $this->error();
             } else {
+                $node->setLocal($imported);
                 return $this->completeNode($node);
             }
         }

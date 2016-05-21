@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\ES6\Node;
 
-class ImportSpecifier extends Node implements ModuleSpecifier
+class ImportSpecifier extends ModuleSpecifier
 {
     protected $imported;
     
@@ -19,7 +19,7 @@ class ImportSpecifier extends Node implements ModuleSpecifier
     public function compile()
     {
         $local = $this->getLocal()->compile();
-        $imported = $this->getLocal()->getImported();
+        $imported = $this->getImported()->compile();
         return !$imported || $local === $imported ?
                $local :
                $local . " as " . $imported;

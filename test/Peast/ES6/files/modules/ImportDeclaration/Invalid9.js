@@ -1,0 +1,1 @@
+import m from "my-module" other

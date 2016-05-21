@@ -1,0 +1,1 @@
+import {member1, member2 as newname} from "my-module";

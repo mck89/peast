@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\ES6\Node;
 
-class ImportNamespaceSpecifier extends Node implements ModuleSpecifier
+class ImportNamespaceSpecifier extends ModuleSpecifier
 {
     public function compile()
     {

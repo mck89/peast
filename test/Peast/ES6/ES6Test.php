@@ -13,7 +13,8 @@ class ES6Test extends \test\Peast\TestBase
      */
     public function testParser($sourceFile, $compareFile)
     {
-        $parser = new \Peast\Syntax\ES6\Parser();
+        $module = strpos($sourceFile, "modules") !== false;
+        $parser = new \Peast\Syntax\ES6\Parser($module);
         $tree = \Peast\Peast::fromFile($parser, $sourceFile);
         $this->compareJSFile($tree, $compareFile);
     }
@@ -29,7 +30,8 @@ class ES6Test extends \test\Peast\TestBase
      */
     public function testParserException($sourceFile)
     {
-        $parser = new \Peast\Syntax\ES6\Parser();
+        $module = strpos($sourceFile, "modules") !== false;
+        $parser = new \Peast\Syntax\ES6\Parser($module);
         \Peast\Peast::fromFile($parser, $sourceFile);
     }
 }

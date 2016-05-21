@@ -1,0 +1,1 @@
+import {a,b},c from "my-module"
