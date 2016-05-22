@@ -25,6 +25,8 @@ class Literal extends Node implements Expression
     
     protected $kind;
     
+    protected $raw;
+    
     public function getValue()
     {
         return $this->value;
@@ -33,6 +35,28 @@ class Literal extends Node implements Expression
     public function setValue($value)
     {
         $this->value = $value;
+        
+        $kind = $this->getKind();
+        if ($kind === self::KIND_SINGLE_QUOTE_STRING ||
+            $kind === self::KIND_DOUBLE_QUOTE_STRING) {
+            $quote = $kind === self::KIND_SINGLE_QUOTE_STRING ? "'" : '"';
+            $raw = Parser::quoteLiteralString($value, $quote);
+        } elseif ($kind === self::KIND_NULL) {
+            $raw = "null";
+        } elseif ($kind === self::KIND_BOOLEAN) {
+            $raw = $value ? "true" : "false";
+        } elseif ($kind === self::KIND_HEXADECIMAL_NUMBER) {
+            $raw = "0x" . dechex($value);
+        } elseif ($kind === self::KIND_BINARY_NUMBER) {
+            $raw = "0b" . decbin($value);
+        } elseif ($kind === self::KIND_OCTAL_NUMBER) {
+            $raw = "0o" . decoct($value);
+        } else {
+            $raw = "$value";
+        }
+        
+        $this->raw = $raw;
+        
         return $this;
     }
     
@@ -49,26 +73,7 @@ class Literal extends Node implements Expression
     
     public function getRaw()
     {
-        $value = $this->getValue();
-        $kind = $this->getKind();
-        if ($kind === self::KIND_SINGLE_QUOTE_STRING ||
-            $kind === self::KIND_DOUBLE_QUOTE_STRING) {
-            $quote = $kind === self::KIND_SINGLE_QUOTE_STRING ? "'" : '"';
-            $value = Parser::quoteLiteralString($value, $quote);
-        } elseif ($kind === self::KIND_NULL) {
-            $value = "null";
-        } elseif ($kind === self::KIND_BOOLEAN) {
-            $value = $value ? "true" : "false";
-        } elseif ($kind === self::KIND_HEXADECIMAL_NUMBER) {
-            $value = "0x" . dechex($value);
-        } elseif ($kind === self::KIND_BINARY_NUMBER) {
-            $value = "0b" . decbin($value);
-        } elseif ($kind === self::KIND_OCTAL_NUMBER) {
-            $value = "0o" . decoct($value);
-        } else {
-            $value = "$value";
-        }
-        return $value;
+        return $this->raw;
     }
     
     public function setRaw($rawValue)
@@ -90,8 +95,6 @@ class Literal extends Node implements Expression
             $value = $rawValue;
             if ($value[0] === "0" && isset($value[1])) {
                 $secondChar = strtolower($value[1]);
-                $parts = preg_split("/e/i", $value);
-                $value = $parts[0];
                 if ($secondChar === "b") {
                     $kind = self::KIND_BINARY_NUMBER;
                     $value = bindec($value);
@@ -99,20 +102,20 @@ class Literal extends Node implements Expression
                     $kind = self::KIND_HEXADECIMAL_NUMBER;
                     $value = hexdec($value);
                 } elseif ($secondChar === "o" ||
-                          preg_match("/^0[0-7]+$/", $parts[0])) {
+                          preg_match("/^0[0-7]+$/", $value)) {
                     $kind = self::KIND_OCTAL_NUMBER;
                     $value = octdec($value);
                 }
-                if (isset($parts[1])) {
-                    $value = $value . "e" . $parts[1];
-                }
             }
-            $value = strpos("$value", ".") === false ?
+            $value = (float) $value;
+            $value = strpos("$value", ".") === false ||
+                     preg_match("/\.0*$/", "$value") ?
                      (int) $value :
                      (float) $value;
             $this->setKind($kind);
             $this->setValue($value);
         }
+        $this->raw = $rawValue;
         return $this;
     }
     

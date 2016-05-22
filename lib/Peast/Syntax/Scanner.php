@@ -496,128 +496,118 @@ class Scanner
         $trimmedPosition = $this->getPosition();
         $this->clearCache();
         
+        $decimalExp = true;
+        $source = "";
+        
+        $reset = function () use ($postion, $trimmedPosition, $ws) {
+            $this->setPosition($postion);
+            $this->wsCache = array($trimmedPosition, $ws);
+            return null;
+        };
+        
+        $checkNoDecimal = function ($s) use ($reset, $trimmedPosition) {
+            $sym = $this->scanSymbols();
+            if (!$sym || $sym["source"] !== ".") {
+                $this->consumedTokenPosition = $trimmedPosition;
+                return $s;
+            } else {
+                return $reset();
+            }
+        };
+        
+        $handleExponent = function ($n, $allowEmptyBase = false) use ($reset) {
+            $parts = preg_split("/e/i", $n);
+            if (count($parts) > 2 ||
+                (!preg_match("/^\d+$/", $parts[0]) && (
+                !$allowEmptyBase || $parts[0] !== ""))) {
+                return $reset();
+            } elseif (!isset($parts[1])) {
+                return false;
+            }
+            $expPart = $parts[1];
+            $ret = "";
+            if ($expPart === "") {
+                $sign = $this->scanSymbols();
+                if (!$sign ||
+                    ($sign["source"] !== "+" && $sign["source"] !== "-")) {
+                    return $reset();
+                }
+                $this->consumeToken($sign);
+                $expNum = $this->scanOther();
+                $this->consumeToken($expNum);
+                $expPart = $expNum["source"];
+                $ret = $sign["source"] . $expPart;
+            }
+            if (!preg_match("/^\d+$/", $expPart)) {
+                return $reset();
+            }
+            return $ret;
+        };
+        
         $nextChar = !$this->isEOF() ?
                     $this->chars[$this->index] :
                     null;
         if (!(($nextChar >= "0" && $nextChar <= "9") || $nextChar === ".")) {
-            $this->setPosition($postion);
-            $this->wsCache = array($trimmedPosition, $ws);
-            return null;
+            return $reset();
         }
         
-        $decimal = true;
-        $source = "";
-        $num = $this->scanOther();
-        if ($num) {
-            //Split exponent part
-            $parts = preg_split("/e/i", $num["source"]);
-            $n = $parts[0];
-            //If it begins with 0 it can be a binary (0b), an octal (0o)
-            //an hexdecimal (0x) or a integer number with no decimal part
-            if ($n[0] === "0" && isset($n[1])) {
-                $decimal = false;
-                $char = strtolower($n[1]);
-                if ((
-                        $char === "b" &&
-                        $this->config->supportsBinaryNumberForm() &&
-                        !preg_match("/^0[bB][01]+$", $n)
-                    ) || (
-                        $char === "o" &&
-                        $this->config->supportsOctalNumberForm() &&
-                        !preg_match("/^0[oO][0-7]+$", $n)
-                    ) || (
-                        $char === "x" &&
-                        !preg_match("/^0[xX][0-9a-fA-F]+$", $n)
-                    ) || (
-                        $char >= "0" && $char <= "9" &&
-                        !preg_match("/^\d+$/", $n)
-                    )) {
-                    $this->setPosition($postion);
-                    $this->wsCache = array($trimmedPosition, $ws);
-                    return null;
-                }
-            } elseif (!preg_match("/^\d+$/", $n)) {
-                $this->setPosition($postion);
-                $this->wsCache = array($trimmedPosition, $ws);
-                return null;
-            }
+        if ($num = $this->scanOther()) {
             $this->consumeToken($num);
-            $source .= $num["source"];
-            //Validate exponent part
-            if (isset($parts[1])) {
-                $expPart = $parts[1];
-                if ($expPart === "") {
-                    $sign = $this->scanSymbols();
-                    if ($sign["source"] !== "+" && $sign["source"] !== "-") {
-                        $this->setPosition($postion);
-                        $this->wsCache = array($trimmedPosition, $ws);
-                        return null;
+            $source = $num["source"];
+            if ($source[0] === "0" && isset($source[1])) {
+                $char = strtolower($source[1]);
+                if ($char === "b") {
+                    //Binary form
+                    if (!$this->config->supportsBinaryNumberForm() ||
+                        !preg_match("/^0[bB][01]+$/", $source)) {
+                        return $reset();
                     }
-                    $this->consumeToken($sign);
-                    $expNum = $this->scanOther();
-                    $this->consumeToken($expNum);
-                    $expPart = $expNum["source"];
-                    $source .= $sign["source"] . $expPart;
-                }
-                if (!preg_match("/^\d+$/", $expPart)) {
-                    $this->setPosition($postion);
-                    $this->wsCache = array($trimmedPosition, $ws);
-                    return null;
+                    return $checkNoDecimal($source);
+                } elseif ($char === "o") {
+                    //Octal form
+                    if (!$this->config->supportsOctalNumberForm() ||
+                        !preg_match("/^0[oO][0-7]+$/", $source)) {
+                        return $reset();
+                    }
+                    return $checkNoDecimal($source);
+                } elseif ($char === "x") {
+                    //Hexadecimal form
+                    if (!preg_match("/^0[xX][0-9a-fA-F]+$/", $source)) {
+                        return $reset();
+                    }
+                    return $checkNoDecimal($source);
+                } elseif (preg_match("/^0[0-7]+/", $source)) {
+                    //Implicit octal form
+                    return $checkNoDecimal($source);
                 }
             }
+            $exp = $handleExponent($num["source"]);
+            if ($exp === null) {
+                return $reset();
+            } elseif ($exp) {
+                $source .= $exp;
+            }
+            $decimalExp = $exp === false;
         }
+        
         //Validate decimal part
         $dot = $this->scanSymbols();
         if ($dot && $dot["source"] === ".") {
-            if (!$decimal) {
-                //If decimal part is not allowed exit
-                $this->setPosition($postion);
-                $this->wsCache = array($trimmedPosition, $ws);
-                return null;
-            } else {
-                $this->consumeToken($dot);
-                $source .= ".";
-                $decPart = $this->scanOther();
-                if (!$decPart) {
-                    $this->setPosition($postion);
-                    $this->wsCache = array($trimmedPosition, $ws);
-                    return null;
-                }
-                //Split exponent part
-                $parts = preg_split("/e/i", $decPart["source"]);
-                if (!preg_match("/^\d+$/", $parts[0])) {
-                    $this->setPosition($postion);
-                    $this->wsCache = array($trimmedPosition, $ws);
-                    return null;
-                }
+            $this->consumeToken($dot);
+            $source .= ".";
+            if ($decPart = $this->scanOther()) {
                 $this->consumeToken($decPart);
                 $source .= $decPart["source"];
-                //Validate exponent part
-                if (isset($parts[1])) {
-                    $expPart = $parts[1];
-                    if ($expPart === "") {
-                        $sign = $this->scanSymbols();
-                        if ($sign["source"] !== "+" && $sign["source"] !== "-") {
-                            $this->setPosition($postion);
-                            $this->wsCache = array($trimmedPosition, $ws);
-                            return null;
-                        }
-                        $this->consumeToken($sign);
-                        $expNum = $this->scanOther();
-                        $this->consumeToken($expNum);
-                        $expPart = $expNum["source"];
-                        $source .= $sign["source"] . $expPart;
-                    }
-                    if (!preg_match("/^\d+$/", $expPart)) {
-                        $this->setPosition($postion);
-                        $this->wsCache = array($trimmedPosition, $ws);
-                        return null;
-                    }
+                $exp = $handleExponent($decPart["source"], true);
+                if ($exp === null || ($exp !== false && !$decimalExp)) {
+                    return $reset();
+                } elseif ($exp) {
+                    $source .= $exp;
                 }
             }
         }
-        $this->consumedTokenPosition = $trimmedPosition;
-        return $source;
+        
+        return $checkNoDecimal($source);
     }
     
     public function consumeArray($sequence)
@@ -708,7 +698,11 @@ class Scanner
 	        $lines = $this->splitLines($buffer);
 	        $linesCount = count($lines) - 1;
 	        $this->line += $linesCount;
-            $this->column += mb_strlen($lines[$linesCount]);
+            if ($linesCount) {
+                $this->column = mb_strlen($lines[$linesCount]);
+            } else {
+                $this->column += mb_strlen($lines[$linesCount]);
+            }
 	    }
 	    $this->index = $index;
 	    

@@ -1,0 +1,56 @@
+{
+    "range": [
+        0,
+        56
+    ],
+    "loc": {
+        "start": {
+            "line": 1,
+            "column": 0
+        },
+        "end": {
+            "line": 2,
+            "column": 27
+        }
+    },
+    "type": "Program",
+    "body": [
+        {
+            "range": [
+                0,
+                56
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
+                    "column": 27
+                }
+            },
+            "type": "ExpressionStatement",
+            "expression": {
+                "range": [
+                    0,
+                    56
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 0
+                    },
+                    "end": {
+                        "line": 2,
+                        "column": 27
+                    }
+                },
+                "type": "Literal",
+                "value": "this is a \"test\"\r\n\t\\셞ሴÀ>5*",
+                "raw": "\"this is a \\\"test\\\"\\r\\n\\t\\\\\\\n\\uC15E\\u{1234}\\xC0\\765\\052\""
+            }
+        }
+    ],
+    "sourceType": "script"
+}

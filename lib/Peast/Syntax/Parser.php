@@ -131,15 +131,19 @@ abstract class Parser
         //Remove quotes
         $str = substr($str, 1, -1);
         
+        $config = static::getConfig();
+        $lineTerminators = $config->getLineTerminators();
+        
         //Handle escapes
         $patterns = array(
-            "u{[a-fA-F0-9]+\}",
+            "u\{[a-fA-F0-9]+\}",
             "u[a-fA-F0-9]{1,4}",
             "x[a-fA-F0-9]{1,2}",
-            "[0-7]{1,3}",
+            "0[0-7]{2}",
+            "[1-7][0-7]",
             "."
         );
-        $reg = "/\\\\(" . implode("|", $patterns) . ")/";
+        $reg = "/\\\\(" . implode("|", $patterns) . ")/s";
         $simpleSequence = array(
             "n" => "\n",
             "f" => "\f",
@@ -148,7 +152,7 @@ abstract class Parser
             "v" => "\v",
             "b" => "\x8"
         );
-        $replacement = function ($m) use ($simpleSequence) {
+        $replacement = function ($m) use ($simpleSequence, $lineTerminators) {
             $type = $m[1][0];
             if (isset($simpleSequence[$type])) {
                 // \n, \r, \t ...
@@ -156,11 +160,14 @@ abstract class Parser
             } elseif ($type === "u" || $type === "x") {
                 // \uFFFF, \u{FFFF}, \xFF
                 $code = substr($m[1], 1);
-                $code = str_replace(array("{", "}"), "");
+                $code = str_replace(array("{", "}"), "", $code);
                 return Utils::unicodeToUtf8(hexdec($code));
             } elseif ($type >= "0" && $type <= "7") {
                 // \123
-                return Utils::unicodeToUtf8(octdec($code));
+                return Utils::unicodeToUtf8(octdec($m[1]));
+            } elseif (in_array($m[1], $lineTerminators)) {
+                // Escaped line terminators
+                return "";
             } else {
                 // Escaped characters
                 return $m[1];
