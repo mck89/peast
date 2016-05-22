@@ -1,7 +1,7 @@
 {
     "range": [
         0,
-        56
+        72
     ],
     "loc": {
         "start": {
@@ -9,8 +9,8 @@
             "column": 0
         },
         "end": {
-            "line": 4,
-            "column": 12
+            "line": 5,
+            "column": 15
         }
     },
     "type": "Program",
@@ -18,7 +18,7 @@
         {
             "range": [
                 0,
-                56
+                72
             ],
             "loc": {
                 "start": {
@@ -26,8 +26,8 @@
                     "column": 0
                 },
                 "end": {
-                    "line": 4,
-                    "column": 12
+                    "line": 5,
+                    "column": 15
                 }
             },
             "type": "VariableDeclaration",
@@ -246,6 +246,60 @@
                         "type": "Literal",
                         "value": 12,
                         "raw": "12."
+                    }
+                },
+                {
+                    "range": [
+                        61,
+                        71
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 5,
+                            "column": 4
+                        },
+                        "end": {
+                            "line": 5,
+                            "column": 14
+                        }
+                    },
+                    "type": "VariableDeclarator",
+                    "id": {
+                        "range": [
+                            61,
+                            62
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 5,
+                                "column": 4
+                            },
+                            "end": {
+                                "line": 5,
+                                "column": 5
+                            }
+                        },
+                        "type": "Identifier",
+                        "name": "e"
+                    },
+                    "init": {
+                        "range": [
+                            65,
+                            71
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 5,
+                                "column": 8
+                            },
+                            "end": {
+                                "line": 5,
+                                "column": 14
+                            }
+                        },
+                        "type": "Literal",
+                        "value": 97.23,
+                        "raw": "097.23"
                     }
                 }
             ],
