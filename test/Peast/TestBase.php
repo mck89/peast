@@ -99,6 +99,15 @@ class TestBase extends \PHPUnit_Framework_TestCase
                 $compare->rawValue = $compare->value->raw;
                 $compare->value = $compare->value->cooked;
             break;
+            case "Literal":
+                if (isset($compare->regex)) {
+                    $compare->type = "RegExpLiteral";
+                    $compare->pattern = $compare->regex->pattern;
+                    $compare->flags = $compare->regex->flags;
+                    unset($compare->regex);
+                    $compare->value = $compare->raw;
+                }
+            break;
         }
     }
 }

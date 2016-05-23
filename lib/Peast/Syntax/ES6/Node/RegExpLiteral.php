@@ -9,16 +9,19 @@ class RegExpLiteral extends Literal
     
     protected $flags = "";
     
+    protected $pattern = "";
+    
     protected $kind = self::KIND_REGEX;
     
     public function getPattern()
     {
-        return $this->getValue();
+        return $this->pattern;
     }
     
     public function setPattern($pattern)
     {
-        return $this->setValue($pattern);
+        $this->pattern = $pattern;
+        return $this;
     }
     
     public function getFlags()
@@ -39,10 +42,21 @@ class RegExpLiteral extends Literal
     
     public function setRaw($rawValue)
     {
+        
         $parts = explode("/", substr($rawValue, 1));
         $flags = array_pop($parts);
         $this->setPattern(implode("/", $parts));
         $this->setFlags($flags);
         return $this;
+    }
+    
+    public function getValue()
+    {
+        return $this->getRaw();
+    }
+    
+    public function setValue($value)
+    {
+        return $this->setRaw($value);
     }
 }

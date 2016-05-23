@@ -1,0 +1,1 @@
+var a = /test\/test[abc/def]/img;
