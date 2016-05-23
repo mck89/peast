@@ -67,12 +67,12 @@ class MethodDefinition extends Node
     
     public function getStatic()
     {
-        return $this{"static"};
+        return $this->{"static"};
     }
     
     public function setStatic($static)
     {
-        $this{"static"} = (bool) $static;
+        $this->{"static"} = (bool) $static;
         return $this;
     }
     

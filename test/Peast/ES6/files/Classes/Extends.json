@@ -1,0 +1,279 @@
+{
+    "range": [
+        0,
+        83
+    ],
+    "loc": {
+        "start": {
+            "line": 1,
+            "column": 0
+        },
+        "end": {
+            "line": 6,
+            "column": 1
+        }
+    },
+    "type": "Program",
+    "body": [
+        {
+            "range": [
+                0,
+                83
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 6,
+                    "column": 1
+                }
+            },
+            "type": "ClassDeclaration",
+            "id": {
+                "range": [
+                    6,
+                    11
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 6
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 11
+                    }
+                },
+                "type": "Identifier",
+                "name": "Angry"
+            },
+            "superClass": {
+                "range": [
+                    20,
+                    26
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 20
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 26
+                    }
+                },
+                "type": "Identifier",
+                "name": "Person"
+            },
+            "body": {
+                "range": [
+                    27,
+                    83
+                ],
+                "loc": {
+                    "start": {
+                        "line": 2,
+                        "column": 0
+                    },
+                    "end": {
+                        "line": 6,
+                        "column": 1
+                    }
+                },
+                "type": "ClassBody",
+                "body": [
+                    {
+                        "range": [
+                            33,
+                            81
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 3,
+                                "column": 4
+                            },
+                            "end": {
+                                "line": 5,
+                                "column": 5
+                            }
+                        },
+                        "type": "MethodDefinition",
+                        "key": {
+                            "range": [
+                                33,
+                                38
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 3,
+                                    "column": 4
+                                },
+                                "end": {
+                                    "line": 3,
+                                    "column": 9
+                                }
+                            },
+                            "type": "Identifier",
+                            "name": "speak"
+                        },
+                        "computed": false,
+                        "value": {
+                            "range": [
+                                38,
+                                81
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 3,
+                                    "column": 9
+                                },
+                                "end": {
+                                    "line": 5,
+                                    "column": 5
+                                }
+                            },
+                            "type": "FunctionExpression",
+                            "id": null,
+                            "params": [],
+                            "defaults": [],
+                            "body": {
+                                "range": [
+                                    41,
+                                    81
+                                ],
+                                "loc": {
+                                    "start": {
+                                        "line": 3,
+                                        "column": 12
+                                    },
+                                    "end": {
+                                        "line": 5,
+                                        "column": 5
+                                    }
+                                },
+                                "type": "BlockStatement",
+                                "body": [
+                                    {
+                                        "range": [
+                                            51,
+                                            75
+                                        ],
+                                        "loc": {
+                                            "start": {
+                                                "line": 4,
+                                                "column": 8
+                                            },
+                                            "end": {
+                                                "line": 4,
+                                                "column": 32
+                                            }
+                                        },
+                                        "type": "ExpressionStatement",
+                                        "expression": {
+                                            "range": [
+                                                51,
+                                                74
+                                            ],
+                                            "loc": {
+                                                "start": {
+                                                    "line": 4,
+                                                    "column": 8
+                                                },
+                                                "end": {
+                                                    "line": 4,
+                                                    "column": 31
+                                                }
+                                            },
+                                            "type": "CallExpression",
+                                            "callee": {
+                                                "range": [
+                                                    51,
+                                                    62
+                                                ],
+                                                "loc": {
+                                                    "start": {
+                                                        "line": 4,
+                                                        "column": 8
+                                                    },
+                                                    "end": {
+                                                        "line": 4,
+                                                        "column": 19
+                                                    }
+                                                },
+                                                "type": "MemberExpression",
+                                                "computed": false,
+                                                "object": {
+                                                    "range": [
+                                                        51,
+                                                        56
+                                                    ],
+                                                    "loc": {
+                                                        "start": {
+                                                            "line": 4,
+                                                            "column": 8
+                                                        },
+                                                        "end": {
+                                                            "line": 4,
+                                                            "column": 13
+                                                        }
+                                                    },
+                                                    "type": "Super"
+                                                },
+                                                "property": {
+                                                    "range": [
+                                                        57,
+                                                        62
+                                                    ],
+                                                    "loc": {
+                                                        "start": {
+                                                            "line": 4,
+                                                            "column": 14
+                                                        },
+                                                        "end": {
+                                                            "line": 4,
+                                                            "column": 19
+                                                        }
+                                                    },
+                                                    "type": "Identifier",
+                                                    "name": "speak"
+                                                }
+                                            },
+                                            "arguments": [
+                                                {
+                                                    "range": [
+                                                        63,
+                                                        73
+                                                    ],
+                                                    "loc": {
+                                                        "start": {
+                                                            "line": 4,
+                                                            "column": 20
+                                                        },
+                                                        "end": {
+                                                            "line": 4,
+                                                            "column": 30
+                                                        }
+                                                    },
+                                                    "type": "Literal",
+                                                    "value": "Go away!",
+                                                    "raw": "\"Go away!\""
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "generator": false,
+                            "expression": false
+                        },
+                        "kind": "method",
+                        "static": false
+                    }
+                ]
+            }
+        }
+    ],
+    "sourceType": "script"
+}

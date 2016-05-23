@@ -1,0 +1,181 @@
+{
+    "type": "Program",
+    "body": [
+        {
+            "type": "ClassDeclaration",
+            "id": {
+                "type": "Identifier",
+                "name": "Person"
+            },
+            "superClass": null,
+            "body": {
+                "type": "ClassBody",
+                "body": [
+                    {
+                        "type": "MethodDefinition",
+                        "key": {
+                            "type": "Identifier",
+                            "name": "constructor"
+                        },
+                        "computed": false,
+                        "value": {
+                            "type": "FunctionExpression",
+                            "id": null,
+                            "params": [
+                                {
+                                    "type": "Identifier",
+                                    "name": "name"
+                                }
+                            ],
+                            "defaults": [],
+                            "body": {
+                                "type": "BlockStatement",
+                                "body": [
+                                    {
+                                        "type": "ExpressionStatement",
+                                        "expression": {
+                                            "type": "AssignmentExpression",
+                                            "operator": "=",
+                                            "left": {
+                                                "type": "MemberExpression",
+                                                "computed": false,
+                                                "object": {
+                                                    "type": "ThisExpression"
+                                                },
+                                                "property": {
+                                                    "type": "Identifier",
+                                                    "name": "name"
+                                                }
+                                            },
+                                            "right": {
+                                                "type": "Identifier",
+                                                "name": "name"
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            "generator": false,
+                            "expression": false
+                        },
+                        "kind": "constructor",
+                        "static": false
+                    },
+                    {
+                        "type": "MethodDefinition",
+                        "key": {
+                            "type": "Identifier",
+                            "name": "speak"
+                        },
+                        "computed": false,
+                        "value": {
+                            "type": "FunctionExpression",
+                            "id": null,
+                            "params": [
+                                {
+                                    "type": "Identifier",
+                                    "name": "msg"
+                                }
+                            ],
+                            "defaults": [],
+                            "body": {
+                                "type": "BlockStatement",
+                                "body": [
+                                    {
+                                        "type": "ExpressionStatement",
+                                        "expression": {
+                                            "type": "CallExpression",
+                                            "callee": {
+                                                "type": "Identifier",
+                                                "name": "alert"
+                                            },
+                                            "arguments": [
+                                                {
+                                                    "type": "BinaryExpression",
+                                                    "operator": "+",
+                                                    "left": {
+                                                        "type": "BinaryExpression",
+                                                        "operator": "+",
+                                                        "left": {
+                                                            "type": "MemberExpression",
+                                                            "computed": false,
+                                                            "object": {
+                                                                "type": "ThisExpression"
+                                                            },
+                                                            "property": {
+                                                                "type": "Identifier",
+                                                                "name": "name"
+                                                            }
+                                                        },
+                                                        "right": {
+                                                            "type": "Literal",
+                                                            "value": " says: ",
+                                                            "raw": "\" says: \""
+                                                        }
+                                                    },
+                                                    "right": {
+                                                        "type": "Identifier",
+                                                        "name": "msg"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "generator": false,
+                            "expression": false
+                        },
+                        "kind": "method",
+                        "static": false
+                    },
+                    {
+                        "type": "MethodDefinition",
+                        "key": {
+                            "type": "Identifier",
+                            "name": "doNothing"
+                        },
+                        "computed": false,
+                        "value": {
+                            "type": "FunctionExpression",
+                            "id": null,
+                            "params": [],
+                            "defaults": [],
+                            "body": {
+                                "type": "BlockStatement",
+                                "body": []
+                            },
+                            "generator": false,
+                            "expression": false
+                        },
+                        "kind": "method",
+                        "static": false
+                    },
+                    {
+                        "type": "MethodDefinition",
+                        "key": {
+                            "type": "Identifier",
+                            "name": "oneLine"
+                        },
+                        "computed": false,
+                        "value": {
+                            "type": "FunctionExpression",
+                            "id": null,
+                            "params": [],
+                            "defaults": [],
+                            "body": {
+                                "type": "BlockStatement",
+                                "body": []
+                            },
+                            "generator": false,
+                            "expression": false
+                        },
+                        "kind": "method",
+                        "static": false
+                    }
+                ]
+            }
+        }
+    ],
+    "sourceType": "script"
+}
