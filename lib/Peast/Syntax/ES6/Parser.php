@@ -995,7 +995,22 @@ class Parser extends \Peast\Syntax\Parser
     {
         if ($this->scanner->consume(";")) {
             return true;
-        } elseif ($def = $this->parseMethodDefinition($yield)) {
+        }
+        $staticPos = $this->scanner->consume("static") ?
+                     $this->scanner->getConsumedTokenPosition() :
+                     null;
+        
+        if ($def = $this->parseMethodDefinition($yield)) {
+            if ($staticPos) {
+                $def->setStatic(true);
+                $def->setStartPosition($staticPos);
+            }
+            return $def;
+        } elseif ($staticPos) {
+            return $this->error();
+        }
+        
+        elseif ($def = $this->parseMethodDefinition($yield)) {
             return $def;
         }
         
