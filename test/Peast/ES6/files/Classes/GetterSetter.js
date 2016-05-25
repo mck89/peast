@@ -7,8 +7,8 @@ class Employee extends Person
     
     set name(name)
     {
-        [firstname, surname] = name.split(" ");
-        this.firstname = firstname;
-        this.surname = surname;
+        var parts = name.split(" ");
+        this.firstname = parts[0];
+        this.surname = parts[1];
     }
 }
