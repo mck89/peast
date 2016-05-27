@@ -108,6 +108,9 @@ class TestBase extends \PHPUnit_Framework_TestCase
                     $compare->value = $compare->raw;
                 }
             break;
+            case "ForInStatement":
+                unset($compare->each);
+            break;
         }
     }
 }

@@ -580,15 +580,25 @@ class Parser extends \Peast\Syntax\Parser
             
             $position = $this->scanner->getConsumedTokenPosition();
             $hasBracket = $this->scanner->consume("(");
+            $afterBracketPos = $this->scanner->getPosition();
             
             if (!$hasBracket) {
                 return $this->error();
             } elseif ($this->scanner->consume("var")) {
                 
-                $subPosition = $this->scanner->getConsumedTokenPosition();
+                $subPosition = $this->scanner->getPosition();
+                $varPosition = $this->scanner->getConsumedTokenPosition();
                 
                 if (($decl = $this->parseVariableDeclarationList($yield)) &&
+                    ($varEndPosition = $this->scanner->getPosition()) &&
                     $this->scanner->consume(";")) {
+                            
+                    $init = $this->createNode(
+                        "VariableDeclaration", $varPosition
+                    );
+                    $init->setKind($init::KIND_VAR);
+                    $init->setDeclarations($decl);
+                    $init = $this->completeNode($init, $varEndPosition);
                     
                     $test = $this->parseExpression(true, $yield);
                     
@@ -598,13 +608,6 @@ class Parser extends \Peast\Syntax\Parser
                         
                         if ($this->scanner->consume(")") &&
                             $body = $this->parseStatement($yield, $return)) {
-                            
-                            $init = $this->createNode(
-                                "VariableDeclaration", $subPosition
-                            );
-                            $init->setKind($init::KIND_VAR);
-                            $init->setDeclarations($decl);
-                            $init = $this->completeNode($init);
                             
                             $node = $this->createNode(
                                 "ForStatement", $position
@@ -623,7 +626,7 @@ class Parser extends \Peast\Syntax\Parser
                     if ($decl = $this->parseForBinding($yield)) {
                         
                         $left = $this->createNode(
-                            "VariableDeclaration", $subPosition
+                            "VariableDeclaration", $varPosition
                         );
                         $left->setKind($left::KIND_VAR);
                         $left->setDeclarations(array($decl));
@@ -660,52 +663,56 @@ class Parser extends \Peast\Syntax\Parser
                         }
                     }
                 }
-            } elseif ($init = $this->parseLexicalDeclaration($yield)) {
+            } elseif ($init = $this->parseForDeclaration($yield)) {
                 
-                $test = $this->parseExpression(true, $yield);
-                
-                if ($this->scanner->consume(";")) {
-                        
-                    $update = $this->parseExpression(true, $yield);
-                    
-                    if ($this->scanner->consume(")") &&
-                        $body = $this->parseStatement($yield, $return)) {
-                        
-                        $node = $this->createNode("ForStatement", $position);
-                        $node->setInit($init);
-                        $node->setTest($test);
-                        $node->setUpdate($update);
-                        $node->setBody($body);
-                        return $this->completeNode($node);
-                    }
-                }
-            } elseif ($left = $this->parseForDeclaration($yield)) {
-                
-                if ($this->scanner->consume("in")) {
-                            
+                if ($init && $this->scanner->consume("in")) {
                     if (($right = $this->parseExpression(true, $yield)) &&
                         $this->scanner->consume(")") &&
                         $body = $this->parseStatement($yield, $return)) {
                         
                         $node = $this->createNode("ForInStatement", $position);
-                        $node->setLeft($left);
+                        $node->setLeft($init);
                         $node->setRight($right);
                         $node->setBody($body);
                         return $this->completeNode($node);
                     }
-                } elseif ($this->scanner->consume("of")) {
-                    
+                } elseif ($init && $this->scanner->consume("of")) {
                     if (($right = $this->parseAssignmentExpression(true, $yield)) &&
                         $this->scanner->consume(")") &&
                         $body = $this->parseStatement($yield, $return)) {
                         
                         $node = $this->createNode("ForOfStatement", $position);
-                        $node->setLeft($left);
+                        $node->setLeft($init);
                         $node->setRight($right);
                         $node->setBody($body);
                         return $this->completeNode($node);
                     }
+                } else {
+                    
+                    $this->scanner->setPosition($afterBracketPos);
+                    if ($init = $this->parseLexicalDeclaration($yield)) {
+                        
+                        $test = $this->parseExpression(true, $yield);
+                        if ($this->scanner->consume(";")) {
+                                
+                            $update = $this->parseExpression(true, $yield);
+                            
+                            if ($this->scanner->consume(")") &&
+                                $body = $this->parseStatement($yield, $return)) {
+                                
+                                $node = $this->createNode(
+                                    "ForStatement", $position
+                                );
+                                $node->setInit($init);
+                                $node->setTest($test);
+                                $node->setUpdate($update);
+                                $node->setBody($body);
+                                return $this->completeNode($node);
+                            }
+                        }
+                    }
                 }
+                
             } elseif ($this->scanner->notBefore(array("let"))) {
                 
                 $subPosition = $this->scanner->getPosition();
@@ -1811,7 +1818,7 @@ class Parser extends \Peast\Syntax\Parser
         );
         
         if (!$list) {
-            return $list;
+            return null;
         } elseif (count($list) === 1) {
             return $list[0];
         } else {

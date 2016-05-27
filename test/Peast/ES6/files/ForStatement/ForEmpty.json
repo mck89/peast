@@ -1,0 +1,58 @@
+{
+    "range": [
+        0,
+        11
+    ],
+    "loc": {
+        "start": {
+            "line": 1,
+            "column": 0
+        },
+        "end": {
+            "line": 1,
+            "column": 11
+        }
+    },
+    "type": "Program",
+    "body": [
+        {
+            "range": [
+                0,
+                11
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 11
+                }
+            },
+            "type": "ForStatement",
+            "init": null,
+            "test": null,
+            "update": null,
+            "body": {
+                "range": [
+                    9,
+                    11
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 9
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 11
+                    }
+                },
+                "type": "BlockStatement",
+                "body": []
+            }
+        }
+    ],
+    "sourceType": "script"
+}

@@ -10,7 +10,7 @@ class ObjectExpression extends Node implements Expression
         return $this->properties;
     }
     
-    public function setBody($properties)
+    public function setProperties($properties)
     {
         $this->assertArrayOf($properties, "Property");
         $this->properties = $properties;
