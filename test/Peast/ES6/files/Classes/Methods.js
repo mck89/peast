@@ -16,4 +16,6 @@ class Jim extends Person
     static ["scream" + "B"]() {
         alert("BBBBBBBBBB!!!!")
     }
+    
+    1(){}
 }

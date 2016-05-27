@@ -927,24 +927,19 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseClassExpression($yield = false)
     {
         if ($this->scanner->consume("class")) {
-            
             $position = $this->scanner->getConsumedTokenPosition();
-            $id = $this->BindingIdentifier($yield);
+            $id = $this->parseIdentifierReference($yield);
+            $tail = $this->parseClassTail($yield);
             
-            if ($tail = $this->parseClassTail($yield)) {
-                
-                $node = $this->createNode("ClassExpression", $position);
-                if ($id) {
-                    $node->setId($id);
-                }
-                if ($tail[0]) {
-                    $node->setSuperClass($tail[0]);
-                }
-                $node->setBody($tail[1]);
-                return $this->completeNode($node);
+            $node = $this->createNode("ClassExpression", $position);
+            if ($id) {
+                $node->setId($id);
             }
-            
-            return $this->error();
+            if ($tail[0]) {
+                $node->setSuperClass($tail[0]);
+            }
+            $node->setBody($tail[1]);
+            return $this->completeNode($node);
         }
         return null;
     }
@@ -1006,10 +1001,10 @@ class Parser extends \Peast\Syntax\Parser
         if ($this->scanner->consume(";")) {
             return true;
         }
+        
         $staticPos = $this->scanner->consume("static") ?
                      $this->scanner->getConsumedTokenPosition() :
                      null;
-        
         if ($def = $this->parseMethodDefinition($yield)) {
             if ($staticPos) {
                 $def->setStatic(true);
@@ -1020,21 +1015,6 @@ class Parser extends \Peast\Syntax\Parser
             return $this->error();
         }
         
-        elseif ($def = $this->parseMethodDefinition($yield)) {
-            return $def;
-        }
-        
-        if ($this->scanner->consume("static")) {
-            
-            $position = $this->scanner->getConsumedTokenPosition();
-            if ($def = $this->parseMethodDefinition($yield)) {
-                $def->setStatic(true);
-                $def->setStartPosition($position);
-                return $def;        
-            }
-
-            return $this->error();
-        }
         return null;
     }
     
@@ -1597,8 +1577,6 @@ class Parser extends \Peast\Syntax\Parser
             if ($params !== null && $this->scanner->consume(")")) {
                 return array($params, $startPos);
             }
-            
-            return $this->error();
         }
         return null;
     }

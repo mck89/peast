@@ -1,0 +1,4 @@
+var abc = class {
+	test(){
+	}
+}

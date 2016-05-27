@@ -1,7 +1,7 @@
 {
     "range": [
         0,
-        65
+        82
     ],
     "loc": {
         "start": {
@@ -9,8 +9,8 @@
             "column": 0
         },
         "end": {
-            "line": 3,
-            "column": 14
+            "line": 4,
+            "column": 16
         }
     },
     "type": "Program",
@@ -18,7 +18,7 @@
         {
             "range": [
                 0,
-                65
+                82
             ],
             "loc": {
                 "start": {
@@ -26,8 +26,8 @@
                     "column": 0
                 },
                 "end": {
-                    "line": 3,
-                    "column": 14
+                    "line": 4,
+                    "column": 16
                 }
             },
             "type": "VariableDeclaration",
@@ -226,6 +226,96 @@
                             },
                             "type": "Identifier",
                             "name": "a"
+                        }
+                    }
+                },
+                {
+                    "range": [
+                        70,
+                        81
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 4,
+                            "column": 4
+                        },
+                        "end": {
+                            "line": 4,
+                            "column": 15
+                        }
+                    },
+                    "type": "VariableDeclarator",
+                    "id": {
+                        "range": [
+                            70,
+                            71
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 4,
+                                "column": 4
+                            },
+                            "end": {
+                                "line": 4,
+                                "column": 5
+                            }
+                        },
+                        "type": "Identifier",
+                        "name": "d"
+                    },
+                    "init": {
+                        "range": [
+                            75,
+                            80
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 4,
+                                "column": 9
+                            },
+                            "end": {
+                                "line": 4,
+                                "column": 14
+                            }
+                        },
+                        "type": "BinaryExpression",
+                        "operator": "+",
+                        "left": {
+                            "range": [
+                                75,
+                                76
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 4,
+                                    "column": 9
+                                },
+                                "end": {
+                                    "line": 4,
+                                    "column": 10
+                                }
+                            },
+                            "type": "Identifier",
+                            "name": "c"
+                        },
+                        "right": {
+                            "range": [
+                                79,
+                                80
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 4,
+                                    "column": 13
+                                },
+                                "end": {
+                                    "line": 4,
+                                    "column": 14
+                                }
+                            },
+                            "type": "Literal",
+                            "value": 1,
+                            "raw": "1"
                         }
                     }
                 }

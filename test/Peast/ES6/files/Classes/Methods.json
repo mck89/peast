@@ -1,7 +1,7 @@
 {
     "range": [
         0,
-        302
+        317
     ],
     "loc": {
         "start": {
@@ -9,7 +9,7 @@
             "column": 0
         },
         "end": {
-            "line": 19,
+            "line": 21,
             "column": 1
         }
     },
@@ -18,7 +18,7 @@
         {
             "range": [
                 0,
-                302
+                317
             ],
             "loc": {
                 "start": {
@@ -26,7 +26,7 @@
                     "column": 0
                 },
                 "end": {
-                    "line": 19,
+                    "line": 21,
                     "column": 1
                 }
             },
@@ -70,7 +70,7 @@
             "body": {
                 "range": [
                     25,
-                    302
+                    317
                 ],
                 "loc": {
                     "start": {
@@ -78,7 +78,7 @@
                         "column": 0
                     },
                     "end": {
-                        "line": 19,
+                        "line": 21,
                         "column": 1
                     }
                 },
@@ -873,6 +873,85 @@
                         },
                         "kind": "method",
                         "static": true
+                    },
+                    {
+                        "range": [
+                            310,
+                            315
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 20,
+                                "column": 4
+                            },
+                            "end": {
+                                "line": 20,
+                                "column": 9
+                            }
+                        },
+                        "type": "MethodDefinition",
+                        "key": {
+                            "range": [
+                                310,
+                                311
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 20,
+                                    "column": 4
+                                },
+                                "end": {
+                                    "line": 20,
+                                    "column": 5
+                                }
+                            },
+                            "type": "Literal",
+                            "value": 1,
+                            "raw": "1"
+                        },
+                        "computed": false,
+                        "value": {
+                            "range": [
+                                311,
+                                315
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 20,
+                                    "column": 5
+                                },
+                                "end": {
+                                    "line": 20,
+                                    "column": 9
+                                }
+                            },
+                            "type": "FunctionExpression",
+                            "id": null,
+                            "params": [],
+                            "defaults": [],
+                            "body": {
+                                "range": [
+                                    313,
+                                    315
+                                ],
+                                "loc": {
+                                    "start": {
+                                        "line": 20,
+                                        "column": 7
+                                    },
+                                    "end": {
+                                        "line": 20,
+                                        "column": 9
+                                    }
+                                },
+                                "type": "BlockStatement",
+                                "body": []
+                            },
+                            "generator": false,
+                            "expression": false
+                        },
+                        "kind": "method",
+                        "static": false
                     }
                 ]
             }

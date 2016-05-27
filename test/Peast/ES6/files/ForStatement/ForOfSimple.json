@@ -30,7 +30,7 @@
                     "column": 37
                 }
             },
-            "type": "ForInStatement",
+            "type": "ForOfStatement",
             "left": {
                 "range": [
                     5,
@@ -174,8 +174,7 @@
                         }
                     ]
                 }
-            },
-            "each": false
+            }
         }
     ],
     "sourceType": "script"
