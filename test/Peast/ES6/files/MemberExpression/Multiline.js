@@ -1,0 +1,4 @@
+obj
+    .foo
+        ["bar"]
+            .baz

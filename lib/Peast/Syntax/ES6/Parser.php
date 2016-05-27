@@ -2486,7 +2486,7 @@ class Parser extends \Peast\Syntax\Parser
                     $endPos = $property[1];
                 } else {
                     $lastNode = $node;
-                    $node = $this->createNode("MemberExpression", $position);
+                    $node = $this->createNode("MemberExpression", $object);
                     $node->setObject($this->completeNode($lastNode, $endPos));
                     $node->setProperty($property[0]);
                     $endPos = $property[0]->getLocation()->getEnd();
