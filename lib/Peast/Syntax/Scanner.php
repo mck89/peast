@@ -348,32 +348,25 @@ class Scanner
                 (!$start && $char >= "0" && $char <= "9")) {
                 $index++;
                 $buffer .= $char;
-            } elseif ($start &&
-                      preg_match($this->config->getIdRegex(), $char)) {
-                $index++;
-                $buffer .= $char;
-            } elseif (!$start &&
-                      preg_match($this->config->getIdRegex(true), $char)) {
-                $index++;
-                $buffer .= $char;
             } elseif ($char === "\\" &&
                       isset($this->chars[$index + 1]) &&
                       $this->chars[$index + 1] === "u") {
                 //UnicodeEscapeSequence
+                $index += 2;
                 $valid = true;
-                $subBuffer = "\\u";
-                if (isset($this->chars[$index + 2]) &&
-                    $this->chars[$index + 2] === "{" &&
-                    isset($this->chars[$index + 3])) {
+                $subBuffer = "";
+                if (isset($this->chars[$index]) &&
+                    $this->chars[$index] === "{" &&
+                    isset($this->chars[$index + 1])) {
                     
+                    $index++;
                     $oneMatched = false;
-                    $subBuffer .= "{";
-                    for ($i = $index + 4; $i < $this->length; $i++) {
-                        if ($this->isHexDigit($this->chars[$index])) {
+                    for ($i = $index; $i < $this->length; $i++) {
+                        if ($this->isHexDigit($this->chars[$i])) {
                             $oneMatched = true;
-                            $subBuffer .= $this->chars[$index];
-                        } elseif ($oneMatched && $this->chars[$index] === "}") {
-                            $subBuffer .= $this->chars[$index];
+                            $subBuffer .= $this->chars[$i];
+                        } elseif ($oneMatched && $this->chars[$i] === "}") {
+                            $index++;
                             break;
                         } else {
                             $valid = false;
@@ -382,9 +375,10 @@ class Scanner
                     }
                     
                 } else {
-                    for ($i = $index + 3; $i <= $index + 7; $i++) {
+                    
+                    for ($i = $index; $i <= $index + 3; $i++) {
                         if (isset($this->chars[$i]) &&
-                            $this->isHexDigit($this->chars[$index])) {
+                            $this->isHexDigit($this->chars[$i])) {
                             $subBuffer .= $this->chars[$i];
                         } else {
                             $valid = false;
@@ -393,13 +387,26 @@ class Scanner
                     }
                 }
                 
+                if (!$subBuffer) {
+                    $valid = false;
+                } elseif ($valid) {
+                    $decodedChar = Utils::unicodeToUtf8(hexdec($subBuffer));
+                    $valid = preg_match(
+                        $this->config->getIdRegex(!$start), $decodedChar
+                    );
+                }
+                
                 if (!$valid) {
+                    $buffer = "";
                     break;
                 }
                 
-                $buffer .= $subBuffer;
+                $buffer .= $decodedChar;
                 $index += strlen($subBuffer);
                 
+            } elseif (preg_match($this->config->getIdRegex(!$start), $char)) {
+                $index++;
+                $buffer .= $char;
             } else {
                 break;
             }

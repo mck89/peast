@@ -57,7 +57,7 @@ class Config extends \Peast\Syntax\Config
                       "\x{136A}\x{136B}\x{136C}\x{136D}\x{136E}\x{136F}" .
                       "\x{1370}\x{1371}\x{19DA}\x{200C}\x{200D}";
         }
-        return "/$regex/u";
+        return "/[$regex]/u";
     }
     
     public function getSymbols()
