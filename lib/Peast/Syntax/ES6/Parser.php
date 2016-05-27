@@ -2142,20 +2142,23 @@ class Parser extends \Peast\Syntax\Parser
         return $list;
     }
     
+
     protected function parseSuperCall($yield = false)
     {
+        $position = $this->scanner->getPosition();
         if ($this->scanner->consume("super")) {
             
-            $position = $this->scanner->getConsumedTokenPosition();
+            $superPos = $this->scanner->getConsumedTokenPosition();
+            $superEndPos = $this->scanner->getPosition();
             if (($args = $this->parseArguments($yield)) !== null) {
-                $super = $this->createNode("Super", $position);
-                $node = $this->createNode("CallExpression", $position);
+                $super = $this->createNode("Super", $superPos);
+                $node = $this->createNode("CallExpression", $superPos);
                 $node->setArguments($args);
-                $node->setCallee($this->completeNode($super));
+                $node->setCallee($this->completeNode($super, $superEndPos));
                 return $this->completeNode($node);
+            } else {
+                $this->scanner->setPosition($position);
             }
-            
-            return $this->error();
         }
         return null;
     }
