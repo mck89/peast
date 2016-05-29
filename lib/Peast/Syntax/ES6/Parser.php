@@ -1733,11 +1733,13 @@ class Parser extends \Peast\Syntax\Parser
         if ($this->scanner->consume("{")) {
             
             $position = $this->scanner->getConsumedTokenPosition();
-            $properties = $this->charSeparatedListOf(
-                "parseBindingProperty",
-                array($yield)
-            );
-            $this->scanner->consume(",");
+            $properties = array();
+            while ($prop = $this->parseBindingProperty($yield)) {
+                $properties[] = $prop;
+                if (!$this->scanner->consume(",")) {
+                    break;
+                }
+            }
             
             if ($this->scanner->consume("}")) {
                 $node = $this->createNode("ObjectPattern", $position);
@@ -1759,8 +1761,10 @@ class Parser extends \Peast\Syntax\Parser
             $this->scanner->consume(":")) {
             
             if ($value = $this->parseBindingElement($yield)) {
-                $node = $this->createNode("AssignmentProperty", $key);
-                $node->setKey($key);
+                $startPos = isset($key[2]) ? $key[2] : $key[0];
+                $node = $this->createNode("AssignmentProperty", $startPos);
+                $node->setKey($key[0]);
+                $node->setComputed($key[1]);
                 $node->setValue($value);
                 return $this->completeNode($node);
             }
@@ -1776,11 +1780,10 @@ class Parser extends \Peast\Syntax\Parser
                 $node->setShorthand(true);
                 if ($property instanceof Node\AssignmentPattern) {
                     $node->setKey($property->getLeft());
-                    $node->setValue($property->getRight());
                 } else {
                     $node->setKey($property);
-                    $node->setValue($property);
                 }
+                $node->setValue($property);
                 return $this->completeNode($node);
             }
         }
