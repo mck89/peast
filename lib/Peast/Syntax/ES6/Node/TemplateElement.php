@@ -9,6 +9,8 @@ class TemplateElement extends Node
     
     protected $tail = false;
     
+    protected $rawValue;
+    
     public function getValue()
     {
         return $this->value;
@@ -17,6 +19,7 @@ class TemplateElement extends Node
     public function setValue($value)
     {
         $this->value = $value;
+        $this->rawValue = Parser::quoteLiteralString($value, "`");
         return $this;
     }
     
@@ -33,14 +36,13 @@ class TemplateElement extends Node
     
     public function getRawValue()
     {
-        $value = $this->getValue();
-        $value = Parser::quoteLiteralString($value, "`");
-        return substr($value, 1, -1);
+        return $this->rawValue;
     }
     
     public function setRawValue($rawValue)
     {
         $this->setValue(Parser::unquoteLiteralString("`$rawValue`"));
+        $this->rawValue = $rawValue;
         return $this;
     }
     

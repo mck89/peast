@@ -2541,10 +2541,6 @@ class Parser extends \Peast\Syntax\Parser
                 }
                 if ($part[strlen($part) - 1] === "`") {
                     
-                    if (count($expressions)) {
-                        $part = substr($part, 1);
-                    }
-                    
                     $part = substr($part, 0, -1);
                     $quasi = $this->createNode("TemplateElement", $position);
                     $quasi->setRawValue($part);
@@ -2567,9 +2563,12 @@ class Parser extends \Peast\Syntax\Parser
                     if (!($exp = $this->parseExpression(true, $yield))) {
                         break;
                     }
+                    $position = $this->scanner->getPosition();
+                    if (!$this->scanner->consume("}")) {
+                        break;
+                    }
                     
                     $expressions[] = $exp;
-                    $position = $this->scanner->getPosition();
                 }
             }
             

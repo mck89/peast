@@ -1,0 +1,1 @@
+`test\${fn()}\n\ttest\`\u0042\u{FF}`

@@ -699,18 +699,14 @@ class Scanner
     	    return null;
     	}
     	
-	    if (!$lineTerminators) {
-	        $this->column += ($index - $this->index);
-	    } else {
-	        $lines = $this->splitLines($buffer);
-	        $linesCount = count($lines) - 1;
-	        $this->line += $linesCount;
-            if ($linesCount) {
-                $this->column = mb_strlen($lines[$linesCount]);
-            } else {
-                $this->column += mb_strlen($lines[$linesCount]);
-            }
-	    }
+	    $lines = $this->splitLines($buffer);
+        $linesCount = count($lines) - 1;
+        $this->line += $linesCount;
+        if ($linesCount) {
+            $this->column = mb_strlen($lines[$linesCount]);
+        } else {
+            $this->column += mb_strlen($lines[$linesCount]);
+        }
 	    $this->index = $index;
 	    
 	    return $buffer;

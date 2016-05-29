@@ -1,0 +1,79 @@
+{
+    "range": [
+        0,
+        11
+    ],
+    "loc": {
+        "start": {
+            "line": 1,
+            "column": 0
+        },
+        "end": {
+            "line": 2,
+            "column": 5
+        }
+    },
+    "type": "Program",
+    "body": [
+        {
+            "range": [
+                0,
+                11
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
+                    "column": 5
+                }
+            },
+            "type": "ExpressionStatement",
+            "expression": {
+                "range": [
+                    0,
+                    11
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 0
+                    },
+                    "end": {
+                        "line": 2,
+                        "column": 5
+                    }
+                },
+                "type": "TemplateLiteral",
+                "quasis": [
+                    {
+                        "range": [
+                            0,
+                            11
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 0
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 5
+                            }
+                        },
+                        "type": "TemplateElement",
+                        "value": {
+                            "raw": "test\ntest",
+                            "cooked": "test\ntest"
+                        },
+                        "tail": true
+                    }
+                ],
+                "expressions": []
+            }
+        }
+    ],
+    "sourceType": "script"
+}

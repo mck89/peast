@@ -1,0 +1,1 @@
+`test${fn()+"abc"}test`
