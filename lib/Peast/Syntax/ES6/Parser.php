@@ -1491,6 +1491,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseMethodDefinition($yield = false)
     {
+        $startPos = $this->scanner->getPosition();
         $generator = false;
         $position = null;
         $error = false;
@@ -1514,9 +1515,9 @@ class Parser extends \Peast\Syntax\Parser
             if (!$position) {
                 $position = isset($prop[2]) ? $prop[2] : $prop[0];
             }
-            $error = true;
             if ($this->scanner->consume("(")) {
                 
+                $error = true;
                 $fnPosition = $this->scanner->getConsumedTokenPosition();
                 $params = array();
                 if ($kind === Node\MethodDefinition::KIND_SET) {
@@ -1561,6 +1562,8 @@ class Parser extends \Peast\Syntax\Parser
         
         if ($error) {
             return $this->error();
+        } else {
+            $this->scanner->setPosition($startPos);
         }
         return null;
     }
@@ -1633,11 +1636,13 @@ class Parser extends \Peast\Syntax\Parser
         if ($this->scanner->consume("{")) {
             
             $position = $this->scanner->getConsumedTokenPosition();
-            $properties = $this->charSeparatedListOf(
-                "parsePropertyDefinition",
-                array($yield)
-            );
-            $this->scanner->consume(",");
+            $properties = array();
+            while ($prop = $this->parsePropertyDefinition($yield)) {
+                $properties[] = $prop;
+                if (!$this->scanner->consume(",")) {
+                    break;
+                }
+            }
             
             if ($this->scanner->consume("}")) {
                 
@@ -1656,18 +1661,12 @@ class Parser extends \Peast\Syntax\Parser
     protected function parsePropertyDefinition($yield = false)
     {
         $position = $this->scanner->getPosition();
-        if ($property = $this->parseCoverInitializedName($yield)) {
-            return $property;
-        } elseif ($property = $this->parseIdentifierReference($yield)) {
-            $node = $this->createNode("Property", $property);
-            $node->setKey($property);
-            $node->setValue($property);
-            return $this->completeNode($node);
-        } elseif (($property = $this->parsePropertyName($yield)) &&
-                  $this->scanner->consume(":")) {
+        if (($property = $this->parsePropertyName($yield)) &&
+             $this->scanner->consume(":")) {
 
             if ($value = $this->parseAssignmentExpression(true, $yield)) {
-                $node = $this->createNode("Property", $property);
+                $startPos = isset($property[2]) ? $property[2] : $property[0];
+                $node = $this->createNode("Property", $startPos);
                 $node->setKey($property[0]);
                 $node->setValue($value);
                 $node->setComputed($property[1]);
@@ -1676,41 +1675,37 @@ class Parser extends \Peast\Syntax\Parser
 
             return $this->error();
             
-        } else {
-            
-            $this->scanner->setPosition($position);
-            if ($property = $this->parseMethodDefinition($yield)) {
-
-                $node = $this->createNode("Property", $property);
-                $node->setKey($property->getKey());
-                $node->setValue($property->getValue());
-                $node->setComputed($property->getComputed());
-                $kind = $property->getKind();
-                if ($kind !== Node\MethodDefinition::KIND_CONSTRUCTOR) {
-                    $node->setKind($kind);
-                }
-                return $this->completeNode($node);
-            }
         }
-        return null;
-    }
-    
-    protected function parseCoverInitializedName($yield = false)
-    {
-        $position = $this->scanner->getPosition();
-        if ($key = $this->parseIdentifierReference($yield)) {
-            
-            if ($value = $this->parseInitializer(true, $yield)) {
-                
-                $node = $this->createNode("Property", $key);
-                $node->setKey($key);
-                $node->setValue($value);
-                $node->setShorthand(true);
-                return $this->completeNode($node);
-                
+        
+        $this->scanner->setPosition($position);
+        if ($property = $this->parseMethodDefinition($yield)) {
+
+            $node = $this->createNode("Property", $property);
+            $node->setKey($property->getKey());
+            $node->setValue($property->getValue());
+            $node->setComputed($property->getComputed());
+            $kind = $property->getKind();
+            if ($kind !== Node\MethodDefinition::KIND_GET &&
+                $kind !== Node\MethodDefinition::KIND_SET) {
+                $node->setMethod(true);
+                $node->setKind(Node\Property::KIND_INIT);
+            } else {
+                $node->setKind($kind);
             }
+            return $this->completeNode($node);
             
-            $this->scanner->setPosition($position);
+        } elseif ($key = $this->parseIdentifierReference($yield)) {
+            
+            $node = $this->createNode("Property", $key);
+            $node->setShorthand(true);
+            $node->setKey($key);
+            $node->setValue(
+                ($value = $this->parseInitializer(true, $yield)) ?
+                $value :
+                $key
+            );
+            return $this->completeNode($node);
+            
         }
         return null;
     }
