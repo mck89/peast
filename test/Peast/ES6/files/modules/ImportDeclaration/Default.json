@@ -1,7 +1,7 @@
 {
     "range": [
         0,
-        33
+        39
     ],
     "loc": {
         "start": {
@@ -9,7 +9,7 @@
             "column": 0
         },
         "end": {
-            "line": 1,
+            "line": 2,
             "column": 33
         }
     },
@@ -18,7 +18,7 @@
         {
             "range": [
                 0,
-                33
+                5
             ],
             "loc": {
                 "start": {
@@ -27,6 +27,59 @@
                 },
                 "end": {
                     "line": 1,
+                    "column": 5
+                }
+            },
+            "type": "ExpressionStatement",
+            "expression": {
+                "range": [
+                    0,
+                    4
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 0
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 4
+                    }
+                },
+                "type": "CallExpression",
+                "callee": {
+                    "range": [
+                        0,
+                        2
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 0
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 2
+                        }
+                    },
+                    "type": "Identifier",
+                    "name": "fn"
+                },
+                "arguments": []
+            }
+        },
+        {
+            "range": [
+                6,
+                39
+            ],
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
                     "column": 33
                 }
             },
@@ -34,32 +87,32 @@
             "specifiers": [
                 {
                     "range": [
-                        7,
-                        13
+                        13,
+                        19
                     ],
                     "loc": {
                         "start": {
-                            "line": 1,
+                            "line": 2,
                             "column": 7
                         },
                         "end": {
-                            "line": 1,
+                            "line": 2,
                             "column": 13
                         }
                     },
                     "type": "ImportDefaultSpecifier",
                     "local": {
                         "range": [
-                            7,
-                            13
+                            13,
+                            19
                         ],
                         "loc": {
                             "start": {
-                                "line": 1,
+                                "line": 2,
                                 "column": 7
                             },
                             "end": {
-                                "line": 1,
+                                "line": 2,
                                 "column": 13
                             }
                         },
@@ -70,16 +123,16 @@
             ],
             "source": {
                 "range": [
-                    19,
-                    32
+                    25,
+                    38
                 ],
                 "loc": {
                     "start": {
-                        "line": 1,
+                        "line": 2,
                         "column": 19
                     },
                     "end": {
-                        "line": 1,
+                        "line": 2,
                         "column": 32
                     }
                 },

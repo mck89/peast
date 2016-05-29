@@ -1,1 +1,1 @@
-function(...rest, a){}
+function a(...rest, a){}

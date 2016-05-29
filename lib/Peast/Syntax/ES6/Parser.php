@@ -871,17 +871,23 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseFormalParameterList($yield = false)
     {
+        $valid = true;
         $list = array();
         while ($param = $this->parseBindingElement($yield)) {
             $list[] = $param;
+            $valid = true;
             if ($this->scanner->consume(",")) {
                 if ($restParam = $this->parseBindingRestElement($yield)) {
                     $list[] = $restParam;
                     break;
                 }
+                $valid = false;
             } else {
                 break;
             }
+        }
+        if (!$valid) {
+            return $this->error();
         }
         return $list;
     }
@@ -2101,7 +2107,7 @@ class Parser extends \Peast\Syntax\Parser
             }
             $exp = $this->parseAssignmentExpression(true, $yield);
             if (!$exp) {
-                $valid = $start && !$spread;
+                $valid = $valid && $start && !$spread;
                 break;
             }
             if ($spread) {
