@@ -1171,8 +1171,8 @@ class Parser extends \Peast\Syntax\Parser
                 
             } elseif ($this->scanner->consume("default")) {
                 
-                if (($declaration = $this->parseFunctionOrGeneratorDeclaration(true)) ||
-                    ($declaration = $this->parseClassDeclaration(true))) {
+                if (($declaration = $this->parseFunctionOrGeneratorDeclaration(false, true)) ||
+                    ($declaration = $this->parseClassDeclaration(false, true))) {
                     
                     $node = $this->createNode(
                         "ExportDefaultDeclaration", $position
@@ -1218,11 +1218,16 @@ class Parser extends \Peast\Syntax\Parser
     {
         if ($this->scanner->consume("{")) {
             
-            $list = $this->charSeparatedListOf("parseExportSpecifier");
-            $this->scanner->consume(",");
+            $list = array();
+            while ($spec = $this->parseExportSpecifier()) {
+                $list[] = $spec;
+                if (!$this->scanner->consume(",")) {
+                    break;
+                }
+            }
             
             if ($this->scanner->consume("}")) {
-                return $list ? $list : array();
+                return $list;
             }
             
             return $this->error();
@@ -1246,6 +1251,7 @@ class Parser extends \Peast\Syntax\Parser
                 
                 return $this->error();
             } else {
+                $node->setExported($local);
                 return $this->completeNode($node);
             }
         }

@@ -28,7 +28,7 @@ class ExportNamedDeclaration extends Node implements ModuleDeclaration
     
     public function setSpecifiers($specifiers)
     {
-        $this->assertArrayOf($body, "ExportSpecifier");
+        $this->assertArrayOf($specifiers, "ExportSpecifier");
         $this->specifiers = $specifiers;
         return $this;
     }
