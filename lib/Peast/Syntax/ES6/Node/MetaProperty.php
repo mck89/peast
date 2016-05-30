@@ -12,7 +12,7 @@ class MetaProperty extends Node implements Expression
         return $this->meta;
     }
     
-    public function setMeta(Identifier $meta)
+    public function setMeta($meta)
     {
         $this->meta = $meta;
         return $this;
@@ -23,7 +23,7 @@ class MetaProperty extends Node implements Expression
         return $this->property;
     }
     
-    public function setProperty(Identifier $property)
+    public function setProperty($property)
     {
         $this->property = $property;
         return $this;
@@ -31,7 +31,6 @@ class MetaProperty extends Node implements Expression
     
     public function compile()
     {
-        return $this->getMeta()->compile() . "." .
-               $this->getProperty()->compile();
+        return $this->meta . "." . $this->property;
     }
 }

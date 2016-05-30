@@ -1,0 +1,181 @@
+{
+    "range": [
+        0,
+        36
+    ],
+    "loc": {
+        "start": {
+            "line": 1,
+            "column": 0
+        },
+        "end": {
+            "line": 1,
+            "column": 36
+        }
+    },
+    "type": "Program",
+    "body": [
+        {
+            "range": [
+                0,
+                36
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 36
+                }
+            },
+            "type": "ExpressionStatement",
+            "expression": {
+                "range": [
+                    0,
+                    36
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 0
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 36
+                    }
+                },
+                "type": "ConditionalExpression",
+                "test": {
+                    "range": [
+                        0,
+                        14
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 0
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 14
+                        }
+                    },
+                    "type": "BinaryExpression",
+                    "operator": "!==",
+                    "left": {
+                        "range": [
+                            0,
+                            4
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 0
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 4
+                            }
+                        },
+                        "type": "Identifier",
+                        "name": "test"
+                    },
+                    "right": {
+                        "range": [
+                            9,
+                            14
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 9
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 14
+                            }
+                        },
+                        "type": "Literal",
+                        "value": false,
+                        "raw": "false"
+                    }
+                },
+                "consequent": {
+                    "range": [
+                        17,
+                        26
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 17
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 26
+                        }
+                    },
+                    "type": "CallExpression",
+                    "callee": {
+                        "range": [
+                            17,
+                            24
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 17
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 24
+                            }
+                        },
+                        "type": "Identifier",
+                        "name": "success"
+                    },
+                    "arguments": []
+                },
+                "alternate": {
+                    "range": [
+                        29,
+                        36
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 29
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 36
+                        }
+                    },
+                    "type": "CallExpression",
+                    "callee": {
+                        "range": [
+                            29,
+                            34
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 29
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 34
+                            }
+                        },
+                        "type": "Identifier",
+                        "name": "error"
+                    },
+                    "arguments": []
+                }
+            }
+        }
+    ],
+    "sourceType": "script"
+}

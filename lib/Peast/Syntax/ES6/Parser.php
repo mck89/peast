@@ -2165,35 +2165,6 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseNewTarget()
-    {
-        if ($this->scanner->consume("new")) {
-            
-            $position = $this->scanner->getConsumedTokenPosition();
-            if ($this->scanner->consume(".")) {
-                
-                if ($this->scanner->consume("target")) {
-                    
-                    $targetPosition = $this->scanner->getConsumedTokenPosition();
-                    
-                    $meta = $this->createNode("Identifier", $position);
-                    $meta->setName("new");
-
-                    $property = $this->createNode("Identifier", $targetPosition);
-                    $property->setName("target");
-
-                    $node = $this->createNode("MetaProperty", $position);
-                    $node->setMeta($this->completeNode($meta));
-                    $node->setProperty($this->completeNode($property));
-                    return $this->completeNode($node);
-                }
-            }
-            
-            return $this->error();
-        }
-        return null;
-    }
-    
     protected function parseIdentifierReference($yield = false)
     {
         if ($identifier = $this->parseIdentifier()) {
@@ -2214,7 +2185,20 @@ class Parser extends \Peast\Syntax\Parser
         if ($this->scanner->consume("new")) {
             
             $newPosition = $this->scanner->getConsumedTokenPosition();
-            if (($callee = $this->parseMemberExpression($yield)) &&
+            if ($this->scanner->consume(".")) {
+                
+                if ($this->scanner->consume("target")) {
+                    
+                    $node = $this->createNode("MetaProperty", $newPosition);
+                    $node->setMeta("new");
+                    $node->setProperty("target");
+                    $object = $this->completeNode($node);
+                    
+                } else {
+                    return $this->error();
+                }
+                
+            } elseif (($callee = $this->parseMemberExpression($yield)) &&
                 ($args = $this->parseArguments($yield)) !== null) {
                 
                 $node = $this->createNode("NewExpression", $newPosition);
@@ -2227,9 +2211,8 @@ class Parser extends \Peast\Syntax\Parser
                 return null;
             }
             
-        } elseif (!($object = $this->parseNewTarget()) && 
-            !($object = $this->parseSuperProperty($yield)) &&
-            !($object = $this->parsePrimaryExpression($yield))) {
+        } elseif (!($object = $this->parseSuperProperty($yield)) &&
+                  !($object = $this->parsePrimaryExpression($yield))) {
             return null;
         }
         
