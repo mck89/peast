@@ -611,6 +611,8 @@ class Scanner
                 } elseif ($exp) {
                     $source .= $exp;
                 }
+            } elseif ($source === ".") {
+                return $reset(); 
             }
         }
         
