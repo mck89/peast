@@ -1,0 +1,167 @@
+{
+    "range": [
+        0,
+        55
+    ],
+    "loc": {
+        "start": {
+            "line": 1,
+            "column": 0
+        },
+        "end": {
+            "line": 3,
+            "column": 2
+        }
+    },
+    "type": "Program",
+    "body": [
+        {
+            "range": [
+                0,
+                54
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 1
+                }
+            },
+            "type": "ExportDefaultDeclaration",
+            "declaration": {
+                "range": [
+                    15,
+                    54
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 15
+                    },
+                    "end": {
+                        "line": 3,
+                        "column": 1
+                    }
+                },
+                "type": "FunctionDeclaration",
+                "id": null,
+                "params": [],
+                "defaults": [],
+                "body": {
+                    "range": [
+                        26,
+                        54
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 26
+                        },
+                        "end": {
+                            "line": 3,
+                            "column": 1
+                        }
+                    },
+                    "type": "BlockStatement",
+                    "body": [
+                        {
+                            "range": [
+                                32,
+                                52
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 4
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 24
+                                }
+                            },
+                            "type": "ReturnStatement",
+                            "argument": {
+                                "range": [
+                                    39,
+                                    51
+                                ],
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 11
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 23
+                                    }
+                                },
+                                "type": "MemberExpression",
+                                "computed": true,
+                                "object": {
+                                    "range": [
+                                        39,
+                                        48
+                                    ],
+                                    "loc": {
+                                        "start": {
+                                            "line": 2,
+                                            "column": 11
+                                        },
+                                        "end": {
+                                            "line": 2,
+                                            "column": 20
+                                        }
+                                    },
+                                    "type": "Identifier",
+                                    "name": "arguments"
+                                },
+                                "property": {
+                                    "range": [
+                                        49,
+                                        50
+                                    ],
+                                    "loc": {
+                                        "start": {
+                                            "line": 2,
+                                            "column": 21
+                                        },
+                                        "end": {
+                                            "line": 2,
+                                            "column": 22
+                                        }
+                                    },
+                                    "type": "Literal",
+                                    "value": 0,
+                                    "raw": "0"
+                                }
+                            }
+                        }
+                    ]
+                },
+                "generator": false,
+                "expression": false
+            }
+        },
+        {
+            "range": [
+                54,
+                55
+            ],
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 1
+                },
+                "end": {
+                    "line": 3,
+                    "column": 2
+                }
+            },
+            "type": "EmptyStatement"
+        }
+    ],
+    "sourceType": "module"
+}

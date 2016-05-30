@@ -1,0 +1,165 @@
+{
+    "range": [
+        0,
+        52
+    ],
+    "loc": {
+        "start": {
+            "line": 1,
+            "column": 0
+        },
+        "end": {
+            "line": 3,
+            "column": 2
+        }
+    },
+    "type": "Program",
+    "body": [
+        {
+            "range": [
+                0,
+                51
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 1
+                }
+            },
+            "type": "ExportDefaultDeclaration",
+            "declaration": {
+                "range": [
+                    15,
+                    51
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 15
+                    },
+                    "end": {
+                        "line": 3,
+                        "column": 1
+                    }
+                },
+                "type": "FunctionDeclaration",
+                "id": {
+                    "range": [
+                        24,
+                        26
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 24
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 26
+                        }
+                    },
+                    "type": "Identifier",
+                    "name": "go"
+                },
+                "params": [],
+                "defaults": [],
+                "body": {
+                    "range": [
+                        29,
+                        51
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 29
+                        },
+                        "end": {
+                            "line": 3,
+                            "column": 1
+                        }
+                    },
+                    "type": "BlockStatement",
+                    "body": [
+                        {
+                            "range": [
+                                35,
+                                49
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 4
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 18
+                                }
+                            },
+                            "type": "ReturnStatement",
+                            "argument": {
+                                "range": [
+                                    42,
+                                    48
+                                ],
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 11
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 17
+                                    }
+                                },
+                                "type": "CallExpression",
+                                "callee": {
+                                    "range": [
+                                        42,
+                                        46
+                                    ],
+                                    "loc": {
+                                        "start": {
+                                            "line": 2,
+                                            "column": 11
+                                        },
+                                        "end": {
+                                            "line": 2,
+                                            "column": 15
+                                        }
+                                    },
+                                    "type": "Identifier",
+                                    "name": "call"
+                                },
+                                "arguments": []
+                            }
+                        }
+                    ]
+                },
+                "generator": false,
+                "expression": false
+            }
+        },
+        {
+            "range": [
+                51,
+                52
+            ],
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 1
+                },
+                "end": {
+                    "line": 3,
+                    "column": 2
+                }
+            },
+            "type": "EmptyStatement"
+        }
+    ],
+    "sourceType": "module"
+}
