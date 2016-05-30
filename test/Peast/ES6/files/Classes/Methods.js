@@ -18,4 +18,12 @@ class Jim extends Person
     }
     
     1(){}
+    
+    get(){
+        return this.name;
+    }
+    
+    set(n, m){
+        this.name = n + m;
+    }
 }

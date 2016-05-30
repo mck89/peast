@@ -1522,6 +1522,13 @@ class Parser extends \Peast\Syntax\Parser
             $generator = true;
         }
         
+        if ($kind !== Node\MethodDefinition::KIND_METHOD &&
+            $this->scanner->consume("(")) {
+            $this->scanner->setPosition($startPos);
+            $kind = Node\MethodDefinition::KIND_METHOD;
+            $error = false;
+        }
+        
         if ($prop = $this->parsePropertyName($yield)) {
             
             if (!$position) {
