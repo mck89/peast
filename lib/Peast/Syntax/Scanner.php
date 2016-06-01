@@ -257,12 +257,12 @@ class Scanner
     
     public function consumeWhitespacesAndComments($lineTerminator = true)
     {
-        if (!$lineTerminator) {
-            $position = $this->getPosition();
-        } elseif ($this->wsCache) {
+        if ($lineTerminator && $this->wsCache) {
+            $ret = $this->wsCache[1];
             $this->setPosition($this->wsCache[0]);
-            return $this->wsCache[1];
+            return $ret;
         }
+        $position = $this->getPosition();
         $comment = $processed = 0;
         while ($token = $this->getToken()) {
             $processed++;
@@ -292,7 +292,11 @@ class Scanner
                 return $processed > 1;
             }
         }
-        return $comment ? null : $processed;
+        if ($comment === 2) {
+            $this->setPosition($position);
+            return null;
+        }
+        return $processed;
     }
     
     public function consume($string)

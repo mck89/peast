@@ -44,8 +44,9 @@ class Parser extends \Peast\Syntax\Parser
             $node->setBody($body);
         }
         $program = $this->completeNode($node);
-        $this->scanner->consumeWhitespacesAndComments();
-        if (($tail = $this->scanner->getToken()) && !$tail["whitespace"]) {
+        $ws = $this->scanner->consumeWhitespacesAndComments();
+        if ($ws === null ||
+            (($tail = $this->scanner->getToken()) && !$tail["whitespace"])) {
             return $this->error();
         }
         return $program;
@@ -62,8 +63,9 @@ class Parser extends \Peast\Syntax\Parser
             $node->setBody($body);
         }
         $program = $this->completeNode($node);
-        $this->scanner->consumeWhitespacesAndComments();
-        if (($tail = $this->scanner->getToken()) && !$tail["whitespace"]) {
+        $ws = $this->scanner->consumeWhitespacesAndComments();
+        if ($ws === null ||
+            (($tail = $this->scanner->getToken()) && !$tail["whitespace"])) {
             return $this->error();
         }
         return $program;

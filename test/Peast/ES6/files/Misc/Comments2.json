@@ -1,0 +1,73 @@
+{
+    "range": [
+        10,
+        20
+    ],
+    "loc": {
+        "start": {
+            "line": 1,
+            "column": 10
+        },
+        "end": {
+            "line": 1,
+            "column": 20
+        }
+    },
+    "type": "Program",
+    "body": [
+        {
+            "range": [
+                10,
+                20
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 10
+                },
+                "end": {
+                    "line": 1,
+                    "column": 20
+                }
+            },
+            "type": "ExpressionStatement",
+            "expression": {
+                "range": [
+                    10,
+                    16
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 10
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 16
+                    }
+                },
+                "type": "CallExpression",
+                "callee": {
+                    "range": [
+                        10,
+                        14
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 10
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 14
+                        }
+                    },
+                    "type": "Identifier",
+                    "name": "test"
+                },
+                "arguments": []
+            }
+        }
+    ],
+    "sourceType": "script"
+}
