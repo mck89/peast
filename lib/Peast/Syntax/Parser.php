@@ -114,11 +114,14 @@ abstract class Parser
                     $left = $lastNode ?
                             $lastNode :
                             ($multi ? $list[0][0] : $list[0]);
+                    $right = $multi ? $expr[0] : $expr;
                     $node = $this->createNode($class, $left);
                     $node->setLeft($left);
                     $node->setOperator($multi ? $expr[1] : $operator);
-                    $node->setRight($multi ? $expr[0] : $expr);
-                    $lastNode = $this->completeNode($node);
+                    $node->setRight($right);
+                    $lastNode = $this->completeNode(
+                        $node, $right->getLocation()->getEnd()
+                    );
                 }
             }
         }

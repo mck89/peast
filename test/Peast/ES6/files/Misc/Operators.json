@@ -1,0 +1,315 @@
+{
+    "range": [
+        0,
+        29
+    ],
+    "loc": {
+        "start": {
+            "line": 1,
+            "column": 0
+        },
+        "end": {
+            "line": 1,
+            "column": 29
+        }
+    },
+    "type": "Program",
+    "body": [
+        {
+            "range": [
+                0,
+                29
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 29
+                }
+            },
+            "type": "ExpressionStatement",
+            "expression": {
+                "range": [
+                    0,
+                    29
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 0
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 29
+                    }
+                },
+                "type": "BinaryExpression",
+                "operator": "-",
+                "left": {
+                    "range": [
+                        0,
+                        25
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 0
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 25
+                        }
+                    },
+                    "type": "BinaryExpression",
+                    "operator": "+",
+                    "left": {
+                        "range": [
+                            0,
+                            21
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 0
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 21
+                            }
+                        },
+                        "type": "BinaryExpression",
+                        "operator": "+",
+                        "left": {
+                            "range": [
+                                0,
+                                5
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 0
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 5
+                                }
+                            },
+                            "type": "BinaryExpression",
+                            "operator": "*",
+                            "left": {
+                                "range": [
+                                    0,
+                                    1
+                                ],
+                                "loc": {
+                                    "start": {
+                                        "line": 1,
+                                        "column": 0
+                                    },
+                                    "end": {
+                                        "line": 1,
+                                        "column": 1
+                                    }
+                                },
+                                "type": "Literal",
+                                "value": 1,
+                                "raw": "1"
+                            },
+                            "right": {
+                                "range": [
+                                    4,
+                                    5
+                                ],
+                                "loc": {
+                                    "start": {
+                                        "line": 1,
+                                        "column": 4
+                                    },
+                                    "end": {
+                                        "line": 1,
+                                        "column": 5
+                                    }
+                                },
+                                "type": "Literal",
+                                "value": 2,
+                                "raw": "2"
+                            }
+                        },
+                        "right": {
+                            "range": [
+                                8,
+                                21
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 8
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 21
+                                }
+                            },
+                            "type": "BinaryExpression",
+                            "operator": "/",
+                            "left": {
+                                "range": [
+                                    8,
+                                    17
+                                ],
+                                "loc": {
+                                    "start": {
+                                        "line": 1,
+                                        "column": 8
+                                    },
+                                    "end": {
+                                        "line": 1,
+                                        "column": 17
+                                    }
+                                },
+                                "type": "BinaryExpression",
+                                "operator": "*",
+                                "left": {
+                                    "range": [
+                                        8,
+                                        13
+                                    ],
+                                    "loc": {
+                                        "start": {
+                                            "line": 1,
+                                            "column": 8
+                                        },
+                                        "end": {
+                                            "line": 1,
+                                            "column": 13
+                                        }
+                                    },
+                                    "type": "BinaryExpression",
+                                    "operator": "/",
+                                    "left": {
+                                        "range": [
+                                            8,
+                                            9
+                                        ],
+                                        "loc": {
+                                            "start": {
+                                                "line": 1,
+                                                "column": 8
+                                            },
+                                            "end": {
+                                                "line": 1,
+                                                "column": 9
+                                            }
+                                        },
+                                        "type": "Literal",
+                                        "value": 3,
+                                        "raw": "3"
+                                    },
+                                    "right": {
+                                        "range": [
+                                            12,
+                                            13
+                                        ],
+                                        "loc": {
+                                            "start": {
+                                                "line": 1,
+                                                "column": 12
+                                            },
+                                            "end": {
+                                                "line": 1,
+                                                "column": 13
+                                            }
+                                        },
+                                        "type": "Literal",
+                                        "value": 4,
+                                        "raw": "4"
+                                    }
+                                },
+                                "right": {
+                                    "range": [
+                                        16,
+                                        17
+                                    ],
+                                    "loc": {
+                                        "start": {
+                                            "line": 1,
+                                            "column": 16
+                                        },
+                                        "end": {
+                                            "line": 1,
+                                            "column": 17
+                                        }
+                                    },
+                                    "type": "Literal",
+                                    "value": 5,
+                                    "raw": "5"
+                                }
+                            },
+                            "right": {
+                                "range": [
+                                    20,
+                                    21
+                                ],
+                                "loc": {
+                                    "start": {
+                                        "line": 1,
+                                        "column": 20
+                                    },
+                                    "end": {
+                                        "line": 1,
+                                        "column": 21
+                                    }
+                                },
+                                "type": "Literal",
+                                "value": 6,
+                                "raw": "6"
+                            }
+                        }
+                    },
+                    "right": {
+                        "range": [
+                            24,
+                            25
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 24
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 25
+                            }
+                        },
+                        "type": "Literal",
+                        "value": 7,
+                        "raw": "7"
+                    }
+                },
+                "right": {
+                    "range": [
+                        28,
+                        29
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 28
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 29
+                        }
+                    },
+                    "type": "Literal",
+                    "value": 8,
+                    "raw": "8"
+                }
+            }
+        }
+    ],
+    "sourceType": "script"
+}
