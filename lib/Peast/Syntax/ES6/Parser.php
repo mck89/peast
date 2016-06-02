@@ -2306,9 +2306,13 @@ class Parser extends \Peast\Syntax\Parser
             return $exp;
         } elseif ($this->scanner->consume("(")) {
             
+            $startPos = $this->scanner->getConsumedTokenPosition();
             if (($exp = $this->parseExpression(true, $yield)) &&
                 $this->scanner->consume(")")) {
-                return $exp;
+                
+                $node = $this->createNode("ParenthesizedExpression", $startPos);
+                $node->setExpression($exp);
+                return $this->completeNode($node, $this->scanner->getPosition());
             }
             
             return $this->error();

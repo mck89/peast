@@ -46,6 +46,7 @@ class TestBase extends \PHPUnit_Framework_TestCase
                 foreach ($compare as $k => $v) {
                     $fn = "get" . ucfirst($k);
                     $objValue = $obj->$fn();
+                    $objValue = $this->fixParenthesizedExpression($objValue);
                     $this->objectTestRecursive($v, $objValue, "$message" . "->$k");
                 }
             break;
@@ -59,6 +60,16 @@ class TestBase extends \PHPUnit_Framework_TestCase
                 $this->assertSame($compare, $obj, $message);
             break;
         }
+    }
+    
+    protected function fixParenthesizedExpression($val)
+    {
+        if (is_object($val) &&
+            $val instanceof \Peast\Syntax\Node &&
+            $val->getType() === "ParenthesizedExpression") {
+            return $this->fixParenthesizedExpression($val->getExpression());
+        }
+        return $val;
     }
     
     protected function fixComparison($compare)
