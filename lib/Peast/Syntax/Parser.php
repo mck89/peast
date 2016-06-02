@@ -98,37 +98,6 @@ abstract class Parser
         return $list;
     }
     
-    protected function recursiveExpression($fn, $args, $operator, $class)
-    {
-        $multi = is_array($operator);
-        $list = $this->charSeparatedListOf($fn, $args, $operator);
-        
-        if ($list === null) {
-            return null;
-        } elseif (count($list) === 1) {
-            return $multi ? $list[0][0] : $list[0];
-        } else {
-            $lastNode = null;
-            foreach ($list as $i => $expr) {
-                if ($i) {
-                    $left = $lastNode ?
-                            $lastNode :
-                            ($multi ? $list[0][0] : $list[0]);
-                    $right = $multi ? $expr[0] : $expr;
-                    $node = $this->createNode($class, $left);
-                    $node->setLeft($left);
-                    $node->setOperator($multi ? $expr[1] : $operator);
-                    $node->setRight($right);
-                    $lastNode = $this->completeNode(
-                        $node, $right->getLocation()->getEnd()
-                    );
-                }
-            }
-        }
-        
-        return $lastNode;
-    }
-    
     static public function unquoteLiteralString($str)
     {
         //Remove quotes

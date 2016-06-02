@@ -1859,7 +1859,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseConditionalExpression($in = false, $yield = false)
     {
-        if ($test = $this->parseLogicalORExpression($in, $yield)) {
+        if ($test = $this->parseLogicalBinaryExpression($in, $yield)) {
             
             if ($this->scanner->consume("?")) {
                 
@@ -1882,108 +1882,59 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseLogicalORExpression($in = false, $yield = false)
+    protected function parseLogicalBinaryExpression($in = false, $yield = false)
     {
-        return $this->recursiveExpression(
-            "parseLogicalANDExpression",
-            array($in, $yield),
-            "||",
-            "LogicalExpression"
+        $operators = array(
+            "||" => 0,
+            "&&" => 1,
+            "|" => 2,
+            "^" => 3,
+            "&" => 4,
+            "===" => 5, "!==" => 5, "==" => 5, "!=" => 5,
+            "<=" => 6, ">=" => 6, "<" => 6, ">" => 6, "instanceof" => 6, "in" => 6,
+            ">>>" => 7, "<<" => 7, ">>" => 7,
+            "+" => 8, "-" => 8,
+            "*" => 9, "/" => 9, "%" => 9
         );
-    }
-    
-    protected function parseLogicalANDExpression($in = false, $yield = false)
-    {
-        return $this->recursiveExpression(
-            "parseBitwiseORExpression",
-            array($in, $yield),
-            "&&",
-            "LogicalExpression"
-        );
-    }
-    
-    protected function parseBitwiseORExpression($in = false, $yield = false)
-    {
-        return $this->recursiveExpression(
-            "parseBitwiseXORExpression",
-            array($in, $yield),
-            "|",
-            "BinaryExpression"
-        );
-    }
-    
-    protected function parseBitwiseXORExpression($in = false, $yield = false)
-    {
-        return $this->recursiveExpression(
-            "parseBitwiseANDExpression",
-            array($in, $yield),
-            "^",
-            "BinaryExpression"
-        );
-    }
-    
-    protected function parseBitwiseANDExpression($in = false, $yield = false)
-    {
-        return $this->recursiveExpression(
-            "parseEqualityExpression",
-            array($in, $yield),
-            "&",
-            "BinaryExpression"
-        );
-    }
-    
-    protected function parseEqualityExpression($in = false, $yield = false)
-    {
-        return $this->recursiveExpression(
-            "parseRelationalExpression",
-            array($in, $yield),
-            array("===", "!==", "==", "!="),
-            "BinaryExpression"
-        );
-    }
-    
-    protected function parseRelationalExpression($in = false, $yield = false)
-    {
-        $chars = array("<=", ">=", "<", ">", "instanceof");
-        if ($in) {
-            $chars[] = "in";
+        if (!$in) {
+            unset($operators["in"]);
         }
-        return $this->recursiveExpression(
-            "parseShiftExpression",
-            array($yield),
-            $chars,
-            "BinaryExpression"
-        );
-    }
-    
-    protected function parseShiftExpression($yield = false)
-    {
-        return $this->recursiveExpression(
-            "parseAdditiveExpression",
-            array($yield),
-            array(">>>", "<<", ">>"),
-            "BinaryExpression"
-        );
-    }
-    
-    protected function parseAdditiveExpression($yield = false)
-    {
-        return $this->recursiveExpression(
-            "parseMultiplicativeExpression",
-            array($yield),
-            array("+", "-"),
-            "BinaryExpression"
-        );
-    }
-    
-    protected function parseMultiplicativeExpression($yield = false)
-    {
-        return $this->recursiveExpression(
-            "parseUnaryExpression",
-            array($yield),
-            array("*", "/", "%"),
-            "BinaryExpression"
-        );
+        
+        if (!($exp = $this->parseUnaryExpression($yield))) {
+            return null;
+        }
+        
+        $list = array($exp);
+        while ($op = $this->scanner->consumeOneOf(array_keys($operators))) {
+            if (!($exp = $this->parseUnaryExpression($yield))) {
+                return $this->error();
+            }
+            $list[] = $op;
+            $list[] = $exp;
+        }
+        
+        $len = count($list);
+        if ($len > 1) {
+            $maxGrade = max($operators);
+            for ($grade = $maxGrade; $grade >= 0; $grade--) {
+                $class = $grade < 2 ? "LogicalExpression" : "BinaryExpression";
+                for ($i = 1; $i < $len; $i += 2) {
+                    if ($operators[$list[$i]] === $grade) {
+                        $node = $this->createNode($class, $list[$i - 1]);
+                        $node->setLeft($list[$i - 1]);
+                        $node->setOperator($list[$i]);
+                        $node->setRight($list[$i + 1]);
+                        $node = $this->completeNode(
+                            $node, $list[$i + 1]->getLocation()->getEnd()
+                        );
+                        array_splice($list, $i - 1, 3, array($node));
+                        $i -= 2;
+                        $len = count($list);
+                    }
+                }
+            }
+        }
+        return $list[0];
     }
     
     protected function parseUnaryExpression($yield = false)
