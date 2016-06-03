@@ -122,6 +122,9 @@ class TestBase extends \PHPUnit_Framework_TestCase
             case "ForInStatement":
                 unset($compare->each);
             break;
+            case "AssignmentPattern":
+                unset($compare->operator);
+            break;
         }
     }
 }

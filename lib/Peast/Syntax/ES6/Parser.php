@@ -24,6 +24,63 @@ class Parser extends \Peast\Syntax\Parser
         return parent::setScanner($scanner);
     }
     
+    protected function expressionToPattern($node)
+    {
+        $retNode = $node;
+        if ($node instanceof Node\ArrayExpression) {
+            
+            $loc = $node->getLocation();
+            $elems = array();
+            foreach ($node->getElements() as $elem) {
+                $elems[] = $this->expressionToPattern($elem);
+            }
+                
+            $retNode = $this->createNode("ArrayPattern", $loc->getStart());
+            $retNode->setElements($elems);
+            $this->completeNode($retNode, $loc->getEnd());
+            
+        } elseif ($node instanceof Node\ObjectExpression) {
+            
+            $loc = $node->getLocation();
+            $props = array();
+            foreach ($node->getProperties() as $prop) {
+                $props[] = $this->expressionToPattern($prop);
+            }
+                
+            $retNode = $this->createNode("ObjectPattern", $loc->getStart());
+            $retNode->setProperties($props);
+            $this->completeNode($retNode, $loc->getEnd());
+            
+        } elseif ($node instanceof Node\Property) {
+            
+            $loc = $node->getLocation();
+            $retNode = $this->createNode("AssignmentProperty", $loc->getStart());
+            $retNode->setValue($node->getValue());
+            $retNode->setKey($node->getKey());
+            $retNode->setMethod($node->getMethod());
+            $retNode->setShorthand($node->getShorthand());
+            $retNode->setComputed($node->getComputed());
+            $this->completeNode($retNode, $loc->getEnd());
+            
+        } elseif ($node instanceof Node\SpreadElement) {
+            
+            $loc = $node->getLocation();
+            $retNode = $this->createNode("RestElement", $loc->getStart());
+            $retNode->setArgument($this->expressionToPattern($node->getArgument()));
+            $this->completeNode($retNode, $loc->getEnd());
+            
+        } elseif ($node instanceof Node\AssignmentExpression) {
+            
+            $loc = $node->getLocation();
+            $retNode = $this->createNode("AssignmentPattern", $loc->getStart());
+            $retNode->setLeft($this->expressionToPattern($node->getLeft()));
+            $retNode->setRight($node->getRight());
+            $this->completeNode($retNode, $loc->getEnd());
+            
+        }
+        return $retNode;
+    }
+    
     public function parse()
     {
         if ($this->moduleMode) {
@@ -591,7 +648,7 @@ class Parser extends \Peast\Syntax\Parser
                 $subPosition = $this->scanner->getPosition();
                 $varPosition = $this->scanner->getConsumedTokenPosition();
                 
-                if (($decl = $this->parseVariableDeclarationList($yield)) &&
+                if (($decl = $this->parseVariableDeclarationList(false, $yield)) &&
                     ($varEndPosition = $this->scanner->getPosition()) &&
                     $this->scanner->consume(";")) {
                             
@@ -718,7 +775,7 @@ class Parser extends \Peast\Syntax\Parser
             } elseif ($this->scanner->notBefore(array("let"))) {
                 
                 $subPosition = $this->scanner->getPosition();
-                $notBeforeSB = $this->scanner->notBefore(array("let", "["));
+                $notBeforeSB = $this->scanner->notBefore(array(array("let", "[")));
                 
                 if ($notBeforeSB &&
                     (($init = $this->parseExpression(false, $yield)) || true) &&
@@ -747,6 +804,7 @@ class Parser extends \Peast\Syntax\Parser
                     
                     $this->scanner->setPosition($subPosition);
                     $left = $this->parseLeftHandSideExpression($yield);
+                    $left = $this->expressionToPattern($left);
                     
                     if ($notBeforeSB && $left &&
                         $this->scanner->consume("in")) {
@@ -1097,7 +1155,6 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            return $this->error();
         }
         return null;
     }
@@ -1629,7 +1686,7 @@ class Parser extends \Peast\Syntax\Parser
     {
         $position = $this->scanner->getPosition();
         if (($params = $this->parseArrowParameters($yield)) !== null &&
-            $this->scanner->consumeWhitespacesAndComments(false) &&
+            $this->scanner->consumeWhitespacesAndComments(false) !== null &&
             $this->scanner->consume("=>")) {
             
             if ($body = $this->parseConciseBody($in)) {
@@ -1838,11 +1895,11 @@ class Parser extends \Peast\Syntax\Parser
             return $expr;
         } elseif (($left = $this->parseLeftHandSideExpression($yield)) &&
             $operator = $this->scanner->consumeOneOf($operators)) {
-                
+            
             if ($right = $this->parseAssignmentExpression($in, $yield)) {
                 
                 $node = $this->createNode("AssignmentExpression", $left);
-                $node->setLeft($left);
+                $node->setLeft($this->expressionToPattern($left));
                 $node->setOperator($operator);
                 $node->setRight($right);
                 return $this->completeNode($node);

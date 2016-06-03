@@ -16,7 +16,9 @@ class ForInStatement extends Node implements Statement
     
     public function setLeft($left)
     {
-        $this->assertType($left, array("VariableDeclaration", "Expression"));
+        $this->assertType(
+            $left, array("VariableDeclaration", "Expression", "Pattern")
+        );
         $this->left = $left;
         return $this;
     }
