@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax;
 
-class Scanner
+abstract class Scanner
 {
     protected $column = 0;
     
@@ -11,79 +11,53 @@ class Scanner
     
     protected $length;
     
-    protected $consumedTokenPosition;
+    protected $source;
     
-    protected $wsCache;
+    protected $currentToken;
     
-    protected $chars = array();
+    protected $lastToken;
     
-    protected $config;
+    protected $idStartRegex;
     
-    protected $symbols = array();
+    protected $idPartRegex;
     
-    protected $symbolChars = array();
+    protected $keywords = array();
     
-    protected $maxSymbolLength;
+    protected $punctutators = array();
     
-    protected $lineTerminatorsSplitter;
+    protected $punctutatorsMap = array();
     
-    protected $hexDigits = array(
-        "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-        "a", "b", "c", "d", "e", "f",
-        "A", "B", "C", "D", "E", "F"
+    protected $brackets = array(
+        "(" => "", "[" => "", "{" => "", "(" => ")", "[" => "]", "{" => "}"
     );
+    
+    protected $openBrackets = array();
     
     function __construct($source, $encoding = null)
     {
+        //If encoding is missing try to detect it
         if (!$encoding) {
             $encoding = mb_detect_encoding($source);
         }
         
+        //Convert to UTF8 if needed
         if ($encoding && !preg_match("/UTF-?8/i", $encoding)) {
             $source = mb_convert_encoding($source, "UTF-8", $encoding);
         }
         
-        $this->chars = preg_split('/(?<!^)(?!$)/u', $source);
-        $this->length = count($this->chars);
-    }
-    
-    public function setConfig(Config $config)
-    {
-        $symbolMap = array();
-        $this->symbols = array();
-        $this->maxSymbolLength = -1;
-        foreach ($config->getSymbols() as $symbol) {
-            $symbolMap[] = $symbol;
-            $len = strlen($symbol);
-            $this->maxSymbolLength = max($len, $this->maxSymbolLength);
-            if (!isset($this->symbols[$len])) {
-                $this->symbols[$len] = array();
+        //Instead of using mb_substr for each character, split the source
+        //into an array of UTF8 characters for performance reasons
+        $this->source = preg_split('/(?<!^)(?!$)/u', $source);
+        $this->length = count($this->source);
+        
+        //Generate a map by grouping punctutars by their length
+        foreach ($this->punctutators as $p) {
+            $len = strlen($p);
+            if (!isset($this->punctutatorsMap[$len])) {
+                $this->punctutatorsMap[$len] = array();
             }
-            $this->symbols[$len][] = $symbol;
+            $this->punctutatorsMap[$len][] = $p;
         }
-        $this->symbolChars = array_unique($symbolMap);
-        
-        $terminatorsSeq = implode("|", $config->getLineTerminatorsSequences());
-        $this->lineTerminatorsSplitter = "/$terminatorsSeq/u";
-        
-        $this->config = $config;
-        
-        return $this;
-    }
-    
-    public function getColumn()
-    {
-        return $this->column;
-    }
-    
-    public function getLine()
-    {
-        return $this->line;
-    }
-    
-    public function getIndex()
-    {
-        return $this->index;
     }
     
     public function getPosition()
@@ -95,626 +69,177 @@ class Scanner
         );
     }
     
-    public function setPosition(Position $position)
+    public function charAt($index = null)
     {
-        $this->line = $position->getLine();
-        $this->column = $position->getColumn();
-        $this->index = $position->getIndex();
-        $this->clearCache();
+        if ($index === null) {
+            $this->index;
+        }
+        return $this->isEOF($index) ? null : $this->source[$this->index];
+    }
+    
+    public function isEOF($index = null)
+    {
+        if ($index === null) {
+            $this->index;
+        }
+        return $index >= $this->length;
+    }
+    
+    protected function error($message = null)
+    {
+        if (!$message) {
+            $message = "Unexpectd " . $this->charAt();
+        }
+        throw new Exception($message, $this->getPosition());
+    }
+    
+    public function consumeToken(Token $token)
+    {
+        $this->lastToken = $token;
+        $this->currentToken = null;
         return $this;
     }
     
-    public function getConsumedTokenPosition()
+    public function consume($expected)
     {
-        return $this->consumedTokenPosition;
-    }
-    
-    public function isEOF()
-    {
-        return $this->index >= $this->length;
-    }
-    
-    protected function clearCache()
-    {
-        $this->wsCache = null;
-        $this->consumedTokenPosition = null;
-    }
-    
-    protected function isWhitespace($char)
-    {
-        return in_array($char, $this->config->getWhitespaces(), true);
-    }
-    
-    protected function scanWhitespaces()
-    {
-        $index = $this->index;
-        $buffer = "";
-        while ($index < $this->length) {
-            $char = $this->chars[$index];
-            if ($this->isWhitespace($char)) {
-                $buffer .= $char;
-                $index++;
-            } else {
-                break;
-            }
-        }
-        if ($buffer !== "") {
-            $len = $index - $this->index;
-            return array(
-                "source" => $this->splitLines($buffer),
-                "length" => $len,
-                "whitespace" => true
-            );
+        $token = $this->getToken();
+        if ($token->getSource() === $expected) {
+            $this->consumeToken($token);
+            return $token;
         }
         return null;
-    }
-    
-    protected function isSymbol($char)
-    {
-        return in_array($char, $this->symbolChars);
-    }
-    
-    protected function scanSymbols()
-    {
-        $index = $this->index;
-        $buffer = "";
-        $bufferLen = 0;
-        while ($index < $this->length && $bufferLen < $this->maxSymbolLength) {
-            $char = $this->chars[$index];
-            if ($this->isSymbol($char)) {
-                $buffer .= $char;
-                $index++;
-                $bufferLen++;
-            } else {
-                break;
-            }
-        }
-        if ($bufferLen) {
-            while ($bufferLen > 0) {
-                if (!isset($this->symbols[$bufferLen]) ||
-                    !in_array($buffer, $this->symbols[$bufferLen])) {
-                    $bufferLen--;
-                    $buffer = substr($buffer, 0, $bufferLen);
-                } else {
-                    break;
-                }
-            }
-            if ($bufferLen) {
-                return array(
-                    "source" => $buffer,
-                    "length" => $bufferLen,
-                    "whitespace" => false
-                );
-            }
-        }
-        return null;
-    }
-    
-    protected function scanOther()
-    {
-        $index = $this->index;
-        $buffer = "";
-        while ($index < $this->length) {
-            $char = $this->chars[$index];
-            if (!$this->isWhitespace($char) && !$this->isSymbol($char)) {
-                $buffer .= $char;
-                $index++;
-            } else {
-                break;
-            }
-        }
-        if ($buffer !== "") {
-            $len = $index - $this->index;
-            return array(
-                "source" => $buffer,
-                "length" => $len,
-                "whitespace" => false
-            );
-        }
-        return null;
-    }
-    
-    protected function splitLines($str)
-    {
-        return preg_split($this->lineTerminatorsSplitter, $str);
-    }
-    
-    protected function isHexDigit($char)
-    {
-        return in_array($char, $this->hexDigits, true);
     }
     
     public function getToken()
     {
-        if (!$this->isEOF()) {
-            if ($source = $this->scanWhitespaces()) {
-                return $source;
-            } elseif ($source = $this->scanSymbols()) {
-                return $source;
-            } elseif ($source = $this->scanOther()) {
-                return $source;
-            }
+        //The current token is returned until consumed
+        if ($this->currentToken) {
+            return $this->currentToken;
         }
-        return null;
-    }
-    
-    protected function consumeToken($token)
-    {
-        $this->index += $token["length"];
-        if ($token["whitespace"]) {
-            $linesCount = count($token["source"]) - 1;
-            $this->line += $linesCount;
-            $columns = mb_strlen($token["source"][$linesCount]);
-            if ($linesCount === 0) {
-                $this->column += $columns;
-            } else {
-                $this->column = $columns;
-            }
-        } else {
-            $this->column += $token["length"];
-        }
-    }
-    
-    public function consumeWhitespacesAndComments($lineTerminator = true)
-    {
-        if ($lineTerminator && $this->wsCache) {
-            $ret = $this->wsCache[1];
-            $this->setPosition($this->wsCache[0]);
-            return $ret;
-        }
-        $position = $this->getPosition();
-        $comment = $processed = 0;
-        while ($token = $this->getToken()) {
-            $processed++;
-            $source = $token["source"];
-            if ($token["whitespace"]) {
-                if (count($source) > 1) {
-                    if (!$lineTerminator) {
-                        $this->setPosition($position);
-                        return null;
-                    } elseif ($comment === 1) {
-                        $comment = 0;
-                    }
+        
+        $this->skipWhitespacesAndComments(); //TODO
+        
+        if ($this->isEOF()) {
+            //When the end of the source is reached, check if there are no
+            //open brackets
+            foreach ($this->openBrackets as $bracket => $num) {
+                if ($num) {
+                    return $this->error("Unclosed $bracket");
                 }
-                $this->consumeToken($token);
-            } elseif (!$comment && $source === "//") {
-                $comment = 1;
-                $this->consumeToken($token);
-            } elseif (!$comment && $source === "/*") {
-                $comment = 2;
-                $this->consumeToken($token);
-            } elseif ($comment === 2 && $source === "*/") {
-                $comment = 0;
-                $this->consumeToken($token);
-            } elseif ($comment) {
-                $this->consumeToken($token);
-            } else {
-                return $processed > 1;
             }
-        }
-        if ($comment === 2) {
-            $this->setPosition($position);
             return null;
         }
-        return $processed;
-    }
-    
-    public function consume($string)
-    {
-        //Store current position so that it can be restored if the token does
-        //not match
-        $initPosition = $this->getPosition();
         
-        //Consume any whitespace and comment before checking
-        $ws = $this->consumeWhitespacesAndComments();
-        
-        //Store the position after whitespaces and comments
-        $trimmedPosition = $this->getPosition();
-        
-        //Check the token
-        $token = $this->getToken();
-        if (!$token || $token["source"] !== $string) {
-            //Token does not match. Get back to initial position and fill the
-            //whitespaces cache
-            $this->setPosition($initPosition);
-            $this->wsCache = array($trimmedPosition, $ws);
-            return false;
+        //Try to match a token
+        $startPosition = $this->getPosition();
+        if (($token = $this->scanString()) || //TODO
+            ($token = $this->scanTemplate()) || //TODO
+            ($token = $this->scanNumber()) || //TODO
+            ($token = $this->scanRegexp()) || //TODO
+            ($token = $this->scanPunctutator()) ||
+            ($token = $this->scanKeywordOrIdentifier())) {
+            $this->currentToken = $token->setStartPosition($startPosition)
+                                        ->setEndPosition($this->getPosition());
+            return $this->currentToken;
         }
         
-        //The token matches so consumedTokenPosition becomes the position after
-        //whitespaces and the whitespaces cache must be cleared
-        $this->clearCache();
-        $this->consumedTokenPosition = $trimmedPosition;
-        
-        //Finally consume the matching token
-        $this->consumeToken($token);
-        
-        return true;
+        //No valid token found, error
+        return $this->error();
     }
     
-    public function consumeIdentifier()
+    protected function scanPunctutator()
     {
-        $postion = $this->getPosition();
-        
-        $ws = $this->consumeWhitespacesAndComments();
-        
-        $trimmedPosition = $this->getPosition();
-        $this->clearCache();
-        
-        $start = true;
-        $index = $this->index;
         $buffer = "";
-        while ($index < $this->length) {
-            $char = $this->chars[$index];
-            if ($char === "$" || $char === "_" ||
-                ($char >= "A" && $char <= "Z") ||
-                ($char >= "a" && $char <= "z") ||
-                (!$start && $char >= "0" && $char <= "9")) {
-                $index++;
-                $buffer .= $char;
-            } elseif ($char === "\\" &&
-                      isset($this->chars[$index + 1]) &&
-                      $this->chars[$index + 1] === "u") {
-                //UnicodeEscapeSequence
-                $index += 2;
-                $valid = true;
-                $subBuffer = "";
-                if (isset($this->chars[$index]) &&
-                    $this->chars[$index] === "{" &&
-                    isset($this->chars[$index + 1])) {
-                    
-                    $index++;
-                    $oneMatched = false;
-                    for ($i = $index; $i < $this->length; $i++) {
-                        if ($this->isHexDigit($this->chars[$i])) {
-                            $oneMatched = true;
-                            $subBuffer .= $this->chars[$i];
-                        } elseif ($oneMatched && $this->chars[$i] === "}") {
-                            $index++;
-                            break;
-                        } else {
-                            $valid = false;
-                            break;
-                        }
+        $consumed = 0;
+        $bestMatch = null;
+        
+        //This loop scans next characters to find the longest punctutator, so
+        //that if "!" is found and it's followed by "=", the matched
+        //punctutator will be "!="
+        while ($char = $this->charAt($this->index + $consumed)) {
+            $buffer .= $char;
+            $consumed++;
+            //Special handling for brackets
+            if (isset($this->brackets[$char])) {
+                if ($this->brackets[$char]) {
+                    $openBracket = $this->brackets[$char];
+                    //Check if there is a corresponding open bracket
+                    if (!isset($this->openBrackets[$openBracket]) ||
+                        !$this->openBrackets[$openBracket]) {
+                        return $this->error();
                     }
-                    
+                    $this->openBrackets[$openBracket]--;
                 } else {
-                    
-                    for ($i = $index; $i <= $index + 3; $i++) {
-                        if (isset($this->chars[$i]) &&
-                            $this->isHexDigit($this->chars[$i])) {
-                            $subBuffer .= $this->chars[$i];
-                        } else {
-                            $valid = false;
-                            break;
-                        }
+                    if (!isset($this->openBrackets[$char])) {
+                        $this->openBrackets[$char] = 0;
                     }
+                    $this->openBrackets[$char]++;
                 }
-                
-                if (!$subBuffer) {
-                    $valid = false;
-                } elseif ($valid) {
-                    $decodedChar = Utils::unicodeToUtf8(hexdec($subBuffer));
-                    $valid = preg_match(
-                        $this->config->getIdRegex(!$start), $decodedChar
-                    );
-                }
-                
-                if (!$valid) {
-                    $buffer = "";
-                    break;
-                }
-                
-                $buffer .= $decodedChar;
-                $index += strlen($subBuffer);
-                
-            } elseif (preg_match($this->config->getIdRegex(!$start), $char)) {
-                $index++;
-                $buffer .= $char;
-            } else {
+                $bestMatch = array($consumed, $buffer);
+                break;
+            } elseif (in_array($buffer, $this->punctutatorsMap[$consumed])) {
+                $bestMatch = array($consumed, $buffer);
+            }
+            if (!isset($this->punctutatorsMap[$consumed + 1])) {
                 break;
             }
-            $start = false;
         }
         
-        if ($buffer !== "") {
-            $this->consumedTokenPosition = $trimmedPosition;
-            $this->column += $index - $this->index;
-            $this->index = $index; 
-            return $buffer;
-        } else {
-            $this->setPosition($postion);
-            $this->wsCache = array($trimmedPosition, $ws);
+        if ($bestMatch !== null) {
+            $this->index += $bestMatch[0];
+            $this->column += $bestMatch[0];
+            return new Token(Token::TYPE_PUNCTUTATOR, $bestMatch[1]);
         }
         
         return null;
     }
     
-    public function consumeRegularExpression()
+    protected function scanKeywordOrIdentifier()
     {
-        $postion = $this->getPosition();
+        //If the first character is not a valid identifier start, exit
+        //immediately
+        $char = $this->charAt();
+        if (!$this->isIdentifierStart($char)) {
+            return null;
+        }
         
-        $ws = $this->consumeWhitespacesAndComments();
-        
-        $trimmedPosition = $this->getPosition();
-        $this->clearCache();
-        
-        if ($this->index + 1 < $this->length &&
-            $this->chars[$this->index] === "/" &&
-            !in_array($this->chars[$this->index + 1], array("/", "*"), true)) {
-            
+        //Scan next characters that are valid identifier parts
+        $buffer = "";
+        do {
+            $buffer .= $char;
             $this->index++;
             $this->column++;
-            
-            $inClass = false;
-            $source = "/";
-            $valid = true;
-            while (true) {
-                if ($inClass) {
-                    $sub = $this->consumeUntil(array("]"), false);
-                    if (!$sub) {
-                        $valid = false;
-                        break;
-                    } else {
-                        $source .= $sub;
-                        $inClass = false;
-                    }
-                } else {
-                    $sub = $this->consumeUntil(array("[", "/"), false);
-                    if (!$sub) {
-                        $valid = false;
-                        break;
-                    } else {
-                        $source .= $sub;
-                        $lastChar = substr($sub, -1);
-                        if ($lastChar === "/") {
-                            break;
-                        } else {
-                            $inClass = true;
-                        }
-                    }
-                }
-            }
-            
-            if (!$inClass && $valid) {
-                while (!$this->isEOF()) {
-                    $char = $this->chars[$this->index];
-                    if ($char >= "a" && $char <= "z") {
-                        $source .= $char;
-                        $this->index++;
-                        $this->column++;
-                    } else {
-                        break;
-                    }
-                }
-                $this->consumedTokenPosition = $trimmedPosition;
-                return $source;
-            }
-        }
+            $char = $this->charAt();
+        } while ($char && $this->isIdentifierPart($char));
         
-        $this->setPosition($postion);
-        $this->wsCache = array($trimmedPosition, $ws);
-        
-        return null;
-    }
-    
-    public function consumeNumber()
-    {
-        $postion = $this->getPosition();
-        
-        $ws = $this->consumeWhitespacesAndComments();
-        
-        $trimmedPosition = $this->getPosition();
-        $this->clearCache();
-        
-        $decimalExp = true;
-        $source = "";
-        
-        $reset = function () use ($postion, $trimmedPosition, $ws) {
-            $this->setPosition($postion);
-            $this->wsCache = array($trimmedPosition, $ws);
-            return null;
-        };
-        
-        $checkNoDecimal = function ($s) use ($reset, $trimmedPosition) {
-            $sym = $this->scanSymbols();
-            if (!$sym || $sym["source"] !== ".") {
-                $this->consumedTokenPosition = $trimmedPosition;
-                return $s;
-            } else {
-                return $reset();
-            }
-        };
-        
-        $handleExponent = function ($n, $allowEmptyBase = false) use ($reset) {
-            $parts = preg_split("/e/i", $n);
-            if (count($parts) > 2 ||
-                (!preg_match("/^\d+$/", $parts[0]) && (
-                !$allowEmptyBase || $parts[0] !== ""))) {
-                return $reset();
-            } elseif (!isset($parts[1])) {
-                return false;
-            }
-            $expPart = $parts[1];
-            $ret = "";
-            if ($expPart === "") {
-                $sign = $this->scanSymbols();
-                if (!$sign ||
-                    ($sign["source"] !== "+" && $sign["source"] !== "-")) {
-                    return $reset();
-                }
-                $this->consumeToken($sign);
-                $expNum = $this->scanOther();
-                $this->consumeToken($expNum);
-                $expPart = $expNum["source"];
-                $ret = $sign["source"] . $expPart;
-            }
-            if (!preg_match("/^\d+$/", $expPart)) {
-                return $reset();
-            }
-            return $ret;
-        };
-        
-        $nextChar = !$this->isEOF() ?
-                    $this->chars[$this->index] :
-                    null;
-        if (!(($nextChar >= "0" && $nextChar <= "9") || $nextChar === ".")) {
-            return $reset();
-        }
-        
-        if ($num = $this->scanOther()) {
-            $this->consumeToken($num);
-            $source = $num["source"];
-            if ($source[0] === "0" && isset($source[1])) {
-                $char = strtolower($source[1]);
-                if ($char === "b") {
-                    //Binary form
-                    if (!$this->config->supportsBinaryNumberForm() ||
-                        !preg_match("/^0[bB][01]+$/", $source)) {
-                        return $reset();
-                    }
-                    return $checkNoDecimal($source);
-                } elseif ($char === "o") {
-                    //Octal form
-                    if (!$this->config->supportsOctalNumberForm() ||
-                        !preg_match("/^0[oO][0-7]+$/", $source)) {
-                        return $reset();
-                    }
-                    return $checkNoDecimal($source);
-                } elseif ($char === "x") {
-                    //Hexadecimal form
-                    if (!preg_match("/^0[xX][0-9a-fA-F]+$/", $source)) {
-                        return $reset();
-                    }
-                    return $checkNoDecimal($source);
-                } elseif (preg_match("/^0[0-7]+/", $source)) {
-                    //Implicit octal form
-                    return $checkNoDecimal($source);
-                }
-            }
-            $exp = $handleExponent($num["source"]);
-            if ($exp === null) {
-                return $reset();
-            } elseif ($exp) {
-                $source .= $exp;
-            }
-            $decimalExp = $exp === false;
-        }
-        
-        //Validate decimal part
-        $dot = $this->scanSymbols();
-        if ($dot && $dot["source"] === ".") {
-            $this->consumeToken($dot);
-            $source .= ".";
-            if ($decPart = $this->scanOther()) {
-                $this->consumeToken($decPart);
-                $source .= $decPart["source"];
-                $exp = $handleExponent($decPart["source"], true);
-                if ($exp === null || ($exp !== false && !$decimalExp)) {
-                    return $reset();
-                } elseif ($exp) {
-                    $source .= $exp;
-                }
-            } elseif ($source === ".") {
-                return $reset(); 
-            }
-        }
-        
-        return $checkNoDecimal($source);
-    }
-    
-    public function consumeArray($sequence)
-    {
-        $position = $this->getPosition();
-        $firstConsumedTokenPosition = null;
-        foreach ($sequence as $string) {
-            if ($this->consume($string) === false) {
-                $this->setPosition($position);
-                return false;
-            }
-            if (!$firstConsumedTokenPosition) {
-                $firstConsumedTokenPosition = $this->consumedTokenPosition;
-            }
-        }
-        $this->consumedTokenPosition = $firstConsumedTokenPosition;
-        return true;
-    }
-    
-    public function notBefore($tests)
-    {
-        $position = $this->getPosition();
-        foreach ($tests as $test) {
-            $testFn = is_array($test) ? "consumeArray" : "consume";
-            if ($this->$testFn($test)) {
-                $this->setPosition($position);
-                return false;
-            }
-        }
-        return true;
-    }
-    
-    public function consumeOneOf($tests)
-    {
-        foreach ($tests as $test) {
-            if ($this->consume($test)) {
-                return $test;
-            }
-        }
-        return null;
-    }
-    
-    public function consumeUntil($stop, $allowLineTerminator = true)
-    {
-        $this->clearCache();
-        foreach ($stop as $s) {
-            $stopMap[$s[0]] = array(strlen($s), $s);
-        }
-    	$index = $this->index;
-    	$escaped = false;
-    	$buffer = "";
-    	$lineTerminators = $this->config->getLineTerminators();
-    	$valid = false;
-    	while ($index < $this->length) {
-    		$char = $this->chars[$index];
-    		$buffer .= $char;
-    		$index++;
-    		if ($escaped) {
-    		    $escaped = false;
-    		} elseif ($char === "\\") {
-    		    $escaped = true;
-    		} elseif (!$allowLineTerminator &&
-    		          in_array($char, $lineTerminators, true)) {
-    		    break;
-    		} elseif (isset($stopMap[$char])) {
-    		    $len = $stopMap[$char][0];
-    		    if ($len === 1) {
-    		        $valid = true;
-    		        break;
-    		    }
-    		    $seq = array_slice($this->chars, $index - 1, $len);
-    		    if (implode("", $seq) === $stopMap[$char][1]) {
-                    $buffer .= substr($stopMap[$char][1], 1);
-    		        $index += $len - 1;
-    		        $valid = true;
-    		        break;
-    		    }
-    		}
-    	}
-    	
-    	if (!$valid) {
-    	    return null;
-    	}
-    	
-	    $lines = $this->splitLines($buffer);
-        $linesCount = count($lines) - 1;
-        $this->line += $linesCount;
-        if ($linesCount) {
-            $this->column = mb_strlen($lines[$linesCount]);
+        //Identify token type
+        if ($buffer === "null") {
+            $type = Token::TYPE_NULL_LITERAL;
+        } elseif ($buffer === "true" || $buffer === "false") {
+            $type = Token::TYPE_BOOLEAN_LITERAL;
+        } elseif (in_array($buffer, $this->keywords)) {
+            $type = Token::TYPE_KEYWORD;
         } else {
-            $this->column += mb_strlen($lines[$linesCount]);
+            $type = Token::TYPE_IDENTIFIER;
         }
-	    $this->index = $index;
-	    
-	    return $buffer;
+        
+        return new Token($type, $buffer);
+    }
+    
+    protected function isIdentifierStart($char)
+    {
+        return ($char >= "a" && $char <= "z") ||
+               ($char >= "A" && $char <= "Z") ||
+               $char === "_" || $char === "$" ||
+               preg_match($this->idStartRegex, $char);
+    }
+    
+    protected function isIdentifierPart($char)
+    {
+        return ($char >= "a" && $char <= "z") ||
+               ($char >= "A" && $char <= "Z") ||
+               ($char >= "0" && $char <= "9") ||
+               $char === "_" || $char === "$" ||
+               preg_match($this->idPartRegex, $char);
     }
 }
