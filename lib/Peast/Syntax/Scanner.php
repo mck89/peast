@@ -33,6 +33,15 @@ abstract class Scanner
     
     protected $openBrackets = array();
     
+    protected $whitespaces = array(
+        " ", "\t", "\n", "\r", "\f", "\v", 0x00A0, 0xFEFF, 0x00A0,
+        0x1680, 0x2000, 0x2001, 0x2002, 0x2003, 0x2004, 0x2005, 0x2006,
+        0x2007, 0x2008, 0x2009, 0x200A, 0x202F, 0x205F, 0x3000, 0x2028,
+        0x2029
+    );
+    
+    protected $lineTerminators = array("\r\n", "\n", "\r", 0x2028, 0x2029);
+    
     function __construct($source, $encoding = null)
     {
         //If encoding is missing try to detect it
@@ -57,6 +66,16 @@ abstract class Scanner
                 $this->punctutatorsMap[$len] = array();
             }
             $this->punctutatorsMap[$len][] = $p;
+        }
+        
+        //Convert character codes to UTF8 characters in whitespaces and line
+        //terminators
+        foreach (array("whitespaces", "lineTerminators") as $key) {
+            foreach ($this->$key as $i => $char) {
+                if (is_int($char)) {
+                    $this->$key[$i] = Utils::unicodeToUtf8($char);
+                }
+            }
         }
     }
     
@@ -117,7 +136,7 @@ abstract class Scanner
             return $this->currentToken;
         }
         
-        $this->skipWhitespacesAndComments(); //TODO
+        $this->skipWhitespacesAndComments();
         
         if ($this->isEOF()) {
             //When the end of the source is reached, check if there are no
@@ -132,7 +151,7 @@ abstract class Scanner
         
         //Try to match a token
         $startPosition = $this->getPosition();
-        if (($token = $this->scanString()) || //TODO
+        if (($token = $this->scanString()) ||
             ($token = $this->scanTemplate()) || //TODO
             ($token = $this->scanNumber()) || //TODO
             ($token = $this->scanRegexp()) || //TODO
@@ -145,6 +164,66 @@ abstract class Scanner
         
         //No valid token found, error
         return $this->error();
+    }
+    
+    protected function skipWhitespacesAndComments()
+    {
+        $buffer = "";
+        $comment = 0;
+        while ($char = $this->charAt()) {
+            $buffer .= $char;
+            $this->index++;
+            $nextChar = $this->charAt();
+            if (in_array($char, $this->whitespaces)) {
+                //Whitespace
+                $buffer .= $char;
+                //Exit the comment mode if it is in single line comment mode
+                if ($comment === 1 && in_array($char, $this->lineTerminators)) {
+                    $comment = 0;
+                }
+            } elseif (!$comment && $char === "/" &&
+                      ($nextChar === "/" || $nextChar === "*")) {
+                //Start the comment
+                $this->index++;
+                $buffer .= $char . $nextChar;
+                $comment = $nextChar === "*" ? 2 : 1;
+            } elseif ($comment === 2 && $char === "*" && $nextChar === "/") {
+                //Exit the comment mode if it is in multiline comment mode and
+                //the sequence "*/" is found
+                $this->index++;
+                $buffer .= $char . $nextChar;
+                $comment = 0;
+            } elseif ($comment) {
+                //Consume every character in comment mode
+                $buffer .= $char;
+            } else {
+                break;
+            }
+        }
+        
+        //Error if multiline comment is not terminated
+        if ($comment === 2) {
+            return $this->error("Unterminated comment");
+        }
+        
+        $this->adjustColumnAndLine($buffer);
+    }
+    
+    protected function scanString()
+    {
+        $char = $this->charAt();
+        if ($char === "'" || $char === '"') {
+            $this->index++;
+            $this->column++;
+            $stops = array_merge($this->lineTerminators, $char);
+            $buffer = $this->consumeUntil($stops);
+            if ($buffer === null || $buffer[1] !== $char) {
+                return $this->error("Unterminated string");
+            }
+            return new Token(Token::TYPE_STRING_LITERAL, $char . $buffer[0]);
+        }
+        
+        return null;
     }
     
     protected function scanPunctutator()
@@ -241,5 +320,39 @@ abstract class Scanner
                ($char >= "0" && $char <= "9") ||
                $char === "_" || $char === "$" ||
                preg_match($this->idPartRegex, $char);
+    }
+    
+    protected function adjustColumnAndLine($buffer)
+    {
+        $regex = "/" . implode("|", $this->lineTerminators) . "/u";
+        $lines = preg_split($regex, $buffer);
+        $linesCount = count($lines) - 1;
+        $this->lines += $linesCount;
+        $columns = mb_strlen($lines[$linesCount], "UTF-8");
+        if ($linesCount) {
+            $this->column = $columns;
+        } else {
+            $this->column += $columns;
+        }
+    }
+    
+    protected function consumeUntil($stops)
+    {
+        $buffer = "";
+        $escaped = false;
+        while ($char = $this->charAt()) {
+            $this->index++;
+            if (!$escaped && in_array($char, $stops)) {
+                $buffer .= $char;
+                $this->adjustColumnAndLine($buffer);
+                return array($buffer, $char);
+            } elseif (!$escaped && $char === "\\") {
+                $escaped = true;
+            } else {
+                $escaped = false;
+                $buffer .= $char;
+            }
+        }
+        return null;
     }
 }
