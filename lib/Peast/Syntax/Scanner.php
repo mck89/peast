@@ -225,7 +225,6 @@ abstract class Scanner
             if ($buffer === null || $buffer[1] !== $char) {
                 return $this->error("Unterminated string");
             }
-            $this->adjustColumnAndLine($char . $buffer[0], false);
             return new Token(Token::TYPE_STRING_LITERAL, $char . $buffer[0]);
         }
         
@@ -375,17 +374,12 @@ abstract class Scanner
                preg_match($this->idPartRegex, $char);
     }
     
-    protected function adjustColumnAndLine($buffer, $multiline = true)
+    protected function adjustColumnAndLine($buffer)
     {
-        if ($multiline) {
-            $regex = "/" . implode("|", $this->lineTerminators) . "/u";
-            $lines = preg_split($regex, $buffer);
-            $linesCount = count($lines) - 1;
-            $this->lines += $linesCount;
-        } else {
-            $linesCount = 0;
-            $lines = array($buffer);
-        }
+        $regex = "/" . implode("|", $this->lineTerminators) . "/u";
+        $lines = preg_split($regex, $buffer);
+        $linesCount = count($lines) - 1;
+        $this->lines += $linesCount;
         $columns = mb_strlen($lines[$linesCount], "UTF-8");
         if ($linesCount) {
             $this->column = $columns;
