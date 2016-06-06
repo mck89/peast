@@ -33,6 +33,8 @@ abstract class Scanner
     
     protected $openBrackets = array();
     
+    protected $openTemplates = array();
+    
     protected $whitespaces = array(
         " ", "\t", "\n", "\r", "\f", "\v", 0x00A0, 0xFEFF, 0x00A0,
         0x1680, 0x2000, 0x2001, 0x2002, 0x2003, 0x2004, 0x2005, 0x2006,
@@ -139,12 +141,16 @@ abstract class Scanner
         $this->skipWhitespacesAndComments();
         
         if ($this->isEOF()) {
-            //When the end of the source is reached, check if there are no
-            //open brackets
+            //When the end of the source is reached
+            //Check if there are open brackets
             foreach ($this->openBrackets as $bracket => $num) {
                 if ($num) {
                     return $this->error("Unclosed $bracket");
                 }
+            }
+            //Check if there are open templates
+            if (count($this->openTemplates)) {
+                return $this->error("Unterminated template");
             }
             return null;
         }
@@ -152,7 +158,7 @@ abstract class Scanner
         //Try to match a token
         $startPosition = $this->getPosition();
         if (($token = $this->scanString()) ||
-            ($token = $this->scanTemplate()) || //TODO
+            ($token = $this->scanTemplate()) ||
             ($token = $this->scanNumber()) || //TODO
             ($token = $this->scanRegexp()) || //TODO
             ($token = $this->scanPunctutator()) ||
@@ -214,13 +220,60 @@ abstract class Scanner
         $char = $this->charAt();
         if ($char === "'" || $char === '"') {
             $this->index++;
-            $this->column++;
             $stops = array_merge($this->lineTerminators, $char);
             $buffer = $this->consumeUntil($stops);
             if ($buffer === null || $buffer[1] !== $char) {
                 return $this->error("Unterminated string");
             }
+            $this->adjustColumnAndLine($char . $buffer[0], false);
             return new Token(Token::TYPE_STRING_LITERAL, $char . $buffer[0]);
+        }
+        
+        return null;
+    }
+    
+    protected function scanTemplate()
+    {
+        $char = $this->charAt();
+        
+        //Get the current number of open curly brackets
+        $openCurly = isset($this->openBrackets["{"]) ? $this->openBrackets["{"] : 0;
+        
+        //If the character is a curly bracket check and the number of open
+        //curly brackets matches the last number in the open templates stack,
+        //then the bracket closes the open template expression
+        $endExpression = false;
+        if ($char === "}") {
+            $len = count($this->openTemplates);
+            if ($len && $this->openTemplates[$len - 1] === $openCurly) {
+                $endExpression = true;
+                array_pop($this->openTemplates);
+            }
+        }
+        
+        if ($char === "`" || $endExpression) {
+            $this->index++;
+            $buffer = $char;
+            while (true) {
+                $tempBuffer = $this->consumeUntil(array("`", "$"));
+                if (!$buffer) {
+                    return $this->error("Unterminated template");
+                }
+                $buffer .= $tempBuffer[0];
+                if ($tempBuffer[1] !== "$" || $this->charAt() === "{") {
+                    //If "${" is found it's a new template expression, register
+                    //the current number of open curly brackets in the open
+                    //templates stack
+                    if ($tempBuffer[1] === "$") {
+                        $this->index++;
+                        $buffer .= "}";
+                        $this->openTemplates[] = $openCurly;
+                    }
+                    break;
+                }
+            }
+            $this->adjustColumnAndLine($buffer);
+            return new Token(Token::TYPE_PUNCTUTATOR, $buffer);
         }
         
         return null;
@@ -322,12 +375,17 @@ abstract class Scanner
                preg_match($this->idPartRegex, $char);
     }
     
-    protected function adjustColumnAndLine($buffer)
+    protected function adjustColumnAndLine($buffer, $multiline = true)
     {
-        $regex = "/" . implode("|", $this->lineTerminators) . "/u";
-        $lines = preg_split($regex, $buffer);
-        $linesCount = count($lines) - 1;
-        $this->lines += $linesCount;
+        if ($multiline) {
+            $regex = "/" . implode("|", $this->lineTerminators) . "/u";
+            $lines = preg_split($regex, $buffer);
+            $linesCount = count($lines) - 1;
+            $this->lines += $linesCount;
+        } else {
+            $linesCount = 0;
+            $lines = array($buffer);
+        }
         $columns = mb_strlen($lines[$linesCount], "UTF-8");
         if ($linesCount) {
             $this->column = $columns;
