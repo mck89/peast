@@ -124,7 +124,7 @@ abstract class Scanner
     public function consume($expected)
     {
         $token = $this->getToken();
-        if ($token->getSource() === $expected) {
+        if ($token->getValue() === $expected) {
             $this->consumeToken($token);
             return $token;
         }

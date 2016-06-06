@@ -23,14 +23,14 @@ class Token
     
     protected $type;
     
-    protected $source;
+    protected $value;
     
     protected $location;
     
-    public function __construct($type, $source)
+    public function __construct($type, $value)
     {
         $this->type = $type;
-        $this->source = $source;
+        $this->value = $value;
         $this->location = new SourceLocation();
     }
     
@@ -39,9 +39,9 @@ class Token
         return $this->type;
     }
     
-    public function getSource()
+    public function getVaue()
     {
-        return $this->source;
+        return $this->value;
     }
     
     public function getLocation()
