@@ -32,4 +32,8 @@ class Scanner extends \Peast\Syntax\Scanner
         "&&", "||", "?", ":", "=", "+=", "-=", "*=", "%=", "<<=", ">>=", ">>>=",
         "&=", "|=", "^=", "=>", "...", "/", "/="
     );
+                               
+    protected $onumbers = array("0", "1", "2", "3", "4", "5", "6", "7");
+    
+    protected $bnumbers = array("0", "1");
 }

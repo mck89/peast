@@ -44,6 +44,12 @@ abstract class Scanner
     
     protected $lineTerminators = array("\r\n", "\n", "\r", 0x2028, 0x2029);
     
+    protected $numbers = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+    
+    protected $xnumbers = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+                               "a", "b", "c", "d", "e", "f",
+                               "A", "B", "C", "D", "E", "F");
+    
     function __construct($source, $encoding = null)
     {
         //If encoding is missing try to detect it
@@ -159,7 +165,7 @@ abstract class Scanner
         $startPosition = $this->getPosition();
         if (($token = $this->scanString()) ||
             ($token = $this->scanTemplate()) ||
-            ($token = $this->scanNumber()) || //TODO
+            ($token = $this->scanNumber()) ||
             ($token = $this->scanRegexp()) || //TODO
             ($token = $this->scanPunctutator()) ||
             ($token = $this->scanKeywordOrIdentifier())) {
@@ -276,6 +282,102 @@ abstract class Scanner
         }
         
         return null;
+    }
+    
+    protected function scanNumber()
+    {
+        //Numbers can start with a decimal nuber or with a dot (.5)
+        $char = $this->charAt();
+        if (!(($char >= "0" && $char <= "9") || $char === ".")) {
+            return null;
+        }
+        
+        $buffer = "";
+        $allowedExp = true;
+        
+        //Parse the integer part
+        if ($char !== ".") {
+            
+            //Consume all decimal numbers
+            $buffer = $this->consumeNumbers();
+            $char = $this->charAt();
+            $lower = $char !== null ? strtolower($char) : null;
+            
+            //Handle hexadecimal (0x), octal (0o) and binary (0b) forms
+            if ($buffer === "0" && $lower !== null && isset($this->{$lower . "numbers"})) {
+                
+                $this->index++;
+                $this->column++;
+                $tempBuffer = $this->consumeNumbers($lower);
+                if ($tempBuffer === "") {
+                    return $this->error("Missing numbers after 0$char");
+                }
+                $buffer .= $char . $tempBuffer;
+                return new Token(Token::TYPE_NUMERIC_LITERAL, $buffer);
+            }
+            
+            //Consume exponent part if present
+            if ($tempBuffer = $this->consumeExponentPart()) {
+                $buffer .= $tempBuffer;
+                $allowedExp = false;
+            }
+        }
+        
+        //Parse the decimal part
+        if ($this->charAt() === ".") {
+            
+            //Consume the dot
+            $this->index++;
+            $this->column++;
+            $buffer .= ".";
+            
+            //Consume all decimal numbers
+            $tempBuffer = $this->consumeNumbers();
+            $buffer .= $tempBuffer;
+            
+            //Consume exponent part if present
+            if ($allowedExp && ($tempBuffer = $this->consumeExponentPart())) {
+                $buffer .= $tempBuffer;
+            }
+        }
+        
+        return new Token(Token::TYPE_NUMERIC_LITERAL, $buffer);
+    }
+    
+    protected function consumeNumbers($type = "")
+    {
+        $buffer = "";
+        $char = $this->charAt();
+        while (in_array($char, $this->{$type . "numbers"})) {
+            $buffer .= $char;
+            $this->index++;
+            $this->column++;
+            $char = $this->charAt();
+        }
+        return $buffer;
+    }
+    
+    protected function consumeExponentPart()
+    {
+        $buffer = "";
+        $char = $this->charAt();
+        if (strtolower($char) === "e") {
+            $this->index++;
+            $this->column++;
+            $buffer .= $char;
+            $char = $this->charAt();
+            if ($char === "+" || $char === "-") {
+                $this->index++;
+                $this->column++;
+                $buffer .= $char;
+            }
+            $tempBuffer = $this->consumeNumbers();
+            if ($tempBuffer === "") {
+                return $this->error("Missing exponent");
+            }
+            $buffer .= $tempBuffer;
+        }
+        return $buffer;
     }
     
     protected function scanPunctutator()
