@@ -15,8 +15,6 @@ abstract class Scanner
     
     protected $currentToken;
     
-    protected $lastToken;
-    
     protected $idStartRegex;
     
     protected $idPartRegex;
@@ -122,7 +120,6 @@ abstract class Scanner
     
     public function consumeToken(Token $token)
     {
-        $this->lastToken = $token;
         $this->currentToken = null;
         return $this;
     }
