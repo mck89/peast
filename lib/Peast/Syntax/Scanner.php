@@ -306,7 +306,7 @@ abstract class Scanner
                 $this->index++;
                 $this->column++;
                 $tempBuffer = $this->consumeNumbers($lower);
-                if ($tempBuffer === "") {
+                if ($tempBuffer === null) {
                     return $this->error("Missing numbers after 0$char");
                 }
                 $buffer .= $char . $tempBuffer;
@@ -333,7 +333,8 @@ abstract class Scanner
             $buffer .= $tempBuffer;
             
             //Consume exponent part if present
-            if ($allowedExp && ($tempBuffer = $this->consumeExponentPart())) {
+            if ($allowedExp &&
+                ($tempBuffer = $this->consumeExponentPart()) !== null) {
                 $buffer .= $tempBuffer;
             }
         }
@@ -341,17 +342,22 @@ abstract class Scanner
         return new Token(Token::TYPE_NUMERIC_LITERAL, $buffer);
     }
     
-    protected function consumeNumbers($type = "")
+    protected function consumeNumbers($type = "", $max = null)
     {
         $buffer = "";
         $char = $this->charAt();
+        $count = 0;
         while (in_array($char, $this->{$type . "numbers"})) {
             $buffer .= $char;
             $this->index++;
             $this->column++;
+            $count ++;
+            if ($count === $max) {
+                break;
+            }
             $char = $this->charAt();
         }
-        return $buffer;
+        return $count ? $buffer : null;
     }
     
     protected function consumeExponentPart()
@@ -369,7 +375,7 @@ abstract class Scanner
                 $buffer .= $char;
             }
             $tempBuffer = $this->consumeNumbers();
-            if ($tempBuffer === "") {
+            if ($tempBuffer === null) {
                 return $this->error("Missing exponent");
             }
             $buffer .= $tempBuffer;
@@ -426,24 +432,32 @@ abstract class Scanner
     
     protected function scanKeywordOrIdentifier()
     {
-        //If the first character is not a valid identifier start, exit
-        //immediately
-        $char = $this->charAt();
-        if (!$this->isIdentifierStart($char)) {
-            return null;
+        //Consume the maximum number of characters that are unicode escape
+        //sequences or valid identifier starts (only the first character) or
+        //parts  
+        $buffer = "";
+        $fn = "isIdentifierStart";
+        while ($char = $this->charAt()) {
+            if ($this->$fn($char)) {
+                $buffer .= $char;
+                $this->index++;
+                $this->column++;
+            } elseif ($seq = $this->consumeUnicodeEscapeSequence()) {
+                //Verify that is a valid character
+                if (!$this->$fn($seq)) {
+                    break;
+                }
+                $buffer .= $seq;
+            } else {
+                break;
+            }
+            $fn = "isIdentifierPart";
         }
         
-        //Scan next characters that are valid identifier parts
-        $buffer = "";
-        do {
-            $buffer .= $char;
-            $this->index++;
-            $this->column++;
-            $char = $this->charAt();
-        } while ($char && $this->isIdentifierPart($char));
-        
         //Identify token type
-        if ($buffer === "null") {
+        if ($buffer === "") {
+            return null;
+        } elseif ($buffer === "null") {
             $type = Token::TYPE_NULL_LITERAL;
         } elseif ($buffer === "true" || $buffer === "false") {
             $type = Token::TYPE_BOOLEAN_LITERAL;
@@ -454,6 +468,47 @@ abstract class Scanner
         }
         
         return new Token($type, $buffer);
+    }
+    
+    protected function consumeUnicodeEscapeSequence()
+    {
+        $char = $this->charAt();
+        $nextChar = $this->charAt($this->index + 1);
+        if ($char !== "\\" || $nextChar !== "u") {
+            return null;
+        }
+        
+        $startIndex = $this->index;
+        $this->index += 2;
+        if ($this->charAt() === "{") {
+            //\u{FFF}
+            $this->index++;
+            $this->column++;
+            $code = $this->consumeNumbers("x");
+            if ($code && $this->charAt() !== "}") {
+                $code = null;
+            } else {
+                $this->index++;
+                $this->column++;
+            }
+        } else {
+            //\uFFFF
+            $code = $this->consumeNumbers("x", 4);
+            if ($code && strlen($code) !== 4) {
+                $code = null;
+            }
+        }
+        
+        //Unconsume everything if the format is invalid
+        if ($code === null) {
+            $this->index = $startIndex;
+            return null;
+        }
+        
+        $this->column += $this->index - $startIndex;
+        
+        //Return the decoded character
+        return Utils::unicodeToUtf8(hexdec($code));
     }
     
     protected function isIdentifierStart($char)
