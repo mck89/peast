@@ -5,13 +5,9 @@ abstract class Parser
 {
     protected $scanner;
     
-    public function setScanner(Scanner $scanner)
-    {
-        $this->scanner = $scanner;
-        return $this;
-    }
-    
     abstract public function parse();
+    
+    abstract public function setSource($source, $encoding = null);
     
     public function createNode($nodeType, $position)
     {
@@ -19,7 +15,7 @@ abstract class Parser
         array_pop($parts);
         $nodeClass = implode("\\", $parts) . "\\Node\\$nodeType";
         $node = new $nodeClass;
-        if ($position instanceof Node) {
+        if ($position instanceof Node || $position instanceof Token) {
             $position = $position->getLocation()->getStart();
         } elseif (is_array($position)) {
             if (count($position)) {
@@ -44,18 +40,17 @@ abstract class Parser
             $position = $this->scanner->getPosition();
         }
         if (!$message) {
-            $ws = $this->scanner->consumeWhitespacesAndComments();
             $token = $this->scanner->getToken();
-            if ($token === null || $ws === null) {
+            if ($token === null) {
                 $message = "Unexpected end of input";
             } else {
-                $message = "Unexpected token " . $token["source"];
+                $message = "Unexpected: " . $token->getValue();
             }
         }
         throw new Exception($message, $position);
     }
     
-    protected function assertEndOfStatement()
+    protected function assertEndOfStatement()//TODO
     {
         $position = $this->scanner->getPosition();
         if ($this->scanner->consumeWhitespacesAndComments(false) === null) {
@@ -75,17 +70,12 @@ abstract class Parser
     
     protected function charSeparatedListOf($fn, $args = array(), $char = ",")
     {
-        $multi = is_array($char);
         $list = array();
         $valid = true;
-        $matchedChar = null;
         while ($param = call_user_func_array(array($this, $fn), $args)) {
-            $list[] = $multi ? array($param, $matchedChar) : $param;
+            $list[] = $param;
             $valid = true;
-            $matchedChar = $multi ?
-                           $this->scanner->consumeOneOf($char) :
-                           $this->scanner->consume($char);
-            if (!$matchedChar) {
+            if (!$this->scanner->consume($char)) {
                 break;
             } else {
                 $valid = false;
@@ -98,7 +88,7 @@ abstract class Parser
         return $list;
     }
     
-    static public function unquoteLiteralString($str)
+    static public function unquoteLiteralString($str)//TODO
     {
         //Remove quotes
         $str = substr($str, 1, -1);
@@ -150,7 +140,7 @@ abstract class Parser
         return $str;
     }
     
-    static public function quoteLiteralString($str, $quote)
+    static public function quoteLiteralString($str, $quote)//TODO
     {
         $config = static::getConfig();
         $escape = $config->getLineTerminators();

@@ -142,6 +142,16 @@ abstract class Scanner
         return null;
     }
     
+    public function consumeOneOf($expected)
+    {
+        $token = $this->getToken();
+        if (in_array($token->getValue(), $expected)) {
+            $this->consumeToken($token);
+            return $token;
+        }
+        return null;
+    }
+    
     public function getToken()
     {
         //The current token is returned until consumed
@@ -171,7 +181,6 @@ abstract class Scanner
         if (($token = $this->scanString()) ||
             ($token = $this->scanTemplate()) ||
             ($token = $this->scanNumber()) ||
-            //($token = $this->scanRegexp()) || //TODO
             ($token = $this->scanPunctutator()) ||
             ($token = $this->scanKeywordOrIdentifier())) {
             $this->currentToken = $token->setStartPosition($startPosition)

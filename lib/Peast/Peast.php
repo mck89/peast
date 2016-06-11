@@ -17,8 +17,6 @@ class Peast
     
     static public function fromString(Parser $parser, $source, $encoding = null)
     {
-        $scanner = new Scanner($source, $encoding);
-        $parser->setScanner($scanner);
-        return $parser->parse();
+        return $parser->setSource($source, $encoding)->parse();
     }
 }
