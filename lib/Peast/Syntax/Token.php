@@ -39,7 +39,7 @@ class Token
         return $this->type;
     }
     
-    public function getVaue()
+    public function getValue()
     {
         return $this->value;
     }

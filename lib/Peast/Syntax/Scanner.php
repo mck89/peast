@@ -26,7 +26,7 @@ abstract class Scanner
     protected $punctutatorsMap = array();
     
     protected $brackets = array(
-        "(" => "", "[" => "", "{" => "", "(" => ")", "[" => "]", "{" => "}"
+        "(" => "", "[" => "", "{" => "", ")" => "(", "]" => "[", "}" => "{"
     );
     
     protected $openBrackets = array();
@@ -79,7 +79,7 @@ abstract class Scanner
         foreach (array("whitespaces", "lineTerminators") as $key) {
             foreach ($this->$key as $i => $char) {
                 if (is_int($char)) {
-                    $this->$key[$i] = Utils::unicodeToUtf8($char);
+                    $this->{$key}[$i] = Utils::unicodeToUtf8($char);
                 }
             }
         }
@@ -88,24 +88,32 @@ abstract class Scanner
     public function getPosition()
     {
         return new Position(
-            $this->getLine(),
-            $this->getColumn(),
-            $this->getIndex()
+            $this->line,
+            $this->column,
+            $this->index
         );
+    }
+    
+    public function setPosition(Position $position)
+    {
+        $this->line = $position->getLine();
+        $this->column = $position->getColumn();
+        $this->index = $position->getIndex();
+        return $this;
     }
     
     public function charAt($index = null)
     {
         if ($index === null) {
-            $this->index;
+            $index = $this->index;
         }
-        return $this->isEOF($index) ? null : $this->source[$this->index];
+        return $this->isEOF($index) ? null : $this->source[$index];
     }
     
     public function isEOF($index = null)
     {
         if ($index === null) {
-            $this->index;
+            $index = $this->index;
         }
         return $index >= $this->length;
     }
@@ -163,7 +171,7 @@ abstract class Scanner
         if (($token = $this->scanString()) ||
             ($token = $this->scanTemplate()) ||
             ($token = $this->scanNumber()) ||
-            ($token = $this->scanRegexp()) || //TODO
+            //($token = $this->scanRegexp()) || //TODO
             ($token = $this->scanPunctutator()) ||
             ($token = $this->scanKeywordOrIdentifier())) {
             $this->currentToken = $token->setStartPosition($startPosition)
@@ -175,17 +183,61 @@ abstract class Scanner
         return $this->error();
     }
     
+    public function reconsumeCurrentTokenAsRegexp()
+    {
+        $token = $this->getToken();
+        $value = $token ? $token->getValue() : null;
+        
+        //Check if the token starts with "/"
+        if ($value && $value[0] !== "/") {
+            return null;
+        }
+        
+        //Reset the scanner position to the token's start position
+        $startPosition = $token->getLocation()->getStart();
+        $this->setPosition($startPosition);
+        
+        $buffer = "/";
+        $this->index++;
+        $this->column++;
+        $inClass = false;
+        while (true) {
+            //In a characters class the delmiter "/" is allowed without escape,
+            //so the characters class must be closed before closing the regexp
+            $stops = $inClass ? array("]") : array("/", "[");
+            $tempBuffer = $this->consumeUntil($stops);
+            if ($tempBuffer === null) {
+                if ($inClass) {
+                    return $this->error("Unterminated character class in regexp");
+                } else {
+                    return $this->error("Unterminated regexp");
+                }
+            }
+            $buffer .= $tempBuffer[0];
+            if ($tempBuffer[1] === "/") {
+                break;
+            } else {
+                $inClass = $tempBuffer[1] === "[";
+            }
+        }
+        
+        //Replace the current token with a regexp token
+        $token = new Token(Token::TYPE_REGULAR_EXPRESSION, $buffer);
+        $this->currentToken = $token->setStartPosition($startPosition)
+                                    ->setEndPosition($this->getPosition());
+        return $this->currentToken;
+    }
+    
     protected function skipWhitespacesAndComments()
     {
         $buffer = "";
         $comment = 0;
         while ($char = $this->charAt()) {
-            $buffer .= $char;
-            $this->index++;
-            $nextChar = $this->charAt();
+            $nextChar = $this->charAt($this->index + 1);
             if (in_array($char, $this->whitespaces)) {
                 //Whitespace
                 $buffer .= $char;
+                $this->index++;
                 //Exit the comment mode if it is in single line comment mode
                 if ($comment === 1 && in_array($char, $this->lineTerminators)) {
                     $comment = 0;
@@ -193,18 +245,19 @@ abstract class Scanner
             } elseif (!$comment && $char === "/" &&
                       ($nextChar === "/" || $nextChar === "*")) {
                 //Start the comment
-                $this->index++;
+                $this->index += 2;
                 $buffer .= $char . $nextChar;
                 $comment = $nextChar === "*" ? 2 : 1;
             } elseif ($comment === 2 && $char === "*" && $nextChar === "/") {
                 //Exit the comment mode if it is in multiline comment mode and
                 //the sequence "*/" is found
-                $this->index++;
+                $this->index += 2;
                 $buffer .= $char . $nextChar;
                 $comment = 0;
             } elseif ($comment) {
                 //Consume every character in comment mode
                 $buffer .= $char;
+                $this->index++;
             } else {
                 break;
             }
@@ -223,7 +276,8 @@ abstract class Scanner
         $char = $this->charAt();
         if ($char === "'" || $char === '"') {
             $this->index++;
-            $stops = array_merge($this->lineTerminators, $char);
+            $this->column++;
+            $stops = array_merge($this->lineTerminators, array($char));
             $buffer = $this->consumeUntil($stops);
             if ($buffer === null || $buffer[1] !== $char) {
                 return $this->error("Unterminated string");
@@ -255,10 +309,11 @@ abstract class Scanner
         
         if ($char === "`" || $endExpression) {
             $this->index++;
+            $this->column++;
             $buffer = $char;
             while (true) {
                 $tempBuffer = $this->consumeUntil(array("`", "$"));
-                if (!$buffer) {
+                if (!$tempBuffer) {
                     return $this->error("Unterminated template");
                 }
                 $buffer .= $tempBuffer[0];
@@ -268,13 +323,13 @@ abstract class Scanner
                     //templates stack
                     if ($tempBuffer[1] === "$") {
                         $this->index++;
-                        $buffer .= "}";
+                        $this->column++;
+                        $buffer .= "{";
                         $this->openTemplates[] = $openCurly;
                     }
                     break;
                 }
             }
-            $this->adjustColumnAndLine($buffer);
             return new Token(Token::TYPE_PUNCTUTATOR, $buffer);
         }
         
@@ -396,7 +451,7 @@ abstract class Scanner
             $buffer .= $char;
             $consumed++;
             //Special handling for brackets
-            if (isset($this->brackets[$char])) {
+            if (isset($this->brackets[$char]) && $consumed === 1) {
                 if ($this->brackets[$char]) {
                     $openBracket = $this->brackets[$char];
                     //Check if there is a corresponding open bracket
@@ -434,7 +489,7 @@ abstract class Scanner
     {
         //Consume the maximum number of characters that are unicode escape
         //sequences or valid identifier starts (only the first character) or
-        //parts  
+        //parts
         $buffer = "";
         $fn = "isIdentifierStart";
         while ($char = $this->charAt()) {
@@ -533,7 +588,7 @@ abstract class Scanner
         $regex = "/" . implode("|", $this->lineTerminators) . "/u";
         $lines = preg_split($regex, $buffer);
         $linesCount = count($lines) - 1;
-        $this->lines += $linesCount;
+        $this->line += $linesCount;
         $columns = mb_strlen($lines[$linesCount], "UTF-8");
         if ($linesCount) {
             $this->column = $columns;
