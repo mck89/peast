@@ -50,18 +50,19 @@ abstract class Parser
         throw new Exception($message, $position);
     }
     
-    protected function assertEndOfStatement()//TODO
+    protected function assertEndOfStatement()
     {
-        $position = $this->scanner->getPosition();
-        if ($this->scanner->consumeWhitespacesAndComments(false) === null) {
-            $this->scanner->setPosition($position);
+        //The end of statement is reached when it is followed by line
+        //terminators, end of source, "}" or ";". In the last case the token
+        //must be consumed
+        if (!$this->scanner->noLineTerminators()) {
             return true;
         } else {
-            if ($this->scanner->isEOF() ||
-                $this->scanner->consume(";")) {
+            if ($this->scanner->consume(";")) {
                 return true;
-            } elseif ($this->scanner->consume("}")) {
-                $this->scanner->setPosition($position);
+            }
+            $token = $this->getToken();
+            if (!$token || $token->getValue() === "}") {
                 return true;
             }
         }
@@ -88,13 +89,12 @@ abstract class Parser
         return $list;
     }
     
-    static public function unquoteLiteralString($str)//TODO
+    static public function unquoteLiteralString($str)
     {
         //Remove quotes
         $str = substr($str, 1, -1);
         
-        $config = static::getConfig();
-        $lineTerminators = $config->getLineTerminators();
+        $lineTerminators = $this->scanner->getLineTerminators();
         
         //Handle escapes
         $patterns = array(
@@ -140,10 +140,9 @@ abstract class Parser
         return $str;
     }
     
-    static public function quoteLiteralString($str, $quote)//TODO
+    static public function quoteLiteralString($str, $quote)
     {
-        $config = static::getConfig();
-        $escape = $config->getLineTerminators();
+        $escape = $this->scanner->getLineTerminators();
         $escape[] = $quote;
         $escape[] = "\\\\";
         $reg = "/(" . implode("|", $escape) . ")/";

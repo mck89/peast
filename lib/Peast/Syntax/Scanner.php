@@ -15,6 +15,10 @@ abstract class Scanner
     
     protected $currentToken;
     
+    protected $lastToken;
+    
+    protected $nextToken;
+    
     protected $idStartRegex;
     
     protected $idPartRegex;
@@ -40,7 +44,9 @@ abstract class Scanner
         0x2029
     );
     
-    protected $lineTerminators = array("\r\n", "\n", "\r", 0x2028, 0x2029);
+    protected $lineTerminators = array("\n", "\r", 0x2028, 0x2029);
+    
+    protected $lineTerminatorsSequences = array("\r\n");
     
     protected $numbers = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
     
@@ -102,6 +108,15 @@ abstract class Scanner
         return $this;
     }
     
+    public function getLineTerminators($includeSequences = false)
+    {
+        $ret = $this->lineTerminators;
+        if ($includeSequences) {
+            $ret = array_merge($ret, $this->lineTerminatorsSequences);
+        }
+        return $ret;
+    }
+    
     public function charAt($index = null)
     {
         if ($index === null) {
@@ -126,9 +141,11 @@ abstract class Scanner
         throw new Exception($message, $this->getPosition());
     }
     
-    public function consumeToken(Token $token)
+    public function consumeToken()
     {
-        $this->currentToken = null;
+        $this->lastToken = $this->currentToken;
+        $this->currentToken = $this->nextToken ? $this->nextToken : null;
+        $this->nextToken = null;
         return $this;
     }
     
@@ -136,7 +153,7 @@ abstract class Scanner
     {
         $token = $this->getToken();
         if ($token->getValue() === $expected) {
-            $this->consumeToken($token);
+            $this->consumeToken();
             return $token;
         }
         return null;
@@ -146,10 +163,45 @@ abstract class Scanner
     {
         $token = $this->getToken();
         if (in_array($token->getValue(), $expected)) {
-            $this->consumeToken($token);
+            $this->consumeToken();
             return $token;
         }
         return null;
+    }
+    
+    public function noLineTerminators()
+    {
+        $token = $this->getToken();
+        return $token && $this->lastToken &&
+               $token->getLocation()->getEnd()->getLine() !==
+               $this->lastToken->getLocation()->getEnd()->getLine();
+    }
+    
+    public function isBefore($expected, $nextToken = false)
+    {
+        $token = $this->getToken();
+        if (!$token) {
+            return false;
+        } elseif (in_array($token->getValue(), $expected)) {
+            return true;
+        } elseif (!$nextToken) {
+            return false;
+        }
+        if (!$this->nextToken) {
+            $this->currentToken = null;
+            $this->nextToken = $this->getToken();
+            $this->currentToken = $token;
+            if (!$this->nextToken) {
+                return false;
+            }
+        }
+        foreach ($expected as $val) {
+            if (is_array($val) && $val[0] === $token->getValue() &&
+                $val[1] === $this->nextToken->getValue()) {
+                return true;
+            }
+        }
+        return false;
     }
     
     public function getToken()
@@ -594,7 +646,7 @@ abstract class Scanner
     
     protected function adjustColumnAndLine($buffer)
     {
-        $regex = "/" . implode("|", $this->lineTerminators) . "/u";
+        $regex = "/" . implode("|", $this->getLineTerminators(true)) . "/u";
         $lines = preg_split($regex, $buffer);
         $linesCount = count($lines) - 1;
         $this->line += $linesCount;
