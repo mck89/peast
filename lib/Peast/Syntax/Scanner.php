@@ -13,9 +13,11 @@ abstract class Scanner
     
     protected $source;
     
-    protected $currentToken;
+    protected $position;
     
     protected $lastToken;
+    
+    protected $currentToken;
     
     protected $nextToken;
     
@@ -89,22 +91,48 @@ abstract class Scanner
                 }
             }
         }
+        
+        $this->position = new Position(0, 0, 0);
     }
     
-    public function getPosition()
+    public function getPosition($scanPosition = false)
     {
-        return new Position(
-            $this->line,
-            $this->column,
-            $this->index
-        );
+        if ($scan) {
+            return new Position($this->line, $this->column, $this->index);
+        } else {
+            return $this->position;
+        }
     }
     
     public function setPosition(Position $position)
     {
+        $this->position = $position;
+        
+        //If the given position is the end position of the last consumed token,
+        //get back to that position by moving the currentToken to the nextToken
+        //and the lastToken to the currentToken, then move the scan position
+        //after the new nextToken, so that there's no need to parse the same
+        //tokens again.
+        //For other positions there's no way to understand where we are so
+        //every stored token must be deleted and it must scan again what comes
+        //later.
+        if ($this->lastToken && $this->currentToken &&
+            $this->lastToken->getLocation()->getEnd()->getIndex() === $position->getIndex()) {
+                
+            $position = $this->currentToken->getLocation()->getEnd();
+            $this->nextToken = $this->currentToken;
+            $this->currentToken = $this->lastToken;
+            
+        } else {
+            $this->currentToken = null;
+            $this->nextToken = null;
+        }
+        
+        $this->lastToken = null;
         $this->line = $position->getLine();
         $this->column = $position->getColumn();
         $this->index = $position->getIndex();
+        
         return $this;
     }
     
@@ -138,11 +166,12 @@ abstract class Scanner
         if (!$message) {
             $message = "Unexpectd " . $this->charAt();
         }
-        throw new Exception($message, $this->getPosition());
+        throw new Exception($message, $this->getPosition(true));
     }
     
     public function consumeToken()
     {
+        $this->position = $this->currentToken->getLocation()->getEnd();
         $this->lastToken = $this->currentToken;
         $this->currentToken = $this->nextToken ? $this->nextToken : null;
         $this->nextToken = null;
@@ -172,9 +201,9 @@ abstract class Scanner
     public function noLineTerminators()
     {
         $token = $this->getToken();
-        return $token && $this->lastToken &&
-               $token->getLocation()->getEnd()->getLine() !==
-               $this->lastToken->getLocation()->getEnd()->getLine();
+        $position = $this->getPosition();
+        return $token &&
+               $token->getLocation()->getEnd()->getLine() !== $position->getLine();
     }
     
     public function isBefore($expected, $nextToken = false)
@@ -229,14 +258,14 @@ abstract class Scanner
         }
         
         //Try to match a token
-        $startPosition = $this->getPosition();
+        $startPosition = $this->getPosition(true);
         if (($token = $this->scanString()) ||
             ($token = $this->scanTemplate()) ||
             ($token = $this->scanNumber()) ||
             ($token = $this->scanPunctutator()) ||
             ($token = $this->scanKeywordOrIdentifier())) {
             $this->currentToken = $token->setStartPosition($startPosition)
-                                        ->setEndPosition($this->getPosition());
+                                        ->setEndPosition($this->getPosition(true));
             return $this->currentToken;
         }
         
@@ -285,7 +314,7 @@ abstract class Scanner
         //Replace the current token with a regexp token
         $token = new Token(Token::TYPE_REGULAR_EXPRESSION, $buffer);
         $this->currentToken = $token->setStartPosition($startPosition)
-                                    ->setEndPosition($this->getPosition());
+                                    ->setEndPosition($this->getPosition(true));
         return $this->currentToken;
     }
     
