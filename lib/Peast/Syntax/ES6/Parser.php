@@ -395,7 +395,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseLabelledStatement($yield = false, $return = false)//TODO
+    protected function parseLabelledStatement($yield = false, $return = false)
     {
         $position = $this->scanner->getPosition();
         if (($label = $this->parseIdentifier($yield))) {
