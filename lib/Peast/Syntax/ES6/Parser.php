@@ -398,7 +398,7 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseLabelledStatement($yield = false, $return = false)
     {
         $position = $this->scanner->getPosition();
-        if (($label = $this->parseIdentifier($yield))) {
+        if ($label = $this->parseIdentifier($yield)) {
             
             if ($this->scanner->consume(":")) {
                 
@@ -1504,27 +1504,29 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseMethodDefinition($yield = false)//TODO
+    protected function parseMethodDefinition($yield = false)
     {
         $startPos = $this->scanner->getPosition();
         $generator = false;
         $position = null;
         $error = false;
         $kind = Node\MethodDefinition::KIND_METHOD;
-        if ($this->scanner->consume("get")) {
-            $position = $this->scanner->getConsumedTokenPosition();
+        if ($token = $this->scanner->consume("get")) {
+            $position = $token;
             $kind = Node\MethodDefinition::KIND_GET;
             $error = true;
-        } elseif ($this->scanner->consume("set")) {
-            $position = $this->scanner->getConsumedTokenPosition();
+        } elseif ($token = $this->scanner->consume("set")) {
+            $position = $token;
             $kind = Node\MethodDefinition::KIND_SET;
             $error = true;
-        } elseif ($this->scanner->consume("*")) {
-            $position = $this->scanner->getConsumedTokenPosition();
+        } elseif ($token = $this->scanner->consume("*")) {
+            $position = $token;
             $error = true;
             $generator = true;
         }
         
+        //Handle the case where get and set are methods name and not the
+        //definition of a getter/setter
         if ($kind !== Node\MethodDefinition::KIND_METHOD &&
             $this->scanner->consume("(")) {
             $this->scanner->setPosition($startPos);
@@ -1537,10 +1539,9 @@ class Parser extends \Peast\Syntax\Parser
             if (!$position) {
                 $position = isset($prop[2]) ? $prop[2] : $prop[0];
             }
-            if ($this->scanner->consume("(")) {
+            if ($tokenFn = $this->scanner->consume("(")) {
                 
                 $error = true;
-                $fnPosition = $this->scanner->getConsumedTokenPosition();
                 $params = array();
                 if ($kind === Node\MethodDefinition::KIND_SET) {
                     if ($params = $this->parseBindingElement()) {
@@ -1552,8 +1553,7 @@ class Parser extends \Peast\Syntax\Parser
 
                 if ($params !== null &&
                     $this->scanner->consume(")") &&
-                    $this->scanner->consume("{") &&
-                    ($bodyPosition = $this->scanner->getConsumedTokenPosition()) &&
+                    ($tokenBodyStart = $this->scanner->consume("{")) &&
                     (($body = $this->parseFunctionBody($generator)) || true) &&
                     $this->scanner->consume("}")) {
 
@@ -1562,12 +1562,10 @@ class Parser extends \Peast\Syntax\Parser
                         $kind = Node\MethodDefinition::KIND_CONSTRUCTOR;
                     }
 
-                    $body->setStartPosition($bodyPosition);
+                    $body->setStartPosition($tokenBodyStart);
                     $body->setEndPosition($this->scanner->getPosition());
                     
-                    $nodeFn = $this->createNode(
-                        "FunctionExpression", $fnPosition
-                    );
+                    $nodeFn = $this->createNode("FunctionExpression", $tokenFn);
                     $nodeFn->setParams($params);
                     $nodeFn->setBody($body);
                     $nodeFn->setGenerator($generator);
