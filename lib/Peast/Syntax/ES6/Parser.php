@@ -1622,30 +1622,33 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseArrowFunction($in = false, $yield = false)//TODO
+    protected function parseArrowFunction($in = false, $yield = false)
     {
         $position = $this->scanner->getPosition();
-        if (($params = $this->parseArrowParameters($yield)) !== null &&
-            $this->scanner->consumeWhitespacesAndComments(false) !== null &&
-            $this->scanner->consume("=>")) {
+        if (($params = $this->parseArrowParameters($yield)) !== null) {
             
-            if ($body = $this->parseConciseBody($in)) {
-                if (is_array($params)) {
-                    $pos = $params[1];
-                    $params = $params[0];
-                } else {
-                    $pos = $params;
-                    $params = array($params);
+            if ($this->scanner->noLineTerminators() &&
+                $this->scanner->consume("=>")) {
+                
+                if ($body = $this->parseConciseBody($in)) {
+                    if (is_array($params)) {
+                        $pos = $params[1];
+                        $params = $params[0];
+                    } else {
+                        $pos = $params;
+                        $params = array($params);
+                    }
+                    $node = $this->createNode("ArrowFunctionExpression", $pos);
+                    $node->setParams($params);
+                    $node->setBody($body[0]);
+                    $node->setExpression($body[1]);
+                    return $this->completeNode($node);
                 }
-                $node = $this->createNode("ArrowFunctionExpression", $pos);
-                $node->setParams($params);
-                $node->setBody($body[0]);
-                $node->setExpression($body[1]);
-                return $this->completeNode($node);
+            
+                return $this->error();
             }
-            return $this->error();
+            $this->scanner->setPosition($position);
         }
-        $this->scanner->setPosition($position);
         return null;
     }
     
@@ -1675,7 +1678,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parsePropertyDefinition($yield = false)//TODO
+    protected function parsePropertyDefinition($yield = false)
     {
         $position = $this->scanner->getPosition();
         if (($property = $this->parsePropertyName($yield)) &&
@@ -1765,7 +1768,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseBindingProperty($yield = false)//TODO
+    protected function parseBindingProperty($yield = false)
     {
         $position = $this->scanner->getPosition();
         if (($key = $this->parsePropertyName($yield)) &&
@@ -1782,23 +1785,21 @@ class Parser extends \Peast\Syntax\Parser
             
             return $this->error();
             
-        } else {
-            
-            $this->scanner->setPosition($position);
-            if ($property = $this->parseSingleNameBinding($yield)) {
-                
-                $node = $this->createNode("AssignmentProperty", $property);
-                $node->setShorthand(true);
-                if ($property instanceof Node\AssignmentPattern) {
-                    $node->setKey($property->getLeft());
-                } else {
-                    $node->setKey($property);
-                }
-                $node->setValue($property);
-                return $this->completeNode($node);
-            }
         }
+            
         $this->scanner->setPosition($position);
+        if ($property = $this->parseSingleNameBinding($yield)) {
+            
+            $node = $this->createNode("AssignmentProperty", $property);
+            $node->setShorthand(true);
+            if ($property instanceof Node\AssignmentPattern) {
+                $node->setKey($property->getLeft());
+            } else {
+                $node->setKey($property);
+            }
+            $node->setValue($property);
+            return $this->completeNode($node);
+        }
         return null;
     }
     
@@ -1820,7 +1821,7 @@ class Parser extends \Peast\Syntax\Parser
         }
     }
     
-    protected function parseAssignmentExpression($in = false, $yield = false)//TODO
+    protected function parseAssignmentExpression($in = false, $yield = false)
     {
         $position = $this->scanner->getPosition();
         $operators = array(
@@ -1832,7 +1833,7 @@ class Parser extends \Peast\Syntax\Parser
         } elseif ($yield && $expr = $this->parseYieldExpression($in)) {
             return $expr;
         } elseif (($left = $this->parseLeftHandSideExpression($yield)) &&
-            $operator = $this->scanner->consumeOneOf($operators)) {
+                  $operator = $this->scanner->consumeOneOf($operators)) {
             
             if ($right = $this->parseAssignmentExpression($in, $yield)) {
                 
