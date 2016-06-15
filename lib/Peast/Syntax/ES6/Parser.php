@@ -2098,17 +2098,16 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseMemberExpression($yield = false)//TODO
+    protected function parseMemberExpression($yield = false)
     {
         $position = $this->scanner->getPosition();
-        if ($this->scanner->consume("new")) {
+        if ($newToken = $this->scanner->consume("new")) {
             
-            $newPosition = $this->scanner->getConsumedTokenPosition();
             if ($this->scanner->consume(".")) {
                 
                 if ($this->scanner->consume("target")) {
                     
-                    $node = $this->createNode("MetaProperty", $newPosition);
+                    $node = $this->createNode("MetaProperty", $newToken);
                     $node->setMeta("new");
                     $node->setProperty("target");
                     $object = $this->completeNode($node);
@@ -2118,7 +2117,7 @@ class Parser extends \Peast\Syntax\Parser
                 }
                 
             } elseif (($callee = $this->parseMemberExpression($yield)) &&
-                ($args = $this->parseArguments($yield)) !== null) {
+                      ($args = $this->parseArguments($yield)) !== null) {
                 
                 $node = $this->createNode("NewExpression", $newPosition);
                 $node->setCallee($callee);
@@ -2309,7 +2308,7 @@ class Parser extends \Peast\Syntax\Parser
         return $this->completeNode($node);
     }
     
-    protected function parseCallExpression($yield = false)//TODO
+    protected function parseCallExpression($yield = false)
     {
         $position = $this->scanner->getPosition();
         $object = $this->parseSuperCall($yield);
