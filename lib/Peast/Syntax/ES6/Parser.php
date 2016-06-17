@@ -576,57 +576,53 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseIterationStatement($yield = false, $return = false)//TODO
+    protected function parseIterationStatement($yield = false, $return = false)
     {
-        if ($this->scanner->consume("do")) {
+        if ($token = $this->scanner->consume("do")) {
             
-            $position = $this->scanner->getConsumedTokenPosition();
             if (($body = $this->parseStatement($yield, $return)) &&
                 $this->scanner->consumeArray(array("while", "(")) &&
                 ($test = $this->parseExpression(true, $yield)) &&
                 $this->scanner->consume(")")) {
                     
-                $node = $this->createNode("DoWhileStatement", $position);
+                $node = $this->createNode("DoWhileStatement", $token);
                 $node->setBody($body);
                 $node->setTest($test);
                 return $this->completeNode($node);
             }
             return $this->error();
             
-        } elseif ($this->scanner->consume("while")) {
+        } elseif ($token = $this->scanner->consume("while")) {
             
-            $position = $this->scanner->getConsumedTokenPosition();
             if ($this->scanner->consume("(") &&
                 ($test = $this->parseExpression(true, $yield)) &&
                 $this->scanner->consume(")") &&
                 $body = $this->parseStatement($yield, $return)) {
                     
-                $node = $this->createNode("WhileStatement", $position);
+                $node = $this->createNode("WhileStatement", $token);
                 $node->setTest($test);
                 $node->setBody($body);
                 return $this->completeNode($node);
             }
             return $this->error();
             
-        } elseif ($this->scanner->consume("for")) {
+        } elseif ($token = $this->scanner->consume("for")) {
             
-            $position = $this->scanner->getConsumedTokenPosition();
             $hasBracket = $this->scanner->consume("(");
             $afterBracketPos = $this->scanner->getPosition();
             
             if (!$hasBracket) {
                 return $this->error();
-            } elseif ($this->scanner->consume("var")) {
+            } elseif ($varToken = $this->scanner->consume("var")) {
                 
                 $subPosition = $this->scanner->getPosition();
-                $varPosition = $this->scanner->getConsumedTokenPosition();
                 
                 if (($decl = $this->parseVariableDeclarationList(false, $yield)) &&
                     ($varEndPosition = $this->scanner->getPosition()) &&
                     $this->scanner->consume(";")) {
                             
                     $init = $this->createNode(
-                        "VariableDeclaration", $varPosition
+                        "VariableDeclaration", $varToken
                     );
                     $init->setKind($init::KIND_VAR);
                     $init->setDeclarations($decl);
@@ -641,9 +637,7 @@ class Parser extends \Peast\Syntax\Parser
                         if ($this->scanner->consume(")") &&
                             $body = $this->parseStatement($yield, $return)) {
                             
-                            $node = $this->createNode(
-                                "ForStatement", $position
-                            );
+                            $node = $this->createNode("ForStatement", $token);
                             $node->setInit($init);
                             $node->setTest($test);
                             $node->setUpdate($update);
@@ -658,7 +652,7 @@ class Parser extends \Peast\Syntax\Parser
                     if ($decl = $this->parseForBinding($yield)) {
                         
                         $left = $this->createNode(
-                            "VariableDeclaration", $varPosition
+                            "VariableDeclaration", $varToken
                         );
                         $left->setKind($left::KIND_VAR);
                         $left->setDeclarations(array($decl));
@@ -671,7 +665,7 @@ class Parser extends \Peast\Syntax\Parser
                                 $body = $this->parseStatement($yield, $return)) {
                                 
                                 $node = $this->createNode(
-                                    "ForInStatement", $position
+                                    "ForInStatement", $token
                                 );
                                 $node->setLeft($left);
                                 $node->setRight($right);
@@ -685,7 +679,7 @@ class Parser extends \Peast\Syntax\Parser
                                 $body = $this->parseStatement($yield, $return)) {
                                 
                                 $node = $this->createNode(
-                                    "ForOfStatement", $position
+                                    "ForOfStatement", $token
                                 );
                                 $node->setLeft($left);
                                 $node->setRight($right);
@@ -702,7 +696,7 @@ class Parser extends \Peast\Syntax\Parser
                         $this->scanner->consume(")") &&
                         $body = $this->parseStatement($yield, $return)) {
                         
-                        $node = $this->createNode("ForInStatement", $position);
+                        $node = $this->createNode("ForInStatement", $token);
                         $node->setLeft($init);
                         $node->setRight($right);
                         $node->setBody($body);
@@ -713,7 +707,7 @@ class Parser extends \Peast\Syntax\Parser
                         $this->scanner->consume(")") &&
                         $body = $this->parseStatement($yield, $return)) {
                         
-                        $node = $this->createNode("ForOfStatement", $position);
+                        $node = $this->createNode("ForOfStatement", $token);
                         $node->setLeft($init);
                         $node->setRight($right);
                         $node->setBody($body);
@@ -733,7 +727,7 @@ class Parser extends \Peast\Syntax\Parser
                                 $body = $this->parseStatement($yield, $return)) {
                                 
                                 $node = $this->createNode(
-                                    "ForStatement", $position
+                                    "ForStatement", $token
                                 );
                                 $node->setInit($init);
                                 $node->setTest($test);
@@ -764,7 +758,7 @@ class Parser extends \Peast\Syntax\Parser
                             $body = $this->parseStatement($yield, $return)) {
                             
                             $node = $this->createNode(
-                                "ForStatement", $position
+                                "ForStatement", $token
                             );
                             $node->setInit($init);
                             $node->setTest($test);
@@ -787,7 +781,7 @@ class Parser extends \Peast\Syntax\Parser
                             $body = $this->parseStatement($yield, $return)) {
                             
                             $node = $this->createNode(
-                                "ForInStatement", $position
+                                "ForInStatement", $token
                             );
                             $node->setLeft($left);
                             $node->setRight($right);
@@ -801,7 +795,7 @@ class Parser extends \Peast\Syntax\Parser
                             $body = $this->parseStatement($yield, $return)) {
                             
                             $node = $this->createNode(
-                                "ForOfStatement", $position
+                                "ForOfStatement", $token
                             );
                             $node->setLeft($left);
                             $node->setRight($right);
