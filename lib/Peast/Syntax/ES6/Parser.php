@@ -581,7 +581,8 @@ class Parser extends \Peast\Syntax\Parser
         if ($token = $this->scanner->consume("do")) {
             
             if (($body = $this->parseStatement($yield, $return)) &&
-                $this->scanner->consumeArray(array("while", "(")) &&
+                $this->scanner->consume("while") &&
+                $this->scanner->consume("(") &&
                 ($test = $this->parseExpression(true, $yield)) &&
                 $this->scanner->consume(")")) {
                     
