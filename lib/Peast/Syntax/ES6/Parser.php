@@ -97,7 +97,7 @@ class Parser extends \Peast\Syntax\Parser
             $node->setBody($body);
         }
         $program = $this->completeNode($node);
-        if ($this->getToken()) {
+        if ($this->scanner->getToken()) {
             return $this->error();
         }
         return $program;
@@ -114,7 +114,7 @@ class Parser extends \Peast\Syntax\Parser
             $node->setBody($body);
         }
         $program = $this->completeNode($node);
-        if ($this->getToken()) {
+        if ($this->scanner->getToken()) {
             return $this->error();
         }
         return $program;
@@ -2114,7 +2114,7 @@ class Parser extends \Peast\Syntax\Parser
             } elseif (($callee = $this->parseMemberExpression($yield)) &&
                       ($args = $this->parseArguments($yield)) !== null) {
                 
-                $node = $this->createNode("NewExpression", $newPosition);
+                $node = $this->createNode("NewExpression", $newToken);
                 $node->setCallee($callee);
                 $node->setArguments($args);
                 $object = $this->completeNode($node);
@@ -2297,7 +2297,7 @@ class Parser extends \Peast\Syntax\Parser
                 }
             break;
         }
-        $this->scanner->consumeToken();
+        $this->scanner->consumeToken($token);
         $node = $this->createNode("Identifier", $token);
         $node->setName($token->getValue());
         return $this->completeNode($node);
@@ -2403,6 +2403,7 @@ class Parser extends \Peast\Syntax\Parser
         $token = $this->scanner->getToken();
         if ($token && ($token->getType() === Token::TYPE_NULL_LITERAL ||
             $token->getType() === Token::TYPE_BOOLEAN_LITERAL)) {
+            $this->scanner->consumeToken($token);
             $node = $this->createNode("Literal", $token);
             $node->setRaw($token->getValue());
             return $this->completeNode($node);
@@ -2418,6 +2419,7 @@ class Parser extends \Peast\Syntax\Parser
     {
         $token = $this->scanner->getToken();
         if ($token && $token->getType() === Token::TYPE_STRING_LITERAL) {
+            $this->scanner->consumeToken($token);
             $node = $this->createNode("Literal", $token);
             $node->setRaw($token->getValue());
             return $this->completeNode($node);
@@ -2429,6 +2431,7 @@ class Parser extends \Peast\Syntax\Parser
     {
         $token = $this->scanner->getToken();
         if ($token && $token->getType() === Token::TYPE_NUMERIC_LITERAL) {
+            $this->scanner->consumeToken($token);
             $node = $this->createNode("Literal", $token);
             $node->setRaw($token->getValue());
             return $this->completeNode($node);
@@ -2440,13 +2443,14 @@ class Parser extends \Peast\Syntax\Parser
     {
         $token = $this->scanner->getToken();
         
-        if ($token->getType() !== Token::TYPE_TEMPLATE) {
+        if (!$token || $token->getType() !== Token::TYPE_TEMPLATE) {
             return null;
         }
         
         $quasis = $expressions = array();
         $valid = false;
         do {
+            $this->scanner->consumeToken($token);
             $val = $token->getValue();
             $lastChar = substr($val, -1);
             
@@ -2483,6 +2487,7 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseRegularExpressionLiteral()
     {
         if ($token = $this->scanner->reconsumeCurrentTokenAsRegexp()) {
+            $this->scanner->consumeToken($token);
             $node = $this->createNode("RegExpLiteral", $token);
             $node->setRaw($token->getValue());
             return $this->completeNode($node);

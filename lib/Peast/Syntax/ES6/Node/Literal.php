@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\ES6\Node;
 
-use Peast\Syntax\ES6\Parser;
+use Peast\Syntax\Utils;
 
 class Literal extends Node implements Expression
 {
@@ -40,7 +40,7 @@ class Literal extends Node implements Expression
         if ($kind === self::KIND_SINGLE_QUOTE_STRING ||
             $kind === self::KIND_DOUBLE_QUOTE_STRING) {
             $quote = $kind === self::KIND_SINGLE_QUOTE_STRING ? "'" : '"';
-            $raw = Parser::quoteLiteralString($value, $quote);
+            $raw = Utils::quoteLiteralString($value, $quote);
         } elseif ($kind === self::KIND_NULL) {
             $raw = "null";
         } elseif ($kind === self::KIND_BOOLEAN) {
@@ -86,7 +86,7 @@ class Literal extends Node implements Expression
             $this->setKind(self::KIND_BOOLEAN);
         } elseif (isset($rawValue[0]) &&
                  ($rawValue[0] === "'" || $rawValue[0] === '"')) {
-            $this->setValue(Parser::unquoteLiteralString($rawValue));
+            $this->setValue(Utils::unquoteLiteralString($rawValue));
             $this->setKind($rawValue[0] === "'" ?
                            self::KIND_SINGLE_QUOTE_STRING :
                            self::KIND_DOUBLE_QUOTE_STRING);

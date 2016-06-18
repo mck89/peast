@@ -46,15 +46,19 @@ abstract class Scanner
         0x2029
     );
     
-    protected $lineTerminators = array("\n", "\r", 0x2028, 0x2029);
+    public static $lineTerminatorsChars = array("\n", "\r", 0x2028, 0x2029);
     
-    protected $lineTerminatorsSequences = array("\r\n");
+    public static $lineTerminatorsSequences = array("\r\n");
+    
+    protected $linesSplitter;
+    
+    protected $lineTerminators;
     
     protected $numbers = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
     
     protected $xnumbers = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-                               "a", "b", "c", "d", "e", "f",
-                               "A", "B", "C", "D", "E", "F");
+                                "a", "b", "c", "d", "e", "f",
+                                "A", "B", "C", "D", "E", "F");
     
     function __construct($source, $encoding = null)
     {
@@ -84,6 +88,9 @@ abstract class Scanner
         
         //Convert character codes to UTF8 characters in whitespaces and line
         //terminators
+        $this->lineTerminators = array_merge(
+            self::$lineTerminatorsChars, self::$lineTerminatorsSequences
+        );
         foreach (array("whitespaces", "lineTerminators") as $key) {
             foreach ($this->$key as $i => $char) {
                 if (is_int($char)) {
@@ -92,12 +99,13 @@ abstract class Scanner
             }
         }
         
+        $this->linesSplitter = "/" . implode("|", $this->lineTerminators) . "/u";
         $this->position = new Position(0, 0, 0);
     }
     
     public function getPosition($scanPosition = false)
     {
-        if ($scan) {
+        if ($scanPosition) {
             return new Position($this->line, $this->column, $this->index);
         } else {
             return $this->position;
@@ -108,41 +116,23 @@ abstract class Scanner
     {
         $this->position = $position;
         
-        //If the given position is the end position of the last consumed token,
-        //get back to that position by moving the currentToken to the nextToken
-        //and the lastToken to the currentToken, then move the scan position
-        //after the new nextToken, so that there's no need to parse the same
-        //tokens again.
-        //For other positions there's no way to understand where we are so
-        //every stored token must be deleted and it must scan again what comes
-        //later.
-        if ($this->lastToken && $this->currentToken &&
-            $this->lastToken->getLocation()->getEnd()->getIndex() === $position->getIndex()) {
+        //If the given position is different from the end position of the last
+        //consumed token delete lastToken, currentToken and nextToken since
+        //they are not valid anymore
+        if (!$this->lastToken ||
+            $this->lastToken->getLocation()->getEnd()->getIndex() !== $position->getIndex()) {
                 
-            $position = $this->currentToken->getLocation()->getEnd();
-            $this->nextToken = $this->currentToken;
-            $this->currentToken = $this->lastToken;
-            
-        } else {
+            $this->lastToken = null;
             $this->currentToken = null;
             $this->nextToken = null;
+            
         }
         
-        $this->lastToken = null;
         $this->line = $position->getLine();
         $this->column = $position->getColumn();
         $this->index = $position->getIndex();
         
         return $this;
-    }
-    
-    public function getLineTerminators($includeSequences = false)
-    {
-        $ret = $this->lineTerminators;
-        if ($includeSequences) {
-            $ret = array_merge($ret, $this->lineTerminatorsSequences);
-        }
-        return $ret;
     }
     
     public function charAt($index = null)
@@ -181,7 +171,7 @@ abstract class Scanner
     public function consume($expected)
     {
         $token = $this->getToken();
-        if ($token->getValue() === $expected) {
+        if ($token && $token->getValue() === $expected) {
             $this->consumeToken();
             return $token;
         }
@@ -191,7 +181,7 @@ abstract class Scanner
     public function consumeOneOf($expected)
     {
         $token = $this->getToken();
-        if (in_array($token->getValue(), $expected)) {
+        if ($token && in_array($token->getValue(), $expected)) {
             $this->consumeToken();
             return $token;
         }
@@ -279,7 +269,7 @@ abstract class Scanner
         $value = $token ? $token->getValue() : null;
         
         //Check if the token starts with "/"
-        if ($value && $value[0] !== "/") {
+        if (!$value || $value[0] !== "/") {
             return null;
         }
         
@@ -476,6 +466,14 @@ abstract class Scanner
             //Consume all decimal numbers
             $tempBuffer = $this->consumeNumbers();
             $buffer .= $tempBuffer;
+            
+            //If the buffer contains only the dot it should be parsed as
+            //punctutator
+            if ($buffer === ".") {
+                $this->index--;
+                $this->column--;
+                return null;
+            }
             
             //Consume exponent part if present
             if ($allowedExp &&
@@ -675,8 +673,7 @@ abstract class Scanner
     
     protected function adjustColumnAndLine($buffer)
     {
-        $regex = "/" . implode("|", $this->getLineTerminators(true)) . "/u";
-        $lines = preg_split($regex, $buffer);
+        $lines = preg_split($this->linesSplitter, $buffer);
         $linesCount = count($lines) - 1;
         $this->line += $linesCount;
         $columns = mb_strlen($lines[$linesCount], "UTF-8");

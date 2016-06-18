@@ -1,7 +1,7 @@
 <?php
 namespace Peast\Syntax\ES6\Node;
 
-use Peast\Syntax\ES6\Parser;
+use Peast\Syntax\Utils;
 
 class TemplateElement extends Node
 {
@@ -19,7 +19,7 @@ class TemplateElement extends Node
     public function setValue($value)
     {
         $this->value = $value;
-        $this->rawValue = Parser::quoteLiteralString($value, "`");
+        $this->rawValue = Utils::quoteLiteralString($value, "`");
         return $this;
     }
     
@@ -41,7 +41,7 @@ class TemplateElement extends Node
     
     public function setRawValue($rawValue)
     {
-        $this->setValue(Parser::unquoteLiteralString("`$rawValue`"));
+        $this->setValue(Utils::unquoteLiteralString("`$rawValue`"));
         $this->rawValue = $rawValue;
         return $this;
     }
