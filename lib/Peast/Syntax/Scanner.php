@@ -305,7 +305,20 @@ abstract class Scanner
             }
         }
         
+        //Flags
+        while ($char = $this->charAt()) {
+            $lower = strtolower($char);
+            if ($lower >= "a" && $lower <= "z") {
+                $buffer .= $char;
+                $this->index++;
+                $this->column++;
+            } else {
+                break;
+            }
+        }
+        
         //Replace the current token with a regexp token
+        $this->nextToken = null;
         $token = new Token(Token::TYPE_REGULAR_EXPRESSION, $buffer);
         $this->currentToken = $token->setStartPosition($startPosition)
                                     ->setEndPosition($this->getPosition(true));
@@ -414,7 +427,7 @@ abstract class Scanner
                     break;
                 }
             }
-            return new Token(Token::TYPE_PUNCTUTATOR, $buffer);
+            return new Token(Token::TYPE_TEMPLATE, $buffer);
         }
         
         return null;
@@ -632,7 +645,9 @@ abstract class Scanner
         }
         
         $startIndex = $this->index;
+        $startColumn = $this->column;
         $this->index += 2;
+        $this->column += 2;
         if ($this->charAt() === "{") {
             //\u{FFF}
             $this->index++;
@@ -655,10 +670,9 @@ abstract class Scanner
         //Unconsume everything if the format is invalid
         if ($code === null) {
             $this->index = $startIndex;
+            $this->column = $startColumn;
             return null;
         }
-        
-        $this->column += $this->index - $startIndex;
         
         //Return the decoded character
         return Utils::unicodeToUtf8(hexdec($code));
@@ -700,15 +714,14 @@ abstract class Scanner
         $escaped = false;
         while ($char = $this->charAt()) {
             $this->index++;
+            $buffer .= $char;
             if (!$escaped && in_array($char, $stops)) {
-                $buffer .= $char;
                 $this->adjustColumnAndLine($buffer);
                 return array($buffer, $char);
             } elseif (!$escaped && $char === "\\") {
                 $escaped = true;
             } else {
                 $escaped = false;
-                $buffer .= $char;
             }
         }
         return null;
