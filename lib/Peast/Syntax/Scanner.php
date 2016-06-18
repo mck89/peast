@@ -54,6 +54,10 @@ abstract class Scanner
     
     protected $lineTerminators;
     
+    protected $stateProps = array("position", "index", "column", "line",
+                                  "lastToken", "currentToken", "nextToken",
+                                  "openBrackets", "openTemplates");
+    
     protected $numbers = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
     
     protected $xnumbers = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
@@ -103,6 +107,27 @@ abstract class Scanner
         $this->position = new Position(0, 0, 0);
     }
     
+    public function getState()
+    {
+        $state = array();
+        foreach ($this->stateProps as $prop) {
+            if (is_object($this->$prop)) {
+                $state[$prop] = clone $this->$prop;
+            } else {
+                $state[$prop] = $this->$prop;
+            }
+        }
+        return $state;
+    }
+    
+    public function setState($state)
+    {
+        foreach ($state as $key => $value) {
+            $this->$key = $value;
+        }
+        return $this;
+    }
+    
     public function getPosition($scanPosition = false)
     {
         if ($scanPosition) {
@@ -110,29 +135,6 @@ abstract class Scanner
         } else {
             return $this->position;
         }
-    }
-    
-    public function setPosition(Position $position)
-    {
-        $this->position = $position;
-        
-        //If the given position is different from the end position of the last
-        //consumed token delete lastToken, currentToken and nextToken since
-        //they are not valid anymore
-        if (!$this->lastToken ||
-            $this->lastToken->getLocation()->getEnd()->getIndex() !== $position->getIndex()) {
-                
-            $this->lastToken = null;
-            $this->currentToken = null;
-            $this->nextToken = null;
-            
-        }
-        
-        $this->line = $position->getLine();
-        $this->column = $position->getColumn();
-        $this->index = $position->getIndex();
-        
-        return $this;
     }
     
     public function charAt($index = null)
@@ -275,7 +277,9 @@ abstract class Scanner
         
         //Reset the scanner position to the token's start position
         $startPosition = $token->getLocation()->getStart();
-        $this->setPosition($startPosition);
+        $this->index = $startPosition->getIndex();
+        $this->column = $startPosition->getColumn();
+        $this->line = $startPosition->getLine();
         
         $buffer = "/";
         $this->index++;

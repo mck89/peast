@@ -397,7 +397,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseLabelledStatement($yield = false, $return = false)
     {
-        $position = $this->scanner->getPosition();
+        $state = $this->scanner->getState();
         if ($label = $this->parseIdentifier($yield)) {
             
             if ($this->scanner->consume(":")) {
@@ -417,7 +417,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->error();
             }
             
-            $this->scanner->setPosition($position);
+            $this->scanner->setState($state);
         }
         return null;
     }
@@ -610,13 +610,13 @@ class Parser extends \Peast\Syntax\Parser
         } elseif ($token = $this->scanner->consume("for")) {
             
             $hasBracket = $this->scanner->consume("(");
-            $afterBracketPos = $this->scanner->getPosition();
+            $afterBracketState = $this->scanner->getState();
             
             if (!$hasBracket) {
                 return $this->error();
             } elseif ($varToken = $this->scanner->consume("var")) {
                 
-                $subPosition = $this->scanner->getPosition();
+                $state = $this->scanner->getState();
                 
                 if (($decl = $this->parseVariableDeclarationList(false, $yield)) &&
                     ($varEndPosition = $this->scanner->getPosition()) &&
@@ -648,7 +648,7 @@ class Parser extends \Peast\Syntax\Parser
                     }
                 } else {
                     
-                    $this->scanner->setPosition($subPosition);
+                    $this->scanner->setState($state);
                     
                     if ($decl = $this->parseForBinding($yield)) {
                         
@@ -716,7 +716,7 @@ class Parser extends \Peast\Syntax\Parser
                     }
                 } else {
                     
-                    $this->scanner->setPosition($afterBracketPos);
+                    $this->scanner->setState($afterBracketState);
                     if ($init = $this->parseLexicalDeclaration($yield)) {
                         
                         $test = $this->parseExpression(true, $yield);
@@ -742,7 +742,7 @@ class Parser extends \Peast\Syntax\Parser
                 
             } elseif (!$this->scanner->isBefore(array("let"))) {
                 
-                $subPosition = $this->scanner->getPosition();
+                $state = $this->scanner->getState();
                 $notBeforeSB = !$this->scanner->isBefore(array(array("let", "[")), true);
                 
                 if ($notBeforeSB &&
@@ -770,7 +770,7 @@ class Parser extends \Peast\Syntax\Parser
                     }
                 } else {
                     
-                    $this->scanner->setPosition($subPosition);
+                    $this->scanner->setState($state);
                     $left = $this->parseLeftHandSideExpression($yield);
                     $left = $this->expressionToPattern($left);
                     
@@ -1501,7 +1501,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseMethodDefinition($yield = false)
     {
-        $startPos = $this->scanner->getPosition();
+        $state = $this->scanner->getState();
         $generator = false;
         $position = null;
         $error = false;
@@ -1524,7 +1524,7 @@ class Parser extends \Peast\Syntax\Parser
         //definition of a getter/setter
         if ($kind !== Node\MethodDefinition::KIND_METHOD &&
             $this->scanner->consume("(")) {
-            $this->scanner->setPosition($startPos);
+            $this->scanner->setState($state);
             $kind = Node\MethodDefinition::KIND_METHOD;
             $error = false;
         }
@@ -1578,7 +1578,7 @@ class Parser extends \Peast\Syntax\Parser
         if ($error) {
             return $this->error();
         } else {
-            $this->scanner->setPosition($startPos);
+            $this->scanner->setState($state);
         }
         return null;
     }
@@ -1619,7 +1619,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseArrowFunction($in = false, $yield = false)
     {
-        $position = $this->scanner->getPosition();
+        $state = $this->scanner->getState();
         if (($params = $this->parseArrowParameters($yield)) !== null) {
             
             if ($this->scanner->noLineTerminators() &&
@@ -1642,7 +1642,7 @@ class Parser extends \Peast\Syntax\Parser
             
                 return $this->error();
             }
-            $this->scanner->setPosition($position);
+            $this->scanner->setState($state);
         }
         return null;
     }
@@ -1675,7 +1675,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parsePropertyDefinition($yield = false)
     {
-        $position = $this->scanner->getPosition();
+        $state = $this->scanner->getState();
         if (($property = $this->parsePropertyName($yield)) &&
              $this->scanner->consume(":")) {
 
@@ -1692,7 +1692,7 @@ class Parser extends \Peast\Syntax\Parser
             
         }
         
-        $this->scanner->setPosition($position);
+        $this->scanner->setState($state);
         if ($property = $this->parseMethodDefinition($yield)) {
 
             $node = $this->createNode("Property", $property);
@@ -1765,7 +1765,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseBindingProperty($yield = false)
     {
-        $position = $this->scanner->getPosition();
+        $state = $this->scanner->getState();
         if (($key = $this->parsePropertyName($yield)) &&
             $this->scanner->consume(":")) {
             
@@ -1782,7 +1782,7 @@ class Parser extends \Peast\Syntax\Parser
             
         }
             
-        $this->scanner->setPosition($position);
+        $this->scanner->setState($state);
         if ($property = $this->parseSingleNameBinding($yield)) {
             
             $node = $this->createNode("AssignmentProperty", $property);
@@ -1818,7 +1818,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseAssignmentExpression($in = false, $yield = false)
     {
-        $position = $this->scanner->getPosition();
+        $state = $this->scanner->getState();
         $operators = array(
             "=", "+=", "-=", "*=", "/=", "%=", "<<=", ">>=",
             ">>>=", "&=", "^=", "|="
@@ -1841,7 +1841,7 @@ class Parser extends \Peast\Syntax\Parser
             }
             return $this->error();
         }
-        $this->scanner->setPosition($position);
+        $this->scanner->setState($state);
         if ($expr = $this->parseConditionalExpression($in, $yield)) {
             return $expr;
         }
@@ -2095,7 +2095,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseMemberExpression($yield = false)
     {
-        $position = $this->scanner->getPosition();
+        $state = $this->scanner->getState();
         if ($newToken = $this->scanner->consume("new")) {
             
             if ($this->scanner->consume(".")) {
@@ -2120,7 +2120,7 @@ class Parser extends \Peast\Syntax\Parser
                 $object = $this->completeNode($node);
                 
             } else {
-                $this->scanner->setPosition($position);
+                $this->scanner->setState($state);
                 return null;
             }
             
@@ -2305,7 +2305,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseCallExpression($yield = false)
     {
-        $position = $this->scanner->getPosition();
+        $state = $this->scanner->getState();
         $object = $this->parseSuperCall($yield);
         if (!$object) {
             
@@ -2316,7 +2316,7 @@ class Parser extends \Peast\Syntax\Parser
                 if ($callee !== null && $callee instanceof Node\NewExpression) {
                     return $callee;
                 }
-                $this->scanner->setPosition($position);
+                $this->scanner->setState($state);
                 return null;
             }
             

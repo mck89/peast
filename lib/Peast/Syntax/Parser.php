@@ -61,7 +61,7 @@ abstract class Parser
             if ($this->scanner->consume(";")) {
                 return true;
             }
-            $token = $this->getToken();
+            $token = $this->scanner->getToken();
             if (!$token || $token->getValue() === "}") {
                 return true;
             }
