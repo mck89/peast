@@ -195,7 +195,7 @@ abstract class Scanner
         $token = $this->getToken();
         $position = $this->getPosition();
         return $token &&
-               $token->getLocation()->getEnd()->getLine() !== $position->getLine();
+               $token->getLocation()->getEnd()->getLine() === $position->getLine();
     }
     
     public function isBefore($expected, $nextToken = false)
@@ -449,6 +449,12 @@ abstract class Scanner
                     return $this->error("Missing numbers after 0$char");
                 }
                 $buffer .= $char . $tempBuffer;
+                
+                //Check that there are not numbers left
+                if ($this->consumeNumbers() !== null) {
+                    return $this->error();
+                }
+                
                 return new Token(Token::TYPE_NUMERIC_LITERAL, $buffer);
             }
             
