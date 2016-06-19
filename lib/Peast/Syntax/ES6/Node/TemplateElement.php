@@ -41,7 +41,8 @@ class TemplateElement extends Node
     
     public function setRawValue($rawValue)
     {
-        $rawValue = Utils::unquoteLiteralString($rawValue);
+        $rawValue = preg_replace("#^[`}]|(?:`|\\\$\{)$#", "", $rawValue);
+        $rawValue = Utils::unquoteLiteralString("`$rawValue`");
         $this->setValue($rawValue);
         $this->rawValue = $rawValue;
         return $this;

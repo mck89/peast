@@ -2447,6 +2447,12 @@ class Parser extends \Peast\Syntax\Parser
             return null;
         }
         
+        //Do not parse templates parts
+        $val = $token->getValue();
+        if ($val[0] !== "`") {
+            return null;
+        }
+        
         $quasis = $expressions = array();
         $valid = false;
         do {

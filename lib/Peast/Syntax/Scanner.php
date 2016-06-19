@@ -306,7 +306,7 @@ abstract class Scanner
         }
         
         //Flags
-        while ($char = $this->charAt()) {
+        while (($char = $this->charAt()) !== null) {
             $lower = strtolower($char);
             if ($lower >= "a" && $lower <= "z") {
                 $buffer .= $char;
@@ -329,7 +329,7 @@ abstract class Scanner
     {
         $buffer = "";
         $comment = 0;
-        while ($char = $this->charAt()) {
+        while (($char = $this->charAt()) !== null) {
             $nextChar = $this->charAt($this->index + 1);
             if (in_array($char, $this->whitespaces)) {
                 //Whitespace
@@ -558,7 +558,7 @@ abstract class Scanner
         //This loop scans next characters to find the longest punctutator, so
         //that if "!" is found and it's followed by "=", the matched
         //punctutator will be "!="
-        while ($char = $this->charAt($this->index + $consumed)) {
+        while (($char = $this->charAt($this->index + $consumed)) !== null) {
             $buffer .= $char;
             $consumed++;
             //Special handling for brackets
@@ -603,7 +603,7 @@ abstract class Scanner
         //parts
         $buffer = "";
         $fn = "isIdentifierStart";
-        while ($char = $this->charAt()) {
+        while (($char = $this->charAt()) !== null) {
             if ($this->$fn($char)) {
                 $buffer .= $char;
                 $this->index++;
@@ -712,7 +712,7 @@ abstract class Scanner
     {
         $buffer = "";
         $escaped = false;
-        while ($char = $this->charAt()) {
+        while (($char = $this->charAt()) !== null) {
             $this->index++;
             $buffer .= $char;
             if (!$escaped && in_array($char, $stops)) {
