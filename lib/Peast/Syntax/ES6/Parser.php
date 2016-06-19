@@ -2077,11 +2077,13 @@ class Parser extends \Peast\Syntax\Parser
 
     protected function parseSuperCall($yield = false)
     {
-        if ($token = $this->scanner->consume("super")) {
+        if ($this->scanner->isBefore(array(array("super", "(")), true)) {
             
+            $state = $this->scanner->getState();
+            $token = $this->scanner->consume("super");
             $endPos = $this->scanner->getPosition();
-            if ($this->scanner->isBefore(array("(")) &&
-                ($args = $this->parseArguments($yield)) !== null) {
+            $args = $this->parseArguments($yield);
+            if ($args !== null) {
                 
                 $super = $this->createNode("Super", $token);
                 $node = $this->createNode("CallExpression", $token);
@@ -2089,6 +2091,7 @@ class Parser extends \Peast\Syntax\Parser
                 $node->setCallee($this->completeNode($super, $endPos));
                 return $this->completeNode($node);
             }
+            $this->scanner->setState($state);
         }
         return null;
     }
