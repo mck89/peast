@@ -79,37 +79,15 @@ class Parser extends \Peast\Syntax\Parser
     
     public function parse()
     {
-        if ($this->moduleMode) {
-            return $this->parseModule();
-        } else {
-            return $this->parseScript();
-        }
-    }
-    
-    protected function parseScript()
-    {
-        $body = $this->parseStatementList();
+        $body = $this->moduleMode ?
+                $this->parseModuleItemList() :
+                $this->parseStatementList();
         $node = $this->createNode(
             "Program", $body ? $body : $this->scanner->getPosition()
         );
-        $node->setSourceType($node::SOURCE_TYPE_SCRIPT);
-        if ($body) {
-            $node->setBody($body);
-        }
-        $program = $this->completeNode($node);
-        if ($this->scanner->getToken()) {
-            return $this->error();
-        }
-        return $program;
-    }
-    
-    protected function parseModule()
-    {
-        $body = $this->parseModuleItemList();
-        $node = $this->createNode(
-            "Program", $body ? $body : $this->scanner->getPosition()
-        );
-        $node->setSourceType($node::SOURCE_TYPE_MODULE);
+        $node->setSourceType($this->moduleMode ?
+                             $node::SOURCE_TYPE_MODULE :
+                             $node::SOURCE_TYPE_SCRIPT);
         if ($body) {
             $node->setBody($body);
         }
