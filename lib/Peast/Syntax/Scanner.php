@@ -15,8 +15,6 @@ abstract class Scanner
     
     protected $position;
     
-    protected $lastToken;
-    
     protected $currentToken;
     
     protected $nextToken;
@@ -55,7 +53,7 @@ abstract class Scanner
     protected $lineTerminators;
     
     protected $stateProps = array("position", "index", "column", "line",
-                                  "lastToken", "currentToken", "nextToken",
+                                  "currentToken", "nextToken",
                                   "openBrackets", "openTemplates");
     
     protected $numbers = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
@@ -166,7 +164,6 @@ abstract class Scanner
     public function consumeToken()
     {
         $this->position = $this->currentToken->getLocation()->getEnd();
-        $this->lastToken = $this->currentToken;
         $this->currentToken = $this->nextToken ? $this->nextToken : null;
         $this->nextToken = null;
         return $this;
