@@ -1,22 +1,15 @@
 <?php
 namespace Peast;
 
-use Peast\Syntax\Parser;
-use Peast\Syntax\Scanner;
-
 class Peast
 {
-    static public function fromFile(Parser $parser, $file, $encoding = null)
-    {
-        $source = @file_get_contents($file);
-        if ($source === false) {
-            throw new \Exception("Can't read $file");
-        }
-        return self::fromString($parser, $source, $encoding);
-    }
+    const SOURCE_TYPE_SCRIPT = "script";
     
-    static public function fromString(Parser $parser, $source, $encoding = null)
+    const SOURCE_TYPE_MODULE = "module";
+    
+    static public function ES6($source, $options = array())
     {
-        return $parser->setSource($source, $encoding)->parse();
+        $parser = new Syntax\ES6\Parser($options);
+        return $parser->setSource($source);
     }
 }

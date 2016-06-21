@@ -13,9 +13,14 @@ class ES6Test extends \test\Peast\TestBase
      */
     public function testParser($sourceFile, $compareFile)
     {
-        $module = strpos($sourceFile, "modules") !== false;
-        $parser = new \Peast\Syntax\ES6\Parser($module);
-        $tree = \Peast\Peast::fromFile($parser, $sourceFile);
+        $options = array(
+            "sourceType" => strpos($sourceFile, "modules") !== false ?
+                            \Peast\Peast::SOURCE_TYPE_MODULE :
+                            \Peast\Peast::SOURCE_TYPE_SCRIPT
+        );
+        $source = file_get_contents($sourceFile);
+        $parser = \Peast\Peast::ES6($source, $options);
+        $tree = $parser->parse();
         $this->compareJSFile($tree, $compareFile);
     }
     
@@ -30,8 +35,13 @@ class ES6Test extends \test\Peast\TestBase
      */
     public function testParserException($sourceFile)
     {
-        $module = strpos($sourceFile, "modules") !== false;
-        $parser = new \Peast\Syntax\ES6\Parser($module);
-        \Peast\Peast::fromFile($parser, $sourceFile);
+        $options = array(
+            "sourceType" => strpos($sourceFile, "modules") !== false ?
+                            \Peast\Peast::SOURCE_TYPE_MODULE :
+                            \Peast\Peast::SOURCE_TYPE_SCRIPT
+        );
+        $source = file_get_contents($sourceFile);
+        $parser = \Peast\Peast::ES6($source, $options);
+        $tree = $parser->parse();
     }
 }

@@ -3,11 +3,7 @@ namespace Peast\Syntax\ES6\Node;
 
 class Program extends Node
 {
-    const SOURCE_TYPE_SCRIPT = "script";
-    
-    const SOURCE_TYPE_MODULE = "module";
-    
-    protected $sourceType = self::SOURCE_TYPE_SCRIPT;
+    protected $sourceType = \Peast\Peast::SOURCE_TYPE_SCRIPT;
     
     protected $body = array();
     

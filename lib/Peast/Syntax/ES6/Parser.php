@@ -5,17 +5,11 @@ use Peast\Syntax\Token;
 
 class Parser extends \Peast\Syntax\Parser
 {
-    protected $moduleMode = false;
-    
-    protected $config;
-    
-    public function __construct($module = false)
+    public function setSource($source)
     {
-        $this->moduleMode = $module;
-    }
-    
-    public function setSource($source, $encoding = null)
-    {
+        $encoding = isset($options["sourceEncoding"]) ?
+                    $options["sourceEncoding"] :
+                    null;
         $this->scanner = new Scanner($source, $encoding);
         return $this;
     }
@@ -79,15 +73,18 @@ class Parser extends \Peast\Syntax\Parser
     
     public function parse()
     {
-        $body = $this->moduleMode ?
+        $type = isset($this->options["sourceType"]) ?
+                $this->options["sourceType"] :
+                \Peast\Peast::SOURCE_TYPE_SCRIPT;
+        
+        $body = $type === \Peast\Peast::SOURCE_TYPE_MODULE ?
                 $this->parseModuleItemList() :
                 $this->parseStatementList();
+        
         $node = $this->createNode(
             "Program", $body ? $body : $this->scanner->getPosition()
         );
-        $node->setSourceType($this->moduleMode ?
-                             $node::SOURCE_TYPE_MODULE :
-                             $node::SOURCE_TYPE_SCRIPT);
+        $node->setSourceType($type);
         if ($body) {
             $node->setBody($body);
         }

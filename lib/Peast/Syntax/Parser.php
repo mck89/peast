@@ -5,9 +5,16 @@ abstract class Parser
 {
     protected $scanner;
     
+    protected $options;
+    
+    public function __construct($options = array())
+    {
+        $this->options = $options;
+    }
+    
     abstract public function parse();
     
-    abstract public function setSource($source, $encoding = null);
+    abstract public function setSource($source);
     
     public function createNode($nodeType, $position)
     {
