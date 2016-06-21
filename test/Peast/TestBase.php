@@ -2,18 +2,7 @@
 namespace test\Peast;
 
 class TestBase extends \PHPUnit_Framework_TestCase
-{
-    protected function initParser($version, $source, $file = false)
-    {
-        $options = array(
-            "sourceType" => strpos($sourceFile, "modules") !== false ?
-                            \Peast\Peast::SOURCE_TYPE_MODULE :
-                            \Peast\Peast::SOURCE_TYPE_SCRIPT
-        );
-        $source = $file ? file_get_contents($source) : $source;
-        return \Peast\Peast::$version($source, $options);
-    }
-    
+{  
     protected function getJsTestFiles($dir, $invalid = false)
     {
         $ds = DIRECTORY_SEPARATOR;
