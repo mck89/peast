@@ -19,8 +19,7 @@ class ES6Test extends \test\Peast\TestBase
                             \Peast\Peast::SOURCE_TYPE_SCRIPT
         );
         $source = file_get_contents($sourceFile);
-        $parser = \Peast\Peast::ES6($source, $options);
-        $tree = $parser->parse();
+        $tree = \Peast\Peast::ES6($source, $options)->parse();
         $this->compareJSFile($tree, $compareFile);
     }
     
@@ -41,7 +40,13 @@ class ES6Test extends \test\Peast\TestBase
                             \Peast\Peast::SOURCE_TYPE_SCRIPT
         );
         $source = file_get_contents($sourceFile);
-        $parser = \Peast\Peast::ES6($source, $options);
-        $tree = $parser->parse();
+        \Peast\Peast::ES6($source, $options)->parse();
+    }
+    
+    public function testEmptySource()
+    {
+        $tree = \Peast\Peast::ES6($source, $options)->parse("");
+        $this->assertTrue($tree->getType() === "Program");
+        $this->assertSame(0, count($tree->getBody()));
     }
 }
