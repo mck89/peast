@@ -1,0 +1,98 @@
+[
+    {
+        "type": "Keyword",
+        "value": "for"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Keyword",
+        "value": "let"
+    },
+    {
+        "type": "Identifier",
+        "value": "n"
+    },
+    {
+        "type": "Identifier",
+        "value": "of"
+    },
+    {
+        "type": "Punctuator",
+        "value": "["
+    },
+    {
+        "type": "Numeric",
+        "value": "1"
+    },
+    {
+        "type": "Punctuator",
+        "value": ","
+    },
+    {
+        "type": "Numeric",
+        "value": "2"
+    },
+    {
+        "type": "Punctuator",
+        "value": ","
+    },
+    {
+        "type": "Punctuator",
+        "value": ","
+    },
+    {
+        "type": "Numeric",
+        "value": "3"
+    },
+    {
+        "type": "Punctuator",
+        "value": "]"
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": "{"
+    },
+    {
+        "type": "Identifier",
+        "value": "alert"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Identifier",
+        "value": "n"
+    },
+    {
+        "type": "Punctuator",
+        "value": "+"
+    },
+    {
+        "type": "Numeric",
+        "value": "1"
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": ";"
+    },
+    {
+        "type": "Punctuator",
+        "value": ";"
+    },
+    {
+        "type": "Punctuator",
+        "value": "}"
+    }
+]

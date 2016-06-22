@@ -1,0 +1,38 @@
+[
+    {
+        "type": "Keyword",
+        "value": "with"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Identifier",
+        "value": "o"
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Identifier",
+        "value": "alert"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Identifier",
+        "value": "x"
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": ";"
+    }
+]

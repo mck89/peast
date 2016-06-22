@@ -1,0 +1,26 @@
+[
+    {
+        "type": "Keyword",
+        "value": "var"
+    },
+    {
+        "type": "Identifier",
+        "value": "a"
+    },
+    {
+        "type": "Punctuator",
+        "value": "="
+    },
+    {
+        "type": "RegularExpression",
+        "value": "/test\\/test[abc/def]/img",
+        "regex": {
+            "pattern": "test\\/test[abc/def]",
+            "flags": "img"
+        }
+    },
+    {
+        "type": "Punctuator",
+        "value": ";"
+    }
+]

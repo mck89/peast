@@ -1,0 +1,102 @@
+[
+    {
+        "type": "Numeric",
+        "value": "1"
+    },
+    {
+        "type": "Punctuator",
+        "value": "*"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Numeric",
+        "value": "2"
+    },
+    {
+        "type": "Punctuator",
+        "value": "+"
+    },
+    {
+        "type": "Numeric",
+        "value": "3"
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": "/"
+    },
+    {
+        "type": "Numeric",
+        "value": "4"
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": "*"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Numeric",
+        "value": "5"
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": "/"
+    },
+    {
+        "type": "Numeric",
+        "value": "6"
+    },
+    {
+        "type": "Punctuator",
+        "value": "+"
+    },
+    {
+        "type": "Numeric",
+        "value": "7"
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": "-"
+    },
+    {
+        "type": "Numeric",
+        "value": "8"
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    }
+]

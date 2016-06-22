@@ -1,0 +1,30 @@
+[
+    {
+        "type": "Identifier",
+        "value": "foo"
+    },
+    {
+        "type": "Punctuator",
+        "value": "."
+    },
+    {
+        "type": "Identifier",
+        "value": "bar"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    }
+]

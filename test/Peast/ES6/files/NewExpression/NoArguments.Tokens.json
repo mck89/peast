@@ -1,0 +1,14 @@
+[
+    {
+        "type": "Keyword",
+        "value": "new"
+    },
+    {
+        "type": "Identifier",
+        "value": "foo"
+    },
+    {
+        "type": "Punctuator",
+        "value": ";"
+    }
+]

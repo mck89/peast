@@ -1,0 +1,254 @@
+[
+    {
+        "type": "Identifier",
+        "value": "loop1"
+    },
+    {
+        "type": "Punctuator",
+        "value": ":"
+    },
+    {
+        "type": "Keyword",
+        "value": "while"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Identifier",
+        "value": "row"
+    },
+    {
+        "type": "Punctuator",
+        "value": "="
+    },
+    {
+        "type": "Identifier",
+        "value": "getRow"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": "{"
+    },
+    {
+        "type": "Keyword",
+        "value": "if"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Identifier",
+        "value": "row"
+    },
+    {
+        "type": "Punctuator",
+        "value": "["
+    },
+    {
+        "type": "String",
+        "value": "\"status\""
+    },
+    {
+        "type": "Punctuator",
+        "value": "]"
+    },
+    {
+        "type": "Punctuator",
+        "value": "==="
+    },
+    {
+        "type": "String",
+        "value": "\"error\""
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": "{"
+    },
+    {
+        "type": "Keyword",
+        "value": "break"
+    },
+    {
+        "type": "Punctuator",
+        "value": ";"
+    },
+    {
+        "type": "Punctuator",
+        "value": "}"
+    },
+    {
+        "type": "Keyword",
+        "value": "while"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Identifier",
+        "value": "prop"
+    },
+    {
+        "type": "Punctuator",
+        "value": "="
+    },
+    {
+        "type": "Identifier",
+        "value": "getProps"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Identifier",
+        "value": "row"
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": "{"
+    },
+    {
+        "type": "Keyword",
+        "value": "if"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Identifier",
+        "value": "prop"
+    },
+    {
+        "type": "Punctuator",
+        "value": "."
+    },
+    {
+        "type": "Identifier",
+        "value": "readonly"
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": "{"
+    },
+    {
+        "type": "Keyword",
+        "value": "continue"
+    },
+    {
+        "type": "Identifier",
+        "value": "loop1"
+    },
+    {
+        "type": "Punctuator",
+        "value": ";"
+    },
+    {
+        "type": "Punctuator",
+        "value": "}"
+    },
+    {
+        "type": "Keyword",
+        "value": "else"
+    },
+    {
+        "type": "Keyword",
+        "value": "if"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Identifier",
+        "value": "prop"
+    },
+    {
+        "type": "Punctuator",
+        "value": "."
+    },
+    {
+        "type": "Identifier",
+        "value": "status"
+    },
+    {
+        "type": "Punctuator",
+        "value": "==="
+    },
+    {
+        "type": "String",
+        "value": "\"error\""
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": "{"
+    },
+    {
+        "type": "Keyword",
+        "value": "break"
+    },
+    {
+        "type": "Identifier",
+        "value": "loop1"
+    },
+    {
+        "type": "Punctuator",
+        "value": ";"
+    },
+    {
+        "type": "Punctuator",
+        "value": "}"
+    },
+    {
+        "type": "Keyword",
+        "value": "continue"
+    },
+    {
+        "type": "Punctuator",
+        "value": ";"
+    },
+    {
+        "type": "Punctuator",
+        "value": "}"
+    },
+    {
+        "type": "Punctuator",
+        "value": "}"
+    }
+]

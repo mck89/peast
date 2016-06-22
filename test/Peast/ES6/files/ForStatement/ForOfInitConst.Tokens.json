@@ -1,0 +1,34 @@
+[
+    {
+        "type": "Keyword",
+        "value": "for"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Keyword",
+        "value": "const"
+    },
+    {
+        "type": "Identifier",
+        "value": "i"
+    },
+    {
+        "type": "Identifier",
+        "value": "of"
+    },
+    {
+        "type": "Identifier",
+        "value": "iterable"
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": ";"
+    }
+]

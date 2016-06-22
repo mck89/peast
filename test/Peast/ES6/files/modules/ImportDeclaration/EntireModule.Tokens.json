@@ -1,0 +1,10 @@
+[
+    {
+        "type": "Keyword",
+        "value": "import"
+    },
+    {
+        "type": "String",
+        "value": "\"my-module\""
+    }
+]

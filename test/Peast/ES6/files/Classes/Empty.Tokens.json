@@ -1,0 +1,18 @@
+[
+    {
+        "type": "Keyword",
+        "value": "class"
+    },
+    {
+        "type": "Identifier",
+        "value": "Test"
+    },
+    {
+        "type": "Punctuator",
+        "value": "{"
+    },
+    {
+        "type": "Punctuator",
+        "value": "}"
+    }
+]

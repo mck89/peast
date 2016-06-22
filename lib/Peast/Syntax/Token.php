@@ -15,7 +15,7 @@ class Token
     
     const TYPE_PUNCTUTATOR = "Punctuator";
     
-    const TYPE_STRING_LITERAL = "StringLiteral";
+    const TYPE_STRING = "String";
     
     const TYPE_REGULAR_EXPRESSION = "RegularExpression";
     

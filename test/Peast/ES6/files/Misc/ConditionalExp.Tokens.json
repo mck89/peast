@@ -1,0 +1,46 @@
+[
+    {
+        "type": "Identifier",
+        "value": "test"
+    },
+    {
+        "type": "Punctuator",
+        "value": "!=="
+    },
+    {
+        "type": "Boolean",
+        "value": "false"
+    },
+    {
+        "type": "Punctuator",
+        "value": "?"
+    },
+    {
+        "type": "Identifier",
+        "value": "success"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": ":"
+    },
+    {
+        "type": "Identifier",
+        "value": "error"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    }
+]

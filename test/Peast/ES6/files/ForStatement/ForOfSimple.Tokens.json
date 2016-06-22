@@ -1,0 +1,54 @@
+[
+    {
+        "type": "Keyword",
+        "value": "for"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Identifier",
+        "value": "val"
+    },
+    {
+        "type": "Identifier",
+        "value": "of"
+    },
+    {
+        "type": "Identifier",
+        "value": "values"
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Identifier",
+        "value": "console"
+    },
+    {
+        "type": "Punctuator",
+        "value": "."
+    },
+    {
+        "type": "Identifier",
+        "value": "log"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Identifier",
+        "value": "val"
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": ";"
+    }
+]

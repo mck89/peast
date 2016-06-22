@@ -1,0 +1,94 @@
+[
+    {
+        "type": "Identifier",
+        "value": "obj"
+    },
+    {
+        "type": "Punctuator",
+        "value": "."
+    },
+    {
+        "type": "Identifier",
+        "value": "foo"
+    },
+    {
+        "type": "Punctuator",
+        "value": "["
+    },
+    {
+        "type": "String",
+        "value": "\"bar\""
+    },
+    {
+        "type": "Punctuator",
+        "value": "]"
+    },
+    {
+        "type": "Punctuator",
+        "value": "."
+    },
+    {
+        "type": "Identifier",
+        "value": "baz"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": "."
+    },
+    {
+        "type": "Identifier",
+        "value": "foo"
+    },
+    {
+        "type": "Punctuator",
+        "value": "["
+    },
+    {
+        "type": "String",
+        "value": "\"bar\""
+    },
+    {
+        "type": "Punctuator",
+        "value": "]"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": "."
+    },
+    {
+        "type": "Identifier",
+        "value": "baz"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    }
+]

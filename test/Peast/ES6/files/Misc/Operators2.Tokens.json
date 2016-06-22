@@ -1,0 +1,326 @@
+[
+    {
+        "type": "Numeric",
+        "value": "1"
+    },
+    {
+        "type": "Punctuator",
+        "value": "<<"
+    },
+    {
+        "type": "Numeric",
+        "value": "2"
+    },
+    {
+        "type": "Punctuator",
+        "value": "+"
+    },
+    {
+        "type": "Numeric",
+        "value": "3"
+    },
+    {
+        "type": "Punctuator",
+        "value": ">>"
+    },
+    {
+        "type": "Numeric",
+        "value": "4"
+    },
+    {
+        "type": "Punctuator",
+        "value": "-"
+    },
+    {
+        "type": "Numeric",
+        "value": "5"
+    },
+    {
+        "type": "Punctuator",
+        "value": ">>>"
+    },
+    {
+        "type": "Numeric",
+        "value": "6"
+    },
+    {
+        "type": "Punctuator",
+        "value": "*"
+    },
+    {
+        "type": "Numeric",
+        "value": "7"
+    },
+    {
+        "type": "Punctuator",
+        "value": "&"
+    },
+    {
+        "type": "Numeric",
+        "value": "8"
+    },
+    {
+        "type": "Punctuator",
+        "value": "/"
+    },
+    {
+        "type": "Numeric",
+        "value": "9"
+    },
+    {
+        "type": "Punctuator",
+        "value": "|"
+    },
+    {
+        "type": "Numeric",
+        "value": "10"
+    },
+    {
+        "type": "Punctuator",
+        "value": "^"
+    },
+    {
+        "type": "Numeric",
+        "value": "11"
+    },
+    {
+        "type": "Punctuator",
+        "value": ">="
+    },
+    {
+        "type": "Numeric",
+        "value": "12"
+    },
+    {
+        "type": "Punctuator",
+        "value": "+"
+    },
+    {
+        "type": "Numeric",
+        "value": "13"
+    },
+    {
+        "type": "Punctuator",
+        "value": ">>"
+    },
+    {
+        "type": "Numeric",
+        "value": "14"
+    },
+    {
+        "type": "Punctuator",
+        "value": "&"
+    },
+    {
+        "type": "Numeric",
+        "value": "15"
+    },
+    {
+        "type": "Punctuator",
+        "value": "<<"
+    },
+    {
+        "type": "Numeric",
+        "value": "16"
+    },
+    {
+        "type": "Punctuator",
+        "value": "^"
+    },
+    {
+        "type": "Numeric",
+        "value": "15"
+    },
+    {
+        "type": "Punctuator",
+        "value": ">>>"
+    },
+    {
+        "type": "Numeric",
+        "value": "17"
+    },
+    {
+        "type": "Punctuator",
+        "value": "/"
+    },
+    {
+        "type": "Numeric",
+        "value": "18"
+    },
+    {
+        "type": "Punctuator",
+        "value": "+"
+    },
+    {
+        "type": "Numeric",
+        "value": "19"
+    },
+    {
+        "type": "Punctuator",
+        "value": "*"
+    },
+    {
+        "type": "Numeric",
+        "value": "20"
+    },
+    {
+        "type": "Punctuator",
+        "value": "|"
+    },
+    {
+        "type": "Numeric",
+        "value": "21"
+    },
+    {
+        "type": "Punctuator",
+        "value": ">>>"
+    },
+    {
+        "type": "Numeric",
+        "value": "22"
+    },
+    {
+        "type": "Punctuator",
+        "value": "<<"
+    },
+    {
+        "type": "Numeric",
+        "value": "23"
+    },
+    {
+        "type": "Punctuator",
+        "value": "+"
+    },
+    {
+        "type": "Numeric",
+        "value": "24"
+    },
+    {
+        "type": "Punctuator",
+        "value": "*"
+    },
+    {
+        "type": "Numeric",
+        "value": "25"
+    },
+    {
+        "type": "Punctuator",
+        "value": ">>"
+    },
+    {
+        "type": "Numeric",
+        "value": "26"
+    },
+    {
+        "type": "Punctuator",
+        "value": "/"
+    },
+    {
+        "type": "Numeric",
+        "value": "27"
+    },
+    {
+        "type": "Punctuator",
+        "value": "&"
+    },
+    {
+        "type": "Numeric",
+        "value": "28"
+    },
+    {
+        "type": "Punctuator",
+        "value": "+"
+    },
+    {
+        "type": "Numeric",
+        "value": "29"
+    },
+    {
+        "type": "Punctuator",
+        "value": "||"
+    },
+    {
+        "type": "Numeric",
+        "value": "30"
+    },
+    {
+        "type": "Punctuator",
+        "value": "&&"
+    },
+    {
+        "type": "Numeric",
+        "value": "31"
+    },
+    {
+        "type": "Punctuator",
+        "value": "%"
+    },
+    {
+        "type": "Numeric",
+        "value": "32"
+    },
+    {
+        "type": "Punctuator",
+        "value": "^"
+    },
+    {
+        "type": "Numeric",
+        "value": "33"
+    },
+    {
+        "type": "Punctuator",
+        "value": "+"
+    },
+    {
+        "type": "Numeric",
+        "value": "34"
+    },
+    {
+        "type": "Punctuator",
+        "value": "|"
+    },
+    {
+        "type": "Numeric",
+        "value": "35"
+    },
+    {
+        "type": "Punctuator",
+        "value": "/"
+    },
+    {
+        "type": "Numeric",
+        "value": "36"
+    },
+    {
+        "type": "Punctuator",
+        "value": "-"
+    },
+    {
+        "type": "Numeric",
+        "value": "37"
+    },
+    {
+        "type": "Punctuator",
+        "value": "%"
+    },
+    {
+        "type": "Numeric",
+        "value": "38"
+    },
+    {
+        "type": "Punctuator",
+        "value": "&"
+    },
+    {
+        "type": "Numeric",
+        "value": "39"
+    },
+    {
+        "type": "Punctuator",
+        "value": "|"
+    },
+    {
+        "type": "Numeric",
+        "value": "40"
+    }
+]

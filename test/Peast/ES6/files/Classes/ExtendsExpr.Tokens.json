@@ -1,0 +1,30 @@
+[
+    {
+        "type": "Keyword",
+        "value": "class"
+    },
+    {
+        "type": "Identifier",
+        "value": "a"
+    },
+    {
+        "type": "Keyword",
+        "value": "extends"
+    },
+    {
+        "type": "Keyword",
+        "value": "new"
+    },
+    {
+        "type": "Identifier",
+        "value": "other"
+    },
+    {
+        "type": "Punctuator",
+        "value": "{"
+    },
+    {
+        "type": "Punctuator",
+        "value": "}"
+    }
+]

@@ -3,13 +3,13 @@ namespace test\Peast\ES6;
 
 class ES6Test extends \test\Peast\TestBase
 {
-    public function jsTestFilesProvider()
+    public function jsParserTestFilesProvider()
     {
         return parent::getJsTestFiles(__DIR__);
     }
     
     /**
-     * @dataProvider jsTestFilesProvider
+     * @dataProvider jsParserTestFilesProvider
      */
     public function testParser($sourceFile, $compareFile)
     {
@@ -23,9 +23,29 @@ class ES6Test extends \test\Peast\TestBase
         $this->compareJSFile($tree, $compareFile);
     }
     
+    public function jsTokenizerTestFilesProvider()
+    {
+        return parent::getJsTestFiles(__DIR__, self::JS_TOKENIZE);
+    }
+    
+    /**
+     * @dataProvider jsTokenizerTestFilesProvider
+     */
+    public function testTokenizer($sourceFile, $compareFile)
+    {
+        $options = array(
+            "sourceType" => strpos($sourceFile, "modules") !== false ?
+                            \Peast\Peast::SOURCE_TYPE_MODULE :
+                            \Peast\Peast::SOURCE_TYPE_SCRIPT
+        );
+        $source = file_get_contents($sourceFile);
+        $tree = \Peast\Peast::ES6($source, $options)->tokenize();
+        $this->compareJSFile($tree, $compareFile);
+    }
+    
     public function invalidJsTestFilesProvider()
     {
-        return parent::getJsTestFiles(__DIR__, true);
+        return parent::getJsTestFiles(__DIR__, self::JS_INVALID);
     }
     
     /**

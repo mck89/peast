@@ -1,0 +1,26 @@
+[
+    {
+        "type": "Keyword",
+        "value": "switch"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Identifier",
+        "value": "test"
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Punctuator",
+        "value": "{"
+    },
+    {
+        "type": "Punctuator",
+        "value": "}"
+    }
+]

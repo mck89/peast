@@ -5,7 +5,6 @@ use Peast\Syntax\Token;
 
 class Parser extends \Peast\Syntax\Parser
 {
-    
     public function parse()
     {
         $type = isset($this->options["sourceType"]) ?
@@ -2388,7 +2387,7 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseStringLiteral()
     {
         $token = $this->scanner->getToken();
-        if ($token && $token->getType() === Token::TYPE_STRING_LITERAL) {
+        if ($token && $token->getType() === Token::TYPE_STRING) {
             $this->scanner->consumeToken();
             $node = $this->createNode("Literal", $token);
             $node->setRaw($token->getValue());

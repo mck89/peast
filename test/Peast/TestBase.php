@@ -2,9 +2,16 @@
 namespace test\Peast;
 
 class TestBase extends \PHPUnit_Framework_TestCase
-{  
-    protected function getJsTestFiles($dir, $invalid = false)
+{
+    const JS_INVALID = 1;
+    
+    const JS_PARSE = 2;
+    
+    const JS_TOKENIZE = 3;
+    
+    protected function getJsTestFiles($dir, $jsType = self::JS_PARSE)
     {
+        $invalid = $jsType === self::JS_INVALID;
         $ds = DIRECTORY_SEPARATOR;
         $testFiles = array();
         $files = array_merge(
@@ -18,9 +25,13 @@ class TestBase extends \PHPUnit_Framework_TestCase
             if ($isInvalid && $invalid) {
                 $testFiles[$testName] = array($jsFile);
             } elseif (!$isInvalid && !$invalid) {
-                $testFiles[$testName] = array(
+                $replacement = $jsType === self::JS_PARSE ?
+                               ".json" :
+                               ".Tokens.json";
+                $op = $jsType === self::JS_PARSE ? "Parse" : "Tokenize";
+                $testFiles["$op $testName"] = array(
                     $jsFile,
-                    str_replace(".js", ".json", $jsFile)
+                    str_replace(".js", $replacement, $jsFile)
                 );
             }
         }

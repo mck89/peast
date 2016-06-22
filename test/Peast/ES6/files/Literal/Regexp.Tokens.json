@@ -1,0 +1,26 @@
+[
+    {
+        "type": "Keyword",
+        "value": "var"
+    },
+    {
+        "type": "Identifier",
+        "value": "a"
+    },
+    {
+        "type": "Punctuator",
+        "value": "="
+    },
+    {
+        "type": "RegularExpression",
+        "value": "/abc(def)/i",
+        "regex": {
+            "pattern": "abc(def)",
+            "flags": "i"
+        }
+    },
+    {
+        "type": "Punctuator",
+        "value": ";"
+    }
+]

@@ -1,0 +1,18 @@
+[
+    {
+        "type": "Keyword",
+        "value": "var"
+    },
+    {
+        "type": "Identifier",
+        "value": "s"
+    },
+    {
+        "type": "Punctuator",
+        "value": "="
+    },
+    {
+        "type": "String",
+        "value": "\"this\\\nis\\\na\\\nmultiline\\\nstring\""
+    }
+]

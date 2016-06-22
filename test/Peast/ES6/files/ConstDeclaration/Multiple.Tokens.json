@@ -1,0 +1,38 @@
+[
+    {
+        "type": "Keyword",
+        "value": "const"
+    },
+    {
+        "type": "Identifier",
+        "value": "a"
+    },
+    {
+        "type": "Punctuator",
+        "value": "="
+    },
+    {
+        "type": "Numeric",
+        "value": "2"
+    },
+    {
+        "type": "Punctuator",
+        "value": ","
+    },
+    {
+        "type": "Identifier",
+        "value": "b"
+    },
+    {
+        "type": "Punctuator",
+        "value": "="
+    },
+    {
+        "type": "String",
+        "value": "\"constant\""
+    },
+    {
+        "type": "Punctuator",
+        "value": ";"
+    }
+]

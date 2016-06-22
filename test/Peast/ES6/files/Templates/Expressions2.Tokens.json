@@ -1,0 +1,38 @@
+[
+    {
+        "type": "Template",
+        "value": "`${"
+    },
+    {
+        "type": "Identifier",
+        "value": "exp1"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Template",
+        "value": "}${"
+    },
+    {
+        "type": "Identifier",
+        "value": "exp2"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Template",
+        "value": "}`"
+    }
+]

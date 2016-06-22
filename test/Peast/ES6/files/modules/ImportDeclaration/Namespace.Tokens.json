@@ -1,0 +1,30 @@
+[
+    {
+        "type": "Keyword",
+        "value": "import"
+    },
+    {
+        "type": "Punctuator",
+        "value": "*"
+    },
+    {
+        "type": "Identifier",
+        "value": "as"
+    },
+    {
+        "type": "Identifier",
+        "value": "mod"
+    },
+    {
+        "type": "Identifier",
+        "value": "from"
+    },
+    {
+        "type": "String",
+        "value": "\"my-module\""
+    },
+    {
+        "type": "Punctuator",
+        "value": ";"
+    }
+]

@@ -19,6 +19,10 @@ abstract class Scanner
     
     protected $nextToken;
     
+    protected $registerTokens = false;
+    
+    protected $tokens = array();
+    
     protected $idStartRegex;
     
     protected $idPartRegex;
@@ -107,6 +111,17 @@ abstract class Scanner
         $this->position = new Position(0, 0, 0);
     }
     
+    public function enableTokenRegistration($enable = true)
+    {
+        $this->registerTokens = $enable;
+        return $this;
+    }
+    
+    public function getTokens()
+    {
+        return $this->tokens;
+    }
+    
     public function getState()
     {
         $state = array();
@@ -163,7 +178,14 @@ abstract class Scanner
     
     public function consumeToken()
     {
+        //Move the scanner position to the end of the current position
         $this->position = $this->currentToken->getLocation()->getEnd();
+        
+        //Register the token if required
+        if ($this->registerTokens) {
+            $this->tokens[] = $this->currentToken;
+        }
+        
         $this->currentToken = $this->nextToken ? $this->nextToken : null;
         $this->nextToken = null;
         return $this;
@@ -378,7 +400,7 @@ abstract class Scanner
             if ($buffer === null || $buffer[1] !== $char) {
                 return $this->error("Unterminated string");
             }
-            return new Token(Token::TYPE_STRING_LITERAL, $char . $buffer[0]);
+            return new Token(Token::TYPE_STRING, $char . $buffer[0]);
         }
         
         return null;

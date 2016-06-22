@@ -1,0 +1,38 @@
+[
+    {
+        "type": "Keyword",
+        "value": "import"
+    },
+    {
+        "type": "Punctuator",
+        "value": "{"
+    },
+    {
+        "type": "Identifier",
+        "value": "member"
+    },
+    {
+        "type": "Identifier",
+        "value": "as"
+    },
+    {
+        "type": "Identifier",
+        "value": "newname"
+    },
+    {
+        "type": "Punctuator",
+        "value": "}"
+    },
+    {
+        "type": "Identifier",
+        "value": "from"
+    },
+    {
+        "type": "String",
+        "value": "\"my-module\""
+    },
+    {
+        "type": "Punctuator",
+        "value": ";"
+    }
+]

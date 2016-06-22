@@ -1,0 +1,38 @@
+[
+    {
+        "type": "Keyword",
+        "value": "import"
+    },
+    {
+        "type": "Identifier",
+        "value": "mod1"
+    },
+    {
+        "type": "Punctuator",
+        "value": ","
+    },
+    {
+        "type": "Punctuator",
+        "value": "*"
+    },
+    {
+        "type": "Identifier",
+        "value": "as"
+    },
+    {
+        "type": "Identifier",
+        "value": "mod2"
+    },
+    {
+        "type": "Identifier",
+        "value": "from"
+    },
+    {
+        "type": "String",
+        "value": "\"my-module\""
+    },
+    {
+        "type": "Punctuator",
+        "value": ";"
+    }
+]

@@ -1,0 +1,30 @@
+[
+    {
+        "type": "Template",
+        "value": "`test${"
+    },
+    {
+        "type": "Template",
+        "value": "`abc${"
+    },
+    {
+        "type": "Identifier",
+        "value": "fn"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Template",
+        "value": "}`"
+    },
+    {
+        "type": "Template",
+        "value": "}test`"
+    }
+]

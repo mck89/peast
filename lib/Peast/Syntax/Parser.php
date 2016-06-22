@@ -25,6 +25,13 @@ abstract class Parser
     
     abstract public function parse();
     
+    public function tokenize()
+    {
+        $this->scanner->enableTokenRegistration();
+        $this->parse();
+        return $this->scanner->getTokens();
+    }
+    
     protected function createNode($nodeType, $position)
     {
         $parts = explode("\\", get_class($this));

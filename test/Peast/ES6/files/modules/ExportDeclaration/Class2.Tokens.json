@@ -1,0 +1,26 @@
+[
+    {
+        "type": "Keyword",
+        "value": "export"
+    },
+    {
+        "type": "Keyword",
+        "value": "default"
+    },
+    {
+        "type": "Keyword",
+        "value": "class"
+    },
+    {
+        "type": "Identifier",
+        "value": "a"
+    },
+    {
+        "type": "Punctuator",
+        "value": "{"
+    },
+    {
+        "type": "Punctuator",
+        "value": "}"
+    }
+]

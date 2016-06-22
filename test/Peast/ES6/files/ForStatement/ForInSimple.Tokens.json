@@ -1,0 +1,50 @@
+[
+    {
+        "type": "Keyword",
+        "value": "for"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Identifier",
+        "value": "i"
+    },
+    {
+        "type": "Keyword",
+        "value": "in"
+    },
+    {
+        "type": "Identifier",
+        "value": "rows"
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    },
+    {
+        "type": "Identifier",
+        "value": "console"
+    },
+    {
+        "type": "Punctuator",
+        "value": "."
+    },
+    {
+        "type": "Identifier",
+        "value": "log"
+    },
+    {
+        "type": "Punctuator",
+        "value": "("
+    },
+    {
+        "type": "Identifier",
+        "value": "rows"
+    },
+    {
+        "type": "Punctuator",
+        "value": ")"
+    }
+]

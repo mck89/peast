@@ -1,0 +1,70 @@
+[
+    {
+        "type": "Identifier",
+        "value": "foo"
+    },
+    {
+        "type": "Punctuator",
+        "value": "."
+    },
+    {
+        "type": "Identifier",
+        "value": "bar"
+    },
+    {
+        "type": "Punctuator",
+        "value": "["
+    },
+    {
+        "type": "String",
+        "value": "\"ba\""
+    },
+    {
+        "type": "Punctuator",
+        "value": "+"
+    },
+    {
+        "type": "String",
+        "value": "\"z\""
+    },
+    {
+        "type": "Punctuator",
+        "value": "]"
+    },
+    {
+        "type": "Punctuator",
+        "value": "."
+    },
+    {
+        "type": "Identifier",
+        "value": "bar"
+    },
+    {
+        "type": "Template",
+        "value": "`template${"
+    },
+    {
+        "type": "Identifier",
+        "value": "exp"
+    },
+    {
+        "type": "Template",
+        "value": "}string`"
+    },
+    {
+        "type": "Punctuator",
+        "value": "."
+    },
+    {
+        "type": "Identifier",
+        "value": "test"
+    },
+    {
+        "type": "Template",
+        "value": "`other`"
+    },
+    {
+        "type": "Template",
+        "value": "`value`"
+    }
+]

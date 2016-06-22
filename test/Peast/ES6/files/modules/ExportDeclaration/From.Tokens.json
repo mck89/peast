@@ -1,0 +1,22 @@
+[
+    {
+        "type": "Keyword",
+        "value": "export"
+    },
+    {
+        "type": "Punctuator",
+        "value": "*"
+    },
+    {
+        "type": "Identifier",
+        "value": "from"
+    },
+    {
+        "type": "String",
+        "value": "\"my-module\""
+    },
+    {
+        "type": "Punctuator",
+        "value": ";"
+    }
+]
