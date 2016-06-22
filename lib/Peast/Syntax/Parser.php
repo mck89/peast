@@ -25,7 +25,7 @@ abstract class Parser
     
     abstract public function parse();
     
-    public function createNode($nodeType, $position)
+    protected function createNode($nodeType, $position)
     {
         $parts = explode("\\", get_class($this));
         array_pop($parts);
@@ -43,14 +43,14 @@ abstract class Parser
         return $node->setStartPosition($position);
     }
     
-    public function completeNode(Node $node, $position = null)
+    protected function completeNode(Node $node, $position = null)
     {
         return $node->setEndPosition(
             $position ? $position : $this->scanner->getPosition()
         );
     }
     
-    public function error($message = "", $position = null)
+    protected function error($message = "", $position = null)
     {
         if (!$position) {
             $position = $this->scanner->getPosition();

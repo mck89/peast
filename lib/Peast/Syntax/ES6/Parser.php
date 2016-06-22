@@ -5,6 +5,31 @@ use Peast\Syntax\Token;
 
 class Parser extends \Peast\Syntax\Parser
 {
+    
+    public function parse()
+    {
+        $type = isset($this->options["sourceType"]) ?
+                $this->options["sourceType"] :
+                \Peast\Peast::SOURCE_TYPE_SCRIPT;
+        
+        $body = $type === \Peast\Peast::SOURCE_TYPE_MODULE ?
+                $this->parseModuleItemList() :
+                $this->parseStatementList();
+        
+        $node = $this->createNode(
+            "Program", $body ? $body : $this->scanner->getPosition()
+        );
+        $node->setSourceType($type);
+        if ($body) {
+            $node->setBody($body);
+        }
+        $program = $this->completeNode($node);
+        if ($this->scanner->getToken()) {
+            return $this->error();
+        }
+        return $program;
+    }
+    
     protected function expressionToPattern($node)
     {
         $retNode = $node;
@@ -60,30 +85,6 @@ class Parser extends \Peast\Syntax\Parser
             
         }
         return $retNode;
-    }
-    
-    public function parse()
-    {
-        $type = isset($this->options["sourceType"]) ?
-                $this->options["sourceType"] :
-                \Peast\Peast::SOURCE_TYPE_SCRIPT;
-        
-        $body = $type === \Peast\Peast::SOURCE_TYPE_MODULE ?
-                $this->parseModuleItemList() :
-                $this->parseStatementList();
-        
-        $node = $this->createNode(
-            "Program", $body ? $body : $this->scanner->getPosition()
-        );
-        $node->setSourceType($type);
-        if ($body) {
-            $node->setBody($body);
-        }
-        $program = $this->completeNode($node);
-        if ($this->scanner->getToken()) {
-            return $this->error();
-        }
-        return $program;
     }
     
     protected function parseStatementList($yield = false, $return = false)
