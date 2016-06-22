@@ -5,15 +5,6 @@ use Peast\Syntax\Token;
 
 class Parser extends \Peast\Syntax\Parser
 {
-    public function setSource($source)
-    {
-        $encoding = isset($options["sourceEncoding"]) ?
-                    $options["sourceEncoding"] :
-                    null;
-        $this->scanner = new Scanner($source, $encoding);
-        return $this;
-    }
-    
     protected function expressionToPattern($node)
     {
         $retNode = $node;

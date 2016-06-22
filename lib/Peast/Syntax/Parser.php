@@ -7,14 +7,23 @@ abstract class Parser
     
     protected $options;
     
-    public function __construct($options = array())
+    public function __construct($source, $options = array())
     {
         $this->options = $options;
+        
+        $encoding = isset($options["sourceEncoding"]) ?
+                    $options["sourceEncoding"] :
+                    null;
+        
+        //Create the scanner
+        $classParts = explode("\\", get_class($this));
+        array_pop($classParts);
+        $classParts[] = "Scanner";
+        $scannerClasss = implode("\\", $classParts);
+        $this->scanner = new $scannerClasss($source, $encoding);
     }
     
     abstract public function parse();
-    
-    abstract public function setSource($source);
     
     public function createNode($nodeType, $position)
     {

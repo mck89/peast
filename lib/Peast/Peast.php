@@ -9,7 +9,6 @@ class Peast
     
     static public function ES6($source, $options = array())
     {
-        $parser = new Syntax\ES6\Parser($options);
-        return $parser->setSource($source);
+        return new Syntax\ES6\Parser($source, $options);
     }
 }
