@@ -2387,7 +2387,7 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseStringLiteral()
     {
         $token = $this->scanner->getToken();
-        if ($token && $token->getType() === Token::TYPE_STRING) {
+        if ($token && $token->getType() === Token::TYPE_STRING_LITERAL) {
             $this->scanner->consumeToken();
             $node = $this->createNode("Literal", $token);
             $node->setRaw($token->getValue());

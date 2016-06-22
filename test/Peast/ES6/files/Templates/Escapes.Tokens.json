@@ -1,6 +1,20 @@
 [
     {
         "type": "Template",
-        "value": "`test\\${fn()}\\n\\ttest\\`\\u0042\\u{FF}`"
+        "value": "`test\\${fn()}\\n\\ttest\\`\\u0042\\u{FF}`",
+        "range": [
+            0,
+            36
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 0
+            },
+            "end": {
+                "line": 1,
+                "column": 36
+            }
+        }
     }
 ]

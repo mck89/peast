@@ -132,11 +132,18 @@ abstract class Scanner
                 $state[$prop] = $this->$prop;
             }
         }
+        if ($this->registerTokens) {
+            $state["tokensNum"] = count($this->tokens);
+        }
         return $state;
     }
     
     public function setState($state)
     {
+        if ($this->registerTokens) {
+            $this->tokens = array_slice($this->tokens, 0, $state["tokensNum"]);
+            unset($state["tokensNum"]);
+        }
         foreach ($state as $key => $value) {
             $this->$key = $value;
         }
@@ -400,7 +407,7 @@ abstract class Scanner
             if ($buffer === null || $buffer[1] !== $char) {
                 return $this->error("Unterminated string");
             }
-            return new Token(Token::TYPE_STRING, $char . $buffer[0]);
+            return new Token(Token::TYPE_STRING_LITERAL, $char . $buffer[0]);
         }
         
         return null;

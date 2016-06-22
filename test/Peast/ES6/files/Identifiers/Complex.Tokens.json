@@ -1,6 +1,20 @@
 [
     {
         "type": "Identifier",
-        "value": "\\u30c8\\u{FF}\\u{A0C5}\\u5674234"
+        "value": "\\u30c8\\u{FF}\\u{A0C5}\\u5674234",
+        "range": [
+            0,
+            29
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 0
+            },
+            "end": {
+                "line": 1,
+                "column": 29
+            }
+        }
     }
 ]

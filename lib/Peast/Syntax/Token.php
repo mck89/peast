@@ -3,19 +3,19 @@ namespace Peast\Syntax;
 
 class Token
 {
-    const TYPE_BOOLEAN_LITERAL = "BooleanLiteral";
+    const TYPE_BOOLEAN_LITERAL = "Boolean";
     
     const TYPE_IDENTIFIER = "Identifier";
     
     const TYPE_KEYWORD = "Keyword";
     
-    const TYPE_NULL_LITERAL = "NullLiteral";
+    const TYPE_NULL_LITERAL = "Null";
     
-    const TYPE_NUMERIC_LITERAL = "NumericLiteral";
+    const TYPE_NUMERIC_LITERAL = "Numeric";
     
     const TYPE_PUNCTUTATOR = "Punctuator";
     
-    const TYPE_STRING = "String";
+    const TYPE_STRING_LITERAL = "String";
     
     const TYPE_REGULAR_EXPRESSION = "RegularExpression";
     

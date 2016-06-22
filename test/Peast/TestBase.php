@@ -9,6 +9,8 @@ class TestBase extends \PHPUnit_Framework_TestCase
     
     const JS_TOKENIZE = 3;
     
+    protected $tokensTestProps = array("type", "value", "loc", "range");
+    
     protected function getJsTestFiles($dir, $jsType = self::JS_PARSE)
     {
         $invalid = $jsType === self::JS_INVALID;
@@ -38,13 +40,13 @@ class TestBase extends \PHPUnit_Framework_TestCase
         return $testFiles;
     }
     
-    protected function compareJSFile($tree, $compareFile)
+    protected function compareJSFile($tree, $compareFile, $tokens = false)
     {
         $compareTree = json_decode(file_get_contents($compareFile));
-        $this->objectTestRecursive($compareTree, $tree);
+        $this->objectTestRecursive($compareTree, $tree, $tokens);
     }
     
-    protected function objectTestRecursive($compare, $obj, $message = "")
+    protected function objectTestRecursive($compare, $obj, $tokens, $message = "")
     {
         $objType = gettype($obj);
         $this->assertSame(gettype($compare), $objType, "gettype($message)");
@@ -52,19 +54,22 @@ class TestBase extends \PHPUnit_Framework_TestCase
         {
             case "object":
                 if (isset($compare->type)) {
-                    $this->fixComparison($compare);
+                    $this->fixComparison($compare, $tokens);
                 }
                 foreach ($compare as $k => $v) {
+                    if ($tokens && !in_array($k, $this->tokensTestProps)) {
+                        continue;
+                    }
                     $fn = "get" . ucfirst($k);
                     $objValue = $obj->$fn();
                     $objValue = $this->fixParenthesizedExpression($objValue);
-                    $this->objectTestRecursive($v, $objValue, "$message" . "->$k");
+                    $this->objectTestRecursive($v, $objValue, $tokens, "$message" . "->$k");
                 }
             break;
             case "array":
                 $this->assertSame(count($compare), count($obj), "count($message)");
                 foreach ($compare as $k => $v) {
-                    $this->objectTestRecursive($v, $obj[$k], "$message" . "[$k]");
+                    $this->objectTestRecursive($v, $obj[$k], $tokens, "$message" . "[$k]");
                 }
             break;
             default:

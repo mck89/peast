@@ -1,30 +1,128 @@
 [
     {
         "type": "Keyword",
-        "value": "new"
+        "value": "new",
+        "range": [
+            0,
+            3
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 0
+            },
+            "end": {
+                "line": 1,
+                "column": 3
+            }
+        }
     },
     {
         "type": "Identifier",
-        "value": "foo"
+        "value": "foo",
+        "range": [
+            4,
+            7
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 4
+            },
+            "end": {
+                "line": 1,
+                "column": 7
+            }
+        }
     },
     {
         "type": "Punctuator",
-        "value": "."
+        "value": ".",
+        "range": [
+            7,
+            8
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 7
+            },
+            "end": {
+                "line": 1,
+                "column": 8
+            }
+        }
     },
     {
         "type": "Identifier",
-        "value": "bar"
+        "value": "bar",
+        "range": [
+            8,
+            11
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 8
+            },
+            "end": {
+                "line": 1,
+                "column": 11
+            }
+        }
     },
     {
         "type": "Punctuator",
-        "value": "("
+        "value": "(",
+        "range": [
+            11,
+            12
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 11
+            },
+            "end": {
+                "line": 1,
+                "column": 12
+            }
+        }
     },
     {
         "type": "Identifier",
-        "value": "arg"
+        "value": "arg",
+        "range": [
+            12,
+            15
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 12
+            },
+            "end": {
+                "line": 1,
+                "column": 15
+            }
+        }
     },
     {
         "type": "Punctuator",
-        "value": ")"
+        "value": ")",
+        "range": [
+            15,
+            16
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 15
+            },
+            "end": {
+                "line": 1,
+                "column": 16
+            }
+        }
     }
 ]

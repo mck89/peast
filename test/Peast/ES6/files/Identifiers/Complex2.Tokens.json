@@ -1,6 +1,20 @@
 [
     {
         "type": "Identifier",
-        "value": "aチ$_ぎäȵℬ兩ΩنامهایÇxൃ23"
+        "value": "aチ$_ぎäȵℬ兩ΩنامهایÇxൃ23",
+        "range": [
+            0,
+            21
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 0
+            },
+            "end": {
+                "line": 1,
+                "column": 21
+            }
+        }
     }
 ]

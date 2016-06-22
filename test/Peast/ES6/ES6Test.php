@@ -40,7 +40,7 @@ class ES6Test extends \test\Peast\TestBase
         );
         $source = file_get_contents($sourceFile);
         $tree = \Peast\Peast::ES6($source, $options)->tokenize();
-        $this->compareJSFile($tree, $compareFile);
+        $this->compareJSFile($tree, $compareFile, true);
     }
     
     public function invalidJsTestFilesProvider()

@@ -1,30 +1,128 @@
 [
     {
         "type": "Template",
-        "value": "`test${"
+        "value": "`test${",
+        "range": [
+            0,
+            7
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 0
+            },
+            "end": {
+                "line": 1,
+                "column": 7
+            }
+        }
     },
     {
         "type": "Template",
-        "value": "`abc${"
+        "value": "`abc${",
+        "range": [
+            7,
+            13
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 7
+            },
+            "end": {
+                "line": 1,
+                "column": 13
+            }
+        }
     },
     {
         "type": "Identifier",
-        "value": "fn"
+        "value": "fn",
+        "range": [
+            13,
+            15
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 13
+            },
+            "end": {
+                "line": 1,
+                "column": 15
+            }
+        }
     },
     {
         "type": "Punctuator",
-        "value": "("
+        "value": "(",
+        "range": [
+            15,
+            16
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 15
+            },
+            "end": {
+                "line": 1,
+                "column": 16
+            }
+        }
     },
     {
         "type": "Punctuator",
-        "value": ")"
+        "value": ")",
+        "range": [
+            16,
+            17
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 16
+            },
+            "end": {
+                "line": 1,
+                "column": 17
+            }
+        }
     },
     {
         "type": "Template",
-        "value": "}`"
+        "value": "}`",
+        "range": [
+            17,
+            19
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 17
+            },
+            "end": {
+                "line": 1,
+                "column": 19
+            }
+        }
     },
     {
         "type": "Template",
-        "value": "}test`"
+        "value": "}test`",
+        "range": [
+            19,
+            25
+        ],
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 19
+            },
+            "end": {
+                "line": 1,
+                "column": 25
+            }
+        }
     }
 ]
