@@ -1232,14 +1232,14 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseExportSpecifier()
     {
-        if ($local = $this->parseIdentifier(false)) {
+        if ($local = $this->parseIdentifier()) {
             
             $node = $this->createNode("ExportSpecifier", $local);
             $node->setLocal($local);
             
             if ($this->scanner->consume("as")) {
                 
-                if ($exported = $this->parseIdentifier(false)) {
+                if ($exported = $this->parseIdentifier()) {
                     $node->setExported($exported);
                     return $this->completeNode($node);
                 }
@@ -1349,13 +1349,13 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseImportSpecifier()
     {
-        if ($imported = $this->parseIdentifier(false)) {
+        if ($imported = $this->parseIdentifier()) {
             
             $node = $this->createNode("ImportSpecifier", $imported);
             $node->setImported($imported);
             if ($this->scanner->consume("as")) {
                 
-                if ($local = $this->parseIdentifier(false)) {
+                if ($local = $this->parseIdentifier()) {
                     $node->setLocal($local);
                     return $this->completeNode($node);
                 }
