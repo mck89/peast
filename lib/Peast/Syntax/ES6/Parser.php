@@ -2278,11 +2278,17 @@ class Parser extends \Peast\Syntax\Parser
         }
         $type = $token->getType();
         switch ($type) {
-            case Token::TYPE_KEYWORD:
             case Token::TYPE_BOOLEAN_LITERAL:
             case Token::TYPE_NULL_LITERAL:
-                if ($disallowYield !== null &&
-                    ($disallowYield || $token->getValue() !== "yield")) {
+            case Token::TYPE_KEYWORD:
+                if ($disallowYield !== null && (
+                        $type !== Token::TYPE_KEYWORD ||
+                        $this->scanner->isStrictModeKeyword($token)
+                    ) && (
+                        $disallowYield ||
+                        $token->getValue() !== "yield" ||
+                        $this->scanner->getStrictMode()
+                    )) {
                     return null;
                 }
             break;

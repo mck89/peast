@@ -137,6 +137,14 @@ abstract class Scanner
         return $this->strictMode;
     }
     
+    public function isStrictModeKeyword($token)
+    {
+        return $token->getType() === Token::TYPE_KEYWORD &&
+               (in_array($token->getValue(), $this->keywords) || (
+                $this->strictMode &&
+                in_array($token->getValue(), $this->strictModeKeywords)));
+    }
+    
     public function getState()
     {
         $state = array();
@@ -670,11 +678,10 @@ abstract class Scanner
             $type = Token::TYPE_NULL_LITERAL;
         } elseif ($buffer === "true" || $buffer === "false") {
             $type = Token::TYPE_BOOLEAN_LITERAL;
-        } elseif (in_array($buffer, $this->keywords)) {
+        } elseif (in_array($buffer, $this->keywords) ||
+                  in_array($buffer, $this->strictModeKeywords)) {
             $type = Token::TYPE_KEYWORD;
-        } elseif ($this->strictMode && in_array($buffer, $this->strictModeKeywords)) {
-            $type = Token::TYPE_KEYWORD;
-        }else {
+        } else {
             $type = Token::TYPE_IDENTIFIER;
         }
         

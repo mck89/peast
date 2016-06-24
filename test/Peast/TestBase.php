@@ -11,6 +11,11 @@ class TestBase extends \PHPUnit_Framework_TestCase
     
     protected $tokensTestProps = array("type", "value", "loc", "range");
     
+    protected $tokensIdentifiersAsKeywords = array(
+        "implements", "interface", "package", "private", "protected", "public",
+        "static"
+    );
+    
     protected function getJsTestFiles($dir, $jsType = self::JS_PARSE)
     {
         $invalid = $jsType === self::JS_INVALID;
@@ -88,7 +93,7 @@ class TestBase extends \PHPUnit_Framework_TestCase
         return $val;
     }
     
-    protected function fixComparison($compare)
+    protected function fixComparison($compare, $tokens)
     {
         //Fix location
         if (isset($compare->loc)) {
@@ -140,6 +145,12 @@ class TestBase extends \PHPUnit_Framework_TestCase
             break;
             case "AssignmentPattern":
                 unset($compare->operator);
+            break;
+            case "Identifier":
+                if ($tokens &&
+                    in_array($compare->value, $this->tokensIdentifiersAsKeywords)) {
+                    $compare->type = "Keyword";
+                }
             break;
         }
     }
