@@ -28,9 +28,4 @@ class MetaProperty extends Node implements Expression
         $this->property = $property;
         return $this;
     }
-    
-    public function compile()
-    {
-        return $this->meta . "." . $this->property;
-    }
 }

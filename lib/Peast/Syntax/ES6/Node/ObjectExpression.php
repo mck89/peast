@@ -16,9 +16,4 @@ class ObjectExpression extends Node implements Expression
         $this->properties = $properties;
         return $this;
     }
-    
-    public function compile()
-    {
-        return "{" . $this->compileNodeList($this->getProperties(), ",") . "}";
-    }
 }

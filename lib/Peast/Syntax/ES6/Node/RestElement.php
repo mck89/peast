@@ -15,9 +15,4 @@ class RestElement extends Node implements Pattern
         $this->argument = $argument;
         return $this;
     }
-    
-    public function compile()
-    {
-        return "..." . $this->getArgument()->compile();
-    }
 }

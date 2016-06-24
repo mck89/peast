@@ -24,21 +24,4 @@ class ArrowFunctionExpression extends Node implements Expression, Function_
         $this->expression = (bool) $expression;
         return $this;
     }
-    
-    public function compile()
-    {
-        $ret .= " (" . $this->compileNodeList($this->getParams()) . ") => ";
-        
-        if (!$this->getExpression()) {
-            $ret .= "{";
-        }
-        
-        $ret .= $this->getBody()->compile();
-        
-        if (!$this->getExpression()) {
-            $ret .= "}";
-        }
-        
-        return $ret;
-    }
 }

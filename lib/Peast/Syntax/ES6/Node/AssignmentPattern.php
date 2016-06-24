@@ -28,9 +28,4 @@ class AssignmentPattern extends Node implements Pattern
         $this->right = $right;
         return $this;
     }
-    
-    public function compile()
-    {
-        return $this->getLeft()->compile() . "=" . $this->getRight()->compile();
-    }
 }

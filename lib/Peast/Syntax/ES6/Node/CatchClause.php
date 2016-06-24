@@ -28,10 +28,4 @@ class CatchClause extends Node
         $this->body = $body;
         return $this;
     }
-    
-    public function compile()
-    {
-        $source = "catch(" . $this->getParam()->compile() . ")" .
-                  $this->getBody()->compile();
-    }
 }

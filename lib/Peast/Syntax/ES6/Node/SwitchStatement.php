@@ -29,11 +29,4 @@ class SwitchStatement extends Node implements Statement
         $this->cases = $cases;
         return $this;
     }
-    
-    public function compile()
-    {
-        return "switch (" . $this->getDiscriminant()->compile() . ") {" .
-               $this->compileNodeList($this->getBody()) .
-               "}";
-    }
 }

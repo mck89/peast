@@ -16,18 +16,4 @@ class ArrayPattern extends Node implements Pattern
         $this->elements = $elements;
         return $this;
     }
-    
-    public function compile()
-    {
-        $strings = array();
-        foreach ($this->getElements() as $el) {
-            if ($el === null) {
-                $strings[] = "";
-            } else {
-                $strings[] = $el->compile();
-            }
-        }
-        
-        return "[" . implode(",", $strings) . "]";
-    }
 }

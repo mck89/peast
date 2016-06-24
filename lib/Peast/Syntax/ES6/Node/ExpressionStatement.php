@@ -15,9 +15,4 @@ class ExpressionStatement extends Node implements Statement
         $this->expression = $expression;
         return $this;
     }
-    
-    public function compile()
-    {
-        return $this->getExpression()->compile() . ";";
-    }
 }

@@ -34,25 +34,6 @@ abstract class Node
         return $this;
     }
     
-    abstract public function compile();
-    
-    public function __toString()
-    {
-        return $this->compile();
-    }
-    
-    protected function compileNodeList($list, $separator = "")
-    {
-        if (!count($list)) {
-            return "";
-        }
-        $sources = array();
-        foreach ($list as $item) {
-            $sources[] = $item->compile();
-        }
-        return implode($separator, $sources);
-    }
-    
     protected function assertArrayOf($params, $classes, $allowNull = false)
     {
         if (!is_array($classes)) {

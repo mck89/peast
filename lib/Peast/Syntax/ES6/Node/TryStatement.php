@@ -43,19 +43,4 @@ class TryStatement extends Node implements Statement
         $this->finalizer = $finalizer;
         return $this;
     }
-    
-    public function compile()
-    {
-        $source = "try " . $this->getBlock()->compile();
-        
-        if ($handler = $this->getHandler()) {
-            $source .= $handler->compile(); 
-        }
-        
-        if ($finalizer = $this->getFinalizer()) {
-            $source .= $finalizer->compile(); 
-        }
-        
-        return $source;
-    }
 }

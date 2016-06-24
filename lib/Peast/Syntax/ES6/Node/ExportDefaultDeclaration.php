@@ -16,9 +16,4 @@ class ExportDefaultDeclaration extends Node implements ModuleDeclaration
         $this->declaration = $declaration;
         return $this;
     }
-    
-    public function compile()
-    {
-        return "export default " . $this->getDeclaration()->compile() . ";";
-    }
 }

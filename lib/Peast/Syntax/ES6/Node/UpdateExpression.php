@@ -41,18 +41,4 @@ class UpdateExpression extends Node implements Expression
         $this->argument = $argument;
         return $this;
     }
-    
-    public function compile()
-    {
-        $prefix = $this->getPrefix();
-        $ret = "";
-        if ($prefix) {
-            $ret .= $this->getOperator();
-        }
-        $ret .= $this->getArgument()->compile();
-        if (!$prefix) {
-            $ret .= $this->getOperator();
-        }
-        return $ret;
-    }
 }

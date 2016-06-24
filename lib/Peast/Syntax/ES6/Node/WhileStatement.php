@@ -28,10 +28,4 @@ class WhileStatement extends Node implements Statement
         $this->body = $body;
         return $this;
     }
-    
-    public function compile()
-    {
-        return "while (" . $this->getTest()->compile() . ")" .
-               $this->getBody()->compile();
-    }
 }

@@ -87,39 +87,4 @@ class Property extends Node
         $this->computed = (bool) $computed;
         return $this;
     }
-    
-    public function compile()
-    {
-        $ret = array();
-        
-        $value = $this->getValue();
-        $key = $this->getKey();
-        $kind = $this->getKind();
-        
-        if ($kind === self::KIND_GET || $kind === self::KIND_SET) {
-            $ret[] = $kind;
-        } elseif ($value instanceof FunctionExpression &&
-                  $value->getGenerator()) {
-            $ret[] = "*";
-        }
-        
-        $compiledKey = $key->compile();
-        $compiledValue = $value->compile();
-        if ($this->getComputed()) {
-            $ret[] = "[" . $compiledKey . "]";
-        } else {
-            $ret[] = $compiledKey;
-        }
-        
-        if ($this->getMethod()) {
-            $ret[] = preg_replace("/^[^\(]+/", "", $compiledValue);
-        } elseif (!($value instanceof Identifier) ||
-                  !($key instanceof Identifier) ||
-                  $compiledKey !== $compiledValue) {
-            $ret[] = $this->getShorthand() ? "=" : ":";
-            $ret[] = $compiledValue;
-        }
-        
-        return implode(" ", $ret);
-    }
 }

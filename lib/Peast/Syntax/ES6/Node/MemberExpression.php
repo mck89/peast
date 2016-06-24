@@ -42,16 +42,4 @@ class MemberExpression extends Node implements Expression, Pattern
         $this->computed = (bool) $computed;
         return $this;
     }
-    
-    public function compile()
-    {
-        $object = $this->getObject()->compile();
-        $property = $this->getProperty()->compile();
-        
-        if ($this->getComputed()) {
-            return $object . "[" . $property . "]";
-        } else {
-            return $object . "." . $property;
-        }
-    }
 }

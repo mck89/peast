@@ -40,10 +40,4 @@ class UnaryExpression extends Node implements Expression
         $this->argument = $argument;
         return $this;
     }
-    
-    public function compile()
-    {
-        return $this->getOperator()->compile() .
-               $this->getArgument()->compile();
-    }
 }

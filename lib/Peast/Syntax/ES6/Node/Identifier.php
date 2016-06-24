@@ -15,9 +15,4 @@ class Identifier extends Node implements Expression, Pattern
         $this->name = $name;
         return $this;
     }
-    
-    public function compile()
-    {
-        return $this->getName();
-    }
 }

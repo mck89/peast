@@ -42,16 +42,4 @@ class IfStatement extends Node implements Statement
         $this->alternate = $alternate;
         return $this;
     }
-    
-    public function compile()
-    {
-        $source = "if (" . $this->getTest()->compile() . ") ";
-        $source .= $this->getConsequent()->compile();
-        
-        if ($alternate = $this->getAlternate()) {
-            $source .= " else " . $alternate->compile();
-        }
-        
-        return $source;
-    }
 }

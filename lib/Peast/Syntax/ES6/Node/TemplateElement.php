@@ -46,9 +46,4 @@ class TemplateElement extends Node
         $this->rawValue = $rawValue;
         return $this;
     }
-    
-    public function compile()
-    {
-        return $this->getRawValue();
-    }
 }

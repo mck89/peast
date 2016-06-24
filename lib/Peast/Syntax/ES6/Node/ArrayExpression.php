@@ -20,18 +20,4 @@ class ArrayExpression extends Node implements Expression
         $this->elements = $elements;
         return $this;
     }
-    
-    public function compile()
-    {
-        $strings = array();
-        foreach ($this->getElements() as $el) {
-            if ($el === null) {
-                $strings[] = "";
-            } else {
-                $strings[] = $el->compile();
-            }
-        }
-        
-        return "[" . implode(",", $strings) . "]";
-    }
 }

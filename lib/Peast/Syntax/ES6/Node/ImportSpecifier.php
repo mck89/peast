@@ -15,13 +15,4 @@ class ImportSpecifier extends ModuleSpecifier
         $this->imported = $imported;
         return $this;
     }
-    
-    public function compile()
-    {
-        $local = $this->getLocal()->compile();
-        $imported = $this->getImported()->compile();
-        return !$imported || $local === $imported ?
-               $local :
-               $local . " as " . $imported;
-    }
 }

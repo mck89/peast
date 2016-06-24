@@ -15,9 +15,4 @@ class ParenthesizedExpression extends Node implements Expression
         $this->expression = $expression;
         return $this;
     }
-    
-    public function compile()
-    {
-        return "(" . $this->getExpression()->getName() . ")";
-    }
 }

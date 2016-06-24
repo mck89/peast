@@ -15,9 +15,4 @@ class SpreadElement extends Node
         $this->argument = $argument;
         return $this;
     }
-    
-    public function compile()
-    {
-        return "..." . $this->getArgument()->compile();
-    }
 }

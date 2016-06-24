@@ -61,29 +61,4 @@ class ForStatement extends Node implements Statement
         $this->body = $body;
         return $this;
     }
-    
-    public function compile()
-    {
-        $source = "for (";
-        
-        if ($init = $this->getInit()) {
-            $source .= $init->compile();
-        }
-        
-        $source .= ";";
-        
-        if ($test = $this->getTest()) {
-            $source .= $test->compile();
-        }
-        
-        $source .= ";";
-        
-        if ($update = $this->getUpdate()) {
-            $source .= $update->compile();
-        }
-        
-        $source .= ") " . $this->getBody()->compile();
-        
-        return $source;
-    }
 }

@@ -16,9 +16,4 @@ class ClassBody extends Node
         $this->body = $body;
         return $this;
     }
-    
-    public function compile()
-    {
-        return $this->compileNodeList($this->getBody());
-    }
 }

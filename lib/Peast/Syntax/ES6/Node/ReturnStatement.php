@@ -16,17 +16,4 @@ class ReturnStatement extends Node implements Statement
         $this->argument = $argument;
         return $this;
     }
-    
-    public function compile()
-    {
-        $source = "return";
-        
-        if ($argument = $this->getArgument()) {
-            $source .= " " . $argument->compile(); 
-        }
-        
-        $source .= ";";
-        
-        return $source;
-    }
 }

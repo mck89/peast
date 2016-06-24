@@ -41,11 +41,4 @@ class LogicalExpression extends Node implements Expression
         $this->right = $right;
         return $this;
     }
-    
-    public function compile()
-    {
-        return $this->getLeft()->compile() .
-               $this->getOperator()->compile() .
-               $this->getRight()->compile();
-    }
 }

@@ -44,23 +44,4 @@ class ExportNamedDeclaration extends Node implements ModuleDeclaration
         $this->source = $source;
         return $this;
     }
-    
-    public function compile()
-    {
-        $ret = "export";
-        
-        if ($declaration = $this->getDeclaration()) {
-            return $ret . " " . $declaration->compile();
-        }
-        
-        $ret .= " {" .
-                   $this->compileNodeList($this->getSpecifiers(), ", ") .
-                   "}";
-        
-        if ($source = $this->getSource()) {
-            $ret .= " from ". $source->compile();
-        }
-        
-        return $ret . ";";
-    }
 }

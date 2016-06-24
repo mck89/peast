@@ -28,11 +28,4 @@ class LabeledStatement extends Node implements Statement
         $this->body = $body;
         return $this;
     }
-    
-    public function compile()
-    {
-        return $this->getLabel()->compile() .
-               ":" .
-               $this->getBody()->compile();
-    }
 }

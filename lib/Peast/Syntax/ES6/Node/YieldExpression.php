@@ -29,19 +29,4 @@ class YieldExpression extends Node implements Expression
         $this->delegate = (bool) $delegate;
         return $this;
     }
-    
-    public function compile()
-    {
-        $source = "yield";
-        
-        if ($this->getDelegate()) {
-            $source .= " *";
-        }
-        
-        if ($argument = $this->getArgument()) {
-            $source .= " " . $argument->compile();
-        }
-        
-        return $source;
-    }
 }

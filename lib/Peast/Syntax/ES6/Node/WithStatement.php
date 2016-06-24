@@ -28,10 +28,4 @@ class WithStatement extends Node implements Statement
         $this->body = $body;
         return $this;
     }
-    
-    public function compile()
-    {
-        return "with (" . $this->getObject()->compile() . ") " .
-               $this->getBody()->compile();
-    }
 }

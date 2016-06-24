@@ -15,9 +15,4 @@ class ExportAllDeclaration extends Node implements ModuleDeclaration
         $this->source = $source;
         return $this;
     }
-    
-    public function compile()
-    {
-        return "export * from" . $this->getSource()->compile() . ";";
-    }
 }

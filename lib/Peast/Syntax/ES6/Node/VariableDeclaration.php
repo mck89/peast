@@ -35,11 +35,4 @@ class VariableDeclaration extends Node implements Declaration
         $this->kind = $kind;
         return $this;
     }
-    
-    public function compile()
-    {
-        return $this->getKind() .
-               $this->compileNodeList($this->getBody(), ",") .
-               ";";
-    }
 }

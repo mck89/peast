@@ -16,9 +16,4 @@ class ObjectPattern extends Node implements Pattern
         $this->properties = $properties;
         return $this;
     }
-    
-    public function compile()
-    {
-        return "{" . $this->compileNodeList($this->getProperties(), ",") . "}";
-    }
 }

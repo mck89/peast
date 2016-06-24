@@ -16,17 +16,4 @@ class ContinueStatement extends Node implements Statement
         $this->label = $label;
         return $this;
     }
-    
-    public function compile()
-    {
-        $source = "continue";
-        
-        if ($label = $this->getLabel()) {
-            $source .= " " . $label->compile(); 
-        }
-        
-        $source .= ";";
-        
-        return $source;
-    }
 }

@@ -118,9 +118,4 @@ class Literal extends Node implements Expression
         $this->raw = $rawValue;
         return $this;
     }
-    
-    public function compile()
-    {
-        return $this->getRaw();
-    }
 }

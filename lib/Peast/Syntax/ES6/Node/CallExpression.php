@@ -30,10 +30,4 @@ class CallExpression extends Node implements Expression
         $this->arguments = $arguments;
         return $this;
     }
-    
-    public function compile()
-    {
-        return $this->getCallee()->compile() .
-               "(" . $this->compileNodeList($this->getArguments()) . ")";
-    }
 }

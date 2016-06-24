@@ -28,10 +28,4 @@ class DoWhileStatement extends Node implements Statement
         $this->test = $test;
         return $this;
     }
-    
-    public function compile()
-    {
-        return "do" . $this->getBody()->compile() .
-               "while (" . $this->getTest()->compile() . ")";
-    }
 }

@@ -30,15 +30,4 @@ class SwitchCase extends Node
         $this->consequent = $consequent;
         return $this;
     }
-    
-    public function compile()
-    {
-        if ($test = $this->getTest()) {
-            $source = "case " . $test->compile();
-        } else {
-            $source = "default";
-        }
-        $source .= ": " . $this->compileNodeList($this->getConsequent());
-        return $source;
-    }
 }

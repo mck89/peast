@@ -28,10 +28,4 @@ class TaggedTemplateExpression extends Node implements Expression
         $this->quasi = $quasi;
         return $this;
     }
-    
-    public function compile()
-    {
-        return $this->getTag()->compile() .
-               $this->getQuasi()->compile();
-    }
 }

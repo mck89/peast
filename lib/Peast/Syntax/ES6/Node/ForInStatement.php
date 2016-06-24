@@ -44,11 +44,4 @@ class ForInStatement extends Node implements Statement
         $this->body = $body;
         return $this;
     }
-    
-    public function compile()
-    {
-        return "for (" . $this->getLeft()->compile() .
-               " in " . $this->getRight()->compile() . ") " .
-               $this->getBody()->compile();
-    }
 }

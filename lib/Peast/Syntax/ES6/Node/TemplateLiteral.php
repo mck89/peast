@@ -30,23 +30,4 @@ class TemplateLiteral extends Node implements Expression
         $this->expressions = $expressions;
         return $this;
     }
-    
-    public function compile()
-    {
-        $ret = array("`");
-        
-        $quasis = $this->getQuasis();
-        $expressions = $this->getExpressions();
-        $count = count($quasis);
-        for ($i = 0; $i < $count; $i++) {
-            $ret[] = $quasis[$i]->compile();
-            if (isset($expressions[$i])) {
-                $ret[] = "${" + $expressions[$i]->compile() + "}";
-            }
-        }
-        
-        $ret[] = "`";
-        
-        return implode("", $ret);
-    }
 }

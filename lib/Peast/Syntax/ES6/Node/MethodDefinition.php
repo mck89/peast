@@ -75,33 +75,4 @@ class MethodDefinition extends Node
         $this->{"static"} = (bool) $static;
         return $this;
     }
-    
-    public function compile()
-    {
-        $ret = array();
-        
-        if ($this->getStatic()) {
-            $ret[] = "static";
-        }
-        
-        $value = $this->getValue();
-        $key = $this->getKey();
-        $kind = $this->getKind();
-        
-        if ($kind === self::KIND_GET || $kind === self::KIND_SET) {
-            $ret[] = $kind;
-        } elseif ($value->getGenerator()) {
-            $ret[] = "*";
-        }
-        
-        if ($this->getComputed()) {
-            $ret[] = "[" . $key->compile() . "]";
-        } else {
-            $ret[] = $key->compile();
-        }
-        
-        $ret[] = preg_replace("/^[^\(]+/", "", $value->compile());
-        
-        return implode(" ", $ret);
-    }
 }

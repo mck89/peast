@@ -15,9 +15,4 @@ class ThrowStatement extends Node implements Statement
         $this->argument = $argument;
         return $this;
     }
-    
-    public function compile()
-    {
-        return "throw " . $this->getArgument()->compile() . ";";
-    }
 }

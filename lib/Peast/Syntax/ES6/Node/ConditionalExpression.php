@@ -41,11 +41,4 @@ class ConditionalExpression extends Node implements Expression
         $this->alternate = $alternate;
         return $this;
     }
-    
-    public function compile()
-    {
-        return $this->getTest()->compile() . "?" .
-               $this->getConsequent()->compile() . ":" .
-               $this->getAlternate()->compile();
-    }
 }

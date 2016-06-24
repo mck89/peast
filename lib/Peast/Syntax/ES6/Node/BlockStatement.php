@@ -16,9 +16,4 @@ class BlockStatement extends Node implements Statement
         $this->body = $body;
         return $this;
     }
-    
-    public function compile()
-    {
-        return "{" . $this->compileNodeList($this->getBody()) . "}";
-    }
 }

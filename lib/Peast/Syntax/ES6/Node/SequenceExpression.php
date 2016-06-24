@@ -16,9 +16,4 @@ class SequenceExpression  extends Node implements Expression
         $this->expressions = $expressions;
         return $this;
     }
-    
-    public function compile()
-    {
-        return $this->compileNodeList($this->getExpressions(), ",");
-    }
 }
