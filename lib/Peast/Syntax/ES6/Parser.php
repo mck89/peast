@@ -11,9 +11,12 @@ class Parser extends \Peast\Syntax\Parser
                 $this->options["sourceType"] :
                 \Peast\Peast::SOURCE_TYPE_SCRIPT;
         
-        $body = $type === \Peast\Peast::SOURCE_TYPE_MODULE ?
-                $this->parseModuleItemList() :
-                $this->parseStatementList();
+        if ($type === \Peast\Peast::SOURCE_TYPE_MODULE) {
+            $this->scanner->setStrictMode(true);
+            $body = $this->parseModuleItemList();
+        } else {
+            $body = $this->parseStatementList(false, false, true);
+        }
         
         $node = $this->createNode(
             "Program", $body ? $body : $this->scanner->getPosition()
@@ -86,12 +89,35 @@ class Parser extends \Peast\Syntax\Parser
         return $retNode;
     }
     
-    protected function parseStatementList($yield = false, $return = false)
+    protected function parseStatementList($yield = false, $return = false,
+                                          $parseDirectivePrologues = false)
     {
         $items = array();
+        
+        //Get directive prologues and check if strict mode is present
+        $strictModeChanged = false;
+        if ($parseDirectivePrologues) {
+            if ($directives = $this->parseDirectivePrologues()) {
+                $items = array_merge($items, $directives[0]);
+                //If "use strict" is present store the current value and
+                //restore it at the end of the function
+                if (!$this->scanner->getStrictMode() &&
+                    in_array("use strict", $directives[1])) {
+                    $strictModeChanged = true;
+                    $this->scanner->setStrictMode(true);
+                }
+            }
+        }
+        
         while ($item = $this->parseStatementListItem($yield, $return)) {
             $items[] = $item;
         }
+        
+        //Apply previous strict mode
+        if ($strictModeChanged) {
+            $this->scanner->setStrictMode(false);
+        }
+        
         return count($items) ? $items : null;
     }
     
@@ -883,7 +909,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseFunctionBody($yield = false)
     {
-        $body = $this->parseStatementList($yield, true);
+        $body = $this->parseStatementList($yield, true, true);
         $node = $this->createNode(
             "BlockStatement", $body ? $body : $this->scanner->getPosition()
         );
@@ -2468,5 +2494,19 @@ class Parser extends \Peast\Syntax\Parser
             return $this->completeNode($node);
         }
         return null;
+    }
+    
+    protected function parseDirectivePrologues()
+    {
+        $directives = array();
+        $nodes = array();
+        while ($directive = $this->parseStringLiteral()) {
+            $this->assertEndOfStatement();
+            $directives[] = $directive->getValue();
+            $node = $this->createNode("ExpressionStatement", $directive);
+            $node->setExpression($directive);
+            $nodes[] = $this->completeNode($node);
+        }
+        return count($nodes) ? array($nodes, $directives) : null;
     }
 }

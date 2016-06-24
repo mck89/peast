@@ -12,8 +12,12 @@ class Scanner extends \Peast\Syntax\Scanner
         "catch", "export", "new", "void", "class", "extends", "return", "while",
         "const", "finally", "super", "with", "continue", "for", "switch",
         "yield", "debugger", "function", "this", "default", "if", "throw",
-        "delete", "import", "try", "enum", "implements", "package", "protected",
-        "interface", "private", "public", "await"
+        "delete", "import", "try", "enum", "await"
+    );
+    
+    protected $strictModeKeywords = array(
+        "implements", "interface", "package", "private", "protected", "public",
+        "static", "let"
     );
     
     protected $punctutators = array(

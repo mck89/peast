@@ -19,6 +19,8 @@ abstract class Scanner
     
     protected $nextToken;
     
+    protected $strictMode = false;
+    
     protected $registerTokens = false;
     
     protected $tokens = array();
@@ -28,6 +30,8 @@ abstract class Scanner
     protected $idPartRegex;
     
     protected $keywords = array();
+    
+    protected $strictModeKeywords = array();
     
     protected $punctutators = array();
     
@@ -57,7 +61,7 @@ abstract class Scanner
     protected $lineTerminators;
     
     protected $stateProps = array("position", "index", "column", "line",
-                                  "currentToken", "nextToken",
+                                  "currentToken", "nextToken", "strictMode",
                                   "openBrackets", "openTemplates");
     
     protected $numbers = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
@@ -120,6 +124,17 @@ abstract class Scanner
     public function getTokens()
     {
         return $this->tokens;
+    }
+    
+    public function setStrictMode($strictMode)
+    {
+        $this->strictMode = $strictMode;
+        return $this;
+    }
+    
+    public function getStrictMode()
+    {
+        return $this->strictMode;
     }
     
     public function getState()
@@ -657,7 +672,9 @@ abstract class Scanner
             $type = Token::TYPE_BOOLEAN_LITERAL;
         } elseif (in_array($buffer, $this->keywords)) {
             $type = Token::TYPE_KEYWORD;
-        } else {
+        } elseif ($this->strictMode && in_array($buffer, $this->strictModeKeywords)) {
+            $type = Token::TYPE_KEYWORD;
+        }else {
             $type = Token::TYPE_IDENTIFIER;
         }
         
