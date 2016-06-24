@@ -1,6 +1,9 @@
 <?php
 namespace Peast\Syntax;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Exception extends \Exception
 {
     protected $position;

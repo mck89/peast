@@ -3,7 +3,12 @@ namespace Peast\Syntax;
 
 abstract class Node
 {
-    protected $loc;
+    protected $location;
+    
+    public function __construct()
+    {
+        $this->location = new SourceLocation;
+    }
     
     public function getType()
     {
@@ -13,27 +18,24 @@ abstract class Node
     
     public function getLocation()
     {
-        return $this->loc;
+        return $this->location;
     }
     
     public function setStartPosition(Position $position)
     {
-        if (!$this->loc) {
-            $this->loc = new SourceLocation;
-        }
-        $this->loc->setStart($position);
+        $this->location->setStart($position);
         return $this;
     }
     
     public function setEndPosition(Position $position)
     {
-        if (!$this->loc) {
-            $this->loc = new SourceLocation;
-        }
-        $this->loc->setEnd($position);
+        $this->location->setEnd($position);
         return $this;
     }
     
+    /**
+     * @codeCoverageIgnore
+     */
     protected function assertArrayOf($params, $classes, $allowNull = false)
     {
         if (!is_array($classes)) {
@@ -58,6 +60,9 @@ abstract class Node
         }
     }
     
+    /**
+     * @codeCoverageIgnore
+     */
     protected function assertType($param, $classes, $allowNull = false)
     {
         if (!is_array($classes)) {
@@ -85,6 +90,9 @@ abstract class Node
         return implode("\\", $parts);
     }
     
+    /**
+     * @codeCoverageIgnore
+     */
     protected function typeError($var, $allowedTypes, $allowNull = false,
                                  $array = false, $inArray = false)
     {

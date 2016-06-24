@@ -15,11 +15,17 @@ class AssignmentProperty extends Property
         return $this;
     }
     
+    /**
+     * @codeCoverageIgnore
+     */
     public function setKind($kind)
     {
         return $this;
     }
     
+    /**
+     * @codeCoverageIgnore
+     */
     public function setMethod($method)
     {
         return $this;

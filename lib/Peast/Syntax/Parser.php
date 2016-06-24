@@ -32,6 +32,9 @@ abstract class Parser
         return $this->scanner->getTokens();
     }
     
+    /**
+     * @codeCoverageIgnore
+     */
     protected function createNode($nodeType, $position)
     {
         $parts = explode("\\", get_class($this));
@@ -50,6 +53,9 @@ abstract class Parser
         return $node->setStartPosition($position);
     }
     
+    /**
+     * @codeCoverageIgnore
+     */
     protected function completeNode(Node $node, $position = null)
     {
         return $node->setEndPosition(

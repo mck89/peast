@@ -25,6 +25,9 @@ class UnaryExpression extends Node implements Expression
         return $this->prefix;
     }
     
+    /**
+     * @codeCoverageIgnore
+     */
     public function setPrefix($prefix)
     {
         return $this;

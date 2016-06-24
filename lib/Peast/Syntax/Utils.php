@@ -3,6 +3,9 @@ namespace Peast\Syntax;
 
 class Utils
 {
+    /**
+     * @codeCoverageIgnore
+     */
     static public function unicodeToUtf8($num)
     {
         //From: http://stackoverflow.com/questions/1805802/php-convert-unicode-codepoint-to-utf-8
@@ -26,6 +29,9 @@ class Utils
     
     protected static $lineTerminatorsCache;
     
+    /**
+     * @codeCoverageIgnore
+     */
     protected static function getLineTerminators()
     {
         if (!self::$lineTerminatorsCache) {
