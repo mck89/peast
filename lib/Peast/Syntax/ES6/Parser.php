@@ -2244,7 +2244,7 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseIdentifier($allowKeywordYield = null)
+    protected function parseIdentifier($disallowYield = null)
     {
         $token = $this->scanner->getToken();
         if (!$token) {
@@ -2255,8 +2255,8 @@ class Parser extends \Peast\Syntax\Parser
             case Token::TYPE_KEYWORD:
             case Token::TYPE_BOOLEAN_LITERAL:
             case Token::TYPE_NULL_LITERAL:
-                if ($allowKeywordYield !== null && (!$allowKeywordYield ||
-                    ($allowKeywordYield && $token->getValue() !== "yield"))) {
+                if ($disallowYield !== null &&
+                    ($disallowYield || $token->getValue() !== "yield")) {
                     return null;
                 }
             break;
