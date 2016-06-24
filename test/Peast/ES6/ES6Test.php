@@ -65,7 +65,7 @@ class ES6Test extends \test\Peast\TestBase
     
     public function testEmptySource()
     {
-        $tree = \Peast\Peast::ES6($source, $options)->parse("");
+        $tree = \Peast\Peast::ES6("")->parse("");
         $this->assertTrue($tree->getType() === "Program");
         $this->assertSame(0, count($tree->getBody()));
     }
