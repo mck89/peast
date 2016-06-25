@@ -65,16 +65,17 @@ abstract class Parser
     
     protected function error($message = "", $position = null)
     {
-        if (!$position) {
-            $position = $this->scanner->getPosition();
-        }
         if (!$message) {
             $token = $this->scanner->getToken();
             if ($token === null) {
                 $message = "Unexpected end of input";
             } else {
+                $position = $token->getLocation()->getStart();
                 $message = "Unexpected: " . $token->getValue();
             }
+        }
+        if (!$position) {
+            $position = $this->scanner->getPosition();
         }
         throw new Exception($message, $position);
     }

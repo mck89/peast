@@ -840,7 +840,7 @@ class Parser extends \Peast\Syntax\Parser
     {
         if ($token = $this->scanner->consume("function")) {
             
-            $generator = $this->scanner->consume("*");
+            $generator = (bool) $this->scanner->consume("*");
             $id = $this->parseIdentifier(false);
             
             if ($this->scanner->consume("(") &&
