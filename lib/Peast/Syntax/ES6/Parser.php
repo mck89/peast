@@ -2046,27 +2046,17 @@ class Parser extends \Peast\Syntax\Parser
             return $object;
         }
         
-        //If there are "new" tokens, pop from the properties array a number of
-        //args items less than or equal to the number of new tokens
-        $tailArgs = array();
-        if ($newTokensCount) {
-            for ($i = 0; $i < $newTokensCount; $i++) {
-                if ($propCount &&
-                    $properties[$propCount - 1]["type"] === "args") {
-                    $tailArgs[] = array_pop($properties);
-                    $propCount--;
-                } else {
-                    break;
-                }
-            }
-        }
-        
         $node = null;
         $endPos = $object->getLocation()->getEnd();
         foreach ($properties as $i => $property) {
-            $lastNode = $node ? $this->completeNode($node, $endPos) : $object;
+            $lastNode = $node ? $node : $object;
             if ($property["type"] === "args") {
-                $node = $this->createNode("CallExpression", $lastNode);
+                if ($newTokensCount) {
+                    $node = $this->createNode("NewExpression", array_pop($newTokens));
+                    $newTokensCount--;
+                } else {
+                    $node = $this->createNode("CallExpression", $lastNode);
+                }
                 $node->setCallee($lastNode);
                 $node->setArguments($property["info"][0]);
                 $endPos = $property["info"][1];
@@ -2087,24 +2077,20 @@ class Parser extends \Peast\Syntax\Parser
                 $node->setQuasi($property["info"]);
                 $endPos = $property["info"]->getLocation()->getEnd();
             }
+            $node = $this->completeNode($node, $endPos);
         }
         
         //Wrap the result in multiple NewExpression if there are "new" tokens
         if ($newTokensCount) {
-            $argsIndex = 0;
             for ($i = $newTokensCount - 1; $i >= 0; $i--) {
                 $lastNode = $node ? $node : $object;
                 $node = $this->createNode("NewExpression", $newTokens[$i]);
                 $node->setCallee($lastNode);
-                if (isset($tailArgs[$argsIndex])) {
-                    $node->setArguments($tailArgs[$argsIndex]["info"][0]);
-                    $argsIndex++;
-                }
                 $node = $this->completeNode($node);
             }
         }
         
-        return $this->completeNode($node);
+        return $node;
     }
     
     protected function parseSpreadElement($yield = false)
