@@ -2061,38 +2061,31 @@ class Parser extends \Peast\Syntax\Parser
             }
         }
         
-        $lastIndex = $propCount - 1;
         $node = null;
         $endPos = $object->getLocation()->getEnd();
         foreach ($properties as $i => $property) {
+            $lastNode = $node ? $this->completeNode($node, $endPos) : $object;
             if ($property["type"] === "args") {
-                $lastNode = $node ? $node : $object;
                 $node = $this->createNode("CallExpression", $lastNode);
-                $node->setCallee($this->completeNode($lastNode, $endPos));
+                $node->setCallee($lastNode);
                 $node->setArguments($property["info"][0]);
                 $endPos = $property["info"][1];
-            } else {
-                
-                if ($node instanceof Node\CallExpression || $node instanceof Node\TaggedTemplateExpression || !$i) {
-                    $lastNode = $node ? $node : $object;
-                    $node = $this->createNode("MemberExpression", $lastNode);
-                    $node->setObject($lastNode);
-                }
-                
-                if ($property["type"] === "id") {
-                    $node->setProperty($property["info"]);
-                    $endPos = $property["info"]->getLocation()->getEnd();
-                } elseif ($property["type"] === "computed") {
-                    $node->setProperty($property["info"][0]);
-                    $node->setComputed(true);
-                    $endPos = $property["info"][1];
-                } elseif ($property["type"] === "template") {
-                    $lastNode = $node->getObject();
-                    $node = $this->createNode("TaggedTemplateExpression", $object);
-                    $node->setTag($this->completeNode($lastNode, $endPos));
-                    $node->setQuasi($property["info"]);
-                    $endPos = $property["info"]->getLocation()->getEnd();
-                }
+            } elseif ($property["type"] === "id") {
+                $node = $this->createNode("MemberExpression", $lastNode);
+                $node->setObject($lastNode);
+                $node->setProperty($property["info"]);
+                $endPos = $property["info"]->getLocation()->getEnd();
+            } elseif ($property["type"] === "computed") {
+                $node = $this->createNode("MemberExpression", $lastNode);
+                $node->setObject($lastNode);
+                $node->setProperty($property["info"][0]);
+                $node->setComputed(true);
+                $endPos = $property["info"][1];
+            } elseif ($property["type"] === "template") {
+                $node = $this->createNode("TaggedTemplateExpression", $object);
+                $node->setTag($lastNode);
+                $node->setQuasi($property["info"]);
+                $endPos = $property["info"]->getLocation()->getEnd();
             }
         }
         
