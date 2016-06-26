@@ -1964,12 +1964,154 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseLeftHandSideExpression($yield = false)
     {
-        if ($expr = $this->parseCallExpression($yield)) {
-            return $expr;
-        } elseif ($expr = $this->parseNewExpression($yield)) {
-            return $expr;
+        $object = null;
+        $newTokens = array();
+        
+        if ($newToken = $this->scanner->isBefore(array("new"))) {
+            while ($newToken = $this->scanner->consume("new")) {
+                if ($this->scanner->consume(".")) {
+                    if ($this->scanner->consume("target")) {
+                    
+                        $node = $this->createNode("MetaProperty", $newToken);
+                        $node->setMeta("new");
+                        $node->setProperty("target");
+                        $object = $this->completeNode($node);
+                        break;
+                    
+                    } else {
+                        return $this->error();
+                    }
+                }
+                $newTokens[] = $newToken;
+            }
         }
-        return null;
+        
+        $newTokensCount = count($newTokens);
+        
+        if (!$object &&
+            !($object = $this->parseSuperCall($yield)) &&
+            !($object = $this->parseSuperProperty($yield)) &&
+            !($object = $this->parsePrimaryExpression($yield))) {
+            
+            if ($newTokensCount) {
+                return $this->error();
+            }
+            return null;
+        }
+        
+        $valid = true;
+        $properties = array();
+        while (true) {
+            if ($this->scanner->consume(".")) {
+                if ($property = $this->parseIdentifier()) {
+                    $properties[] = array(
+                        "type"=> "id",
+                        "info" => $property
+                    );
+                } else {
+                    $valid = false;
+                    break;
+                }
+            } elseif ($this->scanner->consume("[")) {
+                if (($property = $this->parseExpression(true, $yield)) &&
+                    $this->scanner->consume("]")) {
+                    $properties[] = array(
+                        "type" => "computed",
+                        "info" => array($property, $this->scanner->getPosition())
+                    );
+                } else {
+                    $valid = false;
+                    break;
+                }
+            } elseif ($property = $this->parseTemplateLiteral($yield)) {
+                $properties[] = array(
+                    "type"=> "template",
+                    "info" => $property
+                );
+            } elseif (($args = $this->parseArguments($yield)) !== null) {
+                $properties[] = array(
+                    "type"=> "args",
+                    "info" => array($args, $this->scanner->getPosition())
+                );
+            } else {
+                break;
+            }
+        }
+        
+        $propCount = count($properties);
+        
+        if (!$valid) {
+            return $this->error();
+        } elseif (!$propCount && !$newTokensCount) {
+            return $object;
+        }
+        
+        //If there are "new" tokens, pop from the properties array a number of
+        //args items less than or equal to the number of new tokens
+        $tailArgs = array();
+        if ($newTokensCount) {
+            for ($i = 0; $i < $newTokensCount; $i++) {
+                if ($propCount &&
+                    $properties[$propCount - 1]["type"] === "args") {
+                    $tailArgs[] = array_pop($properties);
+                    $propCount--;
+                } else {
+                    break;
+                }
+            }
+        }
+        
+        $lastIndex = $propCount - 1;
+        $node = null;
+        $endPos = $object->getLocation()->getEnd();
+        foreach ($properties as $i => $property) {
+            if ($property["type"] === "args") {
+                $lastNode = $node ? $node : $object;
+                $node = $this->createNode("CallExpression", $lastNode);
+                $node->setCallee($this->completeNode($lastNode, $endPos));
+                $node->setArguments($property["info"][0]);
+                $endPos = $property["info"][1];
+            } else {
+                
+                if ($node instanceof Node\CallExpression || $node instanceof Node\TaggedTemplateExpression || !$i) {
+                    $lastNode = $node ? $node : $object;
+                    $node = $this->createNode("MemberExpression", $lastNode);
+                    $node->setObject($lastNode);
+                }
+                
+                if ($property["type"] === "id") {
+                    $node->setProperty($property["info"]);
+                    $endPos = $property["info"]->getLocation()->getEnd();
+                } elseif ($property["type"] === "computed") {
+                    $node->setProperty($property["info"][0]);
+                    $node->setComputed(true);
+                    $endPos = $property["info"][1];
+                } elseif ($property["type"] === "template") {
+                    $lastNode = $node->getObject();
+                    $node = $this->createNode("TaggedTemplateExpression", $object);
+                    $node->setTag($this->completeNode($lastNode, $endPos));
+                    $node->setQuasi($property["info"]);
+                    $endPos = $property["info"]->getLocation()->getEnd();
+                }
+            }
+        }
+        
+        //Wrap the result in multiple NewExpression if there are "new" tokens
+        if ($newTokensCount) {
+            $argsIndex = 0;
+            for ($i = $newTokensCount - 1; $i >= 0; $i--) {
+                $lastNode = $node ? $node : $object;
+                $node = $this->createNode("NewExpression", $newTokens[$i]);
+                $node->setCallee($lastNode);
+                if (isset($tailArgs[$argsIndex])) {
+                    $node->setArguments($tailArgs[$argsIndex]["info"][0]);
+                    $argsIndex++;
+                }
+                $node = $this->completeNode($node);
+            }
+        }
+        
+        return $this->completeNode($node);
     }
     
     protected function parseSpreadElement($yield = false)
@@ -2088,105 +2230,6 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseMemberExpression($yield = false)
-    {
-        $state = $this->scanner->getState();
-        if ($newToken = $this->scanner->consume("new")) {
-            
-            if ($this->scanner->consume(".")) {
-                
-                if ($this->scanner->consume("target")) {
-                    
-                    $node = $this->createNode("MetaProperty", $newToken);
-                    $node->setMeta("new");
-                    $node->setProperty("target");
-                    $object = $this->completeNode($node);
-                    
-                } else {
-                    return $this->error();
-                }
-                
-            } elseif (($callee = $this->parseMemberExpression($yield)) &&
-                      ($args = $this->parseArguments($yield)) !== null) {
-                
-                $node = $this->createNode("NewExpression", $newToken);
-                $node->setCallee($callee);
-                $node->setArguments($args);
-                $object = $this->completeNode($node);
-                
-            } else {
-                $this->scanner->setState($state);
-                return null;
-            }
-            
-        } elseif (!($object = $this->parseSuperProperty($yield)) &&
-                  !($object = $this->parsePrimaryExpression($yield))) {
-            return null;
-        }
-        
-        $valid = true;
-        $properties = array();
-        while (true) {
-            if ($this->scanner->consume(".")) {
-                if ($property = $this->parseIdentifier()) {
-                    $properties[] = array($property);
-                } else {
-                    $valid = false;
-                    break;
-                }
-            } elseif ($this->scanner->consume("[")) {
-                if (($property = $this->parseExpression(true, $yield)) &&
-                    $this->scanner->consume("]")) {
-                    $properties[] = array(
-                        $property,
-                        $this->scanner->getPosition()
-                    );
-                } else {
-                    $valid = false;
-                    break;
-                }
-            } elseif ($property = $this->parseTemplateLiteral($yield)) {
-                $properties[] = $property;
-            } else {
-                break;
-            }
-        }
-        
-        if (!$valid) {
-            return $this->error();
-        } elseif (!count($properties)) {
-            return $object;
-        }
-        
-        $lastIndex = count($properties) - 1;
-        $node = $this->createNode("MemberExpression", $object);
-        $node->setObject($object);
-        $endPos = $object->getLocation()->getEnd();
-        foreach ($properties as $i => $property) {
-            if (is_array($property)) {
-                $node->setProperty($property[0]);
-                $endPos = $property[0]->getLocation()->getEnd();
-                if (isset($property[1])) {
-                    $node->setComputed(true);
-                    $endPos = $property[1];
-                }
-            } else {
-                $lastNode = $node->getObject();
-                $node = $this->createNode("TaggedTemplateExpression", $object);
-                $node->setTag($this->completeNode($lastNode, $endPos));
-                $node->setQuasi($property);
-                $endPos = $property->getLocation()->getEnd();
-            }
-            if ($i !== $lastIndex) {
-                $lastNode = $node;
-                $node = $this->createNode("MemberExpression", $object);
-                $node->setObject($this->completeNode($lastNode, $endPos));
-            }
-        }
-        
-        return $this->completeNode($node);
-    }
-    
     protected function parseSuperProperty($yield = false)
     {
         if ($token = $this->scanner->consume("super")) {
@@ -2212,24 +2255,6 @@ class Parser extends \Peast\Syntax\Parser
             }
             
             return $this->error();
-        }
-        return null;
-    }
-    
-    protected function parseNewExpression($yield = false)
-    {
-        if ($token = $this->scanner->consume("new")) {
-            
-            if (($callee = $this->parseMemberExpression($yield)) ||
-                $callee = $this->parseNewExpression($yield)) {
-                $node = $this->createNode("NewExpression", $token);
-                $node->setCallee($callee);
-                return $this->completeNode($node);
-            }
-            
-            return $this->error();
-        } elseif ($callee = $this->parseMemberExpression($yield)) {
-            return $callee;
         }
         return null;
     }
@@ -2301,101 +2326,6 @@ class Parser extends \Peast\Syntax\Parser
         $this->scanner->consumeToken();
         $node = $this->createNode("Identifier", $token);
         $node->setName($token->getValue());
-        return $this->completeNode($node);
-    }
-    
-    protected function parseCallExpression($yield = false)
-    {
-        $state = $this->scanner->getState();
-        $object = $this->parseSuperCall($yield);
-        if (!$object) {
-            
-            $callee = $this->parseMemberExpression($yield);
-            $args = $callee ? $this->parseArguments($yield) : null;
-            
-            if ($callee === null || $args === null) {
-                if ($callee !== null && $callee instanceof Node\NewExpression) {
-                    return $callee;
-                }
-                $this->scanner->setState($state);
-                return null;
-            }
-            
-            $object = $this->createNode("CallExpression", $callee);
-            $object->setCallee($callee);
-            $object->setArguments($args);
-            $object = $this->completeNode($object);
-        }
-        
-        $valid = true;
-        $properties = array();
-        while (true) {
-            if (($args = $this->parseArguments($yield)) !== null) {
-                $properties[] = array(
-                    $args,
-                    $this->scanner->getPosition()
-                );
-            } elseif ($this->scanner->consume(".")) {
-                if ($property = $this->parseIdentifier()) {
-                    $properties[] = array($property);
-                } else {
-                    $valid = false;
-                    break;
-                }
-            } elseif ($this->scanner->consume("[")) {
-                if (($property = $this->parseExpression(true, $yield)) &&
-                    $this->scanner->consume("]")) {
-                    $properties[] = array(
-                        $property,
-                        $this->scanner->getPosition()
-                    );
-                } else {
-                    $valid = false;
-                    break;
-                }
-            } elseif ($property = $this->parseTemplateLiteral($yield)) {
-                $properties[] = $property;
-            } else {
-                break;
-            }
-        }
-        
-        if (!$valid) {
-            return $this->error();
-        } elseif (!count($properties)) {
-            return $object;
-        }
-        
-        $node = $object;
-        $endPos = $object->getLocation()->getEnd();
-        foreach ($properties as $property) {
-            if (is_array($property)) {
-                if (is_array($property[0])) {
-                    $lastNode = $node;
-                    $node = $this->createNode("CallExpression", $object);
-                    $node->setCallee($this->completeNode($lastNode, $endPos));
-                    $node->setArguments($property[0]);
-                    $endPos = $property[1];
-                } else {
-                    $lastNode = $node;
-                    $node = $this->createNode("MemberExpression", $object);
-                    $node->setObject($this->completeNode($lastNode, $endPos));
-                    $node->setProperty($property[0]);
-                    $endPos = $property[0]->getLocation()->getEnd();
-                    if (isset($property[1])) {
-                        $node->setComputed(true);
-                        $endPos = $property[1];
-                    }
-                }
-            } else {
-                $lastNode = $node;
-                $node = $this->createNode("TaggedTemplateExpression", $object);
-                $node->setTag($this->completeNode($lastNode, $endPos));
-                $node->setQuasi($property);
-                $endPos = $property->getLocation()->getEnd();
-            }
-        }
-        
         return $this->completeNode($node);
     }
     

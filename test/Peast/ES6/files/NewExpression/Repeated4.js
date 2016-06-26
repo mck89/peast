@@ -1,0 +1,1 @@
+new new foo(a)(b)(c);
