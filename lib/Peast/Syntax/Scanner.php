@@ -86,7 +86,7 @@ abstract class Scanner
         //into an array of UTF8 characters for performance reasons
         $this->source = $source === "" ?
                         array() :
-                        preg_split('/(?<!^)(?!$)/u', $source);
+                        preg_split('//u', $source, null, PREG_SPLIT_NO_EMPTY);
         $this->length = count($this->source);
         
         //Generate a map by grouping punctutars by their length
