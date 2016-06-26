@@ -2192,7 +2192,6 @@ class Parser extends \Peast\Syntax\Parser
     {
         if ($this->scanner->isBefore(array(array("super", "(")), true)) {
             
-            $state = $this->scanner->getState();
             $token = $this->scanner->consume("super");
             $endPos = $this->scanner->getPosition();
             $args = $this->parseArguments($yield);
@@ -2204,7 +2203,7 @@ class Parser extends \Peast\Syntax\Parser
                 $node->setCallee($this->completeNode($super, $endPos));
                 return $this->completeNode($node);
             }
-            $this->scanner->setState($state);
+            return $this->error();
         }
         return null;
     }
