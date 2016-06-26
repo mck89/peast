@@ -1967,9 +1967,11 @@ class Parser extends \Peast\Syntax\Parser
         $object = null;
         $newTokens = array();
         
+        //Parse all occurences of "new"
         if ($newToken = $this->scanner->isBefore(array("new"))) {
             while ($newToken = $this->scanner->consume("new")) {
                 if ($this->scanner->consume(".")) {
+                    //new.target
                     if ($this->scanner->consume("target")) {
                     
                         $node = $this->createNode("MetaProperty", $newToken);
@@ -1989,8 +1991,7 @@ class Parser extends \Peast\Syntax\Parser
         $newTokensCount = count($newTokens);
         
         if (!$object &&
-            !($object = $this->parseSuperCall($yield)) &&
-            !($object = $this->parseSuperProperty($yield)) &&
+            !($object = $this->parseSuperPropertyOrCall($yield)) &&
             !($object = $this->parsePrimaryExpression($yield))) {
             
             if ($newTokensCount) {
@@ -2187,35 +2188,22 @@ class Parser extends \Peast\Syntax\Parser
         return $list;
     }
     
-
-    protected function parseSuperCall($yield = false)
-    {
-        if ($this->scanner->isBefore(array(array("super", "(")), true)) {
-            
-            $token = $this->scanner->consume("super");
-            $endPos = $this->scanner->getPosition();
-            $args = $this->parseArguments($yield);
-            if ($args !== null) {
-                
-                $super = $this->createNode("Super", $token);
-                $node = $this->createNode("CallExpression", $token);
-                $node->setArguments($args);
-                $node->setCallee($this->completeNode($super, $endPos));
-                return $this->completeNode($node);
-            }
-            return $this->error();
-        }
-        return null;
-    }
-    
-    protected function parseSuperProperty($yield = false)
+    protected function parseSuperPropertyOrCall($yield = false)
     {
         if ($token = $this->scanner->consume("super")) {
             
             $super = $this->createNode("Super", $token);
+            $super = $this->completeNode($super);
+            
+            if (($args = $this->parseArguments($yield)) !== null) {
+                $node = $this->createNode("CallExpression", $token);
+                $node->setArguments($args);
+                $node->setCallee($super);
+                return $this->completeNode($node);
+            }
             
             $node = $this->createNode("MemberExpression", $token);
-            $node->setObject($this->completeNode($super));
+            $node->setObject($super);
             
             if ($this->scanner->consume(".")) {
                 
