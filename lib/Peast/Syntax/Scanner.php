@@ -147,6 +147,9 @@ abstract class Scanner
     
     public function getState()
     {
+        //Consume current and next tokens so that they wont' be parsed again
+        //if the state is restored
+        $this->getNextToken();
         $state = array();
         foreach ($this->stateProps as $prop) {
             if (is_object($this->$prop)) {
@@ -259,13 +262,8 @@ abstract class Scanner
         } elseif (!$nextToken) {
             return false;
         }
-        if (!$this->nextToken) {
-            $this->currentToken = null;
-            $this->nextToken = $this->getToken();
-            $this->currentToken = $token;
-            if (!$this->nextToken) {
-                return false;
-            }
+        if (!$this->getNextToken()) {
+            return false;
         }
         foreach ($expected as $val) {
             if (is_array($val) && $val[0] === $token->getValue() &&
@@ -274,6 +272,17 @@ abstract class Scanner
             }
         }
         return false;
+    }
+    
+    public function getNextToken()
+    {
+        if (!$this->nextToken) {
+            $token = $this->getToken();
+            $this->currentToken = null;
+            $this->nextToken = $this->getToken();
+            $this->currentToken = $token;
+        }
+        return $this->nextToken;
     }
     
     public function getToken()
