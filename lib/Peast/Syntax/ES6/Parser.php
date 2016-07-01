@@ -391,22 +391,21 @@ class Parser extends \Peast\Syntax\Parser
     {
         if ($label = $this->parseIdentifier($yield, ":")) {
             
-            if ($this->scanner->consume(":")) {
+            $this->scanner->consume(":");
                 
-                if (($body = $this->parseStatement($yield, $return)) ||
-                    ($body = $this->parseFunctionOrGeneratorDeclaration(
-                        $yield, false, false
-                    ))) {
-                    
-                    $node = $this->createNode("LabeledStatement", $label);
-                    $node->setLabel($label);
-                    $node->setBody($body);
-                    return $this->completeNode($node);
-                    
-                }
-                
-                return $this->error();
+            if (($body = $this->parseStatement($yield, $return)) ||
+                ($body = $this->parseFunctionOrGeneratorDeclaration(
+                    $yield, false, false
+                ))) {
+
+                $node = $this->createNode("LabeledStatement", $label);
+                $node->setLabel($label);
+                $node->setBody($body);
+                return $this->completeNode($node);
+
             }
+
+            return $this->error();
         }
         return null;
     }

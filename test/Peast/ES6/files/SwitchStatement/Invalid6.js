@@ -1,0 +1,3 @@
+switch (test) {
+    default a
+}
