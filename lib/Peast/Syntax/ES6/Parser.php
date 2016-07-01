@@ -1634,8 +1634,8 @@ class Parser extends \Peast\Syntax\Parser
             
                 return $this->error();
             }
-            $this->scanner->setState($state);
         }
+        $this->scanner->setState($state);
         return null;
     }
     
@@ -1810,31 +1810,36 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseAssignmentExpression($in = false, $yield = false)
     {
-        $state = $this->scanner->getState();
-        $operators = array(
-            "=", "+=", "-=", "*=", "/=", "%=", "<<=", ">>=",
-            ">>>=", "&=", "^=", "|="
-        );
         if ($expr = $this->parseArrowFunction($in, $yield)) {
             return $expr;
         } elseif ($yield && $expr = $this->parseYieldExpression($in)) {
             return $expr;
-        } elseif (($left = $this->parseLeftHandSideExpression($yield)) &&
-                  $operator = $this->scanner->consumeOneOf($operators)) {
+        } elseif ($expr = $this->parseConditionalExpression($in, $yield)) {
             
-            if ($right = $this->parseAssignmentExpression($in, $yield)) {
+            $exprTypes = array(
+                "ConditionalExpression", "LogicalExpression",
+                "BinaryExpression", "UpdateExpression", "UnaryExpression"
+            );
+            
+            if (!in_array($expr->getType(), $exprTypes)) {
                 
-                $node = $this->createNode("AssignmentExpression", $left);
-                $node->setLeft($this->expressionToPattern($left));
-                $node->setOperator($operator->getValue());
-                $node->setRight($right);
-                return $this->completeNode($node);
+                $operators = array(
+                    "=", "+=", "-=", "*=", "/=", "%=", "<<=", ">>=",
+                    ">>>=", "&=", "^=", "|="
+                );
                 
+                if ($operator = $this->scanner->consumeOneOf($operators)) {
+                    
+                    if ($right = $this->parseAssignmentExpression($in, $yield)) {
+                        $node = $this->createNode("AssignmentExpression", $expr);
+                        $node->setLeft($this->expressionToPattern($expr));
+                        $node->setOperator($operator->getValue());
+                        $node->setRight($right);
+                        return $this->completeNode($node);
+                    }
+                    return $this->error();
+                }
             }
-            return $this->error();
-        }
-        $this->scanner->setState($state);
-        if ($expr = $this->parseConditionalExpression($in, $yield)) {
             return $expr;
         }
         return null;
