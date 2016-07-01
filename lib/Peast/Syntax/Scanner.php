@@ -152,11 +152,7 @@ abstract class Scanner
         $this->getNextToken();
         $state = array();
         foreach ($this->stateProps as $prop) {
-            if (is_object($this->$prop)) {
-                $state[$prop] = clone $this->$prop;
-            } else {
-                $state[$prop] = $this->$prop;
-            }
+            $state[$prop] = $this->$prop;
         }
         if ($this->registerTokens) {
             $state["tokensNum"] = count($this->tokens);

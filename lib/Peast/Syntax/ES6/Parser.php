@@ -389,8 +389,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseLabelledStatement($yield = false, $return = false)
     {
-        $state = $this->scanner->getState();
-        if ($label = $this->parseIdentifier($yield)) {
+        if ($label = $this->parseIdentifier($yield, ":")) {
             
             if ($this->scanner->consume(":")) {
                 
@@ -408,8 +407,6 @@ class Parser extends \Peast\Syntax\Parser
                 
                 return $this->error();
             }
-            
-            $this->scanner->setState($state);
         }
         return null;
     }
@@ -1577,7 +1574,7 @@ class Parser extends \Peast\Syntax\Parser
     
     protected function parseArrowParameters($yield = false)
     {
-        if ($param = $this->parseIdentifier($yield)) {
+        if ($param = $this->parseIdentifier($yield, "=>")) {
             return $param;
         } elseif ($token = $this->scanner->consume("(")) {
             
@@ -2266,11 +2263,17 @@ class Parser extends \Peast\Syntax\Parser
         return null;
     }
     
-    protected function parseIdentifier($disallowYield = null)
+    protected function parseIdentifier($disallowYield = null, $after = null)
     {
         $token = $this->scanner->getToken();
         if (!$token) {
             return null;
+        }
+        if ($after !== null) {
+            $next = $this->scanner->getNextToken();
+            if (!$next || $next->getValue() !== $after) {
+                return null;
+            }
         }
         $type = $token->getType();
         switch ($type) {
