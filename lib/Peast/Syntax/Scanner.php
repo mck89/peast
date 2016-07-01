@@ -373,8 +373,21 @@ abstract class Scanner
             }
         }
         
+        //If next token has already been parsed and it's a bracket exclude it
+        //from the count of open brackets
+        if ($this->nextToken) {
+            $nextVal = $this->nextToken->getValue();
+            if (isset($this->brackets[$nextVal])) {
+                if ($this->brackets[$nextVal]) {
+                    $this->openBrackets[$char]++;
+                } else {
+                    $this->openBrackets[$nextVal]--;
+                }
+            }
+            $this->nextToken = null;
+        }
+            
         //Replace the current token with a regexp token
-        $this->nextToken = null;
         $token = new Token(Token::TYPE_REGULAR_EXPRESSION, $buffer);
         $this->currentToken = $token->setStartPosition($startPosition)
                                     ->setEndPosition($this->getPosition(true));
