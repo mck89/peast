@@ -101,7 +101,7 @@ abstract class Scanner
         //Convert character codes to UTF8 characters in whitespaces and line
         //terminators
         $this->lineTerminators = array_merge(
-            self::$lineTerminatorsChars, self::$lineTerminatorsSequences
+            self::$lineTerminatorsSequences, self::$lineTerminatorsChars
         );
         foreach (array("whitespaces", "lineTerminators") as $key) {
             foreach ($this->$key as $i => $char) {
@@ -320,15 +320,18 @@ abstract class Scanner
         //If last token was "/" do not throw an error if the token has not be
         //recognized since it can be the first character in a regexp and it will
         //be consumed when the current token will be reconsumed as a regexp
-        if ($this->index) {
-            $char = $this->charAt($this->index - 1);
-            if ($char === "/") {
-                return null;
-            }
+        if ($this->isAfterSlash()) {
+            return null;
         }
         
         //No valid token found, error
         return $this->error();
+    }
+    
+    protected function isAfterSlash()
+    {
+        return $this->index && ($char = $this->charAt($this->index - 1)) &&
+               $char === "/";
     }
     
     public function reconsumeCurrentTokenAsRegexp()
@@ -387,9 +390,10 @@ abstract class Scanner
         //from the count of open brackets
         if ($this->nextToken) {
             $nextVal = $this->nextToken->getValue();
-            if (isset($this->brackets[$nextVal])) {
+            if (isset($this->brackets[$nextVal]) &&
+                isset($this->openBrackets[$nextVal])) {
                 if ($this->brackets[$nextVal]) {
-                    $this->openBrackets[$char]++;
+                    $this->openBrackets[$nextVal]++;
                 } else {
                     $this->openBrackets[$nextVal]--;
                 }
@@ -647,9 +651,12 @@ abstract class Scanner
                     //Check if there is a corresponding open bracket
                     if (!isset($this->openBrackets[$openBracket]) ||
                         !$this->openBrackets[$openBracket]) {
-                        return $this->error();
+                        if (!$this->isAfterSlash()) {
+                            return $this->error();
+                        }
+                    } else {
+                        $this->openBrackets[$openBracket]--;
                     }
-                    $this->openBrackets[$openBracket]--;
                 } else {
                     if (!isset($this->openBrackets[$char])) {
                         $this->openBrackets[$char] = 0;
