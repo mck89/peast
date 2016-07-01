@@ -317,6 +317,16 @@ abstract class Scanner
             return $this->currentToken;
         }
         
+        //If last token was "/" do not throw an error if the token has not be
+        //recognized since it can be the first character in a regexp and it will
+        //be consumed when the current token will be reconsumed as a regexp
+        if ($this->index) {
+            $char = $this->charAt($this->index - 1);
+            if ($char === "/") {
+                return null;
+            }
+        }
+        
         //No valid token found, error
         return $this->error();
     }
