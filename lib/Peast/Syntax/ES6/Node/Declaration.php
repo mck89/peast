@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the REBuilder package
+ * This file is part of the Peast package
  *
  * (c) Marco Marchiò <marco.mm89@gmail.com>
  *
