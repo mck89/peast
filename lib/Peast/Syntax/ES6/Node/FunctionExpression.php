@@ -9,6 +9,12 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents a function expression
+ * For example: var test = function () {}
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class FunctionExpression extends Node implements Expression, Function_
 {
     use Extension\Function_;

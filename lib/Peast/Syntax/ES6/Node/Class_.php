@@ -9,6 +9,11 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * Common interface for class declaration and class expression nodes.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 interface Class_
 {
 }

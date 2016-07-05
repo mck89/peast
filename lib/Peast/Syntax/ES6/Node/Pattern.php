@@ -9,6 +9,11 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * Interface that every pattern node must implement.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 interface Pattern
 {
 }

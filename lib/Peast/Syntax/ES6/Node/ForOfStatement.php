@@ -9,6 +9,12 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents the "for...of" statement.
+ * For example: for (var a of b) {}
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class ForOfStatement extends ForInStatement
 {
 }

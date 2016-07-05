@@ -9,6 +9,11 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * Common interface for function declaration and function expression nodes.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 interface Function_
 {
 }

@@ -9,12 +9,30 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents an arrow function.
+ * For example: var fn = (a, b) => console.log(a, b)
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class ArrowFunctionExpression extends Node implements Expression, Function_
 {
     use Extension\Function_;
     
+    /**
+     * This flag is true when function body is wrapped in curly braces
+     * 
+     * @var bool
+     */
     protected $expression = false;
     
+    /**
+     * Sets the function body
+     * 
+     * @param BlockStatement|Expression $body Function body
+     * 
+     * @return $this
+     */
     public function setBody($body)
     {
         $this->assertType($body, array("BlockStatement", "Expression"));
@@ -22,11 +40,23 @@ class ArrowFunctionExpression extends Node implements Expression, Function_
         return $this;
     }
     
+    /**
+     * Returns the expression flag
+     * 
+     * @return bool
+     */
     public function getExpression()
     {
         return $this->expression;
     }
     
+    /**
+     * Sets the expression flag
+     * 
+     * @param bool $expression Expression flag
+     * 
+     * @return $this
+     */
     public function setExpression($expression)
     {
         $this->expression = (bool) $expression;

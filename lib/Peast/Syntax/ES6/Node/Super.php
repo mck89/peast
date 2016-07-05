@@ -9,6 +9,11 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents the "super" keyword.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class Super extends Node
 {
 }

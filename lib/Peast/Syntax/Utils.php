@@ -17,7 +17,7 @@ class Utils
     static public function unicodeToUtf8($num)
     {
         //From: http://stackoverflow.com/questions/1805802/php-convert-unicode-codepoint-to-utf-8
-        if($num <= 0x7F) {
+        if ($num <= 0x7F) {
             return chr($num);
         } elseif ($num <= 0x7FF) {
             return chr(($num >> 6) + 192) .

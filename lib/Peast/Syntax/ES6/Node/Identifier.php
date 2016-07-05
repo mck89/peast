@@ -9,15 +9,38 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents an identifier.
+ * For example: [a, b, c]
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class Identifier extends Node implements Expression, Pattern
 {
+    /**
+     * The identifier's name
+     * 
+     * @var string
+     */
     protected $name;
     
+    /**
+     * Returns the identifier's name
+     * 
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
     }
     
+    /**
+     * Sets the identifier's name
+     * 
+     * @param string $name The name to set
+     * 
+     * @return $this
+     */
     public function setName($name)
     {
         $this->name = $name;

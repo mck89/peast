@@ -9,6 +9,12 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents a debugger statement.
+ * For example: debugger;
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class DebuggerStatement extends Node implements Statement
 {
 }

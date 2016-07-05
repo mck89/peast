@@ -9,15 +9,38 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents an array literal.
+ * For example: [a, b, c]
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class ArrayExpression extends Node implements Expression
 {
+    /**
+     * Array elements
+     * 
+     * @var array
+     */
     protected $elements = array();
     
+    /**
+     * Returns array elements
+     * 
+     * @return array
+     */
     public function getElements()
     {
         return $this->elements;
     }
     
+    /**
+     * Sets array elements
+     * 
+     * @param array $elements Array elements to set
+     * 
+     * @return $this
+     */
     public function setElements($elements)
     {
         $this->assertArrayOf(
