@@ -9,6 +9,12 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents a default import specifier.
+ * For example "test" in: import test from "test.js".
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class ImportNamespaceSpecifier extends ModuleSpecifier
 {
 }

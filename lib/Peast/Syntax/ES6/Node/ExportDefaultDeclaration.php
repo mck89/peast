@@ -9,15 +9,38 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents the export default declaration.
+ * For example: export default a
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class ExportDefaultDeclaration extends Node implements ModuleDeclaration
 {
+    /**
+     * The exported declaration
+     * 
+     * @var Declaration|Expression
+     */
     protected $declaration;
     
+    /**
+     * Returns the exported declaration
+     * 
+     * @return Declaration|Expression
+     */
     public function getDeclaration()
     {
         return $this->declaration;
     }
     
+    /**
+     * Sets the exported declaration
+     * 
+     * @param type $declaration The exported declaration
+     * 
+     * @return $this
+     */
     public function setDeclaration($declaration)
     {
         $this->assertType($declaration, array("Declaration", "Expression"));
