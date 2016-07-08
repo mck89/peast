@@ -9,15 +9,37 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents the "break" statement inside loops.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class BreakStatement extends Node implements Statement
 {
+    /**
+     * The optional label of the break statement
+     * 
+     * @var Identifier 
+     */
     protected $label;
     
+    /**
+     * Returns the node's label
+     * 
+     * @return Identifier
+     */
     public function getLabel()
     {
         return $this->label;
     }
     
+    /**
+     * Sets the node's label
+     * 
+     * @param Identifier $label Node's label
+     * 
+     * @return $this
+     */
     public function setLabel($label)
     {
         $this->assertType($label, "Identifier", true);

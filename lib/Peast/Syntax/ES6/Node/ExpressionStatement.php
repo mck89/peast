@@ -9,6 +9,11 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents an expression wrapped in round brackets.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class ExpressionStatement extends Node implements Statement
 {
     protected $expression;

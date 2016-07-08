@@ -20,14 +20,14 @@ class ArrayExpression extends Node implements Expression
     /**
      * Array elements
      * 
-     * @var array
+     * @var Expression[]|SpreadElement[]
      */
     protected $elements = array();
     
     /**
      * Returns array elements
      * 
-     * @return array
+     * @return Expression[]|SpreadElement[]
      */
     public function getElements()
     {
@@ -37,7 +37,7 @@ class ArrayExpression extends Node implements Expression
     /**
      * Sets array elements
      * 
-     * @param array $elements Array elements to set
+     * @param Expression[]|SpreadElement[] $elements Array elements to set
      * 
      * @return $this
      */

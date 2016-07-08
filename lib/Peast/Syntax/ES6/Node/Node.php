@@ -9,6 +9,13 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * Base class for ES6 nodes.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ * 
+ * @abstract
+ */
 abstract class Node extends \Peast\Syntax\Node
 {
 }

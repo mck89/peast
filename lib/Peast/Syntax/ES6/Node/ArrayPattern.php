@@ -20,14 +20,14 @@ class ArrayPattern extends Node implements Pattern
     /**
      * Array elements
      * 
-     * @var array
+     * @var Pattern[]
      */
     protected $elements = array();
     
     /**
      * Returns array elements
      * 
-     * @return array
+     * @return Pattern[]
      */
     public function getElements()
     {
@@ -37,7 +37,7 @@ class ArrayPattern extends Node implements Pattern
     /**
      * Sets array elements
      * 
-     * @param array $elements Array elements to set
+     * @param Pattern[] $elements Array elements to set
      * 
      * @return $this
      */

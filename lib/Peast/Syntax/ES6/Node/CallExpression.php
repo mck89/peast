@@ -9,17 +9,45 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents a call expression.
+ * For example: test()
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class CallExpression extends Node implements Expression
 {
+    /**
+     * The callee expression
+     * 
+     * @var Expression|Super 
+     */
     protected $callee;
     
+    /**
+     * The arguments array
+     * 
+     * @var Expression[]|SpreadElement[]
+     */
     protected $arguments = array();
     
+    /**
+     * Returns the callee expression
+     * 
+     * @return Expression|Super
+     */
     public function getCallee()
     {
         return $this->callee;
     }
     
+    /**
+     * Sets the callee expression
+     * 
+     * @param Expression|Super $callee Callee expression
+     * 
+     * @return $this
+     */
     public function setCallee($callee)
     {
         $this->assertType($callee, array("Expression", "Super"));
@@ -27,11 +55,23 @@ class CallExpression extends Node implements Expression
         return $this;
     }
     
+    /**
+     * Returns the arguments array
+     * 
+     * @return Expression[]|SpreadElement[]
+     */
     public function getArguments()
     {
         return $this->arguments;
     }
     
+    /**
+     * Sets the arguments array
+     * 
+     * @param Expression[]|SpreadElement[] $arguments Arguments array
+     * 
+     * @return $this
+     */
     public function setArguments($arguments)
     {
         $this->assertArrayOf($arguments, array("Expression", "SpreadElement"));

@@ -9,15 +9,38 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents an object binding pattern.
+ * For example: {a, b, c} = d
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class ObjectPattern extends Node implements Pattern
 {
+    /**
+     * Object properties
+     * 
+     * @var Property[] 
+     */
     protected $properties = array();
     
+    /**
+     * Returns object properties
+     * 
+     * @return Property[] 
+     */
     public function getProperties()
     {
         return $this->properties;
     }
     
+    /**
+     * Sets object properties
+     * 
+     * @param Property[] $properties Object properties
+     * 
+     * @return $this
+     */
     public function setProperties($properties)
     {
         $this->assertArrayOf($properties, "AssignmentProperty");

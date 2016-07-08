@@ -9,28 +9,68 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents a while loop.
+ * For example: while (test) {}
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class WhileStatement extends Node implements Statement
 {
+    /**
+     * The loop condition
+     * 
+     * @var Expression 
+     */
     protected $test;
     
+    /**
+     * The loop body
+     * 
+     * @var Statement 
+     */
     protected $body;
     
+    /**
+     * Returns the loop condition
+     * 
+     * @return Expression
+     */
     public function getTest()
     {
         return $this->test;
     }
     
+    /**
+     * Sets the loop condition
+     * 
+     * @param Expression $test Loop
+     * 
+     * @return $this
+     */
     public function setTest(Expression $test)
     {
         $this->test = $test;
         return $this;
     }
     
+    /**
+     * Returns the loop body
+     * 
+     * @return Statement
+     */
     public function getBody()
     {
         return $this->body;
     }
     
+    /**
+     * Sets the loop body
+     * 
+     * @param Statement $body Loop body
+     * 
+     * @return $this
+     */
     public function setBody(Statement $body)
     {
         $this->body = $body;

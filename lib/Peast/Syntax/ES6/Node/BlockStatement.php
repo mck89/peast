@@ -9,15 +9,38 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents a block of code wrapped in curly braces.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class BlockStatement extends Node implements Statement
 {
+    /**
+     * Block's body
+     * 
+     * @var Statement[] 
+     */
     protected $body = array();
     
+    /**
+     * Returns block's body
+     * 
+     * @return Statement[]
+     */
     public function getBody()
     {
         return $this->body;
     }
     
+    /**
+     * Sets block's body
+     * 
+     * @param Statement[] $body Array of Statements that are the body of the
+     *                          block
+     * 
+     * @return $this
+     */
     public function setBody($body)
     {
         $this->assertArrayOf($body, "Statement");

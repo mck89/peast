@@ -9,15 +9,37 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents a class body.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class ClassBody extends Node
 {
+    /**
+     * Class methods
+     * 
+     * @var MethodDefinition[]
+     */
     protected $body = array();
     
+    /**
+     * Returns class methods
+     * 
+     * @return MethodDefinition[]
+     */
     public function getBody()
     {
         return $this->body;
     }
     
+    /**
+     * Sets class methods
+     * 
+     * @param MethodDefinition[] $body Class methods array
+     * 
+     * @return $this
+     */
     public function setBody($body)
     {
         $this->assertArrayOf($body, "MethodDefinition");

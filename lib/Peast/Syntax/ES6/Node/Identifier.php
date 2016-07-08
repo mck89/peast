@@ -11,7 +11,6 @@ namespace Peast\Syntax\ES6\Node;
 
 /**
  * A node that represents an identifier.
- * For example: [a, b, c]
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
