@@ -55,6 +55,8 @@ abstract class Parser
     /**
      * Parses the source
      * 
+     * @return Node
+     * 
      * @abstract
      */
     abstract public function parse();
@@ -119,8 +121,10 @@ abstract class Parser
     /**
      * Throws a syntax error
      * 
-     * @param string $message    Error message
+     * @param string   $message  Error message
      * @param Position $position Error position
+     * 
+     * @return void
      * 
      * @throws Exception
      */
