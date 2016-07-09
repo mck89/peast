@@ -31,6 +31,13 @@ abstract class Parser
     protected $options;
     
     /**
+     * Nodes namespace cache
+     * 
+     * @var string
+     */
+    protected $nodeNS;
+    
+    /**
      * Class constructor
      * 
      * @param string $source  Source code
@@ -85,9 +92,12 @@ abstract class Parser
      */
     protected function createNode($nodeType, $position)
     {
-        $parts = explode("\\", get_class($this));
-        array_pop($parts);
-        $nodeClass = implode("\\", $parts) . "\\Node\\$nodeType";
+        if (!$this->nodeNS) {
+            $parts = explode("\\", get_class($this));
+            array_pop($parts);
+            $this->nodeNS = implode("\\", $parts) . "\\Node\\";
+        }
+        $nodeClass = $this->nodeNS . $nodeType;
         $node = new $nodeClass;
         if ($position instanceof Node || $position instanceof Token) {
             $position = $position->getLocation()->getStart();
