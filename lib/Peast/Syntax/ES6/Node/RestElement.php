@@ -9,15 +9,39 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents the rest element in array binding paterns or function
+ * parameters.
+ * For example "...rest" in: [a, ...rest] = b
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class RestElement extends Node implements Pattern
 {
+    /**
+     * The node's argument
+     * 
+     * @var type 
+     */
     protected $argument;
     
+    /**
+     * Returns the node's argument
+     * 
+     * @return Pattern
+     */
     public function getArgument()
     {
         return $this->argument;
     }
     
+    /**
+     * Sets the node's argument
+     * 
+     * @param Pattern $argument Node's argument
+     * 
+     * @return $this
+     */
     public function setArgument(Pattern $argument)
     {
         $this->argument = $argument;

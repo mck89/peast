@@ -9,41 +9,98 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents a binary expression.
+ * For example: a + b
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class BinaryExpression extends Node implements Expression
 {
+    /**
+     * Operator
+     * 
+     * @var string
+     */
     protected $operator;
     
+    /**
+     * Left expression
+     * 
+     * @var Expression
+     */
     protected $left;
     
+    /**
+     * Right expression
+     * 
+     * @var Expression
+     */
     protected $right;
     
+    /**
+     * Returns the operator
+     * 
+     * @return string
+     */
     public function getOperator()
     {
         return $this->operator;
     }
     
+    /**
+     * Sets the operator
+     * 
+     * @param string $operator Operator
+     * 
+     * @return $this
+     */
     public function setOperator($operator)
     {
         $this->operator = $operator;
         return $this;
     }
     
+    /**
+     * Returns the left expression
+     * 
+     * @return Expression
+     */
     public function getLeft()
     {
         return $this->left;
     }
     
+    /**
+     * Sets the left expression
+     * 
+     * @param Expression $left Left expression
+     * 
+     * @return $this
+     */
     public function setLeft(Expression $left)
     {
         $this->left = $left;
         return $this;
     }
     
+    /**
+     * Returns the right expression
+     * 
+     * @return Expression
+     */
     public function getRight()
     {
         return $this->right;
     }
     
+    /**
+     * Sets the right expression
+     * 
+     * @param Expression $right Right expression
+     * 
+     * @return $this
+     */
     public function setRight(Expression $right)
     {
         $this->right = $right;

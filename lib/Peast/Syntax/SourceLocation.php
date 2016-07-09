@@ -9,28 +9,68 @@
  */
 namespace Peast\Syntax;
 
+/**
+ * This class represents a location in the source code with start and end
+ * positon.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class SourceLocation
 {
+    /**
+     * Start position
+     * 
+     * @var Position 
+     */
     protected $start;
     
+    /**
+     * End position
+     * 
+     * @var Position 
+     */
     protected $end;
     
+    /**
+     * Returns the start position
+     * 
+     * @return Position
+     */
     public function getStart()
     {
         return $this->start;
     }
     
+    /**
+     * Sets the start position
+     * 
+     * @param Position $position Start position
+     * 
+     * @return $this
+     */
     public function setStart(Position $position)
     {
         $this->start = $position;
         return $this;
     }
     
+    /**
+     * Returns the end position
+     * 
+     * @return Position
+     */
     public function getEnd()
     {
         return $this->end;
     }
     
+    /**
+     * Sets the end position
+     * 
+     * @param Position $position End position
+     * 
+     * @return $this
+     */
     public function setEnd(Position $position)
     {
         $this->end = $position;

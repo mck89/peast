@@ -11,7 +11,7 @@ namespace Peast\Syntax\ES6\Node;
 
 /**
  * A node that represents an object binding pattern.
- * For example: {a, b, c} = d
+ * For example: var {a, b, c} = d
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */

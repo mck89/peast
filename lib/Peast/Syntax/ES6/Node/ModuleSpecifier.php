@@ -9,15 +9,39 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * Abstract class that export and import specifiers nodes must extend.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ * 
+ * @abstract
+ */
 abstract class ModuleSpecifier extends Node
 {
+    /**
+     * Local identifier
+     * 
+     * @var Identifier 
+     */
     protected $local;
     
+    /**
+     * Returns the local identifier
+     * 
+     * @return Identifier
+     */
     public function getLocal()
     {
         return $this->local;
     }
     
+    /**
+     * Sets the local identifier
+     * 
+     * @param Identifier $local Local identifier
+     * 
+     * @return $this
+     */
     public function setLocal(Identifier $local)
     {
         $this->local = $local;

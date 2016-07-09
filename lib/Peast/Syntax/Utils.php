@@ -9,14 +9,25 @@
  */
 namespace Peast\Syntax;
 
+/**
+ * Utilities class.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class Utils
 {
     /**
+     * Converts an unicode code point to UTF-8
+     * 
+     * @param int $num Unicode code point
+     * 
+     * @return string
+     * 
      * @codeCoverageIgnore
      */
     static public function unicodeToUtf8($num)
     {
-        //From: http://stackoverflow.com/questions/1805802/php-convert-unicode-codepoint-to-utf-8
+        //From: http://stackoverflow.com/questions/1805802/php-convert-unicode-codepoint-to-utf-8#answer-7153133
         if ($num <= 0x7F) {
             return chr($num);
         } elseif ($num <= 0x7FF) {
@@ -35,10 +46,17 @@ class Utils
         return '';
     }
     
+    /**
+     * Compiled line terminators cache
+     * 
+     * @var array 
+     */
     protected static $lineTerminatorsCache;
     
     /**
-     * @codeCoverageIgnore
+     * Returns line terminators array
+     * 
+     * @return array
      */
     protected static function getLineTerminators()
     {
@@ -53,6 +71,14 @@ class Utils
         return self::$lineTerminatorsCache;
     }
     
+    /**
+     * This function takes a string as it appears in the source code and returns
+     * an unquoted version of it
+     * 
+     * @param string $str The string to unquote
+     * 
+     * @return string
+     */
     static public function unquoteLiteralString($str)
     {
         //Remove quotes
@@ -104,6 +130,14 @@ class Utils
         return $str;
     }
     
+    /**
+     * This function converts a string to a quoted javascript string
+     * 
+     * @param string $str   String to quote
+     * @param string $quote Quote character
+     * 
+     * @return string
+     */
     static public function quoteLiteralString($str, $quote)
     {
         $escape = self::getLineTerminators();

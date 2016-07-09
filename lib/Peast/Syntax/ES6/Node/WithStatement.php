@@ -9,28 +9,68 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents a with statement.
+ * For example: with (test) {}
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class WithStatement extends Node implements Statement
 {
+    /**
+     * The statement subject
+     * 
+     * @var Expression 
+     */
     protected $object;
     
+    /**
+     * The statement body
+     * 
+     * @var type 
+     */
     protected $body;
     
+    /**
+     * Returns the statement subject
+     * 
+     * @return Expression
+     */
     public function getObject()
     {
         return $this->object;
     }
     
+    /**
+     * Sets the statement subject
+     * 
+     * @param Expression $object Statement subject
+     * 
+     * @return $this
+     */
     public function setObject(Expression $object)
     {
         $this->object = $object;
         return $this;
     }
     
+    /**
+     * Returns the statement body
+     * 
+     * @return Expression
+     */
     public function getBody()
     {
         return $this->body;
     }
     
+    /**
+     * Sets the statement body
+     * 
+     * @param Statement $body Statement body
+     * 
+     * @return $this
+     */
     public function setBody(Statement $body)
     {
         $this->body = $body;

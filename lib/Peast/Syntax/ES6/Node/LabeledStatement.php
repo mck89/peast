@@ -9,28 +9,67 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents a labeled statement.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class LabeledStatement extends Node implements Statement
 {
+    /**
+     * Label
+     * 
+     * @var Identifier 
+     */
     protected $label;
     
+    /**
+     * Body
+     * 
+     * @var Statement 
+     */
     protected $body;
     
+    /**
+     * Returns the label
+     * 
+     * @return Identifier
+     */
     public function getLabel()
     {
         return $this->label;
     }
     
+    /**
+     * Sets the label
+     * 
+     * @param Identifier $label Label
+     * 
+     * @return $this
+     */
     public function setLabel(Identifier $label)
     {
         $this->label = $label;
         return $this;
     }
     
+    /**
+     * Returns the body
+     * 
+     * @return Statement
+     */
     public function getBody()
     {
         return $this->body;
     }
     
+    /**
+     * Sets the body
+     * 
+     * @param Statement $body Body
+     * 
+     * @return $this
+     */
     public function setBody(Statement $body)
     {
         $this->body = $body;

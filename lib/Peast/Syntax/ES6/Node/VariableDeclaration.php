@@ -9,23 +9,61 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents a "var", "const" or "let" declaration.
+ * For example: var a = 1
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class VariableDeclaration extends Node implements Declaration
 {
+    //Kind constants
+    /**
+     * "var" kind
+     */
     const KIND_VAR = "var";
     
+    /**
+     * "let" kind
+     */
     const KIND_LET = "let";
     
+    /**
+     * "const" kind
+     */
     const KIND_CONST = "const";
     
+    /**
+     * Declarations array
+     * 
+     * @var VariableDeclarator[] 
+     */
     protected $declarations = array();
     
+    /**
+     * Declaration kind that is one of the kind constants
+     * 
+     * @var string 
+     */
     protected $kind = self::KIND_VAR;
     
+    /**
+     * Returns the declarations array
+     * 
+     * @return VariableDeclarator[]
+     */
     public function getDeclarations()
     {
         return $this->declarations;
     }
     
+    /**
+     * Sets the declarations array
+     * 
+     * @param VariableDeclarator[] $declarations Declarations array
+     * 
+     * @return $this
+     */
     public function setDeclarations($declarations)
     {
         $this->assertArrayOf($declarations, "VariableDeclarator");
@@ -33,11 +71,23 @@ class VariableDeclaration extends Node implements Declaration
         return $this;
     }
     
+    /**
+     * Returns the declaration kind that is one of the kind constants
+     * 
+     * @return string
+     */
     public function getKind()
     {
         return $this->kind;
     }
     
+    /**
+     * Sets the declaration kind that is one of the kind constants
+     * 
+     * @param string $kind Declaration kind
+     * 
+     * @return $this
+     */
     public function setKind($kind)
     {
         $this->kind = $kind;

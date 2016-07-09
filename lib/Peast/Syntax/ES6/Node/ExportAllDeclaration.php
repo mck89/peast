@@ -9,15 +9,38 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents an "export all" declaration.
+ * For example: export * from "test"
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class ExportAllDeclaration extends Node implements ModuleDeclaration
 {
+    /**
+     * The export source
+     * 
+     * @var Literal 
+     */
     protected $source;
     
+    /**
+     * Returns the export source
+     * 
+     * @return Literal
+     */
     public function getSource()
     {
         return $this->source;
     }
     
+    /**
+     * Sets the export source
+     * 
+     * @param Literal $source Export source
+     * 
+     * @return $this
+     */
     public function setSource(Literal $source)
     {
         $this->source = $source;

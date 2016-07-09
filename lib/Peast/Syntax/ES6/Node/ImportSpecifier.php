@@ -9,15 +9,38 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents a specifier in an import declaration.
+ * For example "{a}" in: import {a} from "test"
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class ImportSpecifier extends ModuleSpecifier
 {
+    /**
+     * Imported identifier
+     * 
+     * @var Identifier 
+     */
     protected $imported;
     
+    /**
+     * Returns the imported identifier
+     * 
+     * @return Identifier
+     */
     public function getImported()
     {
         return $this->imported;
     }
     
+    /**
+     * Sets the imported identifier
+     * 
+     * @param Identifier $imported Imported identifier
+     * 
+     * @return $this
+     */
     public function setImported(Identifier $imported)
     {
         $this->imported = $imported;

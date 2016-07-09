@@ -9,15 +9,38 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents a sequence of expressions.
+ * For example: a, b
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class SequenceExpression  extends Node implements Expression
 {
+    /**
+     * Expressions array
+     * 
+     * @var Expression[]
+     */
     protected $expressions = array();
     
+    /**
+     * Returns the expressions array
+     * 
+     * @return Expression[]
+     */
     public function getExpressions()
     {
         return $this->expressions;
     }
     
+    /**
+     * Sets the expressions array
+     * 
+     * @param Expression[] $expressions Expressions array
+     * 
+     * @return $this
+     */
     public function setExpressions($expressions)
     {
         $this->assertArrayOf($expressions, "Expression");

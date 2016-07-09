@@ -9,13 +9,31 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents a property in an object binding pattern.
+ * For example "a" in: var {a} = b
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class AssignmentProperty extends Property
 {
+    /**
+     * Returns node's type
+     * 
+     * @return string
+     */
     public function getType()
     {
         return "Property";
     }
     
+    /**
+     * Sets the propery value
+     * 
+     * @param Pattern $value Property value
+     * 
+     * @return $this
+     */
     public function setValue($value)
     {
         $this->assertType($value, "Pattern");
@@ -24,6 +42,12 @@ class AssignmentProperty extends Property
     }
     
     /**
+     * Sets the property kind that is one of the kind constants
+     * 
+     * @param string $kind Property kind
+     * 
+     * @return $this
+     * 
      * @codeCoverageIgnore
      */
     public function setKind($kind)
@@ -32,6 +56,12 @@ class AssignmentProperty extends Property
     }
     
     /**
+     * Sets the property method flag that is true when the property is a method
+     * 
+     * @param bool $method Method flag
+     * 
+     * @return $this
+     * 
      * @codeCoverageIgnore
      */
     public function setMethod($method)

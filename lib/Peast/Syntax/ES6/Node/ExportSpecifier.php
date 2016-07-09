@@ -9,15 +9,38 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents a specifier in an export declaration.
+ * For example "{a}" in: export {a}
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class ExportSpecifier extends ModuleSpecifier
 {
+    /**
+     * Exported identifier
+     * 
+     * @var Identifier 
+     */
     protected $exported;
     
+    /**
+     * Returns the exported identifier
+     * 
+     * @return Identifier
+     */
     public function getExported()
     {
         return $this->exported;
     }
     
+    /**
+     * Sets the exported identifier
+     * 
+     * @param Identifier $exported Exported identifier
+     * 
+     * @return $this
+     */
     public function setExported(Identifier $exported)
     {
         $this->exported = $exported;

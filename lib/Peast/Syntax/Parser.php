@@ -9,12 +9,33 @@
  */
 namespace Peast\Syntax;
 
+/**
+ * Base class for parsers.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 abstract class Parser
 {
+    /**
+     * Associated scanner
+     * 
+     * @var Scanner 
+     */
     protected $scanner;
     
+    /**
+     * Parsing options
+     * 
+     * @var array
+     */
     protected $options;
     
+    /**
+     * Class constructor
+     * 
+     * @param string $source  Source code
+     * @param array  $options Parsing options
+     */
     public function __construct($source, $options = array())
     {
         $this->options = $options;
@@ -31,8 +52,18 @@ abstract class Parser
         $this->scanner = new $scannerClasss($source, $encoding);
     }
     
+    /**
+     * Parses the source
+     * 
+     * @abstract
+     */
     abstract public function parse();
     
+    /**
+     * Returns parsed tokens from the source code
+     * 
+     * @return Token[]
+     */
     public function tokenize()
     {
         $this->scanner->enableTokenRegistration();
@@ -41,6 +72,13 @@ abstract class Parser
     }
     
     /**
+     * Creates a node
+     * 
+     * @param string $nodeType Node's type
+     * @param mixed  $position Node's start position
+     * 
+     * @return Node
+     * 
      * @codeCoverageIgnore
      */
     protected function createNode($nodeType, $position)
@@ -62,6 +100,13 @@ abstract class Parser
     }
     
     /**
+     * Completes a node by adding the end position
+     * 
+     * @param Node $node     Node to complete
+     * @param type $position Node's end position
+     * 
+     * @return Node
+     * 
      * @codeCoverageIgnore
      */
     protected function completeNode(Node $node, $position = null)
@@ -71,6 +116,14 @@ abstract class Parser
         );
     }
     
+    /**
+     * Throws a syntax error
+     * 
+     * @param string $message    Error message
+     * @param Position $position Error position
+     * 
+     * @throws Exception
+     */
     protected function error($message = "", $position = null)
     {
         if (!$message) {
@@ -88,6 +141,13 @@ abstract class Parser
         throw new Exception($message, $position);
     }
     
+    /**
+     * Asserts that a valid end of statement follows the current position
+     * 
+     * @return boolean
+     * 
+     * @throws Exception
+     */
     protected function assertEndOfStatement()
     {
         //The end of statement is reached when it is followed by line
@@ -107,6 +167,18 @@ abstract class Parser
         return $this->error();
     }
     
+    /**
+     * Parses a character separated list of instructions or null if the
+     * sequence is not valid
+     * 
+     * @param callable $fn   Parsing instruction function
+     * @param array    $args Arguments that will be passed to the function
+     * @param string   $char Separator
+     * 
+     * @return array
+     * 
+     * @throws Exception
+     */
     protected function charSeparatedListOf($fn, $args = array(), $char = ",")
     {
         $list = array();
