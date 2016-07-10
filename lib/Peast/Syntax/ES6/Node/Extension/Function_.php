@@ -9,21 +9,58 @@
  */
 namespace Peast\Syntax\ES6\Node\Extension;
 
+/**
+ * Trait for function declarations and expressions.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 trait Function_
 {
+    /**
+     * Function name
+     * 
+     * @var Identifier 
+     */
     protected $id;
     
+    /**
+     * Function parameters array
+     * 
+     * @var Pattern[] 
+     */
     protected $params = array();
     
+    /**
+     * Function body
+     * 
+     * @var BlockStatement 
+     */
     protected $body;
     
+    /**
+     * Generator flag that is true when the function is a generator
+     * 
+     * @var bool 
+     */
     protected $generator = false;
     
+    /**
+     * Returns function name
+     * 
+     * @return Identifier
+     */
     public function getId()
     {
         return $this->id;
     }
     
+    /**
+     * Sets function name
+     * 
+     * @param Identifier $id Function name
+     * 
+     * @return $this
+     */
     public function setId($id)
     {
         $this->assertType($id, "Identifier", true);
@@ -31,11 +68,23 @@ trait Function_
         return $this;
     }
     
+    /**
+     * Returns function parameters array
+     * 
+     * @return Pattern[]
+     */
     public function getParams()
     {
         return $this->params;
     }
     
+    /**
+     * Sets function parameters array
+     * 
+     * @param Pattern[] $params Function parameters array
+     * 
+     * @return $this
+     */
     public function setParams($params)
     {
         $this->assertArrayOf($params, "Pattern");
@@ -43,11 +92,23 @@ trait Function_
         return $this;
     }
     
+    /**
+     * Returns function body
+     * 
+     * @return BlockStatement
+     */
     public function getBody()
     {
         return $this->body;
     }
     
+    /**
+     * Sets function body
+     * 
+     * @param BlockStatement $body Function body
+     * 
+     * @return $this
+     */
     public function setBody($body)
     {
         $this->assertType($body, "BlockStatement");
@@ -55,32 +116,26 @@ trait Function_
         return $this;
     }
     
+    /**
+     * Returns the generator flag that is true when the function is a generator
+     * 
+     * @return bool
+     */
     public function getGenerator()
     {
         return $this->generator;
     }
     
+    /**
+     * Sets the generator flag that is true when the function is a generator
+     * 
+     * @param bool $generator Generator flag
+     * 
+     * @return $this
+     */
     public function setGenerator($generator)
     {
         $this->generator = (bool) $generator;
         return $this;
-    }
-    
-    public function compile()
-    {
-        $source = "function";
-        
-        if ($this->getGenerator()) {
-            $source .= " *";
-        }
-        
-        if ($id = $this->getId()) {
-            $source .= " " . $id->compile();
-        }
-        
-        $source .= " (" . $this->compileNodeList($this->getParams()) . ")";
-        $source .= " {" . $this->getBody()->compile() . "}";
-        
-        return $source;
     }
 }

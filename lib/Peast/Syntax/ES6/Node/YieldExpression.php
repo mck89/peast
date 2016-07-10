@@ -9,17 +9,44 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents a yield statement.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class YieldExpression extends Node implements Expression
 {
+    /**
+     * Yield argument
+     * 
+     * @var Expression 
+     */
     protected $argument;
     
+    /**
+     * Delegate flag that is true when the yield keyword is preceeded by *
+     * 
+     * @var bool 
+     */
     protected $delegate = false;
     
+    /**
+     * Returns yield argument
+     * 
+     * @return Expression
+     */
     public function getArgument()
     {
         return $this->argument;
     }
     
+    /**
+     * Sets yield argument
+     * 
+     * @param Expression $argument Argument
+     * 
+     * @return $this
+     */
     public function setArgument($argument)
     {
         $this->assertType($argument, "Expression", true);
@@ -27,11 +54,25 @@ class YieldExpression extends Node implements Expression
         return $this;
     }
     
+    /**
+     * Returns the delegate flag that is true when the yield keyword is
+     * preceeded by *
+     * 
+     * @return bool
+     */
     public function getDelegate()
     {
         return $this->delegate;
     }
     
+    /**
+     * Sets the delegate flag that is true when the yield keyword is
+     * preceeded by *
+     * 
+     * @param bool $delegate Delegate flag
+     * 
+     * @return $this
+     */
     public function setDelegate($delegate)
     {
         $this->delegate = (bool) $delegate;
