@@ -44,7 +44,7 @@ class TemplateLiteral extends Node implements Expression
     /**
      * Sets the array of quasis that are the literal parts of the template
      * 
-     * @param TemplateElement[]  $quasis Quasis
+     * @param TemplateElement[] $quasis Quasis
      * 
      * @return $this
      */

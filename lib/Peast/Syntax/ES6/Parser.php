@@ -786,7 +786,8 @@ class Parser extends \Peast\Syntax\Parser
     {
         $lookahead = array("{", "function", "class", array("let", "["));
         if (!$this->scanner->isBefore($lookahead, true) &&
-            $expression = $this->parseExpression(true, $yield)) {
+            $expression = $this->parseExpression(true, $yield)
+        ) {
             
             $this->assertEndOfStatement();
             $node = $this->createNode("ExpressionStatement", $expression);
@@ -867,7 +868,8 @@ class Parser extends \Peast\Syntax\Parser
                         $update = $this->parseExpression(true, $yield);
                         
                         if ($this->scanner->consume(")") &&
-                            $body = $this->parseStatement($yield, $return)) {
+                            $body = $this->parseStatement($yield, $return)
+                        ) {
                             
                             $node = $this->createNode("ForStatement", $token);
                             $node->setInit($init);
@@ -1064,8 +1066,8 @@ class Parser extends \Peast\Syntax\Parser
      * @return Node\FunctionDeclaration|null
      */
     protected function parseFunctionOrGeneratorDeclaration(
-        $yield = false, $default = false, $allowGenerator = true)
-    {
+        $yield = false, $default = false, $allowGenerator = true
+    ) {
         if ($token = $this->scanner->consume("function")) {
             
             $generator = $allowGenerator && $this->scanner->consume("*");
@@ -1515,7 +1517,8 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseForBinding($yield = false)
     {
         if (($id = $this->parseIdentifier($yield)) ||
-            ($id = $this->parseBindingPattern($yield))) {
+            ($id = $this->parseBindingPattern($yield))
+        ) {
             
             $node = $this->createNode("VariableDeclarator", $id);
             $node->setId($id);
@@ -1587,7 +1590,7 @@ class Parser extends \Peast\Syntax\Parser
                     return $this->completeNode($node);
                     
                 } elseif (!$this->scanner->isBefore(array("function", "class")) &&
-                          ($declaration = $this->parseAssignmentExpression(true))
+                    ($declaration = $this->parseAssignmentExpression(true))
                 ) {
                     
                     $this->assertEndOfStatement();
@@ -1609,7 +1612,8 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
 
             } elseif (($dec = $this->parseVariableStatement()) ||
-                      $dec = $this->parseDeclaration()) {
+                $dec = $this->parseDeclaration()
+            ) {
 
                 $node = $this->createNode("ExportNamedDeclaration", $token);
                 $node->setDeclaration($dec);
@@ -1692,7 +1696,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
                 
             } elseif (($specifiers = $this->parseImportClause()) &&
-                      $source = $this->parseFromClause()
+                $source = $this->parseFromClause()
             ) {
                 
                 $this->assertEndOfStatement();
@@ -1753,7 +1757,8 @@ class Parser extends \Peast\Syntax\Parser
         if ($token = $this->scanner->consume("*")) {
             
             if ($this->scanner->consume("as") &&
-                $local = $this->parseIdentifier(false)) {
+                $local = $this->parseIdentifier(false)
+            ) {
                 $node = $this->createNode("ImportNamespaceSpecifier", $token);
                 $node->setLocal($local);
                 return $this->completeNode($node);  
@@ -1974,7 +1979,8 @@ class Parser extends \Peast\Syntax\Parser
         if ($token = $this->scanner->consume("[")) {
             
             if (($name = $this->parseAssignmentExpression(true, $yield)) &&
-                $this->scanner->consume("]")) {
+                $this->scanner->consume("]")
+            ) {
                 return array($name, true, $token);
             }
             
@@ -2020,7 +2026,8 @@ class Parser extends \Peast\Syntax\Parser
         //Handle the case where get and set are methods name and not the
         //definition of a getter/setter
         if ($kind !== Node\MethodDefinition::KIND_METHOD &&
-            $this->scanner->consume("(")) {
+            $this->scanner->consume("(")
+        ) {
             $this->scanner->setState($state);
             $kind = Node\MethodDefinition::KIND_METHOD;
             $error = false;
@@ -2123,7 +2130,8 @@ class Parser extends \Peast\Syntax\Parser
         if ($token = $this->scanner->consume("{")) {
             
             if (($body = $this->parseFunctionBody()) &&
-                $this->scanner->consume("}")) {
+                $this->scanner->consume("}")
+            ) {
                 $body->setStartPosition($token->getLocation()->getStart());
                 $body->setEndPosition($this->scanner->getPosition());
                 return array($body, false);
@@ -2131,7 +2139,8 @@ class Parser extends \Peast\Syntax\Parser
             
             return $this->error();
         } elseif (!$this->scanner->isBefore(array("{")) &&
-                  $body = $this->parseAssignmentExpression($in)) {
+            $body = $this->parseAssignmentExpression($in)
+        ) {
             return array($body, true);
         }
         return null;
@@ -2220,7 +2229,8 @@ class Parser extends \Peast\Syntax\Parser
     {
         $state = $this->scanner->getState();
         if (($property = $this->parsePropertyName($yield)) &&
-             $this->scanner->consume(":")) {
+            $this->scanner->consume(":")
+        ) {
 
             if ($value = $this->parseAssignmentExpression(true, $yield)) {
                 $startPos = isset($property[2]) ? $property[2] : $property[0];
@@ -2333,7 +2343,8 @@ class Parser extends \Peast\Syntax\Parser
     {
         $state = $this->scanner->getState();
         if (($key = $this->parsePropertyName($yield)) &&
-            $this->scanner->consume(":")) {
+            $this->scanner->consume(":")
+        ) {
             
             if ($value = $this->parseBindingElement($yield)) {
                 $startPos = isset($key[2]) ? $key[2] : $key[0];
@@ -2547,9 +2558,10 @@ class Parser extends \Peast\Syntax\Parser
     {
         if ($expr = $this->parsePostfixExpression($yield)) {
             return $expr;
-        } elseif ($token = $this->scanner->consumeOneOf(array(
-                    "delete", "void", "typeof", "++", "--", "+", "-", "~", "!"
-                  ))) {
+        } elseif ($token = $this->scanner->consumeOneOf(
+            array("delete", "void", "typeof", "++", "--", "+", "-", "~", "!")
+            )
+        ) {
             if ($argument = $this->parseUnaryExpression($yield)) {
                 $op = $token->getValue();
                 if ($op === "++" || $op === "--") {
@@ -2580,7 +2592,8 @@ class Parser extends \Peast\Syntax\Parser
         if ($argument = $this->parseLeftHandSideExpression($yield)) {
             
             if ($this->scanner->noLineTerminators() &&
-                $token = $this->scanner->consumeOneOf(array("--", "++"))) {
+                $token = $this->scanner->consumeOneOf(array("--", "++"))
+            ) {
                 
                 $node = $this->createNode("UpdateExpression", $argument);
                 $node->setOperator($token->getValue());
@@ -2630,7 +2643,8 @@ class Parser extends \Peast\Syntax\Parser
         
         if (!$object &&
             !($object = $this->parseSuperPropertyOrCall($yield)) &&
-            !($object = $this->parsePrimaryExpression($yield))) {
+            !($object = $this->parsePrimaryExpression($yield))
+        ) {
             
             if ($newTokensCount) {
                 return $this->error();
@@ -2812,7 +2826,8 @@ class Parser extends \Peast\Syntax\Parser
         if ($this->scanner->consume("(")) {
             
             if (($args = $this->parseArgumentList($yield)) !== null &&
-                $this->scanner->consume(")")) {
+                $this->scanner->consume(")")
+            ) {
                 return $args;
             }
             
@@ -2891,9 +2906,9 @@ class Parser extends \Peast\Syntax\Parser
                     return $this->completeNode($node);
                 }
             } elseif ($this->scanner->consume("[") &&
-                      ($property = $this->parseExpression(true, $yield)) &&
-                      $this->scanner->consume("]")
-                ) {
+                ($property = $this->parseExpression(true, $yield)) &&
+                $this->scanner->consume("]")
+            ) {
                 
                 $node->setProperty($property);
                 $node->setComputed(true);
