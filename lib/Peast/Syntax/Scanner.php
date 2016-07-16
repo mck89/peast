@@ -97,13 +97,20 @@ abstract class Scanner
                         preg_split('//u', $source, null, PREG_SPLIT_NO_EMPTY);
         $this->length = count($this->source);
         
-        //Generate a map by grouping punctutars by their length
+        //Generate a map by grouping punctutars by their first character
         foreach ($this->punctutators as $p) {
+            $first = $p[0];
             $len = strlen($p);
-            if (!isset($this->punctutatorsMap[$len])) {
-                $this->punctutatorsMap[$len] = array();
+            if (!isset($this->punctutatorsMap[$first])) {
+                $this->punctutatorsMap[$first] = array(
+                    "maxLen" => 0,
+                    "map" => array()
+                );
             }
-            $this->punctutatorsMap[$len][] = $p;
+            $this->punctutatorsMap[$first]["map"][] = $p;
+            $this->punctutatorsMap[$first]["maxLen"] = max(
+                $this->punctutatorsMap[$first]["maxLen"], $len
+            );
         }
         
         //Convert character codes to UTF8 characters in whitespaces and line
@@ -642,52 +649,58 @@ abstract class Scanner
     
     protected function scanPunctutator()
     {
-        $buffer = "";
-        $consumed = 0;
         $bestMatch = null;
+        $consumed = 1;
+        $char = $this->charAt();
         
-        //This loop scans next characters to find the longest punctutator, so
-        //that if "!" is found and it's followed by "=", the matched
-        //punctutator will be "!="
-        while (($char = $this->charAt($this->index + $consumed)) !== null) {
-            $buffer .= $char;
-            $consumed++;
-            //Special handling for brackets
-            if (isset($this->brackets[$char]) && $consumed === 1) {
-                if ($this->brackets[$char]) {
-                    $openBracket = $this->brackets[$char];
-                    //Check if there is a corresponding open bracket
-                    if (!isset($this->openBrackets[$openBracket]) ||
-                        !$this->openBrackets[$openBracket]) {
-                        if (!$this->isAfterSlash()) {
-                            return $this->error();
-                        }
-                    } else {
-                        $this->openBrackets[$openBracket]--;
+        //Check if the next char is a bracket
+        if (isset($this->brackets[$char])) {
+            //Check if it is a closing bracket
+            if ($this->brackets[$char]) {
+                $openBracket = $this->brackets[$char];
+                //Check if there is a corresponding open bracket
+                if (!isset($this->openBrackets[$openBracket]) ||
+                    !$this->openBrackets[$openBracket]) {
+                    if (!$this->isAfterSlash()) {
+                        return $this->error();
                     }
                 } else {
-                    if (!isset($this->openBrackets[$char])) {
-                        $this->openBrackets[$char] = 0;
-                    }
-                    $this->openBrackets[$char]++;
+                    $this->openBrackets[$openBracket]--;
                 }
-                $bestMatch = array($consumed, $buffer);
-                break;
-            } elseif (in_array($buffer, $this->punctutatorsMap[$consumed])) {
-                $bestMatch = array($consumed, $buffer);
+            } else {
+                if (!isset($this->openBrackets[$char])) {
+                    $this->openBrackets[$char] = 0;
+                }
+                $this->openBrackets[$char]++;
             }
-            if (!isset($this->punctutatorsMap[$consumed + 1])) {
-                break;
+            $bestMatch = array($consumed, $char);
+        } elseif (isset($this->punctutatorsMap[$char])) {
+            //If the character is a valid punctutator, first check if the
+            //punctutators map for that character has a max length of 1 and in
+            //that case match immediatelly
+            if ($this->punctutatorsMap[$char]["maxLen"] === 1) {
+                $bestMatch = array($consumed, $char);
+            } else {
+                //Otherwise consume a number of characters equal to the max
+                //length and find the longest match
+                $buffer = $char;
+                $map = $this->punctutatorsMap[$char]["map"];
+                $maxLen = $this->punctutatorsMap[$char]["maxLen"];
+                do {
+                    if (in_array($buffer, $map)) {
+                        $bestMatch = array($consumed, $buffer);
+                    }
+                    $buffer .= $this->charAt($this->index + $consumed);
+                    $consumed++;
+                } while ($consumed <= $maxLen);
             }
+        } else {
+            return null;
         }
         
-        if ($bestMatch !== null) {
-            $this->index += $bestMatch[0];
-            $this->column += $bestMatch[0];
-            return new Token(Token::TYPE_PUNCTUTATOR, $bestMatch[1]);
-        }
-        
-        return null;
+        $this->index += $bestMatch[0];
+        $this->column += $bestMatch[0];
+        return new Token(Token::TYPE_PUNCTUTATOR, $bestMatch[1]);
     }
     
     protected function scanKeywordOrIdentifier()
