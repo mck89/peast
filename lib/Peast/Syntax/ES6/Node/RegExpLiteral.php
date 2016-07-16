@@ -9,43 +9,102 @@
  */
 namespace Peast\Syntax\ES6\Node;
 
+/**
+ * A node that represents a regular expression literal.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class RegExpLiteral extends Literal
 {
+    /**
+     * Regex literal
+     */
     const KIND_REGEX = "regex";
     
+    /**
+     * Regex flags
+     * 
+     * @var string 
+     */
     protected $flags = "";
     
+    /**
+     * Regex pattern
+     * 
+     * @var string 
+     */
     protected $pattern = "";
     
+    /**
+     * Node's kind that is one of the kind constants
+     * 
+     * @var string 
+     */
     protected $kind = self::KIND_REGEX;
     
+    /**
+     * Returns regex pattern
+     * 
+     * @return string
+     */
     public function getPattern()
     {
         return $this->pattern;
     }
     
+    /**
+     * Sets regex pattern
+     * 
+     * @param string $pattern Regex pattern
+     * 
+     * @return $this
+     */
     public function setPattern($pattern)
     {
         $this->pattern = $pattern;
         return $this;
     }
     
+    /**
+     * Returns regex flags
+     * 
+     * @return string
+     */
     public function getFlags()
     {
         return $this->flags;
     }
     
+    /**
+     * Sets regex flags
+     * 
+     * @param string $flags Regex flags
+     * 
+     * @return $this
+     */
     public function setFlags($flags)
     {
         $this->flags = $flags;
         return $this;
     }
     
+    /**
+     * Returns node's raw value
+     * 
+     * @return string
+     */
     public function getRaw()
     {
         return "/" . $this->getPattern() . "/" . $this->getFlags();
     }
     
+    /**
+     * Sets node's raw value that must include delimiters
+     * 
+     * @param string $rawValue Raw value
+     * 
+     * @return $this
+     */
     public function setRaw($rawValue)
     {
         
@@ -56,11 +115,23 @@ class RegExpLiteral extends Literal
         return $this;
     }
     
+    /**
+     * Returns node's value
+     * 
+     * @return mixed
+     */
     public function getValue()
     {
         return $this->getRaw();
     }
     
+    /**
+     * Sets node's value
+     * 
+     * @param mixed $value Value
+     * 
+     * @return $this
+     */
     public function setValue($value)
     {
         return $this->setRaw($value);
