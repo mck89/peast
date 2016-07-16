@@ -13,6 +13,8 @@ namespace Peast\Syntax;
  * Base class for parsers.
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
+ * 
+ * @abstract
  */
 abstract class Parser
 {

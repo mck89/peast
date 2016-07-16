@@ -9,50 +9,162 @@
  */
 namespace Peast\Syntax;
 
+/**
+ * Base class for scanners.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ * 
+ * @abstract
+ */
 abstract class Scanner
 {
+    /**
+     * Current column
+     * 
+     * @var int
+     */
     protected $column = 0;
     
+    /**
+     * Current line
+     * 
+     * @var int
+     */
     protected $line = 1;
     
+    /**
+     * Current index
+     * 
+     * @var int
+     */
     protected $index = 0;
     
+    /**
+     * Source length
+     * 
+     * @var int
+     */
     protected $length;
     
+    /**
+     * Source characters
+     * 
+     * @var array
+     */
     protected $source;
     
+    /**
+     * Consumed position
+     * 
+     * @var Position
+     */
     protected $position;
     
+    /**
+     * Current token
+     * 
+     * @var Token 
+     */
     protected $currentToken;
     
+    /**
+     * Next token
+     * 
+     * @var Token 
+     */
     protected $nextToken;
     
+    /**
+     * Strict mode flag
+     * 
+     * @var bool 
+     */
     protected $strictMode = false;
     
+    /**
+     * True to register tokens in the tokens array
+     * 
+     * @var bool 
+     */
     protected $registerTokens = false;
     
+    /**
+     * Registered tokens array
+     * 
+     * @var array 
+     */
     protected $tokens = array();
     
+    /**
+     * Regex to match identifiers starts
+     * 
+     * @var string 
+     */
     protected $idStartRegex;
     
+    /**
+     * Regex to match identifiers parts
+     * 
+     * @var string 
+     */
     protected $idPartRegex;
     
+    /**
+     * Keywords array
+     * 
+     * @var array 
+     */
     protected $keywords = array();
     
+    /**
+     * Array of words that are keywords only in strict mode
+     * 
+     * @var array 
+     */
     protected $strictModeKeywords = array();
     
+    /**
+     * Punctutators array
+     * 
+     * @var array 
+     */
     protected $punctutators = array();
     
+    /**
+     * Punctutators map
+     * 
+     * @var array 
+     */
     protected $punctutatorsMap = array();
     
+    /**
+     * Brackets array
+     * 
+     * @var array 
+     */
     protected $brackets = array(
         "(" => "", "[" => "", "{" => "", ")" => "(", "]" => "[", "}" => "{"
     );
     
+    /**
+     * Open brackets array
+     * 
+     * @var array 
+     */
     protected $openBrackets = array();
     
+    /**
+     * Open templates array
+     * 
+     * @var array 
+     */
     protected $openTemplates = array();
     
+    /**
+     * Whitespaces array
+     * 
+     * @var array 
+     */
     protected $whitespaces = array(
         " ", "\t", "\n", "\r", "\f", "\v", 0x00A0, 0xFEFF, 0x00A0,
         0x1680, 0x2000, 0x2001, 0x2002, 0x2003, 0x2004, 0x2005, 0x2006,
@@ -60,24 +172,72 @@ abstract class Scanner
         0x2029
     );
     
+    /**
+     * Line terminators characters array
+     * 
+     * @var array 
+     * 
+     * @static
+     */
     public static $lineTerminatorsChars = array("\n", "\r", 0x2028, 0x2029);
     
+    /**
+     * Line terminators sequences array
+     * 
+     * @var array
+     * 
+     * @static
+     */
     public static $lineTerminatorsSequences = array("\r\n");
     
+    /**
+     * Regex to split texts using valid ES line terminators
+     * 
+     * @var array 
+     */
     protected $linesSplitter;
     
+    /**
+     * Concatenation of line terminators characters and line terminators
+     * sequences
+     * 
+     * @var array 
+     */
     protected $lineTerminators;
     
+    /**
+     * Properties to copy when getting the scanner state
+     * 
+     * @var array
+     */
     protected $stateProps = array("position", "index", "column", "line",
                                   "currentToken", "nextToken", "strictMode",
                                   "openBrackets", "openTemplates");
     
-    protected $numbers = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+    /**
+     * Decimal numbers
+     * 
+     * @var array
+     */
+    protected $numbers = array("0", "1", "2", "3", "4", "5", "6", "7", "8",
+                               "9");
     
-    protected $xnumbers = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-                                "a", "b", "c", "d", "e", "f",
-                                "A", "B", "C", "D", "E", "F");
+    /**
+     * Hexadecimal numbers
+     * 
+     * @var array
+     */
+    protected $xnumbers = array("0", "1", "2", "3", "4", "5", "6", "7", "8",
+                                "9", "a", "b", "c", "d", "e", "f", "A", "B",
+                                "C", "D", "E", "F");
     
+    /**
+     * Class constructor
+     * 
+     * @param string $source   Source code
+     * @param string $encoding Source code encoding, if not given the scanner
+     *                         will try to auto detect it
+     */
     function __construct($source, $encoding = null)
     {
         //If encoding is missing try to detect it
@@ -126,32 +286,66 @@ abstract class Scanner
             }
         }
         
-        $this->linesSplitter = "/" . implode("|", $this->lineTerminators) . "/u";
+        $this->linesSplitter = "/" .
+                               implode("|", $this->lineTerminators) .
+                               "/u";
         $this->position = new Position(0, 0, 0);
     }
     
+    /**
+     * Enables or disables tokens registration in the token array
+     * 
+     * @param bool $enable True to enable token registration, false to disable
+     *                     it
+     * 
+     * @return $this
+     */
     public function enableTokenRegistration($enable = true)
     {
         $this->registerTokens = $enable;
         return $this;
     }
     
+    /**
+     * Return registered tokens
+     * 
+     * @return array
+     */
     public function getTokens()
     {
         return $this->tokens;
     }
     
+    /**
+     * Enables or disables strict mode
+     * 
+     * @param bool $strictMode Strict mode state
+     * 
+     * @return $this
+     */
     public function setStrictMode($strictMode)
     {
         $this->strictMode = $strictMode;
         return $this;
     }
     
+    /**
+     * Return strict mode state
+     * 
+     * @return bool
+     */
     public function getStrictMode()
     {
         return $this->strictMode;
     }
     
+    /**
+     * Checks if the given token is a keyword in the current strict mode state
+     * 
+     * @param Token $token Token to checks
+     * 
+     * @return bool
+     */
     public function isStrictModeKeyword($token)
     {
         return $token->getType() === Token::TYPE_KEYWORD &&
@@ -160,6 +354,11 @@ abstract class Scanner
                 in_array($token->getValue(), $this->strictModeKeywords)));
     }
     
+    /**
+     * Returns the current scanner state
+     * 
+     * @return array
+     */
     public function getState()
     {
         //Consume current and next tokens so that they wont' be parsed again
@@ -175,6 +374,13 @@ abstract class Scanner
         return $state;
     }
     
+    /**
+     * Sets the current scanner state
+     * 
+     * @param array $state State
+     * 
+     * @return $this
+     */
     public function setState($state)
     {
         if ($this->registerTokens) {
@@ -187,6 +393,15 @@ abstract class Scanner
         return $this;
     }
     
+    /**
+     * Returns current scanner state
+     * 
+     * @param bool $scanPosition By default this method returns the scanner
+     *                           consumed position, if this parameter is true
+     *                           the scanned position will be returned
+     * 
+     * @return Position
+     */
     public function getPosition($scanPosition = false)
     {
         if ($scanPosition) {
@@ -196,6 +411,14 @@ abstract class Scanner
         }
     }
     
+    /**
+     * Return the character at the given index in the source code or null if the
+     * end is reached.
+     * 
+     * @param int $index Index, if not given it will use the current index
+     * 
+     * @return string|null
+     */
     public function charAt($index = null)
     {
         if ($index === null) {
@@ -204,6 +427,13 @@ abstract class Scanner
         return $this->isEOF($index) ? null : $this->source[$index];
     }
     
+    /**
+     * Checks if the given index is at the end of the source code
+     * 
+     * @param int $index Index, if not given it will use the current index
+     * 
+     * @return bool
+     */
     public function isEOF($index = null)
     {
         if ($index === null) {
@@ -212,6 +442,15 @@ abstract class Scanner
         return $index >= $this->length;
     }
     
+    /**
+     * Throws a syntax error
+     * 
+     * @param string $message Error message
+     * 
+     * @return void
+     * 
+     * @throws Exception
+     */
     protected function error($message = null)
     {
         if (!$message) {
@@ -220,6 +459,11 @@ abstract class Scanner
         throw new Exception($message, $this->getPosition(true));
     }
     
+    /**
+     * Consumes the current token
+     * 
+     * @return $this
+     */
     public function consumeToken()
     {
         //Move the scanner position to the end of the current position
@@ -235,6 +479,13 @@ abstract class Scanner
         return $this;
     }
     
+    /**
+     * Checks if the given string is matched, if so it consumes the token
+     * 
+     * @param string $expected String to check
+     * 
+     * @return Token|null
+     */
     public function consume($expected)
     {
         $token = $this->getToken();
@@ -245,6 +496,14 @@ abstract class Scanner
         return null;
     }
     
+    /**
+     * Checks if one of the given strings is matched, if so it consumes the
+     * token
+     * 
+     * @param array $expected Strings to check
+     * 
+     * @return Token|null
+     */
     public function consumeOneOf($expected)
     {
         $token = $this->getToken();
@@ -255,14 +514,31 @@ abstract class Scanner
         return null;
     }
     
+    /**
+     * Checks that there are not line terminators following the current scan
+     * position before next token
+     * 
+     * @return bool
+     */
     public function noLineTerminators()
     {
         $token = $this->getToken();
         $position = $this->getPosition();
         return $token &&
-               $token->getLocation()->getEnd()->getLine() === $position->getLine();
+               $token->getLocation()->getEnd()->getLine() ===
+               $position->getLine();
     }
     
+    /**
+     * Checks if one of the given strings follows the current scan position
+     * 
+     * @param string|array $expected  String or array of strings to check
+     * @param bool         $nextToken This parameter must be true if the first
+     *                                parameter is an array so that it will
+     *                                check also next tokens
+     * 
+     * @return bool
+     */
     public function isBefore($expected, $nextToken = false)
     {
         $token = $this->getToken();
@@ -278,13 +554,19 @@ abstract class Scanner
         }
         foreach ($expected as $val) {
             if (is_array($val) && $val[0] === $token->getValue() &&
-                $val[1] === $this->nextToken->getValue()) {
+                $val[1] === $this->nextToken->getValue()
+            ) {
                 return true;
             }
         }
         return false;
     }
     
+    /**
+     * Returns the next token
+     * 
+     * @return Token|null
+     */
     public function getNextToken()
     {
         if (!$this->nextToken) {
@@ -296,6 +578,11 @@ abstract class Scanner
         return $this->nextToken;
     }
     
+    /**
+     * Returns the current token 
+     * 
+     * @return Token|null
+     */
     public function getToken()
     {
         //The current token is returned until consumed
@@ -326,7 +613,8 @@ abstract class Scanner
             ($token = $this->scanTemplate()) ||
             ($token = $this->scanNumber()) ||
             ($token = $this->scanPunctutator()) ||
-            ($token = $this->scanKeywordOrIdentifier())) {
+            ($token = $this->scanKeywordOrIdentifier())
+        ) {
             $this->currentToken = $token->setStartPosition($startPosition)
                                         ->setEndPosition($this->getPosition(true));
             return $this->currentToken;
@@ -343,12 +631,23 @@ abstract class Scanner
         return $this->error();
     }
     
+    /**
+     * Checks if the last scanned character is a slash, this method is used
+     * to know if the scanner is at the beginning of a regex
+     * 
+     * @return bool
+     */
     protected function isAfterSlash()
     {
         return $this->index && ($char = $this->charAt($this->index - 1)) &&
                $char === "/";
     }
     
+    /**
+     * Tries to reconsume the current token as a regexp if possible
+     * 
+     * @return Token|null
+     */
     public function reconsumeCurrentTokenAsRegexp()
     {
         $token = $this->getToken();
@@ -376,7 +675,9 @@ abstract class Scanner
             $tempBuffer = $this->consumeUntil($stops);
             if ($tempBuffer === null) {
                 if ($inClass) {
-                    return $this->error("Unterminated character class in regexp");
+                    return $this->error(
+                        "Unterminated character class in regexp"
+                    );
                 } else {
                     return $this->error("Unterminated regexp");
                 }
@@ -406,7 +707,8 @@ abstract class Scanner
         if ($this->nextToken) {
             $nextVal = $this->nextToken->getValue();
             if (isset($this->brackets[$nextVal]) &&
-                isset($this->openBrackets[$nextVal])) {
+                isset($this->openBrackets[$nextVal])
+            ) {
                 if ($this->brackets[$nextVal]) {
                     $this->openBrackets[$nextVal]++;
                 } else {
@@ -423,6 +725,11 @@ abstract class Scanner
         return $this->currentToken;
     }
     
+    /**
+     * Skips whitespaces and comments from the current scan position
+     * 
+     * @return void
+     */
     protected function skipWhitespacesAndComments()
     {
         $buffer = "";
@@ -438,7 +745,8 @@ abstract class Scanner
                     $comment = 0;
                 }
             } elseif (!$comment && $char === "/" &&
-                      ($nextChar === "/" || $nextChar === "*")) {
+                ($nextChar === "/" || $nextChar === "*")
+            ) {
                 //Start the comment
                 $this->index += 2;
                 $buffer .= $char . $nextChar;
@@ -466,6 +774,11 @@ abstract class Scanner
         $this->adjustColumnAndLine($buffer);
     }
     
+    /**
+     * String scanning method
+     * 
+     * @return Token|null
+     */
     protected function scanString()
     {
         $char = $this->charAt();
@@ -483,12 +796,19 @@ abstract class Scanner
         return null;
     }
     
+    /**
+     * Template scanning method
+     * 
+     * @return Token|null
+     */
     protected function scanTemplate()
     {
         $char = $this->charAt();
         
         //Get the current number of open curly brackets
-        $openCurly = isset($this->openBrackets["{"]) ? $this->openBrackets["{"] : 0;
+        $openCurly = isset($this->openBrackets["{"]) ?
+                     $this->openBrackets["{"] :
+                     0;
         
         //If the character is a curly bracket check and the number of open
         //curly brackets matches the last number in the open templates stack,
@@ -531,6 +851,11 @@ abstract class Scanner
         return null;
     }
     
+    /**
+     * Number scanning method
+     * 
+     * @return Token|null
+     */
     protected function scanNumber()
     {
         //Numbers can start with a decimal nuber or with a dot (.5)
@@ -551,7 +876,9 @@ abstract class Scanner
             $lower = $char !== null ? strtolower($char) : null;
             
             //Handle hexadecimal (0x), octal (0o) and binary (0b) forms
-            if ($buffer === "0" && $lower !== null && isset($this->{$lower . "numbers"})) {
+            if ($buffer === "0" && $lower !== null &&
+                isset($this->{$lower . "numbers"})
+            ) {
                 
                 $this->index++;
                 $this->column++;
@@ -598,7 +925,8 @@ abstract class Scanner
             
             //Consume exponent part if present
             if ($allowedExp &&
-                ($tempBuffer = $this->consumeExponentPart()) !== null) {
+                ($tempBuffer = $this->consumeExponentPart()) !== null
+            ) {
                 $buffer .= $tempBuffer;
             }
         }
@@ -606,6 +934,14 @@ abstract class Scanner
         return new Token(Token::TYPE_NUMERIC_LITERAL, $buffer);
     }
     
+    /**
+     * Consumes the maximum number of digits
+     * 
+     * @param string $type Digits type (decimal, hexadecimal, etc...)
+     * @param int    $max  Maximum number of digits to match
+     * 
+     * @return string|null
+     */
     protected function consumeNumbers($type = "", $max = null)
     {
         $buffer = "";
@@ -624,6 +960,11 @@ abstract class Scanner
         return $count ? $buffer : null;
     }
     
+    /**
+     * Consumes the exponent part of a number
+     * 
+     * @return string|null
+     */
     protected function consumeExponentPart()
     {
         $buffer = "";
@@ -647,6 +988,11 @@ abstract class Scanner
         return $buffer;
     }
     
+    /**
+     * Punctutator scanning method
+     * 
+     * @return Token|null
+     */
     protected function scanPunctutator()
     {
         $bestMatch = null;
@@ -660,7 +1006,8 @@ abstract class Scanner
                 $openBracket = $this->brackets[$char];
                 //Check if there is a corresponding open bracket
                 if (!isset($this->openBrackets[$openBracket]) ||
-                    !$this->openBrackets[$openBracket]) {
+                    !$this->openBrackets[$openBracket]
+                ) {
                     if (!$this->isAfterSlash()) {
                         return $this->error();
                     }
@@ -703,6 +1050,11 @@ abstract class Scanner
         return new Token(Token::TYPE_PUNCTUTATOR, $bestMatch[1]);
     }
     
+    /**
+     * Keywords and identifiers scanning method
+     * 
+     * @return Token|null
+     */
     protected function scanKeywordOrIdentifier()
     {
         //Consume the maximum number of characters that are unicode escape
@@ -735,7 +1087,8 @@ abstract class Scanner
         } elseif ($buffer === "true" || $buffer === "false") {
             $type = Token::TYPE_BOOLEAN_LITERAL;
         } elseif (in_array($buffer, $this->keywords) ||
-                  in_array($buffer, $this->strictModeKeywords)) {
+            in_array($buffer, $this->strictModeKeywords)
+        ) {
             $type = Token::TYPE_KEYWORD;
         } else {
             $type = Token::TYPE_IDENTIFIER;
@@ -744,6 +1097,11 @@ abstract class Scanner
         return new Token($type, $buffer);
     }
     
+    /**
+     * Consumes an unicode escape sequence
+     * 
+     * @return string|null
+     */
     protected function consumeUnicodeEscapeSequence()
     {
         $char = $this->charAt();
@@ -786,6 +1144,13 @@ abstract class Scanner
         return Utils::unicodeToUtf8(hexdec($code));
     }
     
+    /**
+     * Checks if the given character is a valid identifier start
+     * 
+     * @param string $char Character to check
+     * 
+     * @return bool
+     */
     protected function isIdentifierStart($char)
     {
         return ($char >= "a" && $char <= "z") ||
@@ -794,6 +1159,13 @@ abstract class Scanner
                preg_match($this->idStartRegex, $char);
     }
     
+    /**
+     * Checks if the given character is a valid identifier part
+     * 
+     * @param string $char Character to check
+     * 
+     * @return bool
+     */
     protected function isIdentifierPart($char)
     {
         return ($char >= "a" && $char <= "z") ||
@@ -803,6 +1175,13 @@ abstract class Scanner
                preg_match($this->idPartRegex, $char);
     }
     
+    /**
+     * Increases columns and lines count according to the given string
+     * 
+     * @param string $buffer String to analyze
+     * 
+     * @return void
+     */
     protected function adjustColumnAndLine($buffer)
     {
         $lines = preg_split($this->linesSplitter, $buffer);
@@ -816,6 +1195,13 @@ abstract class Scanner
         }
     }
     
+    /**
+     * Consumes characters until one of the given characters is found
+     * 
+     * @param array $stops Characters to search
+     * 
+     * @return string|null
+     */
     protected function consumeUntil($stops)
     {
         $buffer = "";

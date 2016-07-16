@@ -9,12 +9,32 @@
  */
 namespace Peast\Syntax\ES6;
 
+/**
+ * ES6 scanner.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
 class Scanner extends \Peast\Syntax\Scanner
 {
+    /**
+     * Regex to match identifiers starts
+     * 
+     * @var string 
+     */
     protected $idStartRegex = "/[\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\x{2118}\x{212E}\x{309B}\x{309C}]/u";
     
+    /**
+     * Regex to match identifiers parts
+     * 
+     * @var string 
+     */
     protected $idPartRegex = "/[\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\x{2118}\x{212E}\x{309B}\x{309C}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{00B7}\x{0387}\x{1369}\x{136A}\x{136B}\x{136C}\x{136D}\x{136E}\x{136F}\x{1370}\x{1371}\x{19DA}\x{200C}\x{200D}]/u";
     
+    /**
+     * Keywords array
+     * 
+     * @var array 
+     */
     protected $keywords = array(
         "break", "do", "in", "typeof", "case", "else", "instanceof", "var",
         "catch", "export", "new", "void", "class", "extends", "return", "while",
@@ -23,11 +43,21 @@ class Scanner extends \Peast\Syntax\Scanner
         "delete", "import", "try", "enum", "await"
     );
     
+    /**
+     * Array of words that are keywords only in strict mode
+     * 
+     * @var array 
+     */
     protected $strictModeKeywords = array(
         "implements", "interface", "package", "private", "protected", "public",
         "static", "let"
     );
     
+    /**
+     * Punctutators array
+     * 
+     * @var array 
+     */
     protected $punctutators = array(
         ".", ";", ",", "<", ">", "<=", ">=", "==", "!=", "===", "!==", "+",
         "-", "*", "%", "++", "--", "<<", ">>", ">>>", "&", "|", "^", "!", "~",
@@ -35,7 +65,17 @@ class Scanner extends \Peast\Syntax\Scanner
         "&=", "|=", "^=", "=>", "...", "/", "/="
     );
     
+    /**
+     * Octal numbers
+     * 
+     * @var array 
+     */
     protected $onumbers = array("0", "1", "2", "3", "4", "5", "6", "7");
     
+    /**
+     * Binary numbers
+     * 
+     * @var array 
+     */
     protected $bnumbers = array("0", "1");
 }
