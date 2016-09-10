@@ -10,6 +10,7 @@
 namespace Peast\Syntax\ES6;
 
 use Peast\Syntax\Token;
+use \Peast\Syntax\Node;
 
 /**
  * ES6 parser class

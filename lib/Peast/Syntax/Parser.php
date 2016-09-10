@@ -33,13 +33,6 @@ abstract class Parser
     protected $options;
     
     /**
-     * Nodes namespace cache
-     * 
-     * @var string
-     */
-    protected $nodeNS;
-    
-    /**
      * Class constructor
      * 
      * @param string $source  Source code
@@ -64,7 +57,7 @@ abstract class Parser
     /**
      * Parses the source
      * 
-     * @return Node
+     * @return Node\Node
      * 
      * @abstract
      */
@@ -88,20 +81,15 @@ abstract class Parser
      * @param string $nodeType Node's type
      * @param mixed  $position Node's start position
      * 
-     * @return Node
+     * @return Node\Node
      * 
      * @codeCoverageIgnore
      */
     protected function createNode($nodeType, $position)
     {
-        if (!$this->nodeNS) {
-            $parts = explode("\\", get_class($this));
-            array_pop($parts);
-            $this->nodeNS = implode("\\", $parts) . "\\Node\\";
-        }
-        $nodeClass = $this->nodeNS . $nodeType;
+        $nodeClass = "\\Peast\\Syntax\\Node\\" . $nodeType;
         $node = new $nodeClass;
-        if ($position instanceof Node || $position instanceof Token) {
+        if ($position instanceof Node\Node || $position instanceof Token) {
             $position = $position->getLocation()->getStart();
         } elseif (is_array($position)) {
             if (count($position)) {
@@ -116,14 +104,14 @@ abstract class Parser
     /**
      * Completes a node by adding the end position
      * 
-     * @param Node $node     Node to complete
-     * @param type $position Node's end position
+     * @param Node\Node   $node     Node to complete
+     * @param Position    $position Node's end position
      * 
-     * @return Node
+     * @return Node\Node
      * 
      * @codeCoverageIgnore
      */
-    protected function completeNode(Node $node, $position = null)
+    protected function completeNode(Node\Node $node, $position = null)
     {
         return $node->setEndPosition(
             $position ? $position : $this->scanner->getPosition()

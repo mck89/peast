@@ -7,7 +7,7 @@
  * For the full copyright and license information refer to the LICENSE file
  * distributed with this source code
  */
-namespace Peast\Syntax\ES6\Node;
+namespace Peast\Syntax\Node;
 
 /**
  * A node that represents a with statement.

@@ -86,7 +86,7 @@ class TestBase extends \PHPUnit_Framework_TestCase
     protected function fixParenthesizedExpression($val)
     {
         if (is_object($val) &&
-            $val instanceof \Peast\Syntax\Node &&
+            $val instanceof \Peast\Syntax\Node\Node &&
             $val->getType() === "ParenthesizedExpression") {
             return $this->fixParenthesizedExpression($val->getExpression());
         }
