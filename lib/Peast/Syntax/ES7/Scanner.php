@@ -14,7 +14,7 @@ namespace Peast\Syntax\ES7;
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
-class Scanner extends \Peast\Syntax\Scanner\ES6\Scanner
+class Scanner extends \Peast\Syntax\ES6\Scanner
 {
     /**
      * Punctutators array

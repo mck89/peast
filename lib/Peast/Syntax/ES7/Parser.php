@@ -14,7 +14,7 @@ namespace Peast\Syntax\ES7;
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
-class Parser extends \Peast\Syntax\Parser\ES6\Parser
+class Parser extends \Peast\Syntax\ES6\Parser
 {
     /**
      * Assignment operators
@@ -42,6 +42,7 @@ class Parser extends \Peast\Syntax\Parser\ES6\Parser
         "instanceof" => 6, "in" => 6,
         ">>>" => 7, "<<" => 7, ">>" => 7,
         "+" => 8, "-" => 8,
-        "*" => 9, "/" => 9, "%" => 9, "**" => 9
+        "*" => 9, "/" => 9, "%" => 9,
+        "**" => 10
     );
 }
