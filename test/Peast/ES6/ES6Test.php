@@ -3,9 +3,14 @@ namespace test\Peast\ES6;
 
 class ES6Test extends \test\Peast\TestBase
 {
+    protected function getTestVersions()
+    {
+        return array("ES6");
+    }
+    
     public function jsParserTestFilesProvider()
     {
-        return parent::getJsTestFiles(__DIR__);
+        return parent::getJsTestFiles();
     }
     
     /**
@@ -25,7 +30,7 @@ class ES6Test extends \test\Peast\TestBase
     
     public function jsTokenizerTestFilesProvider()
     {
-        return parent::getJsTestFiles(__DIR__, self::JS_TOKENIZE);
+        return parent::getJsTestFiles(self::JS_TOKENIZE);
     }
     
     /**
@@ -45,7 +50,7 @@ class ES6Test extends \test\Peast\TestBase
     
     public function invalidJsTestFilesProvider()
     {
-        return parent::getJsTestFiles(__DIR__, self::JS_INVALID);
+        return parent::getJsTestFiles(self::JS_INVALID);
     }
     
     /**

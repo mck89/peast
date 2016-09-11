@@ -1,7 +1,7 @@
 <?php
 namespace test\Peast;
 
-class TestBase extends \PHPUnit_Framework_TestCase
+abstract class TestBase extends \PHPUnit_Framework_TestCase
 {
     const JS_INVALID = 1;
     
@@ -16,15 +16,22 @@ class TestBase extends \PHPUnit_Framework_TestCase
         "static"
     );
     
-    protected function getJsTestFiles($dir, $jsType = self::JS_PARSE)
+    abstract protected function getTestVersions();
+    
+    protected function getJsTestFiles($jsType = self::JS_PARSE)
     {
         $invalid = $jsType === self::JS_INVALID;
         $ds = DIRECTORY_SEPARATOR;
         $testFiles = array();
-        $files = array_merge(
-            glob($dir . $ds . "files" . $ds . "*" . $ds . "*.js"),
-            glob($dir . $ds . "files" . $ds . "*" . $ds . "*" . $ds . "*.js")
-        );
+        $files = array();
+        $dir = __DIR__;
+        foreach ($this->getTestVersions() as $version) {
+            $files = array_merge(
+                $files,
+                glob($dir . $ds . $version . $ds . "files" . $ds . "*" . $ds . "*.js"),
+                glob($dir . $ds . $version . $ds . "files" . $ds . "*" . $ds . "*" . $ds . "*.js")
+            );
+        }
         foreach ($files as $jsFile) {
             $isInvalid = strpos($jsFile, "Invalid");
             $parts = explode($ds, $jsFile);
