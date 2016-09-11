@@ -52,4 +52,28 @@ class Peast
     {
         return new Syntax\ES6\Parser($source, $options);
     }
+    
+    /**
+     * Returns an instance of the ES7 parser for the given source
+     * 
+     * @param string $source  The source to parse
+     * @param array  $options Associative array for parser options. Available
+     *                        options are:
+     *                        - "sourceType": one of the source type constants
+     *                          declared in this class. This option tells the
+     *                          parser to parse the source in script or module
+     *                          mode. If this option is not provided the parser
+     *                          will work in script mode.
+     *                        - "sourceEncoding": the encoding of the given
+     *                          source. If this option is not provided the
+     *                          encoding will be detected automatically.
+     * 
+     * @return \Peast\Syntax\ES7\Parser
+     * 
+     * @static
+     */
+    static public function ES7($source, $options = array())
+    {
+        return new Syntax\ES7\Parser($source, $options);
+    }
 }
