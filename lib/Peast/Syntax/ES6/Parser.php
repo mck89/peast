@@ -20,6 +20,51 @@ use \Peast\Syntax\Node;
 class Parser extends \Peast\Syntax\Parser
 {
     /**
+     * Assignment operators
+     * 
+     * @var array 
+     */
+    protected $assignmentOperators = array(
+        "=", "+=", "-=", "*=", "/=", "%=", "<<=", ">>=", ">>>=", "&=", "^=",
+        "|="
+    );
+    
+    /**
+     * Logical and binary operators
+     * 
+     * @var array 
+     */
+    protected $logicalBinaryOperators = array(
+        "||" => 0,
+        "&&" => 1,
+        "|" => 2,
+        "^" => 3,
+        "&" => 4,
+        "===" => 5, "!==" => 5, "==" => 5, "!=" => 5,
+        "<=" => 6, ">=" => 6, "<" => 6, ">" => 6,
+        "instanceof" => 6, "in" => 6,
+        ">>>" => 7, "<<" => 7, ">>" => 7,
+        "+" => 8, "-" => 8,
+        "*" => 9, "/" => 9, "%" => 9
+    );
+    
+    /**
+     * Unary operators
+     * 
+     * @var array 
+     */
+    protected $unaryOperators = array(
+        "delete", "void", "typeof", "++", "--", "+", "-", "~", "!"
+    );
+    
+    /**
+     * Postfix operators
+     * 
+     * @var array 
+     */
+    protected $postfixOperators = array("--", "++");
+    
+    /**
      * Parses the source
      * 
      * @return Node\Program
@@ -2425,11 +2470,7 @@ class Parser extends \Peast\Syntax\Parser
             
             if (!in_array($expr->getType(), $exprTypes)) {
                 
-                $operators = array(
-                    "=", "+=", "-=", "*=", "/=", "%=", "<<=", ">>=",
-                    ">>>=", "&=", "^=", "|="
-                );
-                
+                $operators = $this->assignmentOperators;
                 if ($operator = $this->scanner->consumeOneOf($operators)) {
                     
                     $right = $this->parseAssignmentExpression($in, $yield);
@@ -2494,19 +2535,7 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseLogicalBinaryExpression($in = false, $yield = false)
     {
-        $operators = array(
-            "||" => 0,
-            "&&" => 1,
-            "|" => 2,
-            "^" => 3,
-            "&" => 4,
-            "===" => 5, "!==" => 5, "==" => 5, "!=" => 5,
-            "<=" => 6, ">=" => 6, "<" => 6, ">" => 6,
-            "instanceof" => 6, "in" => 6,
-            ">>>" => 7, "<<" => 7, ">>" => 7,
-            "+" => 8, "-" => 8,
-            "*" => 9, "/" => 9, "%" => 9
-        );
+        $operators = $this->logicalBinaryOperators;
         if (!$in) {
             unset($operators["in"]);
         }
@@ -2559,10 +2588,7 @@ class Parser extends \Peast\Syntax\Parser
     {
         if ($expr = $this->parsePostfixExpression($yield)) {
             return $expr;
-        } elseif ($token = $this->scanner->consumeOneOf(
-            array("delete", "void", "typeof", "++", "--", "+", "-", "~", "!")
-            )
-        ) {
+        } elseif ($token = $this->scanner->consumeOneOf($this->unaryOperators)) {
             if ($argument = $this->parseUnaryExpression($yield)) {
                 $op = $token->getValue();
                 if ($op === "++" || $op === "--") {
@@ -2593,7 +2619,7 @@ class Parser extends \Peast\Syntax\Parser
         if ($argument = $this->parseLeftHandSideExpression($yield)) {
             
             if ($this->scanner->noLineTerminators() &&
-                $token = $this->scanner->consumeOneOf(array("--", "++"))
+                $token = $this->scanner->consumeOneOf($this->postfixOperators)
             ) {
                 
                 $node = $this->createNode("UpdateExpression", $argument);
@@ -2887,8 +2913,7 @@ class Parser extends \Peast\Syntax\Parser
     {
         if ($token = $this->scanner->consume("super")) {
             
-            $super = $this->createNode("Super", $token);
-            $super = $this->completeNode($super);
+            $super = $this->completeNode($this->createNode("Super", $token));
             
             if (($args = $this->parseArguments($yield)) !== null) {
                 $node = $this->createNode("CallExpression", $token);
