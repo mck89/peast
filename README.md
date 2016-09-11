@@ -25,9 +25,8 @@ To generate AST for your JavaScript code just write:
 
 ```php
 $source = "var a = 1"; //JavaScript code
-$ast = Peast\Peast::ES6($source, $options)->parse();
+$ast = Peast\Peast::ES7($source, $options)->parse();
 ```
-`ES6` is the ECMAScript version used to parse the code, right now only ES6 is implemented.
 
 The previous code generates this structure:
 ```
@@ -51,7 +50,7 @@ Tokenization
 -------------
 ```php
 $source = "var a = 1"; //JavaScript code
-$tokens = Peast\Peast::ES6($source, $options)->tokenize();
+$tokens = Peast\Peast::ES7($source, $options)->tokenize();
 ```
 The `$tokens` array is:
 ```
@@ -70,6 +69,13 @@ array(
         getValue() => "1"
 )
 ```
+
+EcmaScript version
+-------------
+Peast can parse different versions of EcmaScript, you can choose the version by using the relative method on the main class.
+Available methods are:
+* ```Peast\Peast::ES6(source, options)```: parse using EcmaScript 6 syntax
+* ```Peast\Peast::ES7(source, options)```: parse using EcmaScript 7 syntax
 
 Options
 -------------
