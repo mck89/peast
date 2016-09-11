@@ -31,16 +31,16 @@ $ast = Peast\Peast::ES6($source, $options)->parse();
 
 The previous code generates this structure:
 ```
-Peast\Syntax\ES6\Node\Program
+Peast\Syntax\Node\Program
     getSourceType() => "script"
     getBody() => array(
-        Peast\Syntax\ES6\Node\VariableDeclaration
+        Peast\Syntax\Node\VariableDeclaration
             getKind() => "var"
             getDeclarations() => array(
-                Peast\Syntax\ES6\Node\VariableDeclarator
-                    getId() => Peast\Syntax\ES6\Node\Identifier
+                Peast\Syntax\Node\VariableDeclarator
+                    getId() => Peast\Syntax\Node\Identifier
                         getName() => "a"
-                    getInit() => Peast\Syntax\ES6\Node\Literal
+                    getInit() => Peast\Syntax\Node\Literal
                         getKind() => "decimal"
                         getValue() => 1
             )
