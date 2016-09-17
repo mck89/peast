@@ -18,6 +18,13 @@ namespace Peast\Syntax\Node;
 class ExportSpecifier extends ModuleSpecifier
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("exported");
+    
+    /**
      * Exported identifier
      * 
      * @var Identifier 

@@ -18,6 +18,13 @@ namespace Peast\Syntax\Node;
 class ReturnStatement extends Node implements Statement
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("argument");
+    
+    /**
      * Optional expression after the return keyword
      * 
      * @var Expression 

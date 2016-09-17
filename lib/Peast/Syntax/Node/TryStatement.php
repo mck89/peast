@@ -17,6 +17,13 @@ namespace Peast\Syntax\Node;
 class TryStatement extends Node implements Statement
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("block", "handler", "finalizer");
+    
+    /**
      * Wrapped block
      * 
      * @var BlockStatements 

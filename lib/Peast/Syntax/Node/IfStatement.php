@@ -18,6 +18,13 @@ namespace Peast\Syntax\Node;
 class IfStatement extends Node implements Statement
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("test", "consequent", "alternate");
+    
+    /**
      * The test expression
      * 
      * @var Expression 

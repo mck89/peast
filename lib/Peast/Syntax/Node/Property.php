@@ -17,6 +17,13 @@ namespace Peast\Syntax\Node;
  */
 class Property extends Node
 {
+    /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("key", "value");
+    
     //Kind constants
     /**
      * The default kind for properties

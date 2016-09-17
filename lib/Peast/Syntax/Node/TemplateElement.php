@@ -22,7 +22,7 @@ class TemplateElement extends Node
     /**
      * Node's value
      * 
-     * @var type 
+     * @var string 
      */
     protected $value;
     

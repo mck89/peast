@@ -17,6 +17,13 @@ namespace Peast\Syntax\Node;
 class BlockStatement extends Node implements Statement
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("body");
+    
+    /**
      * Block's body
      * 
      * @var Statement[] 

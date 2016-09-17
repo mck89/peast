@@ -17,6 +17,13 @@ namespace Peast\Syntax\Node;
 class ExpressionStatement extends Node implements Statement
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("expression");
+    
+    /**
      * Wrapped expression
      * 
      * @var Expression 

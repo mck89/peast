@@ -17,6 +17,13 @@ namespace Peast\Syntax\Node;
 class ForStatement extends Node implements Statement
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("init", "test", "update", "body");
+    
+    /**
      * Initializer
      * 
      * @var VariableDeclaration|Expression

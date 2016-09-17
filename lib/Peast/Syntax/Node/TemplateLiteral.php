@@ -78,4 +78,22 @@ class TemplateLiteral extends Node implements Expression
         $this->expressions = $expressions;
         return $this;
     }
+    
+    /**
+     * Returns the child nodes array
+     * 
+     * @return array
+     */
+    public function getChildren()
+    {
+        // Child nodes must be a list of quasis and expressions alternated
+        $children = array();
+        foreach ($this->quasis as $k => $val) {
+            $children[] = $val;
+            if (isset($this->expressions[$k])) {
+                $children[] = $this->expressions[$k];
+            }
+        }
+        return $children;
+    }
 }

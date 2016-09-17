@@ -17,6 +17,13 @@ namespace Peast\Syntax\Node;
 class ParenthesizedExpression extends Node implements Expression
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("expression");
+    
+    /**
      * The wrapped expression
      * 
      * @var Expression 

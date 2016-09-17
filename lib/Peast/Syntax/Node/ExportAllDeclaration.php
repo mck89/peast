@@ -18,6 +18,13 @@ namespace Peast\Syntax\Node;
 class ExportAllDeclaration extends Node implements ModuleDeclaration
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("source");
+    
+    /**
      * The export source
      * 
      * @var Literal 

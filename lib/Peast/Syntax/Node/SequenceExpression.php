@@ -18,6 +18,13 @@ namespace Peast\Syntax\Node;
 class SequenceExpression  extends Node implements Expression
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("expressions");
+    
+    /**
      * Expressions array
      * 
      * @var Expression[]

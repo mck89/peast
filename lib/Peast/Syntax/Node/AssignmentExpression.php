@@ -18,6 +18,13 @@ namespace Peast\Syntax\Node;
 class AssignmentExpression extends Node implements Expression
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("left", "right");
+    
+    /**
      * The assignment operator
      * 
      * @var string 

@@ -17,6 +17,13 @@ namespace Peast\Syntax\Node;
 class BreakStatement extends Node implements Statement
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("label");
+    
+    /**
      * The optional label of the break statement
      * 
      * @var Identifier 

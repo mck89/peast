@@ -18,6 +18,13 @@ namespace Peast\Syntax\Node;
 class UnaryExpression extends Node implements Expression
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("argument");
+    
+    /**
      * Expression's operator
      * 
      * @var string

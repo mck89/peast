@@ -17,6 +17,13 @@ namespace Peast\Syntax\Node;
 class CatchClause extends Node
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("param", "body");
+    
+    /**
      * The catch clause parameter
      * 
      * @var Pattern 

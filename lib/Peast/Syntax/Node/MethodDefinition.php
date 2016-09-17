@@ -16,6 +16,13 @@ namespace Peast\Syntax\Node;
  */
 class MethodDefinition extends Node
 {
+    /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("key", "value");
+    
     //Kind constants
     /**
      * Constructor method

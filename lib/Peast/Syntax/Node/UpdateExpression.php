@@ -18,6 +18,13 @@ namespace Peast\Syntax\Node;
 class UpdateExpression extends Node implements Expression
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("argument");
+    
+    /**
      * Expression's operator
      * 
      * @var string

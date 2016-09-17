@@ -19,6 +19,13 @@ namespace Peast\Syntax\Node;
 class SpreadElement extends Node
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("argument");
+    
+    /**
      * The node's argument
      * 
      * @var type 

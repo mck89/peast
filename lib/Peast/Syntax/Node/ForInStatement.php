@@ -18,6 +18,13 @@ namespace Peast\Syntax\Node;
 class ForInStatement extends Node implements Statement
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("left", "right", "body");
+    
+    /**
      * Iteration variable
      * 
      * @var VariableDeclaration|Expression|Pattern

@@ -18,6 +18,13 @@ namespace Peast\Syntax\Node;
 class ImportDeclaration extends Node implements ModuleDeclaration
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("specifiers", "source");
+    
+    /**
      * Import specifiers array
      * 
      * @var array

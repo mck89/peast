@@ -17,6 +17,13 @@ namespace Peast\Syntax\Node;
 class ClassBody extends Node
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("body");
+    
+    /**
      * Class methods
      * 
      * @var MethodDefinition[]

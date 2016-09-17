@@ -18,6 +18,13 @@ namespace Peast\Syntax\Node;
 class MemberExpression extends Node implements Expression, Pattern
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("object", "property");
+    
+    /**
      * Expression's object
      * 
      * @var Expression|Super 

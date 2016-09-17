@@ -17,6 +17,13 @@ namespace Peast\Syntax\Node;
 class Program extends Node
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("body");
+    
+    /**
      * Source type that is one of the source type constants in the Peast class
      * 
      * @var string 

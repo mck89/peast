@@ -18,6 +18,13 @@ namespace Peast\Syntax\Node;
 class ImportSpecifier extends ModuleSpecifier
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("imported");
+    
+    /**
      * Imported identifier
      * 
      * @var Identifier 

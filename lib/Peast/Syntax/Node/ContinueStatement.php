@@ -17,6 +17,13 @@ namespace Peast\Syntax\Node;
 class ContinueStatement extends Node implements Statement
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("label");
+    
+    /**
      * The optional label of the continue statement
      * 
      * @var Identifier 

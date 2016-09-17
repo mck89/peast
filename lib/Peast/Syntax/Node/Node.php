@@ -26,6 +26,13 @@ abstract class Node
     protected $location;
     
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children;
+    
+    /**
      * Class constructor
      */
     public function __construct()
@@ -78,6 +85,26 @@ abstract class Node
     {
         $this->location->setEnd($position);
         return $this;
+    }
+    
+    /**
+     * Returns the child nodes array
+     * 
+     * @return array
+     */
+    public function getChildren()
+    {
+        $children = array();
+        if ($this->children) {
+            foreach ($this->children as $propName) {
+                if (is_array($this->$propName)) {
+                    $children = array_merge($children, $this->$propName);
+                } else {
+                    $children[] = $this->$propName;
+                }
+            }
+        }
+        return $children;
     }
     
     /**

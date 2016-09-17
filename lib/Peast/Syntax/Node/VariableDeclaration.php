@@ -17,6 +17,13 @@ namespace Peast\Syntax\Node;
  */
 class VariableDeclaration extends Node implements Declaration
 {
+    /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("declarations");
+    
     //Kind constants
     /**
      * "var" kind

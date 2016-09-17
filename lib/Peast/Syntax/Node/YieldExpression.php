@@ -17,6 +17,13 @@ namespace Peast\Syntax\Node;
 class YieldExpression extends Node implements Expression
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("argument");
+    
+    /**
      * Yield argument
      * 
      * @var Expression 

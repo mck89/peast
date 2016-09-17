@@ -19,6 +19,13 @@ namespace Peast\Syntax\Node;
 abstract class ModuleSpecifier extends Node
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $children = array("local");
+    
+    /**
      * Local identifier
      * 
      * @var Identifier 
