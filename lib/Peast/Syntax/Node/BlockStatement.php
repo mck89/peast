@@ -21,7 +21,7 @@ class BlockStatement extends Node implements Statement
      * 
      * @var array 
      */
-    protected $children = array("body");
+    protected $childNodesProps = array("body");
     
     /**
      * Block's body

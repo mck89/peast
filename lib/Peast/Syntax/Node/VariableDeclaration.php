@@ -22,7 +22,7 @@ class VariableDeclaration extends Node implements Declaration
      * 
      * @var array 
      */
-    protected $children = array("declarations");
+    protected $childNodesProps = array("declarations");
     
     //Kind constants
     /**

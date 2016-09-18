@@ -21,7 +21,7 @@ class Program extends Node
      * 
      * @var array 
      */
-    protected $children = array("body");
+    protected $childNodesProps = array("body");
     
     /**
      * Source type that is one of the source type constants in the Peast class

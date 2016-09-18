@@ -22,7 +22,7 @@ class VariableDeclarator extends Node
      * 
      * @var array 
      */
-    protected $children = array("id", "init");
+    protected $childNodesProps = array("id", "init");
     
     /**
      * Declaration identifier or pattern

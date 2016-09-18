@@ -22,7 +22,7 @@ class ForInStatement extends Node implements Statement
      * 
      * @var array 
      */
-    protected $children = array("left", "right", "body");
+    protected $childNodesProps = array("left", "right", "body");
     
     /**
      * Iteration variable

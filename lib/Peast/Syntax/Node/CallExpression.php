@@ -22,7 +22,7 @@ class CallExpression extends Node implements Expression
      * 
      * @var array 
      */
-    protected $children = array("callee", "arguments");
+    protected $childNodesProps = array("callee", "arguments");
     
     /**
      * The callee expression

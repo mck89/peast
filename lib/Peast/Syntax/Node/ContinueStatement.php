@@ -21,7 +21,7 @@ class ContinueStatement extends Node implements Statement
      * 
      * @var array 
      */
-    protected $children = array("label");
+    protected $childNodesProps = array("label");
     
     /**
      * The optional label of the continue statement

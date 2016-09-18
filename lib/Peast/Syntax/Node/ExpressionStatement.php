@@ -21,7 +21,7 @@ class ExpressionStatement extends Node implements Statement
      * 
      * @var array 
      */
-    protected $children = array("expression");
+    protected $childNodesProps = array("expression");
     
     /**
      * Wrapped expression

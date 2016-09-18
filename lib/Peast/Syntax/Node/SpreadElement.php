@@ -23,7 +23,7 @@ class SpreadElement extends Node
      * 
      * @var array 
      */
-    protected $children = array("argument");
+    protected $childNodesProps = array("argument");
     
     /**
      * The node's argument

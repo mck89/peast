@@ -21,7 +21,7 @@ class YieldExpression extends Node implements Expression
      * 
      * @var array 
      */
-    protected $children = array("argument");
+    protected $childNodesProps = array("argument");
     
     /**
      * Yield argument

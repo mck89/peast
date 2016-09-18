@@ -21,7 +21,7 @@ class ClassBody extends Node
      * 
      * @var array 
      */
-    protected $children = array("body");
+    protected $childNodesProps = array("body");
     
     /**
      * Class methods

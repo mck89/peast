@@ -21,7 +21,7 @@ class TryStatement extends Node implements Statement
      * 
      * @var array 
      */
-    protected $children = array("block", "handler", "finalizer");
+    protected $childNodesProps = array("block", "handler", "finalizer");
     
     /**
      * Wrapped block

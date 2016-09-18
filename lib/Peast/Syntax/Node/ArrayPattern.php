@@ -22,7 +22,7 @@ class ArrayPattern extends Node implements Pattern
      * 
      * @var array 
      */
-    protected $children = array("elements");
+    protected $childNodesProps = array("elements");
     
     /**
      * Array elements

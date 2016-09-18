@@ -22,7 +22,7 @@ class ObjectPattern extends Node implements Pattern
      * 
      * @var array 
      */
-    protected $children = array("properties");
+    protected $childNodesProps = array("properties");
     
     /**
      * Object properties

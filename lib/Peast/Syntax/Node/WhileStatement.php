@@ -22,7 +22,7 @@ class WhileStatement extends Node implements Statement
      * 
      * @var array 
      */
-    protected $children = array("test", "body");
+    protected $childNodesProps = array("test", "body");
     
     /**
      * The loop condition

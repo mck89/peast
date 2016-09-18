@@ -21,7 +21,7 @@ class BreakStatement extends Node implements Statement
      * 
      * @var array 
      */
-    protected $children = array("label");
+    protected $childNodesProps = array("label");
     
     /**
      * The optional label of the break statement

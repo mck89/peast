@@ -22,7 +22,7 @@ class TaggedTemplateExpression extends Node implements Expression
      * 
      * @var array 
      */
-    protected $children = array("tag", "quasi");
+    protected $childNodesProps = array("tag", "quasi");
     
     /**
      * Tag expression

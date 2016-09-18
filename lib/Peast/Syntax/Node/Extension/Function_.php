@@ -17,13 +17,6 @@ namespace Peast\Syntax\Node\Extension;
 trait Function_
 {
     /**
-     * Properties containing child nodes
-     * 
-     * @var array 
-     */
-    protected $children = array("id", "params", "body");
-    
-    /**
      * Function name
      * 
      * @var Identifier 

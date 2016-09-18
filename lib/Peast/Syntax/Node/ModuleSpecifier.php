@@ -23,7 +23,7 @@ abstract class ModuleSpecifier extends Node
      * 
      * @var array 
      */
-    protected $children = array("local");
+    protected $childNodesProps = array("local");
     
     /**
      * Local identifier

@@ -22,7 +22,7 @@ class IfStatement extends Node implements Statement
      * 
      * @var array 
      */
-    protected $children = array("test", "consequent", "alternate");
+    protected $childNodesProps = array("test", "consequent", "alternate");
     
     /**
      * The test expression

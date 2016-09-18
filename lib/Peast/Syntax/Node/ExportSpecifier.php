@@ -22,7 +22,7 @@ class ExportSpecifier extends ModuleSpecifier
      * 
      * @var array 
      */
-    protected $children = array("exported");
+    protected $childNodesProps = array("exported");
     
     /**
      * Exported identifier

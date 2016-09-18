@@ -22,7 +22,7 @@ class ExportDefaultDeclaration extends Node implements ModuleDeclaration
      * 
      * @var array 
      */
-    protected $children = array("declaration");
+    protected $childNodesProps = array("declaration");
     
     /**
      * The exported declaration

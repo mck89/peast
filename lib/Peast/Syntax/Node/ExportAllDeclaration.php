@@ -22,7 +22,7 @@ class ExportAllDeclaration extends Node implements ModuleDeclaration
      * 
      * @var array 
      */
-    protected $children = array("source");
+    protected $childNodesProps = array("source");
     
     /**
      * The export source

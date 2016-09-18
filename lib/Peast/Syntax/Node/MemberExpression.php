@@ -22,7 +22,7 @@ class MemberExpression extends Node implements Expression, Pattern
      * 
      * @var array 
      */
-    protected $children = array("object", "property");
+    protected $childNodesProps = array("object", "property");
     
     /**
      * Expression's object

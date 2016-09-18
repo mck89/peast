@@ -21,7 +21,7 @@ class SwitchCase extends Node
      * 
      * @var array 
      */
-    protected $children = array("test", "consequent");
+    protected $childNodesProps = array("test", "consequent");
     
     /**
      * Test expression that is null in the "default" case

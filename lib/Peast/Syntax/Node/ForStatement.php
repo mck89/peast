@@ -21,7 +21,7 @@ class ForStatement extends Node implements Statement
      * 
      * @var array 
      */
-    protected $children = array("init", "test", "update", "body");
+    protected $childNodesProps = array("init", "test", "update", "body");
     
     /**
      * Initializer

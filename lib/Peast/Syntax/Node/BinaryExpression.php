@@ -22,7 +22,7 @@ class BinaryExpression extends Node implements Expression
      * 
      * @var array 
      */
-    protected $children = array("left", "right");
+    protected $childNodesProps = array("left", "right");
     
     /**
      * Operator

@@ -22,7 +22,7 @@ class ImportDeclaration extends Node implements ModuleDeclaration
      * 
      * @var array 
      */
-    protected $children = array("specifiers", "source");
+    protected $childNodesProps = array("specifiers", "source");
     
     /**
      * Import specifiers array

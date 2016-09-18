@@ -22,7 +22,7 @@ class SequenceExpression  extends Node implements Expression
      * 
      * @var array 
      */
-    protected $children = array("expressions");
+    protected $childNodesProps = array("expressions");
     
     /**
      * Expressions array

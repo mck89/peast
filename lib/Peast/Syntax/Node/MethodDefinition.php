@@ -21,7 +21,7 @@ class MethodDefinition extends Node
      * 
      * @var array 
      */
-    protected $children = array("key", "value");
+    protected $childNodesProps = array("key", "value");
     
     //Kind constants
     /**

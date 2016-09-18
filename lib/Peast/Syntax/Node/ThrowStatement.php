@@ -22,7 +22,7 @@ class ThrowStatement extends Node implements Statement
      * 
      * @var array 
      */
-    protected $children = array("argument");
+    protected $childNodesProps = array("argument");
     
     /**
      * The thrown expression

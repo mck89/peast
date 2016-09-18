@@ -30,7 +30,7 @@ abstract class Node
      * 
      * @var array 
      */
-    protected $children;
+    protected $childNodesProps = array();
     
     /**
      * Class constructor
@@ -88,23 +88,13 @@ abstract class Node
     }
     
     /**
-     * Returns the child nodes array
+     * Returns the child nodes properties array
      * 
      * @return array
      */
-    public function getChildren()
+    public function getChildNodesProps()
     {
-        $children = array();
-        if ($this->children) {
-            foreach ($this->children as $propName) {
-                if (is_array($this->$propName)) {
-                    $children = array_merge($children, $this->$propName);
-                } else {
-                    $children[] = $this->$propName;
-                }
-            }
-        }
-        return $children;
+        return $this->childNodesProps;
     }
     
     /**

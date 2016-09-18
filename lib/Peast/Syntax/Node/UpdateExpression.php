@@ -22,7 +22,7 @@ class UpdateExpression extends Node implements Expression
      * 
      * @var array 
      */
-    protected $children = array("argument");
+    protected $childNodesProps = array("argument");
     
     /**
      * Expression's operator

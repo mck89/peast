@@ -21,7 +21,7 @@ class ParenthesizedExpression extends Node implements Expression
      * 
      * @var array 
      */
-    protected $children = array("expression");
+    protected $childNodesProps = array("expression");
     
     /**
      * The wrapped expression

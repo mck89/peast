@@ -21,7 +21,7 @@ class LabeledStatement extends Node implements Statement
      * 
      * @var array 
      */
-    protected $children = array("label", "body");
+    protected $childNodesProps = array("label", "body");
     
     /**
      * Label

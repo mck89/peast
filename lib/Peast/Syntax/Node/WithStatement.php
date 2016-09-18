@@ -22,7 +22,7 @@ class WithStatement extends Node implements Statement
      * 
      * @var array 
      */
-    protected $children = array("object", "body");
+    protected $childNodesProps = array("object", "body");
     
     /**
      * The statement subject

@@ -20,6 +20,13 @@ class FunctionDeclaration extends Node implements Declaration, Function_
     use Extension\Function_;
     
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $childNodesProps = array("id", "params", "body");
+    
+    /**
      * Sets the function identifier
      * 
      * @param Identifier $id Function identifier

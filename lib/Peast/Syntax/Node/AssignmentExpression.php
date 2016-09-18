@@ -22,7 +22,7 @@ class AssignmentExpression extends Node implements Expression
      * 
      * @var array 
      */
-    protected $children = array("left", "right");
+    protected $childNodesProps = array("left", "right");
     
     /**
      * The assignment operator

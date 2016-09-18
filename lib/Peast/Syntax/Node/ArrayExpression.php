@@ -22,7 +22,7 @@ class ArrayExpression extends Node implements Expression
      * 
      * @var array 
      */
-    protected $children = array("elements");
+    protected $childNodesProps = array("elements");
     
     /**
      * Array elements

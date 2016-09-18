@@ -22,7 +22,7 @@ class ObjectExpression extends Node implements Expression
      * 
      * @var array 
      */
-    protected $children = array("properties");
+    protected $childNodesProps = array("properties");
     
     /**
      * Object properties

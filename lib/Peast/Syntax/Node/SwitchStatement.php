@@ -22,7 +22,7 @@ class SwitchStatement extends Node implements Statement
      * 
      * @var array 
      */
-    protected $children = array("discriminant", "cases");
+    protected $childNodesProps = array("discriminant", "cases");
     
     /**
      * Discriminant expression

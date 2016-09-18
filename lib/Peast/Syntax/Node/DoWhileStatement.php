@@ -22,7 +22,7 @@ class DoWhileStatement extends Node implements Statement
      * 
      * @var array 
      */
-    protected $children = array("body", "test");
+    protected $childNodesProps = array("body", "test");
     
     /**
      * The loop body

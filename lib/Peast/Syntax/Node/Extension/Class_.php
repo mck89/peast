@@ -17,13 +17,6 @@ namespace Peast\Syntax\Node\Extension;
 trait Class_
 {
     /**
-     * Properties containing child nodes
-     * 
-     * @var array 
-     */
-    protected $children = array("id", "superClass", "body");
-    
-    /**
      * Class name
      * 
      * @var Identifier 

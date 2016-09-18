@@ -20,6 +20,13 @@ class ArrowFunctionExpression extends Node implements Expression, Function_
     use Extension\Function_;
     
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $childNodesProps = array("id", "params", "body");
+    
+    /**
      * This flag is true when function body is wrapped in curly braces
      * 
      * @var bool

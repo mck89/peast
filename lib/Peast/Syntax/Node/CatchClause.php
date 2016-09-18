@@ -21,7 +21,7 @@ class CatchClause extends Node
      * 
      * @var array 
      */
-    protected $children = array("param", "body");
+    protected $childNodesProps = array("param", "body");
     
     /**
      * The catch clause parameter

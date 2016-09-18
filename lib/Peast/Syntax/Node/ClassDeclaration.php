@@ -20,6 +20,13 @@ class ClassDeclaration extends Node implements Declaration, Class_
     use Extension\Class_;
     
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $childNodesProps = array("id", "superClass", "body");
+    
+    /**
      * Sets the class identifier
      * 
      * @param Identifier $id Class identifier

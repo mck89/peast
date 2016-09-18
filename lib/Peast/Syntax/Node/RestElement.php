@@ -23,7 +23,7 @@ class RestElement extends Node implements Pattern
      * 
      * @var array 
      */
-    protected $children = array("argument");
+    protected $childNodesProps = array("argument");
     
     /**
      * The node's argument

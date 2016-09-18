@@ -22,7 +22,7 @@ class ConditionalExpression extends Node implements Expression
      * 
      * @var array 
      */
-    protected $children = array("test", "consequent", "alternate");
+    protected $childNodesProps = array("test", "consequent", "alternate");
     
     /**
      * The test expression

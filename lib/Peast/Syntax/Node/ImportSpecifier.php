@@ -22,7 +22,7 @@ class ImportSpecifier extends ModuleSpecifier
      * 
      * @var array 
      */
-    protected $children = array("imported");
+    protected $childNodesProps = array("imported");
     
     /**
      * Imported identifier

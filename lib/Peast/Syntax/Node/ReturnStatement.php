@@ -22,7 +22,7 @@ class ReturnStatement extends Node implements Statement
      * 
      * @var array 
      */
-    protected $children = array("argument");
+    protected $childNodesProps = array("argument");
     
     /**
      * Optional expression after the return keyword

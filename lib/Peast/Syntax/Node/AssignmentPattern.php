@@ -22,7 +22,7 @@ class AssignmentPattern extends Node implements Pattern
      * 
      * @var array 
      */
-    protected $children = array("left", "right");
+    protected $childNodesProps = array("left", "right");
     
     /**
      * The left node of the assignment

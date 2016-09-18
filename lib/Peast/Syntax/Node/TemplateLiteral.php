@@ -18,6 +18,13 @@ namespace Peast\Syntax\Node;
 class TemplateLiteral extends Node implements Expression
 {
     /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $childNodesProps = array("parts");
+    
+    /**
      * Array of quasis that are the literal parts of the template
      * 
      * @var TemplateElement[] 
@@ -80,20 +87,41 @@ class TemplateLiteral extends Node implements Expression
     }
     
     /**
-     * Returns the child nodes array
+     * Returns an array of the template parts (quasis and expressions)
      * 
      * @return array
      */
-    public function getChildren()
+    public function getParts()
     {
-        // Child nodes must be a list of quasis and expressions alternated
-        $children = array();
+        // It must be a list of quasis and expressions alternated
+        $parts = array();
         foreach ($this->quasis as $k => $val) {
-            $children[] = $val;
+            $parts[] = $val;
             if (isset($this->expressions[$k])) {
-                $children[] = $this->expressions[$k];
+                $parts[] = $this->expressions[$k];
             }
         }
-        return $children;
+        return $parts;
+    }
+    
+    /**
+     * Sets the array of the template parts (quasis and expressions)
+     * 
+     * @param array Template parts
+     * 
+     * @return $this
+     */
+    public function setParts($parts)
+    {
+        $this->assertArrayOf($parts, array("Expression", "TemplateElement"));
+        $quasis = $expressions = array();
+        foreach ($parts as $part) {
+            if ($part instanceof TemplateElement) {
+                $quasis[] = $part;
+            } else {
+                $expressions[] = $part;
+            }
+        }
+        return $this->setQuasis($quasis)->setExpressions($expressions);
     }
 }
