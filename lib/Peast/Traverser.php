@@ -47,6 +47,11 @@ class Traverser
      * - a node: it will replace the node with the returned one
      * - a numeric value that is a combination of the constants defined in this
      *   class: it will execute the function related to each constant
+     * - an array where the first element is a node and the second element is a
+     *   numeric value that is a combination of the constants defined in this
+     *   class: it will replace the node with the returned one and  it will
+     *   execute the function related to each constant (REMOVE_NODE will be
+     *   ignored since it does not make any sense in this case)
      * - other: nothing
      * 
      * @param callable $fn Function to add
@@ -90,7 +95,17 @@ class Traverser
         foreach ($this->functions as $fn) {
             $ret = $fn($node);
             if ($ret) {
-                if ($ret instanceof Syntax\Node\Node) {
+                if (is_array($ret) && $ret[0] instanceof Syntax\Node\Node) {
+                    $node = $ret[0];
+                    if (isset($ret[1]) && is_numeric($ret[1])) {
+                        if ($ret[1] & self::DONT_TRAVERSE_CHILD_NODES) {
+                            $traverseChildren = false;
+                        }
+                        if ($ret[1] & self::STOP_TRAVERSING) {
+                            $continueTraversing = false;
+                        }
+                    }
+                } elseif ($ret instanceof Syntax\Node\Node) {
                     $node = $ret;
                 } elseif (is_numeric($ret)) {
                     if ($ret & self::DONT_TRAVERSE_CHILD_NODES) {
