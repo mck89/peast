@@ -152,11 +152,13 @@ class Traverser
             } elseif (is_array($child)) {
                 $newChildren = array();
                 foreach ($child as $c) {
-                    if ($continue) {
-                        list($c, $continue) = $this->execFunctions($c);
-                    }
-                    if ($c) {
+                    if (!$c) {
                         $newChildren[] = $c;
+                    } elseif ($continue) {
+                        list($c, $continue) = $this->execFunctions($c);
+                        if ($c) {
+                            $newChildren[] = $c;
+                        }
                     }
                 }
                 $node->$setter($newChildren);
