@@ -98,6 +98,21 @@ abstract class Node
     }
     
     /**
+     * Traverses the current node and all its child nodes using the given
+     * function
+     * 
+     * @param callable $fn Function that will be called on each node
+     * 
+     * @return $this
+     */
+    public function traverse(callable $fn)
+    {
+        $traverser = new \Peast\Traverser();
+        $traverser->addFunction($fn)->traverse($this);
+        return $this;
+    }
+    
+    /**
      * Asserts that the given value is an array of defined type
      * 
      * @param mixed        $params    Value to check
