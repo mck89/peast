@@ -152,9 +152,9 @@ class Traverser
             } elseif (is_array($child)) {
                 $newChildren = array();
                 foreach ($child as $c) {
-                    if (!$c) {
+                    if (!$c || !$continue) {
                         $newChildren[] = $c;
-                    } elseif ($continue) {
+                    } else {
                         list($c, $continue) = $this->execFunctions($c);
                         if ($c) {
                             $newChildren[] = $c;
