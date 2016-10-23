@@ -197,8 +197,7 @@ abstract class Parser
             }
         }
         if (!$valid) {
-            $this->error();
-            return null;
+            return $this->error();
         }
         return $list;
     }
