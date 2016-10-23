@@ -16,7 +16,7 @@ abstract class TestBase extends \PHPUnit_Framework_TestCase
         "static"
     );
     
-    abstract protected function getTestVersions();
+    protected function getTestVersions() {}
     
     protected function getJsTestFiles($jsType = self::JS_PARSE)
     {
