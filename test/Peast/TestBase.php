@@ -132,7 +132,9 @@ abstract class TestBase extends \PHPUnit_Framework_TestCase
                     );
                 }
                 unset($compare->defaults);
-                unset($compare->expression);
+                if ($compare->type !== "ArrowFunctionExpression") {
+                    unset($compare->expression);
+                }
             break;
             case "TemplateElement":
                 $compare->rawValue = $compare->value->raw;
