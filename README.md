@@ -28,4 +28,4 @@ Documentation
 -------------
 Read the documentation for more examples and explanations:
 1. [AST generation and tokenization](doc/ast-and-tokenization.md)
-1. [Tree Traversing](doc/tree-traversing.md)
+2. [Tree Traversing](doc/tree-traversing.md)
