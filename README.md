@@ -30,3 +30,10 @@ Read the documentation for more examples and explanations:
 
  1. [AST generation and tokenization](doc/ast-and-tokenization.md)
  2. [Tree Traversing](doc/tree-traversing.md)
+
+Changelog
+-------------
+#### 1.0
+* First release with ES6 and ES7 parsers
+#### 1.1
+* Added Traverser class
