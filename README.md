@@ -33,7 +33,9 @@ Read the documentation for more examples and explanations:
 
 Changelog
 -------------
+
 #### 1.0
 * First release with ES6 and ES7 parsers
+
 #### 1.1
 * Added Traverser class
