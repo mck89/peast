@@ -27,5 +27,6 @@ $ast = Peast\Peast::ES7($source, $options)->parse(); //Parse it!
 Documentation
 -------------
 Read the documentation for more examples and explanations:
-1. [AST generation and tokenization](doc/ast-and-tokenization.md)
-2. [Tree Traversing](doc/tree-traversing.md)
+
+ 1. [AST generation and tokenization](doc/ast-and-tokenization.md)
+ 2. [Tree Traversing](doc/tree-traversing.md)
