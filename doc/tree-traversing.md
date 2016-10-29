@@ -99,3 +99,16 @@ $traverser->addFunction(function ($node) {
     }
 });
 ```
+
+Shortcut method
+-------------
+
+Every node implements a `traverse` method as a shortcut to initialize a traverser on itself:
+```php
+$traversingFn = function ($node) { /* ... */ };
+//Traverse $ast node
+$ast->traverse($traversingFn);
+//Equivalent to
+$traverser = new Peast\Traverser;
+$traverser->addFunction($traversingFn)->traverse($ast);
+```
