@@ -7,5 +7,7 @@ php:
     - '7.0'
     - hhvm
     - nightly
+    
+install: composer install
 
 script: phpunit --configuration phpunit.xml --coverage-text
