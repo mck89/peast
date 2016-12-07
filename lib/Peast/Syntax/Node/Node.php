@@ -113,6 +113,20 @@ abstract class Node
     }
     
     /**
+     * Renders the current node
+     * 
+     * @param \Peast\Formatter\Base $formatter Formatter to use for the
+     *                                         rendering
+     * 
+     * @return string
+     */
+    public function render(\Peast\Formatter\Base $formatter)
+    {
+        $renderer = new \Peast\Renderer();
+        return $renderer->setFormatter($formatter)->render($this);
+    }
+    
+    /**
      * Asserts that the given value is an array of defined type
      * 
      * @param mixed        $params    Value to check
