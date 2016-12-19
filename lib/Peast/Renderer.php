@@ -111,7 +111,7 @@ class Renderer
                 $code .= "(" .
                          $this->renderOpts->sirb .
                          $this->joinNodes(
-                            $node->getArguments(),
+                            $node->getParams(),
                             "," . $this->renderOpts->sao
                          ) .
                          $this->renderOpts->sirb .
@@ -430,7 +430,7 @@ class Renderer
                 $value = $node->getValue();
                 $key = $node->getKey();
                 $kind = $node->getKind();
-                if ($kind === self::KIND_GET || $kind === self::KIND_SET) {
+                if ($kind === $node::KIND_GET || $kind === $node::KIND_SET) {
                     $code .= $kind . " ";
                 } elseif ($value->getType() === "FunctionExpression" &&
                           $value->getGenerator()) {
@@ -497,7 +497,7 @@ class Renderer
                          $this->renderNode($node->getDiscriminant()) .
                          $this->renderOpts->sirb .
                          ")" .
-                         $this->renderStatementBlock($node->getBody(), true);
+                         $this->renderStatementBlock($node->getCases(), true);
             break;
             case "TaggedTemplateExpression":
                 $code .= $this->renderNode($node->getTag()) .
