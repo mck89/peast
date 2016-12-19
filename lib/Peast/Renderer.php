@@ -358,7 +358,7 @@ class Renderer
                              ) .
                              " from ";
                 }
-                $code .= $this->renderNode($node->getSource());
+                $code .= $this->renderNode($node->getSource()) . ";";
             break;
             case "ImportDefaultSpecifier":
                 $code .= $this->renderNode($node->getLocal());
