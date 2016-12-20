@@ -265,6 +265,7 @@ class Renderer
                          $this->renderOpts->sirb .
                          $this->renderNode($node->getLeft()) .
                          " " . ($type === "ForInStatement" ? "in" : "out") . " " .
+                         $this->renderNode($node->getRight()) .
                          $this->renderOpts->sirb .
                          ")" .
                          $this->renderStatementBlock($node->getBody());
