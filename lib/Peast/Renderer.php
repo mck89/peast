@@ -256,6 +256,7 @@ class Renderer
                              "}";
                     if ($source = $node->getSource()) {
                         $code .= $this->renderOpts->sao .
+                                 "from " .
                                  $this->renderNode($source);
                     }
                 }
