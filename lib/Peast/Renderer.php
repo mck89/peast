@@ -240,6 +240,7 @@ class Renderer
                                  $this->renderNode($source);
                     }
                 }
+                $code .= ";";
             break;
             case "ExportSpecifier":
             case "ImportSpecifier":
