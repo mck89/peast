@@ -618,8 +618,7 @@ class Renderer
      * @return string
      */
     protected function renderStatementBlock(
-        $node, $forceBrackets = null, $mandatorySeparator = false,
-        $incrementIndent = true
+        $node, $forceBrackets = null, $mandatorySeparator = false
     ) {
         //Special handling of BlockStatement and ClassBody nodes by rendering
         //their child nodes
