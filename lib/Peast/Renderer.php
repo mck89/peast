@@ -511,7 +511,11 @@ class Renderer
             case "TemplateLiteral":
                 $code .= "`";
                 foreach ($node->getParts() as $part) {
-                    $code .= $this->renderNode($part);
+                    if ($part->getType() === "TemplateElement") {
+                        $code .= $this->renderNode($part);
+                    } else {
+                        $code .= "$" . "{" . $this->renderNode($part) . "}";
+                    }
                 }
                 $code .= "`";
             break;
