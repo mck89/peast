@@ -464,9 +464,9 @@ class Renderer
                 } else {
                     $code .= $compiledKey;
                 }
-                $code .= $this->renderOpts->sao;
                 if ($node->getMethod()) {
-                    $code .= preg_replace("/^[^\(]+/", "", $compiledValue);
+                    $code .= $this->renderOpts->sao .
+                             preg_replace("/^[^\(]+/", "", $compiledValue);
                 } elseif ($compiledKey !== $compiledValue) {
                     $code .= ($node->getShorthand() ? "=" : ":") .
                              $this->renderOpts->sao .
