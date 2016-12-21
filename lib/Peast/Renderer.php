@@ -31,6 +31,24 @@ class Renderer
     protected $renderOpts;
     
     /**
+     * Node types that does not require semicolon insertion
+     * 
+     * @var array
+     */
+    protected $noSemicolon = array(
+        "ClassDeclaration",
+        "ForInStatement",
+        "ForOfStatement",
+        "ForStatement",
+        "FunctionDeclaration",
+        "IfStatement",
+        "SwitchStatement",
+        "TryStatement",
+        "WhileStatement",
+        "WithStatement",
+    );
+    
+    /**
      * Sets the formatter to use for the rendering
      * 
      * @param Formatter\Base    $formatter  Formatter
@@ -146,7 +164,6 @@ class Renderer
                 if ($label = $node->getLabel()) {
                     $code .= " " . $this->renderNode($label);
                 }
-                $code .= ";";
             break;
             case "CallExpression":
             case "NewExpression":
@@ -182,7 +199,9 @@ class Renderer
                 if ($superClass = $node->getSuperClass()) {
                     $code .= " extends " . $this->renderNode($superClass);
                 }
-                $code .= $this->renderStatementBlock($node->getBody(), true);
+                $code .= $this->renderStatementBlock(
+                    $node->getBody(), true, false, false
+                );
             break;
             case "ConditionalExpression":
                 $code .= $this->renderNode($node->getTest()) .
@@ -196,7 +215,7 @@ class Renderer
                          $this->renderNode($node->getAlternate());
             break;
             case "DebuggerStatement":
-                $code .= "debugger;";
+                $code .= "debugger";
             break;
             case "DoWhileStatement":
                 $code .= $this->renderStatementBlock($node->getBody(), true) .
@@ -210,17 +229,14 @@ class Renderer
                          ")";
             break;
             case "EmptyStatement":
-                $code .= ";";
             break;
             case "ExportAllDeclaration":
                 $code .= "export * from " .
-                         $this->renderNode($node->getSource()) .
-                         ";";
+                         $this->renderNode($node->getSource());
             break;
             case "ExportDefaultDeclaration":
                 $code .= "export default " .
-                         $this->renderNode($node->getDeclaration()) .
-                         ";";
+                         $this->renderNode($node->getDeclaration());
             break;
             case "ExportNamedDeclaration":
                 $code .= "export";
@@ -240,7 +256,6 @@ class Renderer
                                  $this->renderNode($source);
                     }
                 }
-                $code .= ";";
             break;
             case "ExportSpecifier":
             case "ImportSpecifier":
@@ -255,7 +270,7 @@ class Renderer
                          $local . " as " . $ref;
             break;
             case "ExpressionStatement":
-                $code .= $this->renderNode($node->getExpression()) . ";";
+                $code .= $this->renderNode($node->getExpression());
             break;
             case "ForInStatement":
             case "ForOfStatement":
@@ -360,7 +375,7 @@ class Renderer
                              ) .
                              " from ";
                 }
-                $code .= $this->renderNode($node->getSource()) . ";";
+                $code .= $this->renderNode($node->getSource());
             break;
             case "ImportDefaultSpecifier":
                 $code .= $this->renderNode($node->getLocal());
@@ -467,7 +482,6 @@ class Renderer
                 if ($argument = $node->getArgument()) {
                     $code .= " " . $this->renderNode($argument);
                 }
-                $code .= ";";
             break;
             case "SequenceExpression":
                 $code .= $this->joinNodes(
@@ -499,7 +513,9 @@ class Renderer
                          $this->renderNode($node->getDiscriminant()) .
                          $this->renderOpts->sirb .
                          ")" .
-                         $this->renderStatementBlock($node->getCases(), true);
+                         $this->renderStatementBlock(
+                             $node->getCases(), true, false, false
+                         );
             break;
             case "TaggedTemplateExpression":
                 $code .= $this->renderNode($node->getTag()) .
@@ -523,7 +539,7 @@ class Renderer
                 $code .= "this";
             break;
             case "ThrowStatement":
-                $code .= "throw " . $this->renderNode($node->getArgument()) . ";";
+                $code .= "throw " . $this->renderNode($node->getArgument());
             break;
             case "TryStatement":
                 $code .= "try" .
@@ -557,8 +573,7 @@ class Renderer
                          $this->joinNodes(
                             $node->getDeclarations(),
                             "," . $this->renderOpts->nl . $indentation
-                         ) .
-                         ";";
+                         );
                 $this->renderOpts->indLevel--;
             break;
             case "VariableDeclarator":
@@ -598,7 +613,6 @@ class Renderer
                 if ($argument = $node->getArgument()) {
                     $code .= " " . $this->renderNode($argument);
                 }
-                $code .= ";";
             break;
         }
         return $code;
@@ -614,11 +628,16 @@ class Renderer
      * @param bool                      $mandatorySeparator True if a starting
      *                                                      separator is
      *                                                      mandatory
+     * @param bool                      $addSemicolons      Semicolons are
+     *                                                      inserted autmatically
+     *                                                      if this parameter is
+     *                                                      not false
      * 
      * @return string
      */
     protected function renderStatementBlock(
-        $node, $forceBrackets = null, $mandatorySeparator = false
+        $node, $forceBrackets = null, $mandatorySeparator = false,
+        $addSemicolons = true
     ) {
         //Special handling of BlockStatement and ClassBody nodes by rendering
         //their child nodes
@@ -672,11 +691,16 @@ class Renderer
                 $code .= $subIndentation .
                          $this->joinNodes(
                             $node,
-                            $this->renderOpts->nl . $subIndentation
+                            $this->renderOpts->nl . $subIndentation,
+                            $addSemicolons
                          );
             }
         } else {
             $code .= $subIndentation . $this->renderNode($node);
+            if ($addSemicolons &&
+                !in_array($node->getType(), $this->noSemicolon)) {
+                $code .= ";";
+            }
         }
         
         //If  $forceBrackets is not false reset the indentation level
@@ -699,18 +723,28 @@ class Renderer
     /**
      * Joins an array of nodes with the given separator
      * 
-     * @param array     $nodes      Nodes
-     * @param string    $separator  Separator
+     * @param array     $nodes          Nodes
+     * @param string    $separator      Separator
+     * @param bool      $addSemicolons  True to add semicolons after each node
      * 
      * @return string
      */
-    protected function joinNodes($nodes, $separator)
+    protected function joinNodes($nodes, $separator, $addSemicolons=false)
     {
-        $code = array();
+        $parts = array();
         foreach ($nodes as $node) {
-            $code[] = $node ? $this->renderNode($node) : "";
+            if (!$node) {
+                $code = "";
+            } else {
+                $code = $this->renderNode($node);
+                if ($addSemicolons &&
+                    !in_array($node->getType(), $this->noSemicolon)) {
+                    $code .= ";";
+                }
+            }
+            $parts[] = $code;
         }
-        return implode($separator, $code);
+        return implode($separator, $parts);
     }
     
     
