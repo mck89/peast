@@ -118,7 +118,6 @@ class Renderer
                          ")" .
                          $this->renderOpts->sao .
                          "=>" .
-                         $this->renderOpts->sao .
                          $this->renderStatementBlock($node->getBody());
             break;
             case "AssignmentExpression":
