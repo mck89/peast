@@ -549,13 +549,16 @@ class Renderer
                 }
             break;
             case "VariableDeclaration":
+                $this->renderOpts->indLevel++;
+                $indentation = $this->getIndentation();
                 $code .= $node->getKind() .
                          " " .
                          $this->joinNodes(
                             $node->getDeclarations(),
-                            "," . $this->renderOpts->nl
+                            "," . $this->renderOpts->nl . $indentation
                          ) .
                          ";";
+                $this->renderOpts->indLevel--;
             break;
             case "VariableDeclarator":
                 $code .= $this->renderNode($node->getId());
@@ -634,13 +637,7 @@ class Renderer
             $hasBrackets = $this->renderOpts->awb ||
                            (is_array($node) && count($node) !== 1);
         }
-        
-        //Compose the current indentation string by repeating the indentation
-        //character as specified by the indentation level
-        $currentIndentation = str_repeat(
-            $this->renderOpts->ind,
-            $this->renderOpts->indLevel
-        );
+        $currentIndentation = $this->getIndentation();
         
         //If $forceBrackets is not set to false then the node can be wrapped in
         //curly braces, so a separator defined by formatter must be inserted
@@ -665,10 +662,8 @@ class Renderer
         //false
         if ($forceBrackets !== false) {
             $this->renderOpts->indLevel++;
-            $subIndentation = $currentIndentation . $this->renderOpts->ind;
-        } else {
-            $subIndentation = $currentIndentation;
         }
+        $subIndentation = $this->getIndentation();
         
         //Render the node or the array of nodes
         $emptyBody = is_array($node) && !count($node);
@@ -716,5 +711,20 @@ class Renderer
             $code[] = $node ? $this->renderNode($node) : "";
         }
         return implode($separator, $code);
+    }
+    
+    
+    
+    /**
+     * Returns the current indentation string
+     * 
+     * @return string
+     */
+    protected function getIndentation()
+    {
+        return str_repeat(
+            $this->renderOpts->ind,
+            $this->renderOpts->indLevel
+        );
     }
 }
