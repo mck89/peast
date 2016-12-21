@@ -671,12 +671,15 @@ class Renderer
         }
         
         //Render the node or the array of nodes
+        $emptyBody = is_array($node) && !count($node);
         if (is_array($node)) {
-            $code .= $subIndentation .
-                     $this->joinNodes(
-                        $node,
-                        $this->renderOpts->nl . $subIndentation
-                     );
+            if (!$emptyBody) {
+                $code .= $subIndentation .
+                         $this->joinNodes(
+                            $node,
+                            $this->renderOpts->nl . $subIndentation
+                         );
+            }
         } else {
             $code .= $subIndentation . $this->renderNode($node);
         }
@@ -688,7 +691,11 @@ class Renderer
         
         //Insert closing curly bracket if required
         if ($hasBrackets) {
-            $code .= $this->renderOpts->nl . $currentIndentation . "}";
+            //Add a new line if something was rendered
+            if (!$emptyBody) {
+                $code .= $this->renderOpts->nl;
+            }
+            $code .= $currentIndentation . "}";
         }
         
         return $code;
