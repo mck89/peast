@@ -282,7 +282,7 @@ class Renderer
                          "(" .
                          $this->renderOpts->sirb .
                          $this->renderNode($node->getLeft()) .
-                         " " . ($type === "ForInStatement" ? "in" : "out") . " " .
+                         " " . ($type === "ForInStatement" ? "in" : "of") . " " .
                          $this->renderNode($node->getRight()) .
                          $this->renderOpts->sirb .
                          ")" .
