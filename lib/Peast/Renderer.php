@@ -218,7 +218,10 @@ class Renderer
                 $code .= "debugger";
             break;
             case "DoWhileStatement":
-                $code .= $this->renderStatementBlock($node->getBody(), true) .
+                $code .= "do" .
+                         $this->renderStatementBlock(
+                            $node->getBody(), null, true
+                         ) .
                          $this->renderOpts->sao .
                          "while" .
                          $this->renderOpts->sao .
