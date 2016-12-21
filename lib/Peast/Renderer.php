@@ -390,6 +390,7 @@ class Renderer
                 $code .= $this->renderNode($node->getLabel()) .
                          ":" .
                          $this->renderOpts->nl .
+                         $this->getIndentation() .
                          $this->renderNode($node->getBody());
             break;
             case "Literal":
