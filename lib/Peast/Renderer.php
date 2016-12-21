@@ -304,7 +304,8 @@ class Renderer
                 if ($id) {
                     $code .= $this->renderNode($id);
                 }
-                $code .= "(" .
+                $code .= $this->renderOpts->sao .
+                         "(" .
                          $this->renderOpts->sirb .
                          $this->joinNodes(
                             $node->getParams(),
@@ -370,7 +371,7 @@ class Renderer
             case "LabeledStatement":
                 $code .= $this->renderNode($node->getLabel()) .
                          ":" .
-                         $this->renderOpts.nl .
+                         $this->renderOpts->nl .
                          $this->renderNode($node->getBody());
             break;
             case "Literal":
@@ -484,7 +485,7 @@ class Renderer
                     $code .= "default";
                 }
                 $code .= ":" .
-                         $this->renderOpts.nl .
+                         $this->renderOpts->nl .
                          $this->renderStatementBlock(
                              $node->getConsequent(),
                              false
