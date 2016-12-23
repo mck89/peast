@@ -314,12 +314,14 @@ class Renderer
                 $code .= "function";
                 if ($node->getGenerator()) {
                     $code .= $this->renderOpts->sao .
-                             "*" .
-                             $this->renderOpts->sao;
+                             "*";
                 } elseif ($id) {
                     $code .= " ";
                 }
                 if ($id) {
+                    if ($node->getGenerator()) {
+                        $code .= $this->renderOpts->sao;
+                    }
                     $code .= $this->renderNode($id);
                 }
                 $code .= $this->renderOpts->sao .
