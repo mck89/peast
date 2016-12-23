@@ -42,6 +42,7 @@ class Renderer
         "ForStatement",
         "FunctionDeclaration",
         "IfStatement",
+        "LabeledStatement",
         "SwitchStatement",
         "TryStatement",
         "WhileStatement",
@@ -409,11 +410,15 @@ class Renderer
                          $ref . " as " . $local;
             break;
             case "LabeledStatement":
+                $body = $node->getBody();
                 $code .= $this->renderNode($node->getLabel()) .
                          ":" .
                          $this->renderOpts->nl .
                          $this->getIndentation() .
-                         $this->renderNode($node->getBody());
+                         $this->renderNode($body);
+                if ($this->requiresSemicolon($body)) {
+                    $code .= ";";
+                }
             break;
             case "Literal":
                 $code .= $node->getRaw();
@@ -727,8 +732,7 @@ class Renderer
             }
         } else {
             $code .= $subIndentation . $this->renderNode($node);
-            if ($addSemicolons &&
-                !in_array($node->getType(), $this->noSemicolon)) {
+            if ($addSemicolons && $this->requiresSemicolon($node)) {
                 $code .= ";";
             }
         }
@@ -767,8 +771,7 @@ class Renderer
                 $code = "";
             } else {
                 $code = $this->renderNode($node);
-                if ($addSemicolons &&
-                    !in_array($node->getType(), $this->noSemicolon)) {
+                if ($addSemicolons && $this->requiresSemicolon($node)) {
                     $code .= ";";
                 }
             }
@@ -777,7 +780,17 @@ class Renderer
         return implode($separator, $parts);
     }
     
-    
+    /**
+     * Check if the given node requires semicolons insertion
+     * 
+     * @param Syntax\Node\Node  $node   Node
+     * 
+     * @return bool
+     */
+    protected function requiresSemicolon($node)
+    {
+        return !in_array($node->getType(), $this->noSemicolon);
+    }
     
     /**
      * Returns the current indentation string
