@@ -37,6 +37,7 @@ class Renderer
      */
     protected $noSemicolon = array(
         "ClassDeclaration",
+        "ExportDefaultDeclaration",
         "ForInStatement",
         "ForOfStatement",
         "ForStatement",
@@ -146,11 +147,17 @@ class Renderer
                 $operator = $type === "AssignmentPattern" ?
                             "=" :
                             $node->getOperator();
-                $code .= $this->renderNode($node->getLeft()) .
-                         $this->renderOpts->sao .
-                         $operator .
-                         $this->renderOpts->sao .
-                         $this->renderNode($node->getRight());
+                $code .= $this->renderNode($node->getLeft());
+                if (preg_match("#^[a-z]+$#i", $operator)) {
+                    $code .= " " .
+                             $operator .
+                             " ";
+                } else {
+                    $code .= $this->renderOpts->sao .
+                             $operator .
+                             $this->renderOpts->sao;
+                }
+                $code .= $this->renderNode($node->getRight());
             break;
             case "BlockStatement":
             case "ClassBody":
@@ -239,8 +246,12 @@ class Renderer
                          $this->renderNode($node->getSource());
             break;
             case "ExportDefaultDeclaration":
+                $declaration = $node->getDeclaration();
                 $code .= "export default " .
-                         $this->renderNode($node->getDeclaration());
+                         $this->renderNode($declaration);
+                if ($this->requiresSemicolon($declaration)) {
+                    $code .= ";";
+                }
             break;
             case "ExportNamedDeclaration":
                 $code .= "export";
@@ -592,6 +603,9 @@ class Renderer
                 $prefix = $node->getPrefix();
                 if ($prefix) {
                     $code .= $node->getOperator();
+                    if (preg_match("#^[a-z]+$#i", $node->getOperator())) {
+                        $code .= " ";
+                    }
                 }
                 $code .= $this->renderNode($node->getArgument());
                 if (!$prefix) {
