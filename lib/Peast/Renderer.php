@@ -155,7 +155,7 @@ class Renderer
             case "ClassBody":
             case "Program":
                 $code .= $this->renderStatementBlock(
-                    $node->getBody(), false, false
+                    $node->getBody(), false, false, true, false
                 );
             break;
             case "BreakStatement":
@@ -499,16 +499,18 @@ class Renderer
             break;
             case "SwitchCase":
                 if ($test = $node->getTest()) {
-                    $source = "case " . $this->renderNode($test);
+                    $code .= "case " . $this->renderNode($test);
                 } else {
                     $code .= "default";
                 }
-                $code .= ":" .
-                         $this->renderOpts->nl .
-                         $this->renderStatementBlock(
-                             $node->getConsequent(),
-                             false
-                         );
+                $code .= ":";
+                if (count($node->getConsequent())) {
+                    $code .= $this->renderOpts->nl .
+                             $this->renderStatementBlock(
+                                 $node->getConsequent(),
+                                 false
+                             );
+                }
             break;
             case "SwitchStatement":
                 $code .= "switch" .
@@ -637,12 +639,15 @@ class Renderer
      *                                                      inserted autmatically
      *                                                      if this parameter is
      *                                                      not false
+     * @param bool                      $incIndent          If false indentation
+     *                                                      level won't be
+     *                                                      incremented
      * 
      * @return string
      */
     protected function renderStatementBlock(
         $node, $forceBrackets = null, $mandatorySeparator = false,
-        $addSemicolons = true
+        $addSemicolons = true, $incIndent = true
     ) {
         //Special handling of BlockStatement and ClassBody nodes by rendering
         //their child nodes
@@ -682,9 +687,8 @@ class Renderer
             $code .= " ";
         }
         
-        //Increase indentation level for sub nodes if  $forceBrackets is not
-        //false
-        if ($forceBrackets !== false) {
+        //Increase indentation level
+        if ($incIndent) {
             $this->renderOpts->indLevel++;
         }
         $subIndentation = $this->getIndentation();
@@ -708,8 +712,8 @@ class Renderer
             }
         }
         
-        //If  $forceBrackets is not false reset the indentation level
-        if ($forceBrackets !== false) {
+        //Reset the indentation level
+        if ($incIndent) {
             $this->renderOpts->indLevel--;
         }
         
