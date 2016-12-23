@@ -289,6 +289,8 @@ class Renderer
             break;
             case "ForInStatement":
             case "ForOfStatement":
+                //Force single line mode for substatements
+                $this->renderOpts->forceSingleLine = true;
                 $code .= "for" .
                          $this->renderOpts->sao .
                          "(" .
@@ -299,8 +301,11 @@ class Renderer
                          $this->renderOpts->sirb .
                          ")" .
                          $this->renderStatementBlock($node->getBody());
+                unset($this->renderOpts->forceSingleLine);
             break;
             case "ForStatement":
+                //Force single line mode for substatements
+                $this->renderOpts->forceSingleLine = true;
                 $code .= "for" .
                          $this->renderOpts->sao .
                          "(" .
@@ -319,6 +324,7 @@ class Renderer
                 $code .= $this->renderOpts->sirb .
                          ")" .
                          $this->renderStatementBlock($node->getBody());
+                unset($this->renderOpts->forceSingleLine);
             break;
             case "FunctionDeclaration":
             case "FunctionExpression":
@@ -615,11 +621,17 @@ class Renderer
             case "VariableDeclaration":
                 $this->renderOpts->indLevel++;
                 $indentation = $this->getIndentation();
+                //Handle single line mode
+                if (isset($this->renderOpts->forceSingleLine)) {
+                    $separator = "," . $this->renderOpts->sao;
+                } else {
+                    $separator = "," . $this->renderOpts->nl . $indentation;
+                }
                 $code .= $node->getKind() .
                          " " .
                          $this->joinNodes(
                             $node->getDeclarations(),
-                            "," . $this->renderOpts->nl . $indentation
+                            $separator
                          );
                 $this->renderOpts->indLevel--;
             break;
