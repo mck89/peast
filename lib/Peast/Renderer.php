@@ -262,7 +262,6 @@ class Renderer
                 }
             break;
             case "ExportSpecifier":
-            case "ImportSpecifier":
                 $local = $this->renderNode($node->getLocal());
                 $ref = $this->renderNode(
                     $type === "ExportSpecifier" ?
@@ -360,24 +359,33 @@ class Renderer
                 $code .= "import ";
                 $specifiers = $node->getSpecifiers();
                 if (count($specifiers)) {
-                    $parts = array();
-                    $orderedSpecTypes = array(
-                        "ImportDefaultSpecifier",
-                        "ImportNamespaceSpecifier",
-                        "ImportSpecifier"
-                    );
-                    foreach ($orderedSpecTypes as $type) {
-                        foreach ($specifiers as $spec) {
-                            if ($spec->getType() === $type) {
-                                $parts[] = $spec;
-                            }
+                    $sep = "," . $this->renderOpts->sao;
+                    $groups = $parts = array();
+                    foreach ($specifiers as $spec) {
+                        $specType = $spec->getType();
+                        if (!isset($groups[$specType])) {
+                            $groups[$specType] = array();
+                        }
+                        $groups[$specType][] = $spec;
+                    }
+                    if (isset($groups["ImportDefaultSpecifier"])) {
+                        foreach ($groups["ImportDefaultSpecifier"] as $s) {
+                            $parts[] = $this->renderNode($s);
                         }
                     }
-                    $code .= $this->joinNodes(
-                                $parts,
-                                "," . $this->renderOpts->sao
-                             ) .
-                             " from ";
+                    if (isset($groups["ImportNamespaceSpecifier"])) {
+                        foreach ($groups["ImportNamespaceSpecifier"] as $s) {
+                            $parts[] = $this->renderNode($s);
+                        }
+                    }
+                    if (isset($groups["ImportSpecifier"])) {
+                        $impSpec = array();
+                        foreach ($groups["ImportSpecifier"] as $s) {
+                            $impSpec[] = $this->renderNode($s);
+                        }
+                        $parts[] = "{" . implode($sep, $impSpec) . "}";
+                    }
+                    $code .= implode($sep, $parts) . " from ";
                 }
                 $code .= $this->renderNode($node->getSource());
             break;
@@ -386,6 +394,17 @@ class Renderer
             break;
             case "ImportNamespaceSpecifier":
                 $code .= "* as " . $this->renderNode($node->getLocal());
+            break;
+            case "ImportSpecifier":
+                $local = $this->renderNode($node->getLocal());
+                $ref = $this->renderNode(
+                    $type === "ExportSpecifier" ?
+                    $node->getExported() :
+                    $node->getImported()
+                );
+                $code .= $local === $ref ?
+                         $local :
+                         $ref . " as " . $local;
             break;
             case "LabeledStatement":
                 $code .= $this->renderNode($node->getLabel()) .
