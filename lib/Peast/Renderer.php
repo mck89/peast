@@ -733,6 +733,8 @@ class Renderer
         $node, $forceBrackets = null, $mandatorySeparator = false,
         $addSemicolons = true, $incIndent = true
     ) {
+        $code = "";
+        
         //Special handling of BlockStatement and ClassBody nodes by rendering
         //their child nodes
         if (!is_array($node) &&
