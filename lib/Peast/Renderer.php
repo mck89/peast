@@ -494,28 +494,33 @@ class Renderer
             case "Property":
                 $value = $node->getValue();
                 $key = $node->getKey();
-                $kind = $node->getKind();
-                if ($kind === $node::KIND_GET || $kind === $node::KIND_SET) {
-                    $code .= $kind . " ";
-                } elseif ($value->getType() === "FunctionExpression" &&
-                          $value->getGenerator()) {
-                    $code .= "*" .
-                             $this->renderOpts->sao;
-                }
                 $compiledKey = $this->renderNode($key);
                 $compiledValue = $this->renderNode($value);
-                if ($node->getComputed()) {
-                    $code .= "[" . $compiledKey . "]";
+                if ($value->getType() === "AssignmentPattern" &&
+                    $compiledKey === $this->renderNode($value->getLeft())) {
+                    $code .= $compiledValue;
                 } else {
-                    $code .= $compiledKey;
-                }
-                if ($node->getMethod()) {
-                    $code .= $this->renderOpts->sao .
-                             preg_replace("/^[^\(]+/", "", $compiledValue);
-                } elseif ($compiledKey !== $compiledValue) {
-                    $code .= ($node->getShorthand() ? "=" : ":") .
-                             $this->renderOpts->sao .
-                             $compiledValue;
+                    $kind = $node->getKind();
+                    if ($kind === $node::KIND_GET || $kind === $node::KIND_SET) {
+                        $code .= $kind . " ";
+                    } elseif ($value->getType() === "FunctionExpression" &&
+                              $value->getGenerator()) {
+                        $code .= "*" .
+                                 $this->renderOpts->sao;
+                    }
+                    if ($node->getComputed()) {
+                        $code .= "[" . $compiledKey . "]";
+                    } else {
+                        $code .= $compiledKey;
+                    }
+                    if ($node->getMethod()) {
+                        $code .= $this->renderOpts->sao .
+                                 preg_replace("/^[^\(]+/", "", $compiledValue);
+                    } elseif ($compiledKey !== $compiledValue) {
+                        $code .= ($node->getShorthand() ? "=" : ":") .
+                                 $this->renderOpts->sao .
+                                 $compiledValue;
+                    }
                 }
             break;
             case "RegExpLiteral":
