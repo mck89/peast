@@ -476,6 +476,31 @@ class Renderer
                          preg_replace("/^[^\(]+/", "", $this->renderNode($value));
             break;
             case "ObjectExpression":
+                $currentIndentation = $this->getIndentation();
+                $this->renderOpts->indLevel++;
+                $indentation = $this->getIndentation();
+                //Handle single line mode
+                if (isset($this->renderOpts->forceSingleLine)) {
+                    $start = $end = "";
+                    $separator = "," . $this->renderOpts->sao;
+                } else {
+                    $end = $this->renderOpts->nl . $currentIndentation;
+                    $start = $this->renderOpts->nl . $indentation;
+                    $separator = "," . $this->renderOpts->nl . $indentation;
+                }
+                $code .= "{";
+                $properties = $node->getProperties();
+                if (count($properties)) {
+                    $code .= $start .
+                             $this->joinNodes(
+                                $properties,
+                                $separator
+                             ) .
+                             $end;
+                }
+                $code .= "}";
+                $this->renderOpts->indLevel--;
+            break;
             case "ObjectPattern":
                 $code .= "{" .
                          $this->joinNodes(
