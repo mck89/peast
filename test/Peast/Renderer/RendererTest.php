@@ -39,4 +39,24 @@ class RendererTest extends \test\Peast\TestBase
         $this->assertEquals($cmTest, $cm);
         $this->assertEquals($exTest, $ex);
     }
+    
+    /**
+     * @expectedException \Exception
+     */
+    public function testExceptionOnMissingFormatter()
+    {
+        $tree = \Peast\Peast::ES7("")->parse();
+        $renderer = new \Peast\Renderer;
+        $this->assertEquals(null, $renderer->getFormatter());
+        $renderer->render($tree);
+    }
+    
+    public function testSemicolonAfterLabelledStatement()
+    {
+        $source = "label:var test;";
+        $tree = \Peast\Peast::ES7($source)->parse();
+        $renderer = new \Peast\Renderer;
+        $res = $renderer->setFormatter(new \Peast\Formatter\Compact)->render($tree);
+        $this->assertEquals($source, $res);
+    }
 }

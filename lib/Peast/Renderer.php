@@ -275,11 +275,7 @@ class Renderer
             break;
             case "ExportSpecifier":
                 $local = $this->renderNode($node->getLocal());
-                $ref = $this->renderNode(
-                    $type === "ExportSpecifier" ?
-                    $node->getExported() :
-                    $node->getImported()
-                );
+                $ref = $this->renderNode($node->getExported());
                 $code .= $local === $ref ?
                          $local :
                          $local . " as " . $ref;
@@ -417,11 +413,7 @@ class Renderer
             break;
             case "ImportSpecifier":
                 $local = $this->renderNode($node->getLocal());
-                $ref = $this->renderNode(
-                    $type === "ExportSpecifier" ?
-                    $node->getExported() :
-                    $node->getImported()
-                );
+                $ref = $this->renderNode($node->getImported());
                 $code .= $local === $ref ?
                          $local :
                          $ref . " as " . $local;
