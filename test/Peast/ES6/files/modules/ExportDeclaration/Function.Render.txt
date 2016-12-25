@@ -4,3 +4,9 @@ export default function () {
 ;
 /**************************************************/
 export default function(){return arguments[0];};
+/**************************************************/
+export default function (  )
+{
+	return arguments[0];
+}
+;

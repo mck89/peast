@@ -3,3 +3,8 @@ while (num in rows) {
 }
 /**************************************************/
 while(num in rows)printRow(rows[num++]);
+/**************************************************/
+while ( num in rows )
+{
+	printRow( rows[num++] );
+}

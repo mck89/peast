@@ -4,3 +4,10 @@ function * generator () {
 }
 /**************************************************/
 function simple(){}function*generator(){}
+/**************************************************/
+function simple (  )
+{
+}
+function * generator (  )
+{
+}

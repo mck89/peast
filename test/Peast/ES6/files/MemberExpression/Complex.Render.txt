@@ -1,3 +1,5 @@
 foo.bar["ba" + "z"].bar`template${exp}string`.test`other``value`;
 /**************************************************/
 foo.bar["ba"+"z"].bar`template${exp}string`.test`other``value`;
+/**************************************************/
+foo.bar["ba" + "z"].bar`template${exp}string`.test`other``value`;

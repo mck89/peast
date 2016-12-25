@@ -1,3 +1,5 @@
 import {member1, member2 as newname} from "my-module";
 /**************************************************/
 import {member1,member2 as newname} from "my-module";
+/**************************************************/
+import {member1, member2 as newname} from "my-module";

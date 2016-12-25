@@ -1,3 +1,5 @@
 export {a, b as c, d} from "my-module";
 /**************************************************/
 export{a,b as c,d}from "my-module";
+/**************************************************/
+export {a, b as c, d} from "my-module";

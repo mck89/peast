@@ -511,9 +511,9 @@ class Renderer
             break;
             case "ParenthesizedExpression":
                 $code .= "(" .
-                         $this->sirb .
+                         $this->renderOpts->sirb .
                          $this->renderNode($node->getExpression()) .
-                         $this->sirb .
+                         $this->renderOpts->sirb .
                          ")";
             break;
             case "Property":

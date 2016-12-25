@@ -28,13 +28,15 @@ class RendererTest extends \test\Peast\TestBase
         $renderer = new \Peast\Renderer;
         $pp = $renderer->setFormatter(new \Peast\Formatter\PrettyPrint)->render($tree);
         $cm = $renderer->setFormatter(new \Peast\Formatter\Compact)->render($tree);
+        $ex = $renderer->setFormatter(new \Peast\Formatter\Expanded)->render($tree);
         
-        list($ppTest, $cmTest) = preg_split(
+        list($ppTest, $cmTest, $exTest) = preg_split(
             "#\s+/\*{50}/\s+#",
             file_get_contents($compareFile)
         );
         
         $this->assertEquals($ppTest, $pp);
         $this->assertEquals($cmTest, $cm);
+        $this->assertEquals($exTest, $ex);
     }
 }

@@ -1,3 +1,5 @@
 new new new foo.bar.baz()(arg)();
 /**************************************************/
 new new new foo.bar.baz()(arg)();
+/**************************************************/
+new new new foo.bar.baz(  )( arg )(  );

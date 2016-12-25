@@ -2,3 +2,7 @@ class a extends new other() {
 }
 /**************************************************/
 class a extends new other(){}
+/**************************************************/
+class a extends new other(  )
+{
+}
