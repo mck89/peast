@@ -1,0 +1,3 @@
+new new foo.bar.baz()(arg);
+/**************************************************/
+new new foo.bar.baz()(arg);

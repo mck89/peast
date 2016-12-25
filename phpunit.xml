@@ -13,6 +13,9 @@
         <testsuite name="Traverser">
             <directory>test/Peast/Traverser</directory>
         </testsuite>
+        <testsuite name="Renderer">
+            <directory>test/Peast/Renderer</directory>
+        </testsuite>
     </testsuites>
     <filter>
         <whitelist>

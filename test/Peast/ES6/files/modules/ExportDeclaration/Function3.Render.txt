@@ -1,0 +1,6 @@
+export default function go () {
+	return call();
+}
+;
+/**************************************************/
+export default function go(){return call();};

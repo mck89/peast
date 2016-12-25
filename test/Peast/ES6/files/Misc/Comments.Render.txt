@@ -1,0 +1,7 @@
+test();
+var a = 2;
+function b () {
+	return true;
+}
+/**************************************************/
+test();var a=2;function b(){return true;}

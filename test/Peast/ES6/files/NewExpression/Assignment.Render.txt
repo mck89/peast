@@ -1,0 +1,3 @@
+var a = new foo.bar.baz().test();
+/**************************************************/
+var a=new foo.bar.baz().test();

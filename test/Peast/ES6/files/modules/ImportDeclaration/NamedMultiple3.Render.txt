@@ -1,0 +1,3 @@
+import {a, b} from "my-module";
+/**************************************************/
+import {a,b} from "my-module";

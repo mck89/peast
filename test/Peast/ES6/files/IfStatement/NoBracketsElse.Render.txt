@@ -1,0 +1,8 @@
+if (failed) {
+	error();
+} else {
+	ok();
+}
+finish();
+/**************************************************/
+if(failed)error();else ok();finish();

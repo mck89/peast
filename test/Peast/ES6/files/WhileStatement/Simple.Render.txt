@@ -1,0 +1,5 @@
+while (check() && !finished()) {
+	doSomething();
+}
+/**************************************************/
+while(check()&&!finished())doSomething();

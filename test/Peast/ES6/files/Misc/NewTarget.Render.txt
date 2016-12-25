@@ -1,0 +1,5 @@
+function a () {
+	new.target().call();
+}
+/**************************************************/
+function a(){new.target().call();}

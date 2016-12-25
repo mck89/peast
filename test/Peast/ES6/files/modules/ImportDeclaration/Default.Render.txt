@@ -1,0 +1,4 @@
+fn();
+import member from "module-name";
+/**************************************************/
+fn();import member from "module-name";

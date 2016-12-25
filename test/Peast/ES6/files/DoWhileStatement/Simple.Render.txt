@@ -1,0 +1,5 @@
+do {
+	rows[--index];
+} while (index > -1);
+/**************************************************/
+do rows[--index];while(index>-1);

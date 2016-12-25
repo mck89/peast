@@ -1,0 +1,7 @@
+try {
+	throw Error("Error");
+} catch (e) {
+	debugger;
+}
+/**************************************************/
+try{throw Error("Error");}catch(e){debugger;}

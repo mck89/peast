@@ -1,0 +1,5 @@
+label:
+function labelled () {
+}
+/**************************************************/
+label:function labelled(){}

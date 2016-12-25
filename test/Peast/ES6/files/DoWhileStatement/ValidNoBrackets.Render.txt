@@ -1,0 +1,5 @@
+do {
+	something();
+} while (true);
+/**************************************************/
+do something();while(true);

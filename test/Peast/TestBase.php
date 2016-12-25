@@ -9,6 +9,8 @@ abstract class TestBase extends \PHPUnit_Framework_TestCase
     
     const JS_TOKENIZE = 3;
     
+    const JS_RENDERER = 4;
+    
     protected $tokensTestProps = array("type", "value", "loc", "range");
     
     protected $tokensIdentifiersAsKeywords = array(
@@ -39,10 +41,16 @@ abstract class TestBase extends \PHPUnit_Framework_TestCase
             if ($isInvalid && $invalid) {
                 $testFiles[$testName] = array($jsFile);
             } elseif (!$isInvalid && !$invalid) {
-                $replacement = $jsType === self::JS_PARSE ?
-                               ".json" :
-                               ".Tokens.json";
-                $op = $jsType === self::JS_PARSE ? "Parse" : "Tokenize";
+                if ($jsType === self::JS_TOKENIZE) {
+                    $replacement = ".Tokens.json";
+                    $op = "Tokenize";
+                } elseif ($jsType === self::JS_RENDERER) {
+                    $replacement = ".Render.txt";
+                    $op = "Render";
+                } else {
+                    $replacement = ".json";
+                    $op = "Parse";
+                }
                 $testFiles["$op $testName"] = array(
                     $jsFile,
                     str_replace(".js", $replacement, $jsFile)
