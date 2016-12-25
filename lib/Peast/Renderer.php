@@ -526,7 +526,9 @@ class Renderer
                     $code .= $compiledValue;
                 } else {
                     $kind = $node->getKind();
-                    if ($kind === $node::KIND_GET || $kind === $node::KIND_SET) {
+                    $getterSetter = $kind === $node::KIND_GET ||
+                                    $kind === $node::KIND_SET;
+                    if ($getterSetter) {
                         $code .= $kind . " ";
                     } elseif ($value->getType() === "FunctionExpression" &&
                               $value->getGenerator()) {
@@ -538,7 +540,7 @@ class Renderer
                     } else {
                         $code .= $compiledKey;
                     }
-                    if ($node->getMethod()) {
+                    if ($node->getMethod() || $getterSetter) {
                         $code .= $this->renderOpts->sao .
                                  preg_replace("/^[^\(]+/", "", $compiledValue);
                     } elseif ($compiledKey !== $compiledValue) {
