@@ -30,6 +30,7 @@ Read the documentation for more examples and explanations:
 
  1. [AST generation and tokenization](doc/ast-and-tokenization.md)
  2. [Tree Traversing](doc/tree-traversing.md)
+ 3. [Rendering](doc/rendering.md)
 
 Changelog
 -------------
@@ -39,3 +40,6 @@ Changelog
 
 #### 1.1
 * Added Traverser class
+
+#### 1.2
+* Added Renderer class
