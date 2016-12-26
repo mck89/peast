@@ -55,8 +55,7 @@ class RendererTest extends \test\Peast\TestBase
     {
         $source = "label:var test;";
         $tree = \Peast\Peast::ES7($source)->parse();
-        $renderer = new \Peast\Renderer;
-        $res = $renderer->setFormatter(new \Peast\Formatter\Compact)->render($tree);
+        $res = $tree->render(new \Peast\Formatter\Compact);
         $this->assertEquals($source, $res);
     }
 }
