@@ -85,11 +85,7 @@ For example:
 ```php
 $ast = Peast\Peast::ES7($source, $options)->parse();
 $ast->render(new Peast\Formatter\PrettyPrint);
-```
-
-Equals to:
-
-```php
+//Equivalent to
 $ast = Peast\Peast::ES7($source, $options)->parse();
 $renderer = new Peast\Renderer;
 $renderer->setFormatter(new Peast\Formatter\PrettyPrint);
