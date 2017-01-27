@@ -33,6 +33,13 @@ abstract class Parser
     protected $options;
     
     /**
+     * Parser context
+     * 
+     * @var stdClass 
+     */
+    protected $context;
+    
+    /**
      * Class constructor
      * 
      * @param string $source  Source code
@@ -73,6 +80,37 @@ abstract class Parser
         $this->scanner->enableTokenRegistration();
         $this->parse();
         return $this->scanner->getTokens();
+    }
+    
+    /**
+     * Calls a method with an isolated parser context, applyng the given flags,
+     * but restoring their values after the execution.
+     * 
+     * @param array  $flags  Key/value array of changes to apply to the context
+     *                       flags
+     * @param string $fn     Method to call
+     * @param array  $args   Method arguments
+     * 
+     * @return mixed
+     */
+    protected function isolateContext($flags, $fn, $args = array())
+    {
+        //Store the current flags value and apply the given one
+        $oldVals = array();
+        foreach ($flags as $k => $v) {
+            $oldVals[$k] = $this->context->$k;
+            $this->context->$k = $v;
+        }
+        
+        //Call the method with the given arguments
+        $ret = call_user_func_array(array($this, $fn), $args);
+        
+        //Restore falgs previous value
+        foreach ($flags as $k => $v) {
+            $this->context->$k = $oldVals[$k];
+        }
+        
+        return $ret;
     }
     
     /**
