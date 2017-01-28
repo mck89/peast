@@ -71,7 +71,8 @@ class Parser extends \Peast\Syntax\Parser
     {
         $this->context = (object) array(
             "allowReturn" => false,
-            "allowIn" => false
+            "allowIn" => false,
+            "allowYield" => false
         );
     }
     
@@ -92,7 +93,7 @@ class Parser extends \Peast\Syntax\Parser
             $this->scanner->setStrictMode(true);
             $body = $this->parseModuleItemList();
         } else {
-            $body = $this->parseStatementList(false, true);
+            $body = $this->parseStatementList(true);
         }
         
         $node = $this->createNode(
@@ -180,13 +181,12 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a statement list
      * 
-     * @param bool $yield                   Yield mode
      * @param bool $parseDirectivePrologues True to parse directive prologues
      * 
      * @return Node\Node[]|null
      */
     protected function parseStatementList(
-        $yield = false, $parseDirectivePrologues = false
+        $parseDirectivePrologues = false
     ) {
         $items = array();
         
@@ -206,7 +206,7 @@ class Parser extends \Peast\Syntax\Parser
             }
         }
         
-        while ($item = $this->parseStatementListItem($yield)) {
+        while ($item = $this->parseStatementListItem()) {
             $items[] = $item;
         }
         
@@ -221,15 +221,13 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a statement list item
      * 
-     * @param bool $yield  Yield mode
-     * 
      * @return Node\Statement|Node\Declaration|null
      */
-    protected function parseStatementListItem($yield = false)
+    protected function parseStatementListItem()
     {
-        if ($declaration = $this->parseDeclaration($yield)) {
+        if ($declaration = $this->parseDeclaration()) {
             return $declaration;
-        } elseif ($statement = $this->parseStatement($yield)) {
+        } elseif ($statement = $this->parseStatement()) {
             return $statement;
         }
         return null;
@@ -238,39 +236,37 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a statement
      * 
-     * @param bool $yield  Yield mode
-     * 
      * @return Node\Statement|null
      */
-    protected function parseStatement($yield = false)
+    protected function parseStatement()
     {
-        if ($statement = $this->parseBlock($yield)) {
+        if ($statement = $this->parseBlock()) {
             return $statement;
-        } elseif ($statement = $this->parseVariableStatement($yield)) {
+        } elseif ($statement = $this->parseVariableStatement()) {
             return $statement;
         } elseif ($statement = $this->parseEmptyStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseIfStatement($yield)) {
+        } elseif ($statement = $this->parseIfStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseBreakableStatement($yield)) {
+        } elseif ($statement = $this->parseBreakableStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseContinueStatement($yield)) {
+        } elseif ($statement = $this->parseContinueStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseBreakStatement($yield)) {
+        } elseif ($statement = $this->parseBreakStatement()) {
             return $statement;
-        } elseif ($this->context->allowReturn && $statement = $this->parseReturnStatement($yield)) {
+        } elseif ($this->context->allowReturn && $statement = $this->parseReturnStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseWithStatement($yield)) {
+        } elseif ($statement = $this->parseWithStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseThrowStatement($yield)) {
+        } elseif ($statement = $this->parseThrowStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseTryStatement($yield)) {
+        } elseif ($statement = $this->parseTryStatement()) {
             return $statement;
         } elseif ($statement = $this->parseDebuggerStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseLabelledStatement($yield)) {
+        } elseif ($statement = $this->parseLabelledStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseExpressionStatement($yield)) {
+        } elseif ($statement = $this->parseExpressionStatement()) {
             return $statement;
         }
         return null;
@@ -279,21 +275,17 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a declaration
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\Declaration|null
      */
-    protected function parseDeclaration($yield = false)
+    protected function parseDeclaration()
     {
-        if ($declaration = $this->parseFunctionOrGeneratorDeclaration($yield)) {
+        if ($declaration = $this->parseFunctionOrGeneratorDeclaration()) {
             return $declaration;
-        } elseif ($declaration = $this->parseClassDeclaration($yield)) {
+        } elseif ($declaration = $this->parseClassDeclaration()) {
             return $declaration;
         } elseif (
             $declaration = $this->isolateContext(
-                array("allowIn" => true),
-                "parseLexicalDeclaration",
-                array($yield)
+                array("allowIn" => true), "parseLexicalDeclaration"
             )
         ) {
             return $declaration;
@@ -304,15 +296,13 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a breakable statement
      * 
-     * @param bool $yield  Yield mode
-     * 
      * @return Node\Node|null
      */
-    protected function parseBreakableStatement($yield = false)
+    protected function parseBreakableStatement()
     {
-        if ($statement = $this->parseIterationStatement($yield)) {
+        if ($statement = $this->parseIterationStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseSwitchStatement($yield)) {
+        } elseif ($statement = $this->parseSwitchStatement()) {
             return $statement;
         }
         return null;
@@ -321,15 +311,13 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a block statement
      * 
-     * @param bool $yield  Yield mode
-     * 
      * @return Node\BlockStatement|null
      */
-    protected function parseBlock($yield = false)
+    protected function parseBlock()
     {
         if ($token = $this->scanner->consume("{")) {
             
-            $statements = $this->parseStatementList($yield);
+            $statements = $this->parseStatementList();
             if ($this->scanner->consume("}")) {
                 $node = $this->createNode("BlockStatement", $token);
                 if ($statements) {
@@ -388,22 +376,18 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses an if statement
      * 
-     * @param bool $yield  Yield mode
-     * 
      * @return Node\IfStatement|null
      */
-    protected function parseIfStatement($yield = false)
+    protected function parseIfStatement()
     {
         if ($token = $this->scanner->consume("if")) {
             
             if ($this->scanner->consume("(") &&
                 ($test = $this->isolateContext(
-                    array("allowIn" => true),
-                    "parseExpression",
-                    array($yield)
+                    array("allowIn" => true), "parseExpression"
                 )) &&
                 $this->scanner->consume(")") &&
-                $consequent = $this->parseStatement($yield)
+                $consequent = $this->parseStatement()
             ) {
                 
                 $node = $this->createNode("IfStatement", $token);
@@ -411,7 +395,7 @@ class Parser extends \Peast\Syntax\Parser
                 $node->setConsequent($consequent);
                 
                 if ($this->scanner->consume("else")) {
-                    if ($alternate = $this->parseStatement($yield)) {
+                    if ($alternate = $this->parseStatement()) {
                         $node->setAlternate($alternate);
                         return $this->completeNode($node);
                     }
@@ -428,24 +412,22 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a try-catch statement
      * 
-     * @param bool $yield  Yield mode
-     * 
      * @return Node\TryStatement|null
      */
-    protected function parseTryStatement($yield = false)
+    protected function parseTryStatement()
     {
         if ($token = $this->scanner->consume("try")) {
             
-            if ($block = $this->parseBlock($yield)) {
+            if ($block = $this->parseBlock()) {
                 
                 $node = $this->createNode("TryStatement", $token);
                 $node->setBlock($block);
 
-                if ($handler = $this->parseCatch($yield)) {
+                if ($handler = $this->parseCatch()) {
                     $node->setHandler($handler);
                 }
 
-                if ($finalizer = $this->parseFinally($yield)) {
+                if ($finalizer = $this->parseFinally()) {
                     $node->setFinalizer($finalizer);
                 }
 
@@ -462,18 +444,16 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses the catch block of a try-catch statement
      * 
-     * @param bool $yield  Yield mode
-     * 
      * @return Node\CatchClause|null
      */
-    protected function parseCatch($yield = false)
+    protected function parseCatch()
     {
         if ($token = $this->scanner->consume("catch")) {
             
             if ($this->scanner->consume("(") &&
-                ($param = $this->parseCatchParameter($yield)) &&
+                ($param = $this->parseCatchParameter()) &&
                 $this->scanner->consume(")") &&
-                $body = $this->parseBlock($yield)
+                $body = $this->parseBlock()
             ) {
 
                 $node = $this->createNode("CatchClause", $token);
@@ -490,15 +470,13 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses the catch parameter of a catch block in a try-catch statement
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node|null
      */
-    protected function parseCatchParameter($yield = false)
+    protected function parseCatchParameter()
     {
         if ($param = $this->parseIdentifier($yield)) {
             return $param;
-        } elseif ($param = $this->parseBindingPattern($yield)) {
+        } elseif ($param = $this->parseBindingPattern()) {
             return $param;
         }
         return null;
@@ -507,15 +485,13 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a finally block in a try-catch statement
      * 
-     * @param bool $yield  Yield mode
-     * 
      * @return Node\BlockStatement|null
      */
-    protected function parseFinally($yield = false)
+    protected function parseFinally()
     {
         if ($this->scanner->consume("finally")) {
             
-            if ($block = $this->parseBlock($yield)) {
+            if ($block = $this->parseBlock()) {
                 return $block;
             }
             
@@ -527,11 +503,9 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a countinue statement
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\ContinueStatement|null
      */
-    protected function parseContinueStatement($yield = false)
+    protected function parseContinueStatement()
     {
         if ($token = $this->scanner->consume("continue")) {
             
@@ -553,11 +527,9 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a break statement
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\BreakStatement|null
      */
-    protected function parseBreakStatement($yield = false)
+    protected function parseBreakStatement()
     {
         if ($token = $this->scanner->consume("break")) {
             
@@ -579,11 +551,9 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a return statement
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\ReturnStatement|null
      */
-    protected function parseReturnStatement($yield = false)
+    protected function parseReturnStatement()
     {
         if ($token = $this->scanner->consume("return")) {
             
@@ -591,9 +561,7 @@ class Parser extends \Peast\Syntax\Parser
             
             if ($this->scanner->noLineTerminators()) {
                 $argument = $this->isolateContext(
-                    array("allowIn" => true),
-                    "parseExpression",
-                    array($yield)
+                    array("allowIn" => true), "parseExpression"
                 );
                 if ($argument) {
                     $node->setArgument($argument);
@@ -610,19 +578,17 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a labelled statement
      * 
-     * @param bool $yield  Yield mode
-     * 
      * @return Node\LabeledStatement|null
      */
-    protected function parseLabelledStatement($yield = false)
+    protected function parseLabelledStatement()
     {
         if ($label = $this->parseIdentifier($yield, ":")) {
             
             $this->scanner->consume(":");
                 
-            if (($body = $this->parseStatement($yield)) ||
+            if (($body = $this->parseStatement()) ||
                 ($body = $this->parseFunctionOrGeneratorDeclaration(
-                    $yield, false, false
+                    false, false
                 ))
             ) {
 
@@ -641,19 +607,15 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a throw statement
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\ThrowStatement|null
      */
-    protected function parseThrowStatement($yield = false)
+    protected function parseThrowStatement()
     {
         if ($token = $this->scanner->consume("throw")) {
             
             if ($this->scanner->noLineTerminators() &&
                 ($argument = $this->isolateContext(
-                    array("allowIn" => true),
-                    "parseExpression",
-                    array($yield)
+                    array("allowIn" => true), "parseExpression"
                 ))
             ) {
                 
@@ -671,22 +633,18 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a with statement
      * 
-     * @param bool $yield  Yield mode
-     * 
      * @return Node\WithStatement|null
      */
-    protected function parseWithStatement($yield = false)
+    protected function parseWithStatement()
     {
         if ($token = $this->scanner->consume("with")) {
             
             if ($this->scanner->consume("(") &&
                 ($object = $this->isolateContext(
-                    array("allowIn" => true),
-                    "parseExpression",
-                    array($yield)
+                    array("allowIn" => true), "parseExpression"
                 )) &&
                 $this->scanner->consume(")") &&
-                $body = $this->parseStatement($yield)
+                $body = $this->parseStatement()
             ) {
             
                 $node = $this->createNode("WithStatement", $token);
@@ -703,22 +661,18 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a switch statement
      * 
-     * @param bool $yield  Yield mode
-     * 
      * @return Node\SwitchStatement|null
      */
-    protected function parseSwitchStatement($yield = false)
+    protected function parseSwitchStatement()
     {
         if ($token = $this->scanner->consume("switch")) {
             
             if ($this->scanner->consume("(") &&
                 ($discriminant = $this->isolateContext(
-                    array("allowIn" => true),
-                    "parseExpression",
-                    array($yield)
+                    array("allowIn" => true), "parseExpression"
                 )) &&
                 $this->scanner->consume(")") &&
-                ($cases = $this->parseCaseBlock($yield)) !== null
+                ($cases = $this->parseCaseBlock()) !== null
             ) {
             
                 $node = $this->createNode("SwitchStatement", $token);
@@ -735,18 +689,16 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses the content of a switch statement
      * 
-     * @param bool $yield  Yield mode
-     * 
      * @return Node\SwitchCase[]|null
      */
-    protected function parseCaseBlock($yield = false)
+    protected function parseCaseBlock()
     {
         if ($this->scanner->consume("{")) {
             
             $parsedCasesAll = array(
-                $this->parseCaseClauses($yield),
-                $this->parseDefaultClause($yield),
-                $this->parseCaseClauses($yield)
+                $this->parseCaseClauses(),
+                $this->parseDefaultClause(),
+                $this->parseCaseClauses()
             );
             
             if ($this->scanner->consume("}")) {
@@ -761,7 +713,7 @@ class Parser extends \Peast\Syntax\Parser
                     }
                 }
                 return $cases;
-            } elseif ($this->parseDefaultClause($yield)) {
+            } elseif ($this->parseDefaultClause()) {
                 return $this->error(
                     "Multiple default clause in switch statement"
                 );
@@ -775,14 +727,12 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses cases in a switch statement
      * 
-     * @param bool $yield  Yield mode
-     * 
      * @return Node\SwitchCase[]|null
      */
-    protected function parseCaseClauses($yield = false)
+    protected function parseCaseClauses()
     {
         $cases = array();
-        while ($case = $this->parseCaseClause($yield)) {
+        while ($case = $this->parseCaseClause()) {
             $cases[] = $case;
         }
         return count($cases) ? $cases : null;
@@ -791,18 +741,14 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a case in a switch statement
      * 
-     * @param bool $yield  Yield mode
-     * 
      * @return Node\SwitchCase|null
      */
-    protected function parseCaseClause($yield = false)
+    protected function parseCaseClause()
     {
         if ($token = $this->scanner->consume("case")) {
             
             if (($test = $this->isolateContext(
-                    array("allowIn" => true),
-                    "parseExpression",
-                    array($yield)
+                    array("allowIn" => true), "parseExpression"
                 )) &&
                 $this->scanner->consume(":")
             ) {
@@ -810,7 +756,7 @@ class Parser extends \Peast\Syntax\Parser
                 $node = $this->createNode("SwitchCase", $token);
                 $node->setTest($test);
 
-                if ($consequent = $this->parseStatementList($yield)) {
+                if ($consequent = $this->parseStatementList()) {
                     $node->setConsequent($consequent);
                 }
 
@@ -825,11 +771,9 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses default case in a switch statement
      * 
-     * @param bool $yield  Yield mode
-     * 
      * @return Node\SwitchCase|null
      */
-    protected function parseDefaultClause($yield = false)
+    protected function parseDefaultClause()
     {
         if ($token = $this->scanner->consume("default")) {
             
@@ -837,7 +781,7 @@ class Parser extends \Peast\Syntax\Parser
 
                 $node = $this->createNode("SwitchCase", $token);
             
-                if ($consequent = $this->parseStatementList($yield)) {
+                if ($consequent = $this->parseStatementList()) {
                     $node->setConsequent($consequent);
                 }
 
@@ -852,18 +796,14 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses an expression statement
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\ExpressionStatement|null
      */
-    protected function parseExpressionStatement($yield = false)
+    protected function parseExpressionStatement()
     {
         $lookahead = array("{", "function", "class", array("let", "["));
         if (!$this->scanner->isBefore($lookahead, true) &&
             $expression = $this->isolateContext(
-                array("allowIn" => true),
-                "parseExpression",
-                array($yield)
+                array("allowIn" => true), "parseExpression"
             )
         ) {
             
@@ -878,21 +818,17 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses do-while, while, for, for-in and for-of statements
      * 
-     * @param bool $yield  Yield mode
-     * 
      * @return Node\Node|null
      */
-    protected function parseIterationStatement($yield = false)
+    protected function parseIterationStatement()
     {
         if ($token = $this->scanner->consume("do")) {
             
-            if (($body = $this->parseStatement($yield)) &&
+            if (($body = $this->parseStatement()) &&
                 $this->scanner->consume("while") &&
                 $this->scanner->consume("(") &&
                 ($test = $this->isolateContext(
-                    array("allowIn" => true),
-                    "parseExpression",
-                    array($yield)
+                    array("allowIn" => true), "parseExpression"
                 )) &&
                 $this->scanner->consume(")")
             ) {
@@ -908,12 +844,10 @@ class Parser extends \Peast\Syntax\Parser
             
             if ($this->scanner->consume("(") &&
                 ($test = $this->isolateContext(
-                    array("allowIn" => true),
-                    "parseExpression",
-                    array($yield)
+                    array("allowIn" => true), "parseExpression"
                 )) &&
                 $this->scanner->consume(")") &&
-                $body = $this->parseStatement($yield)
+                $body = $this->parseStatement()
             ) {
                     
                 $node = $this->createNode("WhileStatement", $token);
@@ -935,9 +869,7 @@ class Parser extends \Peast\Syntax\Parser
                 $state = $this->scanner->getState();
                 
                 if (($decl = $this->isolateContext(
-                        array("allowIn" => false),
-                        "parseVariableDeclarationList",
-                        array($yield)
+                        array("allowIn" => false), "parseVariableDeclarationList"
                     )) &&
                     ($varEndPosition = $this->scanner->getPosition()) &&
                     $this->scanner->consume(";")
@@ -951,21 +883,17 @@ class Parser extends \Peast\Syntax\Parser
                     $init = $this->completeNode($init, $varEndPosition);
                     
                     $test = $this->isolateContext(
-                        array("allowIn" => true),
-                        "parseExpression",
-                        array($yield)
+                        array("allowIn" => true), "parseExpression"
                     );
                     
                     if ($this->scanner->consume(";")) {
                         
                         $update = $this->isolateContext(
-                            array("allowIn" => true),
-                            "parseExpression",
-                            array($yield)
+                            array("allowIn" => true), "parseExpression"
                         );
                         
                         if ($this->scanner->consume(")") &&
-                            $body = $this->parseStatement($yield)
+                            $body = $this->parseStatement()
                         ) {
                             
                             $node = $this->createNode("ForStatement", $token);
@@ -980,7 +908,7 @@ class Parser extends \Peast\Syntax\Parser
                     
                     $this->scanner->setState($state);
                     
-                    if ($decl = $this->parseForBinding($yield)) {
+                    if ($decl = $this->parseForBinding()) {
                         
                         $left = $this->createNode(
                             "VariableDeclaration", $varToken
@@ -992,12 +920,10 @@ class Parser extends \Peast\Syntax\Parser
                         if ($this->scanner->consume("in")) {
                             
                             if (($right = $this->isolateContext(
-                                    array("allowIn" => true),
-                                    "parseExpression",
-                                    array($yield)
+                                    array("allowIn" => true), "parseExpression"
                                 )) &&
                                 $this->scanner->consume(")") &&
-                                $body = $this->parseStatement($yield)
+                                $body = $this->parseStatement()
                             ) {
                                 
                                 $node = $this->createNode(
@@ -1012,11 +938,10 @@ class Parser extends \Peast\Syntax\Parser
                             
                             if (($right = $this->isolateContext(
                                     array("allowIn" => true),
-                                    "parseAssignmentExpression",
-                                    array($yield)
+                                    "parseAssignmentExpression"
                                 )) &&
                                 $this->scanner->consume(")") &&
-                                $body = $this->parseStatement($yield)
+                                $body = $this->parseStatement()
                             ) {
                                 
                                 $node = $this->createNode(
@@ -1030,16 +955,14 @@ class Parser extends \Peast\Syntax\Parser
                         }
                     }
                 }
-            } elseif ($init = $this->parseForDeclaration($yield)) {
+            } elseif ($init = $this->parseForDeclaration()) {
                 
                 if ($init && $this->scanner->consume("in")) {
                     if (($right = $this->isolateContext(
-                            array("allowIn" => true),
-                            "parseExpression",
-                            array($yield)
+                            array("allowIn" => true), "parseExpression"
                         )) &&
                         $this->scanner->consume(")") &&
-                        $body = $this->parseStatement($yield)
+                        $body = $this->parseStatement()
                     ) {
                         
                         $node = $this->createNode("ForInStatement", $token);
@@ -1051,11 +974,10 @@ class Parser extends \Peast\Syntax\Parser
                 } elseif ($init && $this->scanner->consume("of")) {
                     if (($right = $this->isolateContext(
                             array("allowIn" => true),
-                            "parseAssignmentExpression",
-                            array($yield)
+                            "parseAssignmentExpression"
                         )) &&
                         $this->scanner->consume(")") &&
-                        $body = $this->parseStatement($yield)
+                        $body = $this->parseStatement()
                     ) {
                         
                         $node = $this->createNode("ForOfStatement", $token);
@@ -1069,27 +991,21 @@ class Parser extends \Peast\Syntax\Parser
                     $this->scanner->setState($afterBracketState);
                     if (
                         $init = $this->isolateContext(
-                            array("allowIn" => false),
-                            "parseLexicalDeclaration",
-                            array($yield)
+                            array("allowIn" => false), "parseLexicalDeclaration"
                         )
                     ) {
                         
                         $test = $this->isolateContext(
-                            array("allowIn" => true),
-                            "parseExpression",
-                            array($yield)
+                            array("allowIn" => true), "parseExpression"
                         );
                         if ($this->scanner->consume(";")) {
                                 
                             $update = $this->isolateContext(
-                                array("allowIn" => true),
-                                "parseExpression",
-                                array($yield)
+                                array("allowIn" => true), "parseExpression"
                             );
                             
                             if ($this->scanner->consume(")") &&
-                                $body = $this->parseStatement($yield)
+                                $body = $this->parseStatement()
                             ) {
                                 
                                 $node = $this->createNode(
@@ -1114,29 +1030,23 @@ class Parser extends \Peast\Syntax\Parser
                 
                 if ($notBeforeSB &&
                     (($init = $this->isolateContext(
-                        array("allowIn" => false),
-                        "parseExpression",
-                        array($yield)
+                        array("allowIn" => false), "parseExpression"
                     )) || true) &&
                     $this->scanner->consume(";")
                 ) {
                 
                     $test = $this->isolateContext(
-                        array("allowIn" => true),
-                        "parseExpression",
-                        array($yield)
+                        array("allowIn" => true), "parseExpression"
                     );
                     
                     if ($this->scanner->consume(";")) {
                             
                         $update = $this->isolateContext(
-                            array("allowIn" => true),
-                            "parseExpression",
-                            array($yield)
+                            array("allowIn" => true), "parseExpression"
                         );
                         
                         if ($this->scanner->consume(")") &&
-                            $body = $this->parseStatement($yield)
+                            $body = $this->parseStatement()
                         ) {
                             
                             $node = $this->createNode(
@@ -1152,7 +1062,7 @@ class Parser extends \Peast\Syntax\Parser
                 } else {
                     
                     $this->scanner->setState($state);
-                    $left = $this->parseLeftHandSideExpression($yield);
+                    $left = $this->parseLeftHandSideExpression();
                     $left = $this->expressionToPattern($left);
                     
                     if ($notBeforeSB && $left &&
@@ -1160,12 +1070,10 @@ class Parser extends \Peast\Syntax\Parser
                     ) {
                         
                         if (($right = $this->isolateContext(
-                                array("allowIn" => true),
-                                "parseExpression",
-                                array($yield)
+                                array("allowIn" => true), "parseExpression"
                             )) &&
                             $this->scanner->consume(")") &&
-                            $body = $this->parseStatement($yield)
+                            $body = $this->parseStatement()
                         ) {
                             
                             $node = $this->createNode(
@@ -1180,11 +1088,10 @@ class Parser extends \Peast\Syntax\Parser
                         
                         if (($right = $this->isolateContext(
                                 array("allowIn" => true),
-                                "parseAssignmentExpression",
-                                array($yield)
+                                "parseAssignmentExpression"
                             )) &&
                             $this->scanner->consume(")") &&
-                            $body = $this->parseStatement($yield)
+                            $body = $this->parseStatement()
                         ) {
                             
                             $node = $this->createNode(
@@ -1206,14 +1113,13 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses function or generator declaration
      * 
-     * @param bool $yield          Yield mode
      * @param bool $default        Default mode
      * @param bool $allowGenerator True to allow parsing of generators
      * 
      * @return Node\FunctionDeclaration|null
      */
     protected function parseFunctionOrGeneratorDeclaration(
-        $yield = false, $default = false, $allowGenerator = true
+        $default = false, $allowGenerator = true
     ) {
         if ($token = $this->scanner->consume("function")) {
             
@@ -1298,7 +1204,10 @@ class Parser extends \Peast\Syntax\Parser
             if ($this->scanner->noLineTerminators()) {
                 
                 $delegate = $this->scanner->consume("*");
-                if ($argument = $this->parseAssignmentExpression(true)) {
+                $argument = $this->isolateContext(
+                    array("allowYield" => true), "parseAssignmentExpression"
+                );
+                if ($argument) {
                     $node->setArgument($argument);
                     $node->setDelegate($delegate);
                 }
@@ -1324,7 +1233,7 @@ class Parser extends \Peast\Syntax\Parser
             $list[] = $param;
             $valid = true;
             if ($this->scanner->consume(",")) {
-                if ($restParam = $this->parseBindingRestElement($yield)) {
+                if ($restParam = $this->parseBindingRestElement()) {
                     $list[] = $restParam;
                     break;
                 }
@@ -1351,7 +1260,7 @@ class Parser extends \Peast\Syntax\Parser
         $body = $this->isolateContext(
             array("allowReturn" => true),
             "parseStatementList",
-            array($yield, true)
+            array(true)
         );
         $node = $this->createNode(
             "BlockStatement", $body ? $body : $this->scanner->getPosition()
@@ -1365,18 +1274,17 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a class declaration
      * 
-     * @param bool $yield   Yield mode
      * @param bool $default Default mode
      * 
      * @return Node\ClassDeclaration|null
      */
-    protected function parseClassDeclaration($yield = false, $default = false)
+    protected function parseClassDeclaration($default = false)
     {
         if ($token = $this->scanner->consume("class")) {
             
             $id = $this->parseIdentifier($yield);
             if (($default || $id) &&
-                $tail = $this->parseClassTail($yield)
+                $tail = $this->parseClassTail()
             ) {
                 
                 $node = $this->createNode("ClassDeclaration", $token);
@@ -1398,15 +1306,13 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a class expression
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\ClassExpression|null
      */
-    protected function parseClassExpression($yield = false)
+    protected function parseClassExpression()
     {
         if ($token = $this->scanner->consume("class")) {
             $id = $this->parseIdentifier($yield);
-            $tail = $this->parseClassTail($yield);
+            $tail = $this->parseClassTail();
             $node = $this->createNode("ClassExpression", $token);
             if ($id) {
                 $node->setId($id);
@@ -1425,16 +1331,14 @@ class Parser extends \Peast\Syntax\Parser
      * return value is an array where the first item is the extendend class, if
      * any, and the second value is the class body
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return array|null
      */
-    protected function parseClassTail($yield = false)
+    protected function parseClassTail()
     {
-        $heritage = $this->parseClassHeritage($yield);
+        $heritage = $this->parseClassHeritage();
         if ($token = $this->scanner->consume("{")) {
             
-            $body = $this->parseClassBody($yield);
+            $body = $this->parseClassBody();
             if ($this->scanner->consume("}")) {
                 $body->setStartPosition($token->getLocation()->getStart());
                 $body->setEndPosition($this->scanner->getPosition());
@@ -1447,15 +1351,13 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses the class extends part
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\Node|null
      */
-    protected function parseClassHeritage($yield = false)
+    protected function parseClassHeritage()
     {
         if ($this->scanner->consume("extends")) {
             
-            if ($superClass = $this->parseLeftHandSideExpression($yield)) {
+            if ($superClass = $this->parseLeftHandSideExpression()) {
                 return $superClass;
             }
             
@@ -1467,13 +1369,11 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses the class body
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\ClassBody|null
      */
-    protected function parseClassBody($yield = false)
+    protected function parseClassBody()
     {
-        $body = $this->parseClassElementList($yield);
+        $body = $this->parseClassElementList();
         $node = $this->createNode(
             "ClassBody", $body ? $body : $this->scanner->getPosition()
         );
@@ -1486,14 +1386,12 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses class elements list
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\MethodDefinition[]|null
      */
-    protected function parseClassElementList($yield = false)
+    protected function parseClassElementList()
     {
         $items = array();
-        while ($item = $this->parseClassElement($yield)) {
+        while ($item = $this->parseClassElement()) {
             if ($item !== true) {
                 $items[] = $item;
             }
@@ -1504,18 +1402,16 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a class elements
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\MethodDefinition|null
      */
-    protected function parseClassElement($yield = false)
+    protected function parseClassElement()
     {
         if ($this->scanner->consume(";")) {
             return true;
         }
         
         $staticToken = $this->scanner->consume("static");
-        if ($def = $this->parseMethodDefinition($yield)) {
+        if ($def = $this->parseMethodDefinition()) {
             if ($staticToken) {
                 $def->setStatic(true);
                 $def->setStartPosition($staticToken->getLocation()->getStart());
@@ -1531,17 +1427,14 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a let or const declaration
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\VariableDeclaration|null
      */
-    protected function parseLexicalDeclaration($yield = false)
+    protected function parseLexicalDeclaration()
     {
         if ($token = $this->scanner->consumeOneOf(array("let", "const"))) {
             
             $declarations = $this->charSeparatedListOf(
-                "parseVariableDeclaration",
-                array($yield)
+                "parseVariableDeclaration"
             );
             
             if ($declarations) {
@@ -1560,18 +1453,14 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a var declaration
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\VariableDeclaration|null
      */
-    protected function parseVariableStatement($yield = false)
+    protected function parseVariableStatement()
     {
         if ($token = $this->scanner->consume("var")) {
             
             $declarations = $this->isolateContext(
-                array("allowIn" => true),
-                "parseVariableDeclarationList",
-                array($yield)
+                array("allowIn" => true), "parseVariableDeclarationList"
             );
             if ($declarations) {
                 $this->assertEndOfStatement();
@@ -1589,39 +1478,34 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses an variable declarations
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\VariableDeclarator[]|null
      */
-    protected function parseVariableDeclarationList($yield = false)
+    protected function parseVariableDeclarationList()
     {
         return $this->charSeparatedListOf(
-            "parseVariableDeclaration",
-            array($yield)
+            "parseVariableDeclaration"
         );
     }
     
     /**
      * Parses a variable declarations
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\VariableDeclarator|null
      */
-    protected function parseVariableDeclaration($yield = false)
+    protected function parseVariableDeclaration()
     {
         if ($id = $this->parseIdentifier($yield)) {
             
             $node = $this->createNode("VariableDeclarator", $id);
             $node->setId($id);
-            if ($init = $this->parseInitializer($yield)) {
+            if ($init = $this->parseInitializer()) {
                 $node->setInit($init);
             }
             return $this->completeNode($node);
             
-        } elseif ($id = $this->parseBindingPattern($yield)) {
+        } elseif ($id = $this->parseBindingPattern()) {
             
-            if ($init = $this->parseInitializer($yield)) {
+            if ($init = $this->parseInitializer()) {
                 $node = $this->createNode("VariableDeclarator", $id);
                 $node->setId($id);
                 $node->setInit($init);
@@ -1635,15 +1519,13 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a let or const declaration in a for statement definition
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\VariableDeclaration|null
      */
-    protected function parseForDeclaration($yield = false)
+    protected function parseForDeclaration()
     {
         if ($token = $this->scanner->consumeOneOf(array("let", "const"))) {
             
-            if ($declaration = $this->parseForBinding($yield)) {
+            if ($declaration = $this->parseForBinding()) {
 
                 $node = $this->createNode("VariableDeclaration", $token);
                 $node->setKind($token->getValue());
@@ -1660,14 +1542,12 @@ class Parser extends \Peast\Syntax\Parser
      * Parses a binding pattern or an identifier that come after a const or let
      * declaration in a for statement definition
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\VariableDeclarator|null
      */
-    protected function parseForBinding($yield = false)
+    protected function parseForBinding()
     {
         if (($id = $this->parseIdentifier($yield)) ||
-            ($id = $this->parseBindingPattern($yield))
+            ($id = $this->parseBindingPattern())
         ) {
             
             $node = $this->createNode("VariableDeclarator", $id);
@@ -1731,8 +1611,16 @@ class Parser extends \Peast\Syntax\Parser
                 
             } elseif ($this->scanner->consume("default")) {
                 
-                if (($declaration = $this->parseFunctionOrGeneratorDeclaration(false, true)) ||
-                    ($declaration = $this->parseClassDeclaration(false, true))
+                if (($declaration = $this->isolateContext(
+                        array("allowYield" => false),
+                        "parseFunctionOrGeneratorDeclaration",
+                        array(true)
+                    )) ||
+                    ($declaration = $this->isolateContext(
+                        array("allowYield" => false),
+                        "parseClassDeclaration",
+                        array(true)
+                    ))
                 ) {
                     
                     $node = $this->createNode("ExportDefaultDeclaration", $token);
@@ -1741,9 +1629,8 @@ class Parser extends \Peast\Syntax\Parser
                     
                 } elseif (!$this->scanner->isBefore(array("function", "class")) &&
                     ($declaration = $this->isolateContext(
-                        array("allowIn" => true),
-                        "parseAssignmentExpression",
-                        array(false)
+                        array("allowIn" => true, "allowYield" => false),
+                        "parseAssignmentExpression"
                     ))
                 ) {
                     
@@ -1765,8 +1652,13 @@ class Parser extends \Peast\Syntax\Parser
                 $this->assertEndOfStatement();
                 return $this->completeNode($node);
 
-            } elseif (($dec = $this->parseVariableStatement()) ||
-                $dec = $this->parseDeclaration()
+            } elseif (
+                ($dec = $this->isolateContext(
+                    array("allowYield" => false), "parseVariableStatement"
+                )) ||
+                $dec = $this->isolateContext(
+                    array("allowYield" => false), "parseDeclaration"
+                )
             ) {
 
                 $node = $this->createNode("ExportNamedDeclaration", $token);
@@ -1979,15 +1871,13 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a binding pattern
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\ArrayPattern|Node\ObjectPattern|null
      */
-    protected function parseBindingPattern($yield = false)
+    protected function parseBindingPattern()
     {
-        if ($pattern = $this->parseObjectBindingPattern($yield)) {
+        if ($pattern = $this->parseObjectBindingPattern()) {
             return $pattern;
-        } elseif ($pattern = $this->parseArrayBindingPattern($yield)) {
+        } elseif ($pattern = $this->parseArrayBindingPattern()) {
             return $pattern;
         }
         return null;
@@ -2011,11 +1901,9 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses an array binding pattern
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\ArrayPattern|null
      */
-    protected function parseArrayBindingPattern($yield = false)
+    protected function parseArrayBindingPattern()
     {
         if ($token = $this->scanner->consume("[")) {
             
@@ -2031,7 +1919,7 @@ class Parser extends \Peast\Syntax\Parser
                     if (!$this->scanner->consume(",")) {
                         break;
                     }
-                } elseif ($rest = $this->parseBindingRestElement($yield)) {
+                } elseif ($rest = $this->parseBindingRestElement()) {
                     $elements[] = $rest;
                     break;
                 } else {
@@ -2053,11 +1941,9 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a rest element
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\RestElement|null
      */
-    protected function parseBindingRestElement($yield = false)
+    protected function parseBindingRestElement()
     {
         if ($token = $this->scanner->consume("...")) {
             
@@ -2081,14 +1967,12 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseBindingElement($yield = false)
     {
-        if ($el = $this->parseSingleNameBinding($yield)) {
+        if ($el = $this->parseSingleNameBinding()) {
             return $el;
-        } elseif ($left = $this->parseBindingPattern($yield)) {
+        } elseif ($left = $this->parseBindingPattern()) {
             
             $right = $this->isolateContext(
-                array("allowIn" => true),
-                "parseInitializer",
-                array($yield)
+                array("allowIn" => true), "parseInitializer"
             );
             if ($right) {
                 $node = $this->createNode("AssignmentPattern", $left);
@@ -2105,17 +1989,13 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses single name binding
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\AssignmentPattern|Node\Identifier|null
      */
-    protected function parseSingleNameBinding($yield = false)
+    protected function parseSingleNameBinding()
     {
         if ($left = $this->parseIdentifier($yield)) {
             $right = $this->isolateContext(
-                array("allowIn" => true),
-                "parseInitializer",
-                array($yield)
+                array("allowIn" => true), "parseInitializer"
             );
             if ($right) {
                 $node = $this->createNode("AssignmentPattern", $left);
@@ -2134,18 +2014,14 @@ class Parser extends \Peast\Syntax\Parser
      * element is the property name and the second element is a boolean
      * indicating if it's a computed property
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return array|null
      */
-    protected function parsePropertyName($yield = false)
+    protected function parsePropertyName()
     {
         if ($token = $this->scanner->consume("[")) {
             
             if (($name = $this->isolateContext(
-                    array("allowIn" => true),
-                    "parseAssignmentExpression",
-                    array($yield)
+                    array("allowIn" => true), "parseAssignmentExpression"
                 )) &&
                 $this->scanner->consume("]")
             ) {
@@ -2166,11 +2042,9 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a method definition
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\MethodDefinition|null
      */
-    protected function parseMethodDefinition($yield = false)
+    protected function parseMethodDefinition()
     {
         $state = $this->scanner->getState();
         $generator = false;
@@ -2201,7 +2075,7 @@ class Parser extends \Peast\Syntax\Parser
             $error = false;
         }
         
-        if ($prop = $this->parsePropertyName($yield)) {
+        if ($prop = $this->parsePropertyName()) {
             
             if (!$position) {
                 $position = isset($prop[2]) ? $prop[2] : $prop[0];
@@ -2265,11 +2139,9 @@ class Parser extends \Peast\Syntax\Parser
      * is the parameters list and the second element is the open round brackets,
      * this is needed to know the start position
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\Identifier|array|null
      */
-    protected function parseArrowParameters($yield = false)
+    protected function parseArrowParameters()
     {
         if ($param = $this->parseIdentifier($yield, "=>")) {
             return $param;
@@ -2305,7 +2177,10 @@ class Parser extends \Peast\Syntax\Parser
             
             return $this->error();
         } elseif (!$this->scanner->isBefore(array("{")) &&
-            $body = $this->parseAssignmentExpression(false)
+            $body = $this->isolateContext(
+                array("allowYield" => false),
+                "parseAssignmentExpression"
+            )
         ) {
             return array($body, true);
         }
@@ -2315,14 +2190,12 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses an arrow function
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\ArrowFunctionExpression|null
      */
-    protected function parseArrowFunction($yield = false)
+    protected function parseArrowFunction()
     {
         $state = $this->scanner->getState();
-        if (($params = $this->parseArrowParameters($yield)) !== null) {
+        if (($params = $this->parseArrowParameters()) !== null) {
             
             if ($this->scanner->noLineTerminators() &&
                 $this->scanner->consume("=>")
@@ -2353,16 +2226,14 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses an object literal
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\ObjectExpression|null
      */
-    protected function parseObjectLiteral($yield = false)
+    protected function parseObjectLiteral()
     {
         if ($token = $this->scanner->consume("{")) {
             
             $properties = array();
-            while ($prop = $this->parsePropertyDefinition($yield)) {
+            while ($prop = $this->parsePropertyDefinition()) {
                 $properties[] = $prop;
                 if (!$this->scanner->consume(",")) {
                     break;
@@ -2386,20 +2257,16 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a property in an object literal
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\Property|null
      */
-    protected function parsePropertyDefinition($yield = false)
+    protected function parsePropertyDefinition()
     {
         $state = $this->scanner->getState();
-        if (($property = $this->parsePropertyName($yield)) &&
+        if (($property = $this->parsePropertyName()) &&
             $this->scanner->consume(":")
         ) {
             $value = $this->isolateContext(
-                array("allowIn" => true),
-                "parseAssignmentExpression",
-                array($yield)
+                array("allowIn" => true), "parseAssignmentExpression"
             );
             if ($value) {
                 $startPos = isset($property[2]) ? $property[2] : $property[0];
@@ -2415,7 +2282,7 @@ class Parser extends \Peast\Syntax\Parser
         }
         
         $this->scanner->setState($state);
-        if ($property = $this->parseMethodDefinition($yield)) {
+        if ($property = $this->parseMethodDefinition()) {
 
             $node = $this->createNode("Property", $property);
             $node->setKey($property->getKey());
@@ -2438,9 +2305,7 @@ class Parser extends \Peast\Syntax\Parser
             $node->setShorthand(true);
             $node->setKey($key);
             $value = $this->isolateContext(
-                array("allowIn" => true),
-                "parseInitializer",
-                array($yield)
+                array("allowIn" => true), "parseInitializer"
             );
             $node->setValue($value ? $value : $key);
             return $this->completeNode($node);
@@ -2452,15 +2317,13 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses an itlializer
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\Node|null
      */
-    protected function parseInitializer($yield = false)
+    protected function parseInitializer()
     {
         if ($this->scanner->consume("=")) {
             
-            if ($value = $this->parseAssignmentExpression($yield)) {
+            if ($value = $this->parseAssignmentExpression()) {
                 return $value;
             }
             
@@ -2472,16 +2335,14 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses an object binding pattern
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\ObjectPattern|null
      */
-    protected function parseObjectBindingPattern($yield = false)
+    protected function parseObjectBindingPattern()
     {
         if ($token = $this->scanner->consume("{")) {
             
             $properties = array();
-            while ($prop = $this->parseBindingProperty($yield)) {
+            while ($prop = $this->parseBindingProperty()) {
                 $properties[] = $prop;
                 if (!$this->scanner->consume(",")) {
                     break;
@@ -2504,14 +2365,12 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a property in an object binding pattern
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\AssignmentProperty|null
      */
-    protected function parseBindingProperty($yield = false)
+    protected function parseBindingProperty()
     {
         $state = $this->scanner->getState();
-        if (($key = $this->parsePropertyName($yield)) &&
+        if (($key = $this->parsePropertyName()) &&
             $this->scanner->consume(":")
         ) {
             
@@ -2529,7 +2388,7 @@ class Parser extends \Peast\Syntax\Parser
         }
             
         $this->scanner->setState($state);
-        if ($property = $this->parseSingleNameBinding($yield)) {
+        if ($property = $this->parseSingleNameBinding()) {
             
             $node = $this->createNode("AssignmentProperty", $property);
             $node->setShorthand(true);
@@ -2547,16 +2406,11 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses an expression
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\Node|null
      */
-    protected function parseExpression($yield = false)
+    protected function parseExpression()
     {
-        $list = $this->charSeparatedListOf(
-            "parseAssignmentExpression",
-            array($yield)
-        );
+        $list = $this->charSeparatedListOf("parseAssignmentExpression");
         
         if (!$list) {
             return null;
@@ -2572,17 +2426,15 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses an assignment expression
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\Node|null
      */
-    protected function parseAssignmentExpression($yield = false)
+    protected function parseAssignmentExpression()
     {
-        if ($expr = $this->parseArrowFunction($yield)) {
+        if ($expr = $this->parseArrowFunction()) {
             return $expr;
-        } elseif ($yield && $expr = $this->parseYieldExpression()) {
+        } elseif ($this->context->allowYield && $expr = $this->parseYieldExpression()) {
             return $expr;
-        } elseif ($expr = $this->parseConditionalExpression($yield)) {
+        } elseif ($expr = $this->parseConditionalExpression()) {
             
             $exprTypes = array(
                 "ConditionalExpression", "LogicalExpression",
@@ -2594,7 +2446,7 @@ class Parser extends \Peast\Syntax\Parser
                 $operators = $this->assignmentOperators;
                 if ($operator = $this->scanner->consumeOneOf($operators)) {
                     
-                    $right = $this->parseAssignmentExpression($yield);
+                    $right = $this->parseAssignmentExpression();
                     if ($right) {
                         $node = $this->createNode(
                             "AssignmentExpression", $expr
@@ -2615,19 +2467,17 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a conditional expression
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\Node|null
      */
-    protected function parseConditionalExpression($yield = false)
+    protected function parseConditionalExpression()
     {
-        if ($test = $this->parseLogicalBinaryExpression($yield)) {
+        if ($test = $this->parseLogicalBinaryExpression()) {
             
             if ($this->scanner->consume("?")) {
                 
-                $consequent = $this->parseAssignmentExpression($yield);
+                $consequent = $this->parseAssignmentExpression();
                 if ($consequent && $this->scanner->consume(":") &&
-                    $alternate = $this->parseAssignmentExpression($yield)
+                    $alternate = $this->parseAssignmentExpression()
                 ) {
                 
                     $node = $this->createNode("ConditionalExpression", $test);
@@ -2648,24 +2498,22 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a logical or a binary expression
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\Node|null
      */
-    protected function parseLogicalBinaryExpression($yield = false)
+    protected function parseLogicalBinaryExpression()
     {
         $operators = $this->logicalBinaryOperators;
         if (!$this->context->allowIn) {
             unset($operators["in"]);
         }
         
-        if (!($exp = $this->parseUnaryExpression($yield))) {
+        if (!($exp = $this->parseUnaryExpression())) {
             return null;
         }
         
         $list = array($exp);
         while ($token = $this->scanner->consumeOneOf(array_keys($operators))) {
-            if (!($exp = $this->parseUnaryExpression($yield))) {
+            if (!($exp = $this->parseUnaryExpression())) {
                 return $this->error();
             }
             $list[] = $token->getValue();
@@ -2699,16 +2547,14 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a unary expression
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\Node|null
      */
-    protected function parseUnaryExpression($yield = false)
+    protected function parseUnaryExpression()
     {
-        if ($expr = $this->parsePostfixExpression($yield)) {
+        if ($expr = $this->parsePostfixExpression()) {
             return $expr;
         } elseif ($token = $this->scanner->consumeOneOf($this->unaryOperators)) {
-            if ($argument = $this->parseUnaryExpression($yield)) {
+            if ($argument = $this->parseUnaryExpression()) {
                 $op = $token->getValue();
                 if ($op === "++" || $op === "--") {
                     $node = $this->createNode("UpdateExpression", $token);
@@ -2729,13 +2575,11 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a postfix expression
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\Node|null
      */
-    protected function parsePostfixExpression($yield = false)
+    protected function parsePostfixExpression()
     {
-        if ($argument = $this->parseLeftHandSideExpression($yield)) {
+        if ($argument = $this->parseLeftHandSideExpression()) {
             
             if ($this->scanner->noLineTerminators() &&
                 $token = $this->scanner->consumeOneOf($this->postfixOperators)
@@ -2755,11 +2599,9 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a left hand side expression
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\Node|null
      */
-    protected function parseLeftHandSideExpression($yield = false)
+    protected function parseLeftHandSideExpression()
     {
         $object = null;
         $newTokens = array();
@@ -2788,8 +2630,8 @@ class Parser extends \Peast\Syntax\Parser
         $newTokensCount = count($newTokens);
         
         if (!$object &&
-            !($object = $this->parseSuperPropertyOrCall($yield)) &&
-            !($object = $this->parsePrimaryExpression($yield))
+            !($object = $this->parseSuperPropertyOrCall()) &&
+            !($object = $this->parsePrimaryExpression())
         ) {
             
             if ($newTokensCount) {
@@ -2813,9 +2655,7 @@ class Parser extends \Peast\Syntax\Parser
                 }
             } elseif ($this->scanner->consume("[")) {
                 if (($property = $this->isolateContext(
-                        array("allowIn" => true),
-                        "parseExpression",
-                        array($yield)
+                        array("allowIn" => true), "parseExpression"
                     )) &&
                     $this->scanner->consume("]")
                 ) {
@@ -2829,12 +2669,12 @@ class Parser extends \Peast\Syntax\Parser
                     $valid = false;
                     break;
                 }
-            } elseif ($property = $this->parseTemplateLiteral($yield)) {
+            } elseif ($property = $this->parseTemplateLiteral()) {
                 $properties[] = array(
                     "type"=> "template",
                     "info" => $property
                 );
-            } elseif (($args = $this->parseArguments($yield)) !== null) {
+            } elseif (($args = $this->parseArguments()) !== null) {
                 $properties[] = array(
                     "type"=> "args",
                     "info" => array($args, $this->scanner->getPosition())
@@ -2904,18 +2744,14 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a spread element
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\SpreadElement|null
      */
-    protected function parseSpreadElement($yield = false)
+    protected function parseSpreadElement()
     {
         if ($token = $this->scanner->consume("...")) {
             
             $argument = $this->isolateContext(
-                array("allowIn" => true),
-                "parseAssignmentExpression",
-                array($yield)
+                array("allowIn" => true), "parseAssignmentExpression"
             );
             if ($argument) {
                 $node = $this->createNode("SpreadElement", $token);
@@ -2931,11 +2767,9 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses an array literal
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\ArrayExpression|null
      */
-    protected function parseArrayLiteral($yield = false)
+    protected function parseArrayLiteral()
     {
         if ($token = $this->scanner->consume("[")) {
             
@@ -2946,11 +2780,9 @@ class Parser extends \Peast\Syntax\Parser
                         $elements, array_fill(0, $elision, null)
                     );
                 }
-                if (($element = $this->parseSpreadElement($yield)) ||
+                if (($element = $this->parseSpreadElement()) ||
                     ($element = $this->isolateContext(
-                        array("allowIn" => true),
-                        "parseAssignmentExpression",
-                        array($yield)
+                        array("allowIn" => true), "parseAssignmentExpression"
                     ))
                 ) {
                     $elements[] = $element;
@@ -2976,15 +2808,13 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses an arguments list wrapped in curly brackets
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return array|null
      */
-    protected function parseArguments($yield = false)
+    protected function parseArguments()
     {
         if ($this->scanner->consume("(")) {
             
-            if (($args = $this->parseArgumentList($yield)) !== null &&
+            if (($args = $this->parseArgumentList()) !== null &&
                 $this->scanner->consume(")")
             ) {
                 return $args;
@@ -2998,20 +2828,16 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses an arguments list
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return array|null
      */
-    protected function parseArgumentList($yield = false)
+    protected function parseArgumentList()
     {
         $list = array();
         $start = $valid = true;
         while (true) {
             $spread = $this->scanner->consume("...");
             $exp = $this->isolateContext(
-                array("allowIn" => true),
-                "parseAssignmentExpression",
-                array($yield)
+                array("allowIn" => true), "parseAssignmentExpression"
             );
             if (!$exp) {
                 $valid = $valid && $start && !$spread;
@@ -3041,17 +2867,15 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a super call or a super property
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\Node|null
      */
-    protected function parseSuperPropertyOrCall($yield = false)
+    protected function parseSuperPropertyOrCall()
     {
         if ($token = $this->scanner->consume("super")) {
             
             $super = $this->completeNode($this->createNode("Super", $token));
             
-            if (($args = $this->parseArguments($yield)) !== null) {
+            if (($args = $this->parseArguments()) !== null) {
                 $node = $this->createNode("CallExpression", $token);
                 $node->setArguments($args);
                 $node->setCallee($super);
@@ -3069,9 +2893,7 @@ class Parser extends \Peast\Syntax\Parser
                 }
             } elseif ($this->scanner->consume("[") &&
                 ($property = $this->isolateContext(
-                    array("allowIn" => true),
-                    "parseExpression",
-                    array($yield)
+                    array("allowIn" => true), "parseExpression"
                 )) &&
                 $this->scanner->consume("]")
             ) {
@@ -3089,11 +2911,9 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a primary expression
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\Node|null
      */
-    protected function parsePrimaryExpression($yield = false)
+    protected function parsePrimaryExpression()
     {
         if ($token = $this->scanner->consume("this")) {
             $node = $this->createNode("ThisExpression", $token);
@@ -3102,24 +2922,22 @@ class Parser extends \Peast\Syntax\Parser
             return $exp;
         } elseif ($exp = $this->parseLiteral()) {
             return $exp;
-        } elseif ($exp = $this->parseArrayLiteral($yield)) {
+        } elseif ($exp = $this->parseArrayLiteral()) {
             return $exp;
-        } elseif ($exp = $this->parseObjectLiteral($yield)) {
+        } elseif ($exp = $this->parseObjectLiteral()) {
             return $exp;
         } elseif ($exp = $this->parseFunctionOrGeneratorExpression()) {
             return $exp;
-        } elseif ($exp = $this->parseClassExpression($yield)) {
+        } elseif ($exp = $this->parseClassExpression()) {
             return $exp;
         } elseif ($exp = $this->parseRegularExpressionLiteral()) {
             return $exp;
-        } elseif ($exp = $this->parseTemplateLiteral($yield)) {
+        } elseif ($exp = $this->parseTemplateLiteral()) {
             return $exp;
         } elseif ($token = $this->scanner->consume("(")) {
             
             if (($exp = $this->isolateContext(
-                    array("allowIn" => true),
-                    "parseExpression",
-                    array($yield)
+                    array("allowIn" => true), "parseExpression"
                 )) &&
                 $this->scanner->consume(")")
             ) {
@@ -3249,11 +3067,9 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a template literal
      * 
-     * @param bool $yield Yield mode
-     * 
      * @return Node\Literal|null
      */
-    protected function parseTemplateLiteral($yield = false)
+    protected function parseTemplateLiteral()
     {
         $token = $this->scanner->getToken();
         
@@ -3284,9 +3100,7 @@ class Parser extends \Peast\Syntax\Parser
             } else {
                 $quasis[] = $this->completeNode($quasi);
                 $exp = $this->isolateContext(
-                    array("allowIn" => true),
-                    "parseExpression",
-                    array($yield)
+                    array("allowIn" => true), "parseExpression"
                 );
                 if ($exp) {
                     $expressions[] = $exp;
