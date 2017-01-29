@@ -3,6 +3,8 @@ namespace test\Peast\ES6;
 
 class ES6Test extends \test\Peast\TestBase
 {
+    protected $parser = "ES6";
+    
     protected function getTestVersions()
     {
         return array("ES6");
@@ -24,7 +26,7 @@ class ES6Test extends \test\Peast\TestBase
                             \Peast\Peast::SOURCE_TYPE_SCRIPT
         );
         $source = file_get_contents($sourceFile);
-        $tree = \Peast\Peast::ES6($source, $options)->parse();
+        $tree = \Peast\Peast::{$this->parser}($source, $options)->parse();
         $this->compareJSFile($tree, $compareFile);
     }
     
@@ -44,7 +46,7 @@ class ES6Test extends \test\Peast\TestBase
                             \Peast\Peast::SOURCE_TYPE_SCRIPT
         );
         $source = file_get_contents($sourceFile);
-        $tree = \Peast\Peast::ES6($source, $options)->tokenize();
+        $tree = \Peast\Peast::{$this->parser}($source, $options)->tokenize();
         $this->compareJSFile($tree, $compareFile, true);
     }
     
@@ -65,19 +67,19 @@ class ES6Test extends \test\Peast\TestBase
                             \Peast\Peast::SOURCE_TYPE_SCRIPT
         );
         $source = file_get_contents($sourceFile);
-        \Peast\Peast::ES6($source, $options)->parse();
+        \Peast\Peast::{$this->parser}($source, $options)->parse();
     }
     
     public function testParseEmptySource()
     {
-        $tree = \Peast\Peast::ES6("")->parse();
+        $tree = \Peast\Peast::{$this->parser}("")->parse();
         $this->assertTrue($tree->getType() === "Program");
         $this->assertSame(0, count($tree->getBody()));
     }
     
     public function testTokenizeEmptySource()
     {
-        $tree = \Peast\Peast::ES6("")->tokenize();
+        $tree = \Peast\Peast::{$this->parser}("")->tokenize();
         $this->assertSame(0, count($tree));
     }
     
@@ -114,7 +116,7 @@ class ES6Test extends \test\Peast\TestBase
             $exCode = ($strict ? '"use strict";' : '') . $code;
             $validResult = true;
             try {
-                \Peast\Peast::ES6($exCode, $options)->parse();
+                \Peast\Peast::{$this->parser}($exCode, $options)->parse();
             } catch (\Exception $ex) {
                 $validResult = false;
             }
