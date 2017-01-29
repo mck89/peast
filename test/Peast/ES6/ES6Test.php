@@ -80,4 +80,45 @@ class ES6Test extends \test\Peast\TestBase
         $tree = \Peast\Peast::ES6("")->tokenize();
         $this->assertSame(0, count($tree));
     }
+    
+    public function keywordIdentifierProvider()
+    {
+        return array(
+            array("try{}catch(yield){}", true, false),
+            array("while(true){continue yield}", true, false),
+            array("while(true){break yield}", true, false),
+            array("function yield(){}", true, false),
+            array("class yield{}", false, false),
+            array("var yield", true, false),
+            array("let yield", true, false),
+            array("export {interface as yield}", true, true),
+            array("import yield from 'source'", false, false),
+            array("[a, ...yield] = b", true, false),
+            array("var a = {yield:1, if:2, true:3}", true, true),
+            array("a.yield.true.if", true, true),
+            array("yield.abc", true, false)
+        );
+    }
+    
+    /**
+     * @dataProvider keywordIdentifierProvider
+     */
+    public function testKeywordIdentifier($code, $valid, $validStrictMode)
+    {
+        $options = array(
+            "sourceType" => preg_match("#import|export#", $code) ?
+                            \Peast\Peast::SOURCE_TYPE_MODULE :
+                            \Peast\Peast::SOURCE_TYPE_SCRIPT
+        );
+        foreach (array($valid, $validStrictMode) as $strict => $isValid) {
+            $exCode = ($strict ? '"use strict";' : '') . $code;
+            $validResult = true;
+            try {
+                \Peast\Peast::ES6($exCode, $options)->parse();
+            } catch (\Exception $ex) {
+                $validResult = false;
+            }
+            $this->assertSame($isValid, $validResult);
+        }
+    }
 }
