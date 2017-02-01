@@ -1106,8 +1106,8 @@ abstract class Scanner
     protected function consumeUnicodeEscapeSequence()
     {
         $char = $this->charAt();
-        $nextChar = $this->charAt($this->index + 1);
-        if ($char !== "\\" || $nextChar !== "u") {
+        if ($char !== "\\" ||
+            ($nextChar = $this->charAt($this->index + 1)) !== "u") {
             return null;
         }
         
