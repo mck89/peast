@@ -735,7 +735,6 @@ abstract class Scanner
         $buffer = "";
         $comment = 0;
         while (($char = $this->charAt()) !== null) {
-            $nextChar = $this->charAt($this->index + 1);
             if (in_array($char, $this->whitespaces)) {
                 //Whitespace
                 $buffer .= $char;
@@ -745,13 +744,15 @@ abstract class Scanner
                     $comment = 0;
                 }
             } elseif (!$comment && $char === "/" &&
-                ($nextChar === "/" || $nextChar === "*")
+                (($nextChar = $this->charAt($this->index + 1)) === "/" ||
+                $nextChar === "*")
             ) {
                 //Start the comment
                 $this->index += 2;
                 $buffer .= $char . $nextChar;
                 $comment = $nextChar === "*" ? 2 : 1;
-            } elseif ($comment === 2 && $char === "*" && $nextChar === "/") {
+            } elseif ($comment === 2 && $char === "*" &&
+                ($nextChar = $this->charAt($this->index + 1)) === "/") {
                 //Exit the comment mode if it is in multiline comment mode and
                 //the sequence "*/" is found
                 $this->index += 2;
