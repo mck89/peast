@@ -2589,7 +2589,19 @@ class Parser extends \Peast\Syntax\Parser
             return $expr;
         } elseif ($token = $this->scanner->consumeOneOf($this->unaryOperators)) {
             if ($argument = $this->parseUnaryExpression()) {
+                
                 $op = $token->getValue();
+                
+                //Deleting a variable without accessing its properties is a
+                //syntax error in strict mode
+                if ($op === "delete" &&
+                    $this->scanner->getStrictMode() &&
+                    $argument instanceof Node\Identifier) {
+                    return $this->error(
+                        "Deleting an unqualified identifier is not allowed in strict mode"
+                    );
+                }
+                
                 if ($op === "++" || $op === "--") {
                     $node = $this->createNode("UpdateExpression", $token);
                     $node->setPrefix(true);
