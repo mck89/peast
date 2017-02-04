@@ -71,7 +71,7 @@ class IfStatement extends Node implements Statement
     /**
      * Returns the statement that is activated if the test expression is true
      * 
-     * @return Statement
+     * @return Statement|FunctionDeclaration
      */
     public function getConsequent()
     {
@@ -81,12 +81,17 @@ class IfStatement extends Node implements Statement
     /**
      * Sets the statement that is activated if the test expression is true
      * 
-     * @param Statement $consequent The consequent expression
+     * @param Statement|FunctionDeclaration $consequent The consequent expression
      * 
      * @return $this
      */
-    public function setConsequent(Statement $consequent)
+    public function setConsequent($consequent)
     {
+        $this->assertType(
+            $consequent,
+            array("Statement", "FunctionDeclaration"),
+            true
+        );
         $this->consequent = $consequent;
         return $this;
     }
@@ -104,13 +109,17 @@ class IfStatement extends Node implements Statement
     /**
      * Sets the "else" statement
      * 
-     * @param Statement $alternate The "else" statement
+     * @param Statement|FunctionDeclaration $alternate The "else" statement
      * 
      * @return $this
      */
     public function setAlternate($alternate)
     {
-        $this->assertType($alternate, "Statement", true);
+        $this->assertType(
+            $alternate,
+            array("Statement", "FunctionDeclaration"),
+            true
+        );
         $this->alternate = $alternate;
         return $this;
     }

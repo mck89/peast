@@ -404,7 +404,13 @@ class Parser extends \Peast\Syntax\Parser
                     array("allowIn" => true), "parseExpression"
                 )) &&
                 $this->scanner->consume(")") &&
-                $consequent = $this->parseStatement()
+                (
+                    ($consequent = $this->parseStatement()) ||
+                    (!$this->scanner->getStrictMode() &&
+                    $consequent = $this->parseFunctionOrGeneratorDeclaration(
+                        false, false
+                    ))
+                )
             ) {
                 
                 $node = $this->createNode("IfStatement", $token);
@@ -412,7 +418,12 @@ class Parser extends \Peast\Syntax\Parser
                 $node->setConsequent($consequent);
                 
                 if ($this->scanner->consume("else")) {
-                    if ($alternate = $this->parseStatement()) {
+                    if (($alternate = $this->parseStatement()) ||
+                        (!$this->scanner->getStrictMode() &&
+                        $alternate = $this->parseFunctionOrGeneratorDeclaration(
+                            false, false
+                        ))
+                    ) {
                         $node->setAlternate($alternate);
                         return $this->completeNode($node);
                     }
