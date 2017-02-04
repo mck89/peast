@@ -608,6 +608,14 @@ class Parser extends \Peast\Syntax\Parser
                     false, false
                 ))
             ) {
+                
+                //Labelled functions are not allowed in strict mode 
+                if ($body instanceof Node\FunctionDeclaration &&
+                    $this->scanner->getStrictMode()) {
+                    return $this->error(
+                        "Labelled functions are not allowed in strict mode"
+                    );
+                }
 
                 $node = $this->createNode("LabeledStatement", $label);
                 $node->setLabel($label);
