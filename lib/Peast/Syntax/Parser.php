@@ -59,7 +59,15 @@ abstract class Parser
         $classParts[] = "Scanner";
         $scannerClasss = implode("\\", $classParts);
         $this->scanner = new $scannerClasss($source, $encoding);
+        $this->initContext();
     }
+    
+    /**
+     * Initializes parser context
+     * 
+     * @return stdClass
+     */
+    abstract protected function initContext();
     
     /**
      * Parses the source
@@ -86,29 +94,41 @@ abstract class Parser
      * Calls a method with an isolated parser context, applyng the given flags,
      * but restoring their values after the execution.
      * 
-     * @param array  $flags  Key/value array of changes to apply to the context
-     *                       flags
-     * @param string $fn     Method to call
-     * @param array  $args   Method arguments
+     * @param array|null  $flags  Key/value array of changes to apply to the
+     *                            context flags. If it's null or the first
+     *                            element of the array is null the context will
+*                                 be reset before applying new values.
+     * @param string      $fn     Method to call
+     * @param array       $args   Method arguments
      * 
      * @return mixed
      */
     protected function isolateContext($flags, $fn, $args = array())
     {
-        //Store the current flags value and apply the given one
-        $oldVals = array();
-        foreach ($flags as $k => $v) {
-            $oldVals[$k] = $this->context->$k;
-            $this->context->$k = $v;
+        //Store the current context
+        $oldContext = clone $this->context;
+        
+        //If flag argument is null reset the context
+        if ($flags === null) {
+            $this->initContext();
+        } else {
+            //If flag argument is an array and the first element is null reset
+            //the context
+            if (isset($flags[0]) && $flags[0] === null) {
+                //$this->initContext();
+                array_shift($flags);
+            }
+            //Apply new values to the flags
+            foreach ($flags as $k => $v) {
+                $this->context->$k = $v;
+            }
         }
         
         //Call the method with the given arguments
         $ret = call_user_func_array(array($this, $fn), $args);
         
-        //Restore falgs previous value
-        foreach ($flags as $k => $v) {
-            $this->context->$k = $oldVals[$k];
-        }
+        //Restore previous context
+        $this->context = $oldContext;
         
         return $ret;
     }

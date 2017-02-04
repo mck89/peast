@@ -83,6 +83,8 @@ class Parser extends \Peast\Syntax\Parser
     
     /**
      * Initializes parser context
+     * 
+     * @return stdClass
      */
     protected function initContext()
     {
@@ -100,8 +102,6 @@ class Parser extends \Peast\Syntax\Parser
      */
     public function parse()
     {
-        $this->initContext();
-        
         $type = isset($this->options["sourceType"]) ?
                 $this->options["sourceType"] :
                 \Peast\Peast::SOURCE_TYPE_SCRIPT;
@@ -1146,13 +1146,14 @@ class Parser extends \Peast\Syntax\Parser
             if (($default || $id) &&
                 $this->scanner->consume("(") &&
                 ($params = $this->isolateContext(
-                    array("allowYield" => $generator),
+                    $generator ? array("allowYield" => true) : null,
                     "parseFormalParameterList"
                 )) !== null &&
                 $this->scanner->consume(")") &&
                 ($tokenBodyStart = $this->scanner->consume("{")) &&
                 (($body = $this->isolateContext(
-                    array("allowYield" => $generator), "parseFunctionBody"
+                    $generator ? array("allowYield" => true) : null,
+                    "parseFunctionBody"
                 )) || true) &&
                 $this->scanner->consume("}")
             ) {
@@ -1190,13 +1191,14 @@ class Parser extends \Peast\Syntax\Parser
             
             if ($this->scanner->consume("(") &&
                 ($params = $this->isolateContext(
-                    array("allowYield" => $generator),
+                    $generator ? array("allowYield" => true) : null,
                     "parseFormalParameterList"
                 )) !== null &&
                 $this->scanner->consume(")") &&
                 ($tokenBodyStart = $this->scanner->consume("{")) &&
                 (($body = $this->isolateContext(
-                    array("allowYield" => $generator), "parseFunctionBody"
+                    $generator ? array("allowYield" => true) : null,
+                    "parseFunctionBody"
                 )) || true) &&
                 $this->scanner->consume("}")
             ) {
@@ -1635,12 +1637,12 @@ class Parser extends \Peast\Syntax\Parser
             } elseif ($this->scanner->consume("default")) {
                 
                 if (($declaration = $this->isolateContext(
-                        array("allowYield" => false),
+                        null,
                         "parseFunctionOrGeneratorDeclaration",
                         array(true)
                     )) ||
                     ($declaration = $this->isolateContext(
-                        array("allowYield" => false),
+                        null,
                         "parseClassDeclaration",
                         array(true)
                     ))
@@ -1652,7 +1654,7 @@ class Parser extends \Peast\Syntax\Parser
                     
                 } elseif (!$this->scanner->isBefore(array("function", "class")) &&
                     ($declaration = $this->isolateContext(
-                        array("allowIn" => true, "allowYield" => false),
+                        array(null, "allowIn" => true),
                         "parseAssignmentExpression"
                     ))
                 ) {
@@ -1677,10 +1679,10 @@ class Parser extends \Peast\Syntax\Parser
 
             } elseif (
                 ($dec = $this->isolateContext(
-                    array("allowYield" => false), "parseVariableStatement"
+                    null, "parseVariableStatement"
                 )) ||
                 $dec = $this->isolateContext(
-                    array("allowYield" => false), "parseDeclaration"
+                    null, "parseDeclaration"
                 )
             ) {
 
@@ -2107,14 +2109,14 @@ class Parser extends \Peast\Syntax\Parser
                 $params = array();
                 if ($kind === Node\MethodDefinition::KIND_SET) {
                     $params = $this->isolateContext(
-                        array("allowYield" => false), "parseBindingElement"
+                        null, "parseBindingElement"
                     );
                     if ($params) {
                         $params = array($params);
                     }
                 } elseif ($kind === Node\MethodDefinition::KIND_METHOD) {
                     $params = $this->isolateContext(
-                        array("allowYield" => false), "parseFormalParameterList"
+                        null, "parseFormalParameterList"
                     );
                 }
 
@@ -2122,7 +2124,8 @@ class Parser extends \Peast\Syntax\Parser
                     $this->scanner->consume(")") &&
                     ($tokenBodyStart = $this->scanner->consume("{")) &&
                     (($body = $this->isolateContext(
-                        array("allowYield" => $generator), "parseFunctionBody"
+                        $generator ? array(null, "allowYield" => true) : null,
+                        "parseFunctionBody"
                     )) || true) &&
                     $this->scanner->consume("}")
                 ) {
@@ -2196,7 +2199,8 @@ class Parser extends \Peast\Syntax\Parser
         if ($token = $this->scanner->consume("{")) {
             
             if (($body = $this->isolateContext(
-                    array("allowYield" => false), "parseFunctionBody"
+                    null,
+                    "parseFunctionBody"
                 )) &&
                 $this->scanner->consume("}")
             ) {
