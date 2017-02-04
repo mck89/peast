@@ -112,15 +112,14 @@ abstract class Parser
         if ($flags === null) {
             $this->initContext();
         } else {
-            //If flag argument is an array and the first element is null reset
-            //the context
-            if (isset($flags[0]) && $flags[0] === null) {
-                //$this->initContext();
-                array_shift($flags);
-            }
             //Apply new values to the flags
             foreach ($flags as $k => $v) {
-                $this->context->$k = $v;
+                // If null reset the context
+                if ($v === null) {
+                    $this->initContext();
+                } else {
+                    $this->context->$k = $v;
+                }
             }
         }
         
