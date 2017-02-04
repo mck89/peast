@@ -732,47 +732,57 @@ abstract class Scanner
      */
     protected function skipWhitespacesAndComments()
     {
-        $buffer = "";
-        $comment = 0;
+        $content = "";
         while (($char = $this->charAt()) !== null) {
+            //Whitespace
             if (in_array($char, $this->whitespaces)) {
-                //Whitespace
-                $buffer .= $char;
+                $content .= $char;
                 $this->index++;
-                //Exit the comment mode if it is in single line comment mode
-                if ($comment === 1 && in_array($char, $this->lineTerminators)) {
-                    $comment = 0;
+            } elseif ($char === "/") {
+                //Comment
+                $nextChar = $this->charAt($this->index + 1);
+                if ($nextChar === "/") {
+                    //Inline comment
+                    $this->index += 2;
+                    $content .= $char . $nextChar;
+                    while (($char = $this->charAt()) !== null) {
+                        $content .= $char;
+                        $this->index++;
+                        if (in_array($char, $this->lineTerminators)) {
+                            break;
+                        }
+                    }
+                } elseif ($nextChar === "*") {
+                    //Multiline comment
+                    $this->index += 2;
+                    $content .= $char . $nextChar;
+                    $closed = false;
+                    while (($char = $this->charAt()) !== null) {
+                        $content .= $char;
+                        $this->index++;
+                        if ($char === "*" &&
+                            $nextChar = $this->charAt() === "/"
+                        ) {
+                            $content .= $nextChar;
+                            $this->index++;
+                            $closed = true;
+                            break;
+                        }
+                    }
+                    if (!$closed) {
+                        return $this->error("Unterminated comment");
+                    }
+                } else {
+                    break;
                 }
-            } elseif (!$comment && $char === "/" &&
-                (($nextChar = $this->charAt($this->index + 1)) === "/" ||
-                $nextChar === "*")
-            ) {
-                //Start the comment
-                $this->index += 2;
-                $buffer .= $char . $nextChar;
-                $comment = $nextChar === "*" ? 2 : 1;
-            } elseif ($comment === 2 && $char === "*" &&
-                ($nextChar = $this->charAt($this->index + 1)) === "/") {
-                //Exit the comment mode if it is in multiline comment mode and
-                //the sequence "*/" is found
-                $this->index += 2;
-                $buffer .= $char . $nextChar;
-                $comment = 0;
-            } elseif ($comment) {
-                //Consume every character in comment mode
-                $buffer .= $char;
-                $this->index++;
             } else {
                 break;
             }
         }
         
-        //Error if multiline comment is not terminated
-        if ($comment === 2) {
-            return $this->error("Unterminated comment");
+        if ($content !== "") {
+            $this->adjustColumnAndLine($content);
         }
-        
-        $this->adjustColumnAndLine($buffer);
     }
     
     /**
