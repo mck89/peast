@@ -40,6 +40,13 @@ abstract class Parser
     protected $context;
     
     /**
+     * Source type
+     * 
+     * @var string 
+     */
+    protected $sourceType;
+    
+    /**
      * Class constructor
      * 
      * @param string $source  Source code
@@ -53,12 +60,17 @@ abstract class Parser
                     $options["sourceEncoding"] :
                     null;
         
+        $this->sourceType = isset($this->options["sourceType"]) ?
+                            $this->options["sourceType"] :
+                            \Peast\Peast::SOURCE_TYPE_SCRIPT;
+        
         //Create the scanner
         $classParts = explode("\\", get_class($this));
         array_pop($classParts);
         $classParts[] = "Scanner";
         $scannerClasss = implode("\\", $classParts);
-        $this->scanner = new $scannerClasss($source, $encoding);
+        $isModule = $this->sourceType === \Peast\Peast::SOURCE_TYPE_MODULE;
+        $this->scanner = new $scannerClasss($source, $encoding, $isModule);
         $this->initContext();
     }
     

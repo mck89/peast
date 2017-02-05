@@ -89,6 +89,13 @@ abstract class Scanner
     protected $registerTokens = false;
     
     /**
+     * Module mode
+     * 
+     * @var bool 
+     */
+    protected $isModule = false;
+    
+    /**
      * Registered tokens array
      * 
      * @var array 
@@ -237,9 +244,12 @@ abstract class Scanner
      * @param string $source   Source code
      * @param string $encoding Source code encoding, if not given the scanner
      *                         will try to auto detect it
+     * @param bool   $isModule If true the scanner will scan in module mode
      */
-    function __construct($source, $encoding = null)
+    function __construct($source, $encoding = null, $isModule = false)
     {
+        $this->isModule = $isModule;
+        
         //If encoding is missing try to detect it
         if (!$encoding) {
             $encoding = mb_detect_encoding($source);
@@ -771,6 +781,50 @@ abstract class Scanner
                     }
                     if (!$closed) {
                         return $this->error("Unterminated comment");
+                    }
+                } else {
+                    break;
+                }
+            } elseif (!$this->isModule && $char === "<" &&
+                $this->charAt($this->index + 1) === "!" &&
+                $this->charAt($this->index + 2) === "-" &&
+                $this->charAt($this->index + 3) === "-"
+            ) {
+                //Open html comment
+                $this->index += 4;
+                $content .= "<!--";
+                while (($char = $this->charAt()) !== null) {
+                    $content .= $char;
+                    $this->index++;
+                    if (in_array($char, $this->lineTerminators)) {
+                        break;
+                    }
+                }
+            } elseif (!$this->isModule && $char === "-" &&
+                $this->charAt($this->index + 1) === "-" &&
+                $this->charAt($this->index + 2) === ">"
+            ) {
+                //Close html comment
+                //Check if it is on it's own line
+                $allow = true;
+                for ($index = $this->index - 1; $index >= 0; $index--) {
+                    $char = $this->charAt($index);
+                    if (!in_array($char, $this->whitespaces)) {
+                        $allow = false;
+                        break;
+                    } elseif (in_array($char, $this->lineTerminators)) {
+                        break;
+                    }
+                }
+                if ($allow) {
+                    $this->index += 3;
+                    $content .= "-->";
+                    while (($char = $this->charAt()) !== null) {
+                        $content .= $char;
+                        $this->index++;
+                        if (in_array($char, $this->lineTerminators)) {
+                            break;
+                        }
                     }
                 } else {
                     break;

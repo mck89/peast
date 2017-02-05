@@ -102,11 +102,7 @@ class Parser extends \Peast\Syntax\Parser
      */
     public function parse()
     {
-        $type = isset($this->options["sourceType"]) ?
-                $this->options["sourceType"] :
-                \Peast\Peast::SOURCE_TYPE_SCRIPT;
-        
-        if ($type === \Peast\Peast::SOURCE_TYPE_MODULE) {
+        if ($this->sourceType === \Peast\Peast::SOURCE_TYPE_MODULE) {
             $this->scanner->setStrictMode(true);
             $body = $this->parseModuleItemList();
         } else {
@@ -116,7 +112,7 @@ class Parser extends \Peast\Syntax\Parser
         $node = $this->createNode(
             "Program", $body ? $body : $this->scanner->getPosition()
         );
-        $node->setSourceType($type);
+        $node->setSourceType($this->sourceType);
         if ($body) {
             $node->setBody($body);
         }
