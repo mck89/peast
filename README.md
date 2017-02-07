@@ -43,3 +43,15 @@ Changelog
 
 #### 1.2
 * Added Renderer class
+
+#### 1.3
+* Refactored parser to make it more extensible
+* More accurate parsing of identifiers
+* Added parsing of HTML comments if source is not a module
+* Added some validations:
+    * Disallowed legacy octal escape syntax (\07) in templates
+    * Disallowed legacy octal escape syntax (\07) in strings if strict mode
+    * Disallowed legacy octal syntax (077) for numbers if strict mode
+    * Disallowed `delete` followed by single identifiers in strict mode
+    * Disallowed labelled function declarations in strict mode
+    * Allowed `if (...) function () {}` syntax if not in strict mode
