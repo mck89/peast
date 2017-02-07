@@ -220,7 +220,7 @@ class Parser extends \Peast\Syntax\Parser
         }
         
         //Apply previous strict mode
-        if ($strictModeChanged) {
+        if ($parseDirectivePrologues) {
             $this->scanner->setStrictMode($oldStrictMode);
         }
         
