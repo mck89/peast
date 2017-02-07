@@ -3098,9 +3098,13 @@ class Parser extends \Peast\Syntax\Parser
     {
         $token = $this->scanner->getToken();
         if ($token && $token->getType() === Token::TYPE_STRING_LITERAL) {
+            $val = $token->getValue();
+            if ($this->scanner->getStrictMode()) {
+                $this->preventLegacyOctalSyntax($val);
+            }
             $this->scanner->consumeToken();
             $node = $this->createNode("Literal", $token);
-            $node->setRaw($token->getValue());
+            $node->setRaw($val);
             return $this->completeNode($node);
         }
         return null;
@@ -3115,9 +3119,13 @@ class Parser extends \Peast\Syntax\Parser
     {
         $token = $this->scanner->getToken();
         if ($token && $token->getType() === Token::TYPE_NUMERIC_LITERAL) {
+            $val = $token->getValue();
+            if ($this->scanner->getStrictMode()) {
+                $this->preventLegacyOctalSyntax($val, true);
+            }
             $this->scanner->consumeToken();
             $node = $this->createNode("Literal", $token);
-            $node->setRaw($token->getValue());
+            $node->setRaw($val);
             return $this->completeNode($node);
         }
         return null;
@@ -3147,6 +3155,7 @@ class Parser extends \Peast\Syntax\Parser
         do {
             $this->scanner->consumeToken();
             $val = $token->getValue();
+            $this->preventLegacyOctalSyntax($val);
             $lastChar = substr($val, -1);
             
             $quasi = $this->createNode("TemplateElement", $token);
@@ -3217,5 +3226,33 @@ class Parser extends \Peast\Syntax\Parser
             $nodes[] = $this->completeNode($node);
         }
         return count($nodes) ? array($nodes, $directives) : null;
+    }
+    
+    /**
+     * If a number is in the legacy octal form or if a string contains a legacy
+     * octal escape, it throws a syntax error
+     * 
+     * @param string  $val      Value to check
+     * @param bool    $number   True if the value is a number
+     * 
+     * @return void
+     */
+    protected function preventLegacyOctalSyntax($val, $number = false)
+    {
+        $error = false;
+        if ($number) {
+            $error = preg_match("#^0[0-7]+$#", $val);
+        } elseif (strpos($val, "\\") !== false &&
+            preg_match_all("#(\\\\+)([0-7]{1,2})#", $val, $matches, PREG_SET_ORDER)) {
+            foreach ($matches as $match) {
+                if (strlen($match[1]) % 2 && $match[2] !== "0") {
+                    $error = true;
+                    break;
+                }
+            }
+        }
+        if ($error) {
+            return $this->error("Octal literals are not allowed in strict mode");
+        }
     }
 }
