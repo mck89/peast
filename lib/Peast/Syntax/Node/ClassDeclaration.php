@@ -15,17 +15,8 @@ namespace Peast\Syntax\Node;
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
-class ClassDeclaration extends Node implements Declaration, Class_
+class ClassDeclaration extends Class_ implements Declaration
 {
-    use Extension\Class_;
-    
-    /**
-     * Properties containing child nodes
-     * 
-     * @var array 
-     */
-    protected $childNodesProps = array("id", "superClass", "body");
-    
     /**
      * Sets the class identifier
      * 

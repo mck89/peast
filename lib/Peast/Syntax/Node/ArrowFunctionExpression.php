@@ -15,17 +15,8 @@ namespace Peast\Syntax\Node;
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
-class ArrowFunctionExpression extends Node implements Expression, Function_
+class ArrowFunctionExpression extends Function_ implements Expression
 {
-    use Extension\Function_;
-    
-    /**
-     * Properties containing child nodes
-     * 
-     * @var array 
-     */
-    protected $childNodesProps = array("id", "params", "body");
-    
     /**
      * This flag is true when function body is wrapped in curly braces
      * 

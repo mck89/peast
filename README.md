@@ -55,3 +55,4 @@ Changelog
     * Disallowed `delete` followed by single identifiers in strict mode
     * Disallowed labelled function declarations in strict mode
     * Allowed `if (...) function () {}` syntax if not in strict mode
+* __BC break__: removed Function_ and Class_ interfaces and traits and replaced them with abstract classes

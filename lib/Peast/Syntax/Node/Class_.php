@@ -10,10 +10,109 @@
 namespace Peast\Syntax\Node;
 
 /**
- * Common interface for class declaration and class expression nodes.
+ * Abstract class for classes.
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
-interface Class_
+abstract class Class_ extends Node
 {
+    /**
+     * Properties containing child nodes
+     * 
+     * @var array 
+     */
+    protected $childNodesProps = array("id", "superClass", "body");
+    
+    /**
+     * Class name
+     * 
+     * @var Identifier 
+     */
+    protected $id;
+    
+    /**
+     * Extended class
+     * 
+     * @var Expression 
+     */
+    protected $superClass;
+    
+    /**
+     * Class body
+     * 
+     * @var ClassBody 
+     */
+    protected $body;
+    
+    /**
+     * Returns class name
+     * 
+     * @return Identifier
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
+     * Sets class name
+     * 
+     * @param Identifier $id Class name
+     * 
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->assertType($id, "Identifier", true);
+        $this->id = $id;
+        return $this;
+    }
+    
+    /**
+     * Returns extended class
+     * 
+     * @return Expression
+     */
+    public function getSuperClass()
+    {
+        return $this->superClass;
+    }
+    
+    /**
+     * Sets extended class
+     * 
+     * @param Expression $superClass Extended class
+     * 
+     * @return $this
+     */
+    public function setSuperClass($superClass)
+    {
+        $this->assertType($superClass, "Expression", true);
+        $this->superClass = $superClass;
+        return $this;
+    }
+    
+    /**
+     * Returns class body
+     * 
+     * @return ClassBody
+     */
+    public function getBody()
+    {
+        return $this->body;
+    }
+    
+    /**
+     * Sets class body
+     * 
+     * @param ClassBody $body Class body
+     * 
+     * @return $this
+     */
+    public function setBody($body)
+    {
+        $this->assertType($body, "ClassBody");
+        $this->body = $body;
+        return $this;
+    }
 }

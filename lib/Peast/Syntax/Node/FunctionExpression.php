@@ -15,14 +15,6 @@ namespace Peast\Syntax\Node;
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
-class FunctionExpression extends Node implements Expression, Function_
+class FunctionExpression extends Function_ implements Expression
 {
-    use Extension\Function_;
-    
-    /**
-     * Properties containing child nodes
-     * 
-     * @var array 
-     */
-    protected $childNodesProps = array("id", "params", "body");
 }

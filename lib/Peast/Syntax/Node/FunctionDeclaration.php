@@ -15,17 +15,8 @@ namespace Peast\Syntax\Node;
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
-class FunctionDeclaration extends Node implements Declaration, Function_
+class FunctionDeclaration extends Function_ implements Declaration
 {
-    use Extension\Function_;
-    
-    /**
-     * Properties containing child nodes
-     * 
-     * @var array 
-     */
-    protected $childNodesProps = array("id", "params", "body");
-    
     /**
      * Sets the function identifier
      * 
