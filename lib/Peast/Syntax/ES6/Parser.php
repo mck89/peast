@@ -204,16 +204,12 @@ class Parser extends \Peast\Syntax\Parser
         $items = array();
         
         //Get directive prologues and check if strict mode is present
-        $strictModeChanged = false;
         if ($parseDirectivePrologues) {
+            $oldStrictMode = $this->scanner->getStrictMode();
             if ($directives = $this->parseDirectivePrologues()) {
                 $items = array_merge($items, $directives[0]);
-                //If "use strict" is present store the current value and
-                //restore it at the end of the function
-                if (!$this->scanner->getStrictMode() &&
-                    in_array("use strict", $directives[1])
-                ) {
-                    $strictModeChanged = true;
+                //If "use strict" is present enable scanner strict mode
+                if (in_array("use strict", $directives[1])) {
                     $this->scanner->setStrictMode(true);
                 }
             }
@@ -225,7 +221,7 @@ class Parser extends \Peast\Syntax\Parser
         
         //Apply previous strict mode
         if ($strictModeChanged) {
-            $this->scanner->setStrictMode(false);
+            $this->scanner->setStrictMode($oldStrictMode);
         }
         
         return count($items) ? $items : null;
@@ -3216,14 +3212,21 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseDirectivePrologues()
     {
-        $directives = array();
-        $nodes = array();
-        while ($directive = $this->parseStringLiteral()) {
-            $this->assertEndOfStatement();
-            $directives[] = $directive->getValue();
-            $node = $this->createNode("ExpressionStatement", $directive);
-            $node->setExpression($directive);
-            $nodes[] = $this->completeNode($node);
+        $directives = $nodes = array();
+        while (($token = $this->scanner->getToken()) &&
+            $token->getType() === Token::TYPE_STRING_LITERAL
+        ) {
+            $directive = substr($token->getValue(), 1, -1);
+            if ($directive === "use strict") {
+                $directives[] = $directive;
+                $directiveNode = $this->parseStringLiteral();
+                $this->assertEndOfStatement();
+                $node = $this->createNode("ExpressionStatement", $directiveNode);
+                $node->setExpression($directiveNode);
+                $nodes[] = $this->completeNode($node);
+            } else {
+                break;
+            }
         }
         return count($nodes) ? array($nodes, $directives) : null;
     }
