@@ -242,18 +242,13 @@ abstract class Scanner
      * Class constructor
      * 
      * @param string $source   Source code
-     * @param string $encoding Source code encoding, if not given the scanner
-     *                         will try to auto detect it
+     * @param string $encoding Source code encoding, if not specified it
+     *                         will assume UTF-8
      * @param bool   $isModule If true the scanner will scan in module mode
      */
     function __construct($source, $encoding = null, $isModule = false)
     {
         $this->isModule = $isModule;
-        
-        //If encoding is missing try to detect it
-        if (!$encoding) {
-            $encoding = mb_detect_encoding($source);
-        }
         
         //Convert to UTF8 if needed
         if ($encoding && !preg_match("/UTF-?8/i", $encoding)) {

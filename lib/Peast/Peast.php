@@ -40,9 +40,8 @@ class Peast
      *                          parser to parse the source in script or module
      *                          mode. If this option is not provided the parser
      *                          will work in script mode.
-     *                        - "sourceEncoding": the encoding of the given
-     *                          source. If this option is not provided the
-     *                          encoding will be detected automatically.
+     *                        - "sourceEncoding": the encoding of the source.
+     *                          If not specified the parser will assume UTF-8.
      * 
      * @return \Peast\Syntax\ES6\Parser
      * 
@@ -64,9 +63,8 @@ class Peast
      *                          parser to parse the source in script or module
      *                          mode. If this option is not provided the parser
      *                          will work in script mode.
-     *                        - "sourceEncoding": the encoding of the given
-     *                          source. If this option is not provided the
-     *                          encoding will be detected automatically.
+     *                        - "sourceEncoding": the encoding of the source.
+     *                          If not specified the parser will assume UTF-8.
      * 
      * @return \Peast\Syntax\ES7\Parser
      * 
