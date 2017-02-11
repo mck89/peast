@@ -984,9 +984,10 @@ abstract class Scanner
             }
             
             //Consume exponent part if present
-            if ($allowedExp &&
-                ($tempBuffer = $this->consumeExponentPart()) !== null
-            ) {
+            if (($tempBuffer = $this->consumeExponentPart()) !== null) {
+                if (!$allowedExp) {
+                    return $this->error("Invalid exponential notation");
+                }
                 $buffer .= $tempBuffer;
             }
         }
