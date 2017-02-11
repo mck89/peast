@@ -2,7 +2,7 @@
 namespace test\Peast\Traverser;
 
 use \Peast\Traverser;
-use \Peast\Syntax\Node\Literal;
+use \Peast\Syntax\Node;
 
 class TraverserTest extends \test\Peast\TestBase
 {
@@ -13,17 +13,16 @@ class TraverserTest extends \test\Peast\TestBase
                 ->parse()
                 ->traverse(function($node) {
                     if ($node->getType() === "Literal") {
-                        $kind = $node->getKind();
-                        if ($kind === Literal::KIND_DECIMAL_NUMBER) {
+                        if ($node instanceof Node\NumericLiteral) {
                             $node->setValue(2);
-                        } elseif ($kind === Literal::KIND_SINGLE_QUOTE_STRING) {
+                        } elseif ($node instanceof Node\StringLiteral) {
                             $node->setValue("test");
-                        } elseif ($kind === Literal::KIND_BOOLEAN) {
+                        } elseif ($node instanceof Node\BooleanLiteral) {
                             $node->setValue(true);
                         }
                     } elseif ($node->getType() === "ArrayExpression") {
-                        $literal = new Literal();
-                        $literal->setRaw("1");
+                        $literal = new Node\NumericLiteral();
+                        $literal->setValue(1);
                         $node->setElements(array($literal));
                     } elseif ($node->getType() === "RegExpLiteral") {
                         $node->setValue("/bar/");
