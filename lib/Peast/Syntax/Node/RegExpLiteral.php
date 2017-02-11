@@ -43,6 +43,16 @@ class RegExpLiteral extends Literal
     protected $kind = self::KIND_REGEX;
     
     /**
+     * Returns node's type
+     * 
+     * @return string
+     */
+    public function getType()
+    {
+        return "RegExpLiteral";
+    }
+    
+    /**
      * Returns regex pattern
      * 
      * @return string

@@ -1,0 +1,179 @@
+<?php
+/**
+ * This file is part of the Peast package
+ *
+ * (c) Marco Marchiò <marco.mm89@gmail.com>
+ *
+ * For the full copyright and license information refer to the LICENSE file
+ * distributed with this source code
+ */
+namespace Peast\Syntax\Node;
+
+/**
+ * A node that represents a numeric literal.
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ */
+class NumericLiteral extends Literal
+{
+    //Format constants
+    /**
+     * Decimal number format
+     */
+    const DECIMAL_NUMBER = "decimal";
+    
+    /**
+     * Hexadecimal number format
+     */
+    const HEXADECIMAL_NUMBER = "hexadecimal";
+    
+    /**
+     * Octal number format
+     */
+    const OCTAL_NUMBER = "octal";
+    
+    /**
+     * Binary number format
+     */
+    const BINARY_NUMBER = "binary";
+    
+    /**
+     * Node's numeric format
+     * 
+     * @var string
+     */
+    protected $format = self::DECIMAL_NUMBER;
+    
+    /**
+     * Numeric forms conversion rules
+     * 
+     * @var array
+     */
+    protected $forms = array(
+        "b" => array(
+            "check" => "/^0b[01]+$/i",
+            "conv" => "bindec",
+            "format" => self::BINARY_NUMBER
+        ),
+        "o" => array(
+            "check" => "/^0o[0-7]+$/i",
+            "conv" => "octdec",
+            "format" => self::OCTAL_NUMBER
+        ),
+        "x" => array(
+            "check" => "/^0x[0-9a-f]+$/i",
+            "conv" => "hexdec",
+            "format" => self::HEXADECIMAL_NUMBER
+        ),
+    );
+    
+    /**
+     * Sets node's value
+     * 
+     * @param float $value Value
+     * 
+     * @return $this
+     */
+    public function setValue($value)
+    {
+        $value = (float) $value;
+        $intValue = (int) $value;
+        if ($value == $intValue) {
+            $value = $intValue;
+        }
+        $this->value = $value;
+        //Force recalculation of the raw value
+        return $this->setFormat($this->format);
+    }
+    
+    /**
+     * Sets node's raw value
+     * 
+     * @param mixed $raw Raw value
+     * 
+     * @return $this
+     * 
+     * @throws \Exception
+     */
+    public function setRaw($raw)
+    {
+        $value = $raw;
+        if (is_int($value) || is_float($value)) {
+            $format = self::DECIMAL_NUMBER;
+        } elseif (!is_string($value) || $value === "") {
+            throw new \Exception("Invalid numeric value");
+        } else {
+            //Hexadecimal, binary or octal
+            $startZero = $value[0] === "0";
+            $form = $startZero && isset($value[1]) ? strtolower($value[1]) : null;
+            if (isset($this->forms[$form])) {
+                $formDef = $this->forms[$form];
+                if (!preg_match($formDef["check"], $value)) {
+                    throw new \Exception("Invalid " . $formDef["format"]);
+                }
+                $value = $formDef["conv"]($value);
+                $format = $formDef["format"];
+            } elseif ($startZero && preg_match("/^0[0-7]+$/", $value)) {
+                //Legacy octal form
+                $value = octdec($value);
+                $format = self::OCTAL_NUMBER;
+            } elseif (preg_match("/^(\d*)\.?(\d*)(e[+\-]?\d+)?$/i", $value, $match) &&
+                ($match[1] !== "" || $match[2] !== "")
+            ) {
+                //Decimal
+                if (isset($match[3]) && $match[3]) {
+                    $value = pow((float) $value, (int) substr($match[3], 1));
+                }
+                $format = self::DECIMAL_NUMBER;
+            } else {
+                throw new \Exception("Invalid numeric value");
+            }
+        }
+        $value = (float) $value;
+        $intValue = (int) $value;
+        if ($value == $intValue) {
+            $value = $intValue;
+        }
+        $this->format = $format;
+        $this->value = $value;
+        $this->raw = $raw;
+        return $this;
+    }
+    
+    /**
+     * Returns node's numeric format
+     * 
+     * @return string
+     */
+    public function getFormat()
+    {
+        return $this->format;
+    }
+    
+    /**
+     * Sets node's numeric format
+     * 
+     * @param string $format Format, one of the format constants
+     * 
+     * @return $this
+     */
+    public function setFormat($format)
+    {
+        $this->format = $format;
+        switch ($format) {
+            case self::BINARY_NUMBER:
+                $this->raw = "0b" . decbin($this->value);
+            break;
+            case self::OCTAL_NUMBER:
+                $this->raw = "0o" . decoct($this->value);
+            break;
+            case self::HEXADECIMAL_NUMBER:
+                $this->raw = "0x" . dechex($this->value);
+            break;
+            default:
+                $this->raw = (string) $this->value;
+            break;
+        }
+        return $this;
+    }
+}

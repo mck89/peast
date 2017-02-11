@@ -1614,7 +1614,7 @@ class Parser extends \Peast\Syntax\Parser
      * Parses the from keyword and the following string in import and export
      * declarations
      * 
-     * @return Node\Literal|null
+     * @return Node\StringLiteral|null
      */
     protected function parseFromClause()
     {
@@ -3069,18 +3069,21 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseLiteral()
     {
-        $token = $this->scanner->getToken();
-        if ($token && ($token->getType() === Token::TYPE_NULL_LITERAL ||
-            $token->getType() === Token::TYPE_BOOLEAN_LITERAL)
-        ) {
-            $this->scanner->consumeToken();
-            $node = $this->createNode("Literal", $token);
-            $node->setRaw($token->getValue());
-            return $this->completeNode($node);
-        } elseif ($literal = $this->parseStringLiteral()) {
-            return $literal;
-        } elseif ($literal = $this->parseNumericLiteral()) {
-            return $literal;
+        if ($token = $this->scanner->getToken()) {
+            if ($token->getType() === Token::TYPE_NULL_LITERAL) {
+                $this->scanner->consumeToken();
+                $node = $this->createNode("NullLiteral", $token);
+                return $this->completeNode($node);
+            } elseif ($token->getType() === Token::TYPE_BOOLEAN_LITERAL) {
+                $this->scanner->consumeToken();
+                $node = $this->createNode("BooleanLiteral", $token);
+                $node->setRaw($token->getValue());
+                return $this->completeNode($node);
+            } elseif ($literal = $this->parseStringLiteral()) {
+                return $literal;
+            } elseif ($literal = $this->parseNumericLiteral()) {
+                return $literal;
+            }
         }
         return null;
     }
@@ -3088,7 +3091,7 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a string literal
      * 
-     * @return Node\Literal|null
+     * @return Node\StringLiteral|null
      */
     protected function parseStringLiteral()
     {
@@ -3099,7 +3102,7 @@ class Parser extends \Peast\Syntax\Parser
                 $this->preventLegacyOctalSyntax($val);
             }
             $this->scanner->consumeToken();
-            $node = $this->createNode("Literal", $token);
+            $node = $this->createNode("StringLiteral", $token);
             $node->setRaw($val);
             return $this->completeNode($node);
         }
@@ -3109,7 +3112,7 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a numeric literal
      * 
-     * @return Node\Literal|null
+     * @return Node\NumericLiteral|null
      */
     protected function parseNumericLiteral()
     {
@@ -3120,7 +3123,7 @@ class Parser extends \Peast\Syntax\Parser
                 $this->preventLegacyOctalSyntax($val, true);
             }
             $this->scanner->consumeToken();
-            $node = $this->createNode("Literal", $token);
+            $node = $this->createNode("NumericLiteral", $token);
             $node->setRaw($val);
             return $this->completeNode($node);
         }
