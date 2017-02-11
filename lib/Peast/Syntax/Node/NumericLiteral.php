@@ -98,11 +98,8 @@ class NumericLiteral extends Literal
     public function setRaw($raw)
     {
         $value = $raw;
-        if (is_int($value) || is_float($value)) {
-            $format = self::DECIMAL_NUMBER;
-        } elseif (!is_string($value) || $value === "") {
-            throw new \Exception("Invalid numeric value");
-        } else {
+        $format = self::DECIMAL_NUMBER;
+        if (is_string($value) && $value !== "") {
             //Hexadecimal, binary or octal
             $startZero = $value[0] === "0";
             $form = $startZero && isset($value[1]) ? strtolower($value[1]) : null;
@@ -117,17 +114,13 @@ class NumericLiteral extends Literal
                 //Legacy octal form
                 $value = octdec($value);
                 $format = self::OCTAL_NUMBER;
-            } elseif (preg_match("/^(\d*)\.?(\d*)(e[+\-]?\d+)?$/i", $value, $match) &&
-                ($match[1] !== "" || $match[2] !== "")
+            } elseif (!preg_match("/^(\d*\.?\d*)(?:e[+\-]?\d+)?$/i", $value, $match) ||
+                $match[1] === "."
             ) {
-                //Decimal
-                if (isset($match[3]) && $match[3]) {
-                    $value = pow((float) $value, (int) substr($match[3], 1));
-                }
-                $format = self::DECIMAL_NUMBER;
-            } else {
                 throw new \Exception("Invalid numeric value");
             }
+        } elseif (!is_int($value) || !is_float($value)) {
+            throw new \Exception("Invalid numeric value");
         }
         $value = (float) $value;
         $intValue = (int) $value;
