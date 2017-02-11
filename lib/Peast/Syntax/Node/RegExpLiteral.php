@@ -17,11 +17,6 @@ namespace Peast\Syntax\Node;
 class RegExpLiteral extends Literal
 {
     /**
-     * Regex literal
-     */
-    const KIND_REGEX = "regex";
-    
-    /**
      * Regex flags
      * 
      * @var string 
@@ -34,13 +29,6 @@ class RegExpLiteral extends Literal
      * @var string 
      */
     protected $pattern = "";
-    
-    /**
-     * Node's kind that is one of the kind constants
-     * 
-     * @var string 
-     */
-    protected $kind = self::KIND_REGEX;
     
     /**
      * Returns node's type
