@@ -20,29 +20,29 @@ class NumericLiteral extends Literal
     /**
      * Decimal number format
      */
-    const DECIMAL_NUMBER = "decimal";
+    const DECIMAL = "decimal";
     
     /**
      * Hexadecimal number format
      */
-    const HEXADECIMAL_NUMBER = "hexadecimal";
+    const HEXADECIMAL = "hexadecimal";
     
     /**
      * Octal number format
      */
-    const OCTAL_NUMBER = "octal";
+    const OCTAL = "octal";
     
     /**
      * Binary number format
      */
-    const BINARY_NUMBER = "binary";
+    const BINARY = "binary";
     
     /**
      * Node's numeric format
      * 
      * @var string
      */
-    protected $format = self::DECIMAL_NUMBER;
+    protected $format = self::DECIMAL;
     
     /**
      * Numeric forms conversion rules
@@ -53,17 +53,17 @@ class NumericLiteral extends Literal
         "b" => array(
             "check" => "/^0b[01]+$/i",
             "conv" => "bindec",
-            "format" => self::BINARY_NUMBER
+            "format" => self::BINARY
         ),
         "o" => array(
             "check" => "/^0o[0-7]+$/i",
             "conv" => "octdec",
-            "format" => self::OCTAL_NUMBER
+            "format" => self::OCTAL
         ),
         "x" => array(
             "check" => "/^0x[0-9a-f]+$/i",
             "conv" => "hexdec",
-            "format" => self::HEXADECIMAL_NUMBER
+            "format" => self::HEXADECIMAL
         ),
     );
     
@@ -98,7 +98,7 @@ class NumericLiteral extends Literal
     public function setRaw($raw)
     {
         $value = $raw;
-        $format = self::DECIMAL_NUMBER;
+        $format = self::DECIMAL;
         if (is_string($value) && $value !== "") {
             //Hexadecimal, binary or octal
             $startZero = $value[0] === "0";
@@ -113,7 +113,7 @@ class NumericLiteral extends Literal
             } elseif ($startZero && preg_match("/^0[0-7]+$/", $value)) {
                 //Legacy octal form
                 $value = octdec($value);
-                $format = self::OCTAL_NUMBER;
+                $format = self::OCTAL;
             } elseif (!preg_match("/^(\d*\.?\d*)(?:e[+\-]?\d+)?$/i", $value, $match) ||
                 $match[1] === "" || $match[1] === "."
             ) {
@@ -154,13 +154,13 @@ class NumericLiteral extends Literal
     {
         $this->format = $format;
         switch ($format) {
-            case self::BINARY_NUMBER:
+            case self::BINARY:
                 $this->raw = "0b" . decbin($this->value);
             break;
-            case self::OCTAL_NUMBER:
+            case self::OCTAL:
                 $this->raw = "0o" . decoct($this->value);
             break;
-            case self::HEXADECIMAL_NUMBER:
+            case self::HEXADECIMAL:
                 $this->raw = "0x" . dechex($this->value);
             break;
             default:
