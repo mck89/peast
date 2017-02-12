@@ -69,7 +69,7 @@ To replace a node you must return the replacement node:
 $traverser->addFunction(function ($node) {
     //Replace the number 2 with 1
     if ($node->getType() === "Literal" && $node->getValue() === 2) {
-        $literal = new \Peast\Syntax\Node\Literal();
+        $literal = new \Peast\Syntax\Node\NumericLiteral();
         return $literal->setValue(1);
     }
 });
@@ -88,13 +88,10 @@ $traverser->addFunction(function ($node) {
 
 If the function returns any other value or nothing, no action will be executed and you can modify nodes without altering the tree structure:
 ```php
-use \Peast\Syntax\Node\Literal;
+use \Peast\Syntax\Node\StringLiteral;
 $traverser->addFunction(function ($node) {
     //Make all the strings uppercase
-    if ($node->getType() === "Literal" && (
-        $node->getKind() === Literal::KIND_SINGLE_QUOTE_STRING ||
-        $node->getKind() === Literal::KIND_DOUBLE_QUOTE_STRING
-        )) {
+    if ($node->getType() === "Literal" && node instanceof StringLiteral) {
         $node->setValue(strtoupper($node->getValue()));
     }
 });

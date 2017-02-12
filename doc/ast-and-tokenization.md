@@ -21,8 +21,8 @@ Peast\Syntax\Node\Program
                 Peast\Syntax\Node\VariableDeclarator
                     getId() => Peast\Syntax\Node\Identifier
                         getName() => "a"
-                    getInit() => Peast\Syntax\Node\Literal
-                        getKind() => "decimal"
+                    getInit() => Peast\Syntax\Node\NumericLiteral
+                        getFormat() => "decimal"
                         getValue() => 1
             )
     )
@@ -76,3 +76,5 @@ Differences from Esprima and ESTree
 Peast is not a porting of [Esprima](https://github.com/jquery/esprima) to PHP, but since they both respect the ESTree standard the output is almost identical and Peast tests are created using Esprima results.
 
 There is only one big difference from ESTree and Esprima: parenthesized expressions. This type of expressions have been introduced to let the user know if when an expression is wrapped in round brackets. For example `(a + b)` is a parenthesized expression and generates a ParenthesizedExpression node.
+
+Additionally, from version 1.3, literals have their own classes: StringLiteral, NumericLiteral, BooleanLiteral and NullLiteral.

@@ -57,3 +57,4 @@ Changelog
     * Allowed `if (...) function () {}` syntax if not in strict mode
 * __BC break__: removed Function_ and Class_ interfaces and traits and replaced them with abstract classes
 * __BC break__: if sourceEncoding is not specified, the parser won't try to autodetect it, but will assume UTF-8
+* __BC break__: Literal is now an abstract class that is extended by the new classes for literals: StringLiteral, NumericLiteral, BooleanLiteral and NullLiteral
