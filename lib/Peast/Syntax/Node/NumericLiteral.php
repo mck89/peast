@@ -115,11 +115,11 @@ class NumericLiteral extends Literal
                 $value = octdec($value);
                 $format = self::OCTAL_NUMBER;
             } elseif (!preg_match("/^(\d*\.?\d*)(?:e[+\-]?\d+)?$/i", $value, $match) ||
-                $match[1] === "."
+                $match[1] === "" || $match[1] === "."
             ) {
                 throw new \Exception("Invalid numeric value");
             }
-        } elseif (!is_int($value) || !is_float($value)) {
+        } elseif (!is_int($value) && !is_float($value)) {
             throw new \Exception("Invalid numeric value");
         }
         $value = (float) $value;
