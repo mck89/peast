@@ -16,6 +16,9 @@
         <testsuite name="Renderer">
             <directory>test/Peast/Renderer</directory>
         </testsuite>
+        <testsuite name="Node">
+            <directory>test/Peast/Node</directory>
+        </testsuite>
     </testsuites>
     <filter>
         <whitelist>
