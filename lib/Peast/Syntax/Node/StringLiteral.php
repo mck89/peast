@@ -61,7 +61,14 @@ class StringLiteral extends Literal
      */
     public function setRaw($raw)
     {
-        if (!is_string($raw) || $raw === "" || ($raw[0] !== "'" && $raw[0] !== '"')) {
+        if (!is_string($raw) || strlen($raw) < 2) {
+            throw new \Exception("Invalid string");
+        }
+        $startQuote = $raw[0];
+        $endQuote = substr($raw, -1);
+        if (($startQuote !== "'" && $startQuote !== '"') ||
+            $startQuote !== $endQuote
+        ) {
             throw new \Exception("Invalid string");
         }
         $this->value = Utils::unquoteLiteralString($raw);
