@@ -144,7 +144,7 @@ class Utils
         $escape[] = $quote;
         $escape[] = "\\\\";
         $reg = "/(" . implode("|", $escape) . ")/";
-        $str = preg_replace($reg, "\\$1", $str);
+        $str = preg_replace($reg, "\\\\$1", $str);
         return $quote . $str . $quote;
     }
 }
