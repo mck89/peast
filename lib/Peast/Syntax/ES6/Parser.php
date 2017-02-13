@@ -3043,9 +3043,7 @@ class Parser extends \Peast\Syntax\Parser
                 if ($mode === self::ID_ALLOW_NOTHING) {
                     return null;
                 } elseif ($mode === self::ID_MIXED) {
-                    if ($this->context->allowYield && $token->getValue() === "yield") {
-                        //Yield is valid if allowed by the context
-                    } elseif ($this->scanner->isStrictModeKeyword($token)) {
+                    if ($this->scanner->isStrictModeKeyword($token)) {
                         return null;
                     }
                 }
