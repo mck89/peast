@@ -3042,10 +3042,10 @@ class Parser extends \Peast\Syntax\Parser
             case Token::TYPE_KEYWORD:
                 if ($mode === self::ID_ALLOW_NOTHING) {
                     return null;
-                } elseif ($mode === self::ID_MIXED) {
-                    if ($this->scanner->isStrictModeKeyword($token)) {
-                        return null;
-                    }
+                } elseif ($mode === self::ID_MIXED &&
+                    $this->scanner->isStrictModeKeyword($token)
+                ) {
+                    return null;
                 }
             break;
             default:
