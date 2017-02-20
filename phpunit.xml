@@ -4,11 +4,11 @@
 	backupGlobals="false"
 	backupStaticAttributes="false">
     <testsuites>
-        <testsuite name="ES6">
-            <directory>test/Peast/ES6</directory>
+        <testsuite name="ES2015">
+            <directory>test/Peast/ES2015</directory>
         </testsuite>
-        <testsuite name="ES7">
-            <directory>test/Peast/ES7</directory>
+        <testsuite name="ES2016">
+            <directory>test/Peast/ES2016</directory>
         </testsuite>
         <testsuite name="Traverser">
             <directory>test/Peast/Traverser</directory>

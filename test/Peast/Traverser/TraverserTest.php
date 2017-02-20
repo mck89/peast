@@ -9,7 +9,7 @@ class TraverserTest extends \test\Peast\TestBase
     public function testModifyNodes()
     {
         $source = "var a = 1, b = 'c', d = false, e = [], f = /foo/;";
-        $tree = \Peast\Peast::ES7($source)
+        $tree = \Peast\Peast::latest($source)
                 ->parse()
                 ->traverse(function($node) {
                     if ($node->getType() === "Literal") {
@@ -40,7 +40,7 @@ class TraverserTest extends \test\Peast\TestBase
     public function testRemoveNodesAndActions()
     {
         $source = "var a = 1, b = [2, [2], 3, 2], c = 1;";
-        $tree = \Peast\Peast::ES7($source)
+        $tree = \Peast\Peast::latest($source)
                 ->parse()
                 ->traverse(function($node) {
                     if ($node->getType() === "Literal") {
@@ -68,7 +68,7 @@ class TraverserTest extends \test\Peast\TestBase
     public function testReplaceNodesAndActions()
     {
         $source = "var a, b = 1, c = [2], d = 3, e = 4;";
-        $tree = \Peast\Peast::ES7($source)
+        $tree = \Peast\Peast::latest($source)
                 ->parse()
                 ->traverse(function($node) {
                     if ($node->getType() === "Literal") {
@@ -107,7 +107,7 @@ class TraverserTest extends \test\Peast\TestBase
     {
         $source = "var a = [b,,c,,d,]";
         $names = array();
-        \Peast\Peast::ES7($source)
+        \Peast\Peast::latest($source)
             ->parse()
             ->traverse(function($node) use (&$names) {
                 if ($node->getType() === "Identifier") {
@@ -121,7 +121,7 @@ class TraverserTest extends \test\Peast\TestBase
     {
         $source = '`foo${exp()}bar`';
         $types = array();
-        \Peast\Peast::ES7($source)
+        \Peast\Peast::latest($source)
             ->parse()
             ->traverse(function($node) use (&$types) {
                 $type = $node->getType();

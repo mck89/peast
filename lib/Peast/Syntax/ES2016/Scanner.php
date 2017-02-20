@@ -7,14 +7,14 @@
  * For the full copyright and license information refer to the LICENSE file
  * distributed with this source code
  */
-namespace Peast\Syntax\ES7;
+namespace Peast\Syntax\ES2016;
 
 /**
- * ES7 scanner.
+ * ES2016 scanner.
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
-class Scanner extends \Peast\Syntax\ES6\Scanner
+class Scanner extends \Peast\Syntax\ES2015\Scanner
 {
     /**
      * Punctutators array

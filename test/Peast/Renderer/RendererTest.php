@@ -5,7 +5,7 @@ class RendererTest extends \test\Peast\TestBase
 {
     protected function getTestVersions()
     {
-        return array("ES6", "ES7");
+        return array("ES2015", "ES2016");
     }
     
     public function jsParserTestFilesProvider()
@@ -24,7 +24,7 @@ class RendererTest extends \test\Peast\TestBase
                             \Peast\Peast::SOURCE_TYPE_SCRIPT
         );
         $source = file_get_contents($sourceFile);
-        $tree = \Peast\Peast::ES7($source, $options)->parse();
+        $tree = \Peast\Peast::latest($source, $options)->parse();
         $renderer = new \Peast\Renderer;
         $pp = $renderer->setFormatter(new \Peast\Formatter\PrettyPrint)->render($tree);
         $cm = $renderer->setFormatter(new \Peast\Formatter\Compact)->render($tree);
@@ -45,7 +45,7 @@ class RendererTest extends \test\Peast\TestBase
      */
     public function testExceptionOnMissingFormatter()
     {
-        $tree = \Peast\Peast::ES7("")->parse();
+        $tree = \Peast\Peast::latest("")->parse();
         $renderer = new \Peast\Renderer;
         $this->assertEquals(null, $renderer->getFormatter());
         $renderer->render($tree);
@@ -54,7 +54,7 @@ class RendererTest extends \test\Peast\TestBase
     public function testSemicolonAfterLabelledStatement()
     {
         $source = "label:var test;";
-        $tree = \Peast\Peast::ES7($source)->parse();
+        $tree = \Peast\Peast::latest($source)->parse();
         $res = $tree->render(new \Peast\Formatter\Compact);
         $this->assertEquals($source, $res);
     }

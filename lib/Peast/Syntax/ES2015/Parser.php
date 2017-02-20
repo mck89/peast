@@ -7,13 +7,13 @@
  * For the full copyright and license information refer to the LICENSE file
  * distributed with this source code
  */
-namespace Peast\Syntax\ES6;
+namespace Peast\Syntax\ES2015;
 
 use Peast\Syntax\Token;
 use \Peast\Syntax\Node;
 
 /**
- * ES6 parser class
+ * ES2015 parser class
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */

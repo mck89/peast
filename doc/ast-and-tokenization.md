@@ -7,7 +7,7 @@ To generate AST (abstract syntax tree) for your JavaScript code just write:
 
 ```php
 $source = "var a = 1"; //JavaScript code
-$ast = Peast\Peast::ES7($source, $options)->parse();
+$ast = Peast\Peast::latest($source, $options)->parse();
 ```
 
 The previous code generates this structure:
@@ -34,7 +34,7 @@ To tokenize your JavaScript code just write:
 
 ```php
 $source = "var a = 1"; //JavaScript code
-$tokens = Peast\Peast::ES7($source, $options)->tokenize();
+$tokens = Peast\Peast::latest($source, $options)->tokenize();
 ```
 
 This function produces an array of tokens from your code:
@@ -59,8 +59,9 @@ EcmaScript version
 -------------
 Peast can parse different versions of EcmaScript, you can choose the version by using the relative method on the main class.
 Available methods are:
-* ```Peast\Peast::ES6(source, options)```: parse using EcmaScript 6 syntax
-* ```Peast\Peast::ES7(source, options)```: parse using EcmaScript 7 syntax
+* ```Peast::ES2015(source, options)``` or ```Peast::ES6(source, options)```: parse using EcmaScript 2015 (ES6) syntax
+* ```Peast::ES2016(source, options)``` or ```Peast::ES7(source, options)```: parse using EcmaScript 2016 (ES7) syntax
+* ```Peast::latest(source, options)```: parse using the latest EcmaScript syntax version implemented
 
 Options
 -------------

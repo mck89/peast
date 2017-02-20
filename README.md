@@ -21,7 +21,7 @@ Then in your script include the autoloader and you can start using Peast:
 require_once "vendor/autoload.php";
 
 $source = "var a = 1"; //Your JavaScript code
-$ast = Peast\Peast::ES7($source, $options)->parse(); //Parse it!
+$ast = Peast\Peast::latest($source, $options)->parse(); //Parse it!
 ```
 
 Documentation
@@ -58,3 +58,11 @@ Changelog
 * __BC break__: removed Function_ and Class_ interfaces and traits and replaced them with abstract classes
 * __BC break__: if sourceEncoding is not specified, the parser won't try to autodetect it, but will assume UTF-8
 * __BC break__: Literal is now an abstract class that is extended by the new classes for literals: StringLiteral, NumericLiteral, BooleanLiteral and NullLiteral
+
+#### 1.4
+* Since EcmaScript dropped support for ES(Number) in favour of ES(Year) versions:
+    * `ES6` namespace have been replaced by `ES2015`
+    * `Peast::ES2015` method have been added to Peast main class, `Peast::ES6` method still exists to preserve BC and calls `Peast::ES2015` internally
+    * `ES7` namespace have been replaced by `ES2016`
+    * `Peast::ES2016` method have been added to Peast main class, `Peast::ES7` method still exists to preserve BC and calls `Peast::ES2016` internally
+    * `Peast::latest` method have been added to Peast main class to allow parsing with the latest EcmaScript version implemented

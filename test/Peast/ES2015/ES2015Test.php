@@ -1,13 +1,13 @@
 <?php
-namespace test\Peast\ES6;
+namespace test\Peast\ES2015;
 
-class ES6Test extends \test\Peast\TestBase
+class ES2015Test extends \test\Peast\TestBase
 {
-    protected $parser = "ES6";
+    protected $parser = "ES2015";
     
     protected function getTestVersions()
     {
-        return array("ES6");
+        return array("ES2015");
     }
     
     public function jsParserTestFilesProvider()
