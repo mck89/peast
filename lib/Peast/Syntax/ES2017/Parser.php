@@ -17,6 +17,17 @@ namespace Peast\Syntax\ES2017;
 class Parser extends \Peast\Syntax\ES2016\Parser
 {
     /**
+     * Initializes parser context
+     * 
+     * @return void
+     */
+    protected function initContext()
+    {
+        parent::initContext();
+        $this->context->allowAwait = false;
+    }
+    
+    /**
      * Parses an arguments list
      * 
      * @return array|null

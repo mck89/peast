@@ -84,7 +84,7 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Initializes parser context
      * 
-     * @return stdClass
+     * @return void
      */
     protected function initContext()
     {
