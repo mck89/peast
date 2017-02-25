@@ -9,4 +9,11 @@ class ES2017Test extends \test\Peast\ES2016\ES2016Test
     {
         return array("ES2015", "ES2016", "ES2017");
     }
+    
+    protected function getExcludedTests()
+    {
+        return array(
+            "CallExpression/Invalid6.js"
+        );
+    }
 }

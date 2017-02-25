@@ -16,4 +16,36 @@ namespace Peast\Syntax\ES2017;
  */
 class Parser extends \Peast\Syntax\ES2016\Parser
 {
+    /**
+     * Parses an arguments list
+     * 
+     * @return array|null
+     */
+    protected function parseArgumentList()
+    {
+        $list = array();
+        while (true) {
+            $spread = $this->scanner->consume("...");
+            $exp = $this->isolateContext(
+                array("allowIn" => true), "parseAssignmentExpression"
+            );
+            if (!$exp) {
+                if ($spread) {
+                    return $this->error();
+                }
+                break;
+            }
+            if ($spread) {
+                $node = $this->createNode("SpreadElement", $spread);
+                $node->setArgument($exp);
+                $list[] = $this->completeNode($node);
+            } else {
+                $list[] = $exp;
+            }
+            if (!$this->scanner->consume(",")) {
+                break;
+            }
+        }
+        return $list;
+    }
 }

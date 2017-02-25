@@ -20,6 +20,8 @@ abstract class TestBase extends \PHPUnit_Framework_TestCase
     
     protected function getTestVersions() {}
     
+    protected function getExcludedTests() {return array();}
+    
     protected function getJsTestFiles($jsType = self::JS_PARSE)
     {
         $invalid = $jsType === self::JS_INVALID;
@@ -34,10 +36,14 @@ abstract class TestBase extends \PHPUnit_Framework_TestCase
                 glob($dir . $ds . $version . $ds . "files" . $ds . "*" . $ds . "*" . $ds . "*.js")
             );
         }
+        $excludedTests = array_flip($this->getExcludedTests());
         foreach ($files as $jsFile) {
             $isInvalid = strpos($jsFile, "Invalid");
             $parts = explode($ds, $jsFile);
-            $testName = implode($ds, array_slice($parts, -2));
+            $testName = implode("/", array_slice($parts, -2));
+            if (isset($excludedTests[$testName])) {
+                continue;
+            }
             if ($isInvalid && $invalid) {
                 $testFiles[$testName] = array($jsFile);
             } elseif (!$isInvalid && !$invalid) {
