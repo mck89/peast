@@ -10,6 +10,9 @@
         <testsuite name="ES2016">
             <directory>test/Peast/ES2016</directory>
         </testsuite>
+        <testsuite name="ES2017">
+            <directory>test/Peast/ES2017</directory>
+        </testsuite>
         <testsuite name="Traverser">
             <directory>test/Peast/Traverser</directory>
         </testsuite>

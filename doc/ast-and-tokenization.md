@@ -61,6 +61,7 @@ Peast can parse different versions of EcmaScript, you can choose the version by 
 Available methods are:
 * ```Peast::ES2015(source, options)``` or ```Peast::ES6(source, options)```: parse using EcmaScript 2015 (ES6) syntax
 * ```Peast::ES2016(source, options)``` or ```Peast::ES7(source, options)```: parse using EcmaScript 2016 (ES7) syntax
+* ```Peast::ES2017(source, options)```: parse using EcmaScript 2017 syntax
 * ```Peast::latest(source, options)```: parse using the latest EcmaScript syntax version implemented
 
 Options
