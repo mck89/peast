@@ -1267,14 +1267,15 @@ class Parser extends \Peast\Syntax\Parser
     {
         $valid = true;
         $list = array();
-        while ($param = $this->parseBindingElement()) {
-            $list[] = $param;
+        while (
+            ($param = $this->parseBindingRestElement()) ||
+            $param = $this->parseBindingElement()
+        ) {
             $valid = true;
-            if ($this->scanner->consume(",")) {
-                if ($restParam = $this->parseBindingRestElement()) {
-                    $list[] = $restParam;
-                    break;
-                }
+            $list[] = $param;
+            if ($param->getType() === "RestElement") {
+                break;
+            } elseif ($this->scanner->consume(",")) {
                 $valid = false;
             } else {
                 break;
