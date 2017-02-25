@@ -2907,6 +2907,7 @@ class Parser extends \Peast\Syntax\Parser
             } else {
                 $list[] = $exp;
             }
+            $start = false;
             $valid = true;
             if (!$this->scanner->consume(",")) {
                 break;
@@ -2914,7 +2915,6 @@ class Parser extends \Peast\Syntax\Parser
                 $valid = false;
             }
         }
-        $start = false;
         if (!$valid) {
             return $this->error();
         }
