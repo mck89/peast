@@ -2863,7 +2863,7 @@ class Parser extends \Peast\Syntax\Parser
     }
     
     /**
-     * Parses an arguments list wrapped in curly brackets
+     * Parses an arguments list wrapped in round brackets
      * 
      * @return array|null
      */
