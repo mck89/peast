@@ -9,4 +9,9 @@ class ES2016Test extends \test\Peast\ES2015\ES2015Test
     {
         return array("ES2015", "ES2016");
     }
+    
+    public function testParserAlias()
+    {
+        $this->assertTrue(\Peast\Peast::ES7("") instanceof \Peast\Syntax\ES2016\Parser);
+    }
 }

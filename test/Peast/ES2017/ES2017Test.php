@@ -16,4 +16,6 @@ class ES2017Test extends \test\Peast\ES2016\ES2016Test
             "CallExpression/Invalid6.js"
         );
     }
+    
+    public function testParserAlias() {}
 }
