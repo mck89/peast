@@ -59,4 +59,25 @@ class Parser extends \Peast\Syntax\ES2016\Parser
         }
         return $list;
     }
+    
+    /**
+     * Parses a parameter list
+     * 
+     * @return Node\Node[]|null
+     */
+    protected function parseFormalParameterList()
+    {
+        $list = array();
+        while (
+            ($param = $this->parseBindingRestElement()) ||
+            $param = $this->parseBindingElement()
+        ) {
+            $list[] = $param;
+            if ($param->getType() === "RestElement" ||
+                !$this->scanner->consume(",")) {
+                break;
+            }
+        }
+        return $list;
+    }
 }

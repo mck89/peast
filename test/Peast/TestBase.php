@@ -11,7 +11,7 @@ abstract class TestBase extends \PHPUnit_Framework_TestCase
     
     const JS_RENDERER = 4;
     
-    protected $tokensTestProps = array("type", "value", "loc", "range");
+    protected $tokensTestProps = array("type", "value", "location");
     
     protected $tokensIdentifiersAsKeywords = array(
         "implements", "interface", "package", "private", "protected", "public",
@@ -83,7 +83,7 @@ abstract class TestBase extends \PHPUnit_Framework_TestCase
                     $this->fixComparison($compare, $tokens);
                 }
                 foreach ($compare as $k => $v) {
-                    if ($tokens && !in_array($k, $this->tokensTestProps)) {
+                    if ($tokens && isset($compare->type) && !in_array($k, $this->tokensTestProps)) {
                         continue;
                     }
                     $fn = "get" . ucfirst($k);

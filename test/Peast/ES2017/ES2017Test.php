@@ -13,7 +13,8 @@ class ES2017Test extends \test\Peast\ES2016\ES2016Test
     protected function getExcludedTests()
     {
         return array(
-            "CallExpression/Invalid6.js"
+            "CallExpression/Invalid6.js",
+            "Functions/InvalidArguments.js"
         );
     }
     
