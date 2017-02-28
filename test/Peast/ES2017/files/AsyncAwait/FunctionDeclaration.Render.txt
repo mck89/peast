@@ -1,0 +1,10 @@
+async function test () {
+	await foo();
+}
+/**************************************************/
+async function test(){await foo();}
+/**************************************************/
+async function test (  )
+{
+	await foo(  );
+}

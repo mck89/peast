@@ -1,0 +1,10 @@
+var a = async function test () {
+		await foo();
+	};
+/**************************************************/
+var a=async function test(){await foo();};
+/**************************************************/
+var a = async function test (  )
+	{
+		await foo(  );
+	};

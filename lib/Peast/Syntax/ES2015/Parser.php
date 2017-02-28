@@ -2997,8 +2997,6 @@ class Parser extends \Peast\Syntax\Parser
         if ($token = $this->scanner->consume("this")) {
             $node = $this->createNode("ThisExpression", $token);
             return $this->completeNode($node);
-        } elseif ($exp = $this->parseIdentifier(self::ID_MIXED)) {
-            return $exp;
         } elseif ($exp = $this->parseLiteral()) {
             return $exp;
         } elseif ($exp = $this->parseArrayLiteral()) {
@@ -3012,6 +3010,8 @@ class Parser extends \Peast\Syntax\Parser
         } elseif ($exp = $this->parseRegularExpressionLiteral()) {
             return $exp;
         } elseif ($exp = $this->parseTemplateLiteral()) {
+            return $exp;
+        } elseif ($exp = $this->parseIdentifier(self::ID_MIXED)) {
             return $exp;
         } elseif ($token = $this->scanner->consume("(")) {
             

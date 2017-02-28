@@ -207,9 +207,10 @@ class Parser extends \Peast\Syntax\ES2016\Parser
     }
     
     /**
-     * Checks if an async function can start from the current position
+     * Checks if an async function can start from the current position. Returns
+     * the async token or null if not found
      * 
-     * @return bool
+     * @return Token
      */
     protected function checkAsyncFunctionStart()
     {
@@ -217,7 +218,9 @@ class Parser extends \Peast\Syntax\ES2016\Parser
                $asyncToken->getValue() === "async" &&
                ($nextToken = $this->scanner->getNextToken()) &&
                $nextToken->getValue() === "function" &&
-               $this->scanner->noLineTerminators(true);
+               $this->scanner->noLineTerminators(true) ?
+               $asyncToken :
+               null;
     }
     
     /**
@@ -232,7 +235,7 @@ class Parser extends \Peast\Syntax\ES2016\Parser
         $default = false, $allowGenerator = true
     ) {
         $async = false;
-        if ($this->checkAsyncFunctionStart()) {
+        if ($asyncToken = $this->checkAsyncFunctionStart()) {
             $this->scanner->consumeToken();
             $allowGenerator = false;
             $async = true;
@@ -269,7 +272,10 @@ class Parser extends \Peast\Syntax\ES2016\Parser
                     $tokenBodyStart->getLocation()->getStart()
                 );
                 $body->setEndPosition($this->scanner->getPosition());
-                $node = $this->createNode("FunctionDeclaration", $token);
+                $node = $this->createNode(
+                    "FunctionDeclaration",
+                    $async ? $asyncToken : $token
+                );
                 if ($id) {
                     $node->setId($id);
                 }
@@ -294,7 +300,7 @@ class Parser extends \Peast\Syntax\ES2016\Parser
     {
         $allowGenerator = true;
         $async = false;
-        if ($this->checkAsyncFunctionStart()) {
+        if ($asyncToken = $this->checkAsyncFunctionStart()) {
             $this->scanner->consumeToken();
             $allowGenerator = false;
             $async = true;
@@ -330,7 +336,10 @@ class Parser extends \Peast\Syntax\ES2016\Parser
                     $tokenBodyStart->getLocation()->getStart()
                 );
                 $body->setEndPosition($this->scanner->getPosition());
-                $node = $this->createNode("FunctionExpression", $token);
+                $node = $this->createNode(
+                    "FunctionExpression",
+                    $async ? $asyncToken : $token
+                );
                 $node->setId($id);
                 $node->setParams($params);
                 $node->setBody($body);
