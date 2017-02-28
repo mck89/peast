@@ -9,6 +9,8 @@
  */
 namespace Peast\Syntax\ES2017;
 
+use \Peast\Syntax\Node;
+
 /**
  * ES2017 parser class
  * 
@@ -24,6 +26,15 @@ class Parser extends \Peast\Syntax\ES2016\Parser
     protected $lookahead = array(
         "export" => array("function", "class", "async"),
         "expression" => array("{", "function", "class", "async", array("let", "["))
+    );
+    
+    /**
+     * Unary operators
+     * 
+     * @var array 
+     */
+    protected $unaryOperators = array(
+        "await", "delete", "void", "typeof", "++", "--", "+", "-", "~", "!"
     );
     
     /**
@@ -89,6 +100,50 @@ class Parser extends \Peast\Syntax\ES2016\Parser
             }
         }
         return $list;
+    }
+    
+    /**
+     * Parses a unary expression
+     * 
+     * @return Node\Node|null
+     */
+    protected function parseUnaryExpression()
+    {
+        if ($expr = $this->parsePostfixExpression()) {
+            return $expr;
+        } elseif ($token = $this->scanner->consumeOneOf($this->unaryOperators)) {
+            if ($argument = $this->parseUnaryExpression()) {
+                
+                $op = $token->getValue();
+                
+                //Deleting a variable without accessing its properties is a
+                //syntax error in strict mode
+                if ($op === "delete" &&
+                    $this->scanner->getStrictMode() &&
+                    $argument instanceof Node\Identifier) {
+                    return $this->error(
+                        "Deleting an unqualified identifier is not allowed in strict mode"
+                    );
+                }
+                
+                if ($op === "await") {
+                    $node = $this->createNode("AwaitExpression", $token);
+                } else {
+                    if ($op === "++" || $op === "--") {
+                        $node = $this->createNode("UpdateExpression", $token);
+                        $node->setPrefix(true);
+                    } else {
+                        $node = $this->createNode("UnaryExpression", $token);
+                    }
+                    $node->setOperator($op);
+                }
+                $node->setArgument($argument);
+                return $this->completeNode($node);
+            }
+
+            return $this->error();
+        }
+        return null;
     }
     
     /**

@@ -140,6 +140,9 @@ class Renderer
                          "=>" .
                          $this->renderStatementBlock($node->getBody(), true);
             break;
+            case "AwaitExpression":
+                $code .= "await " . $this->renderNode($node->getArgument());
+            break;
             case "AssignmentExpression":
             case "AssignmentPattern":
             case "BinaryExpression":
