@@ -66,6 +66,16 @@ class Parser extends \Peast\Syntax\Parser
     );
     
     /**
+     * Configurable lookaheads
+     * 
+     * @var array 
+     */
+    protected $lookahead = array(
+        "export" => array("function", "class"),
+        "expression" => array("{", "function", "class", array("let", "["))
+    );
+    
+    /**
      * Unary operators
      * 
      * @var array 
@@ -828,8 +838,7 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseExpressionStatement()
     {
-        $lookahead = array("{", "function", "class", array("let", "["));
-        if (!$this->scanner->isBefore($lookahead, true) &&
+        if (!$this->scanner->isBefore($this->lookahead["expression"], true) &&
             $expression = $this->isolateContext(
                 array("allowIn" => true), "parseExpression"
             )
@@ -1664,7 +1673,7 @@ class Parser extends \Peast\Syntax\Parser
                     $node->setDeclaration($declaration);
                     return $this->completeNode($node);
                     
-                } elseif (!$this->scanner->isBefore(array("function", "class")) &&
+                } elseif (!$this->scanner->isBefore($this->lookahead["export"]) &&
                     ($declaration = $this->isolateContext(
                         array(null, "allowIn" => true),
                         "parseAssignmentExpression"

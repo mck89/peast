@@ -17,6 +17,16 @@ namespace Peast\Syntax\ES2017;
 class Parser extends \Peast\Syntax\ES2016\Parser
 {
     /**
+     * Configurable lookaheads
+     * 
+     * @var array 
+     */
+    protected $lookahead = array(
+        "export" => array("function", "class", "async"),
+        "expression" => array("{", "function", "class", "async", array("let", "["))
+    );
+    
+    /**
      * Initializes parser context
      * 
      * @return void
