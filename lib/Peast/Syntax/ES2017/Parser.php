@@ -25,8 +25,16 @@ class Parser extends \Peast\Syntax\ES2016\Parser
      * @var array 
      */
     protected $lookahead = array(
-        "export" => array("function", "class", "async"),
-        "expression" => array("{", "function", "class", "async", array("let", "["))
+        "export" => array(
+            "tokens"=> array("function", "class", array("async", true)),
+            "next"=> true
+        ),
+        "expression" => array(
+            "tokens"=> array(
+                "{", "function", "class", array("async", true), array("let", "[")
+            ),
+            "next"=> true
+        )
     );
     
     /**

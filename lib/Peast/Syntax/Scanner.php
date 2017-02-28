@@ -568,9 +568,14 @@ abstract class Scanner
             return false;
         }
         foreach ($expected as $val) {
-            if (is_array($val) && $val[0] === $token->getValue() &&
-                $val[1] === $this->nextToken->getValue()
-            ) {
+            if (!is_array($val) || $val[0] !== $token->getValue()) {
+                continue;
+            }
+            //If the second value in the array is true check that the current
+            //token is not followed by line terminators, otherwise compare its
+            //value to the next token
+            if (($val[1] === true && $this->noLineTerminators(true)) ||
+                ($val[1] !== true && $val[1] === $this->nextToken->getValue())) {
                 return true;
             }
         }
