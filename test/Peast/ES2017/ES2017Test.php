@@ -14,7 +14,8 @@ class ES2017Test extends \test\Peast\ES2016\ES2016Test
     {
         return array(
             "CallExpression/Invalid6.js",
-            "Functions/InvalidArguments.js"
+            "Functions/InvalidArguments.js",
+            "ArrowFunction/Invalid5.js"
         );
     }
     
