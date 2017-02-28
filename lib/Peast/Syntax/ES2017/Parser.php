@@ -10,6 +10,7 @@
 namespace Peast\Syntax\ES2017;
 
 use \Peast\Syntax\Node;
+use \Peast\Syntax\Token;
 
 /**
  * ES2017 parser class
@@ -26,15 +27,6 @@ class Parser extends \Peast\Syntax\ES2016\Parser
     protected $lookahead = array(
         "export" => array("function", "class", "async"),
         "expression" => array("{", "function", "class", "async", array("let", "["))
-    );
-    
-    /**
-     * Unary operators
-     * 
-     * @var array 
-     */
-    protected $unaryOperators = array(
-        "await", "delete", "void", "typeof", "++", "--", "+", "-", "~", "!"
     );
     
     /**
@@ -103,15 +95,75 @@ class Parser extends \Peast\Syntax\ES2016\Parser
     }
     
     /**
+     * Parses an identifier
+     * 
+     * @param int   $mode       Parsing mode, one of the id parsing mode
+     *                          constants
+     * @param string $after     If a string is passed in this parameter, the
+     *                          identifier is parsed only if preceeds this string
+     * 
+     * @return Node\Identifier|null
+     */
+    protected function parseIdentifier($mode, $after = null)
+    {
+        $token = $this->scanner->getToken();
+        if (!$token) {
+            return null;
+        }
+        if ($after !== null) {
+            $next = $this->scanner->getNextToken();
+            if (!$next || $next->getValue() !== $after) {
+                return null;
+            }
+        }
+        $type = $token->getType();
+        switch ($type) {
+            case Token::TYPE_BOOLEAN_LITERAL:
+            case Token::TYPE_NULL_LITERAL:
+                if ($mode !== self::ID_ALLOW_ALL) {
+                    return null;
+                }
+            break;
+            case Token::TYPE_KEYWORD:
+                if ($mode === self::ID_ALLOW_NOTHING) {
+                    return null;
+                } elseif ($mode === self::ID_MIXED &&
+                    $this->scanner->isStrictModeKeyword($token)
+                ) {
+                    return null;
+                }
+            break;
+            default:
+                if ($type !== Token::TYPE_IDENTIFIER) {
+                    return null;
+                } elseif ($mode !== self::ID_ALLOW_ALL &&
+                    $this->context->allowAwait &&
+                    $token->getValue() === "await"
+                ) {
+                    return null;
+                }
+            break;
+        }
+        $this->scanner->consumeToken();
+        $node = $this->createNode("Identifier", $token);
+        $node->setName($token->getValue());
+        return $this->completeNode($node);
+    }
+    
+    /**
      * Parses a unary expression
      * 
      * @return Node\Node|null
      */
     protected function parseUnaryExpression()
     {
+        $operators = $this->unaryOperators;
+        if ($this->context->allowAwait) {
+            $operators[] = "await";
+        }
         if ($expr = $this->parsePostfixExpression()) {
             return $expr;
-        } elseif ($token = $this->scanner->consumeOneOf($this->unaryOperators)) {
+        } elseif ($token = $this->scanner->consumeOneOf($operators)) {
             if ($argument = $this->parseUnaryExpression()) {
                 
                 $op = $token->getValue();
