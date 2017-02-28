@@ -523,15 +523,25 @@ abstract class Scanner
      * Checks that there are not line terminators following the current scan
      * position before next token
      * 
+     * @param bool $nextToken By default it checks the current token position
+     *                        relative to the current position, if this
+     *                        parameter is true the check will be done relative
+     *                        to the next token
+     * 
      * @return bool
      */
-    public function noLineTerminators()
+    public function noLineTerminators($nextToken = false)
     {
+        if ($nextToken) {
+            $nextToken = $this->getNextToken();
+            $refLine = !$nextToken ? null :
+                        $nextToken->getLocation()->getEnd()->getLine();
+        } else {
+            $refLine = $this->getPosition()->getLine();
+        }
         $token = $this->getToken();
-        $position = $this->getPosition();
         return $token &&
-               $token->getLocation()->getEnd()->getLine() ===
-               $position->getLine();
+               $token->getLocation()->getEnd()->getLine() === $refLine;
     }
     
     /**

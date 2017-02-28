@@ -325,6 +325,9 @@ class Renderer
             case "FunctionDeclaration":
             case "FunctionExpression":
                 $id = $node->getId();
+                if ($node->getAsync()) {
+                    $code .= "async ";
+                }
                 $code .= "function";
                 if ($node->getGenerator()) {
                     $code .= $this->renderOpts->sao .

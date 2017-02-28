@@ -52,6 +52,13 @@ abstract class Function_ extends Node
     protected $generator = false;
     
     /**
+     * Async flag that is true when it is an async function
+     * 
+     * @var bool 
+     */
+    protected $async = false;
+    
+    /**
      * Returns function name
      * 
      * @return Identifier
@@ -143,6 +150,29 @@ abstract class Function_ extends Node
     public function setGenerator($generator)
     {
         $this->generator = (bool) $generator;
+        return $this;
+    }
+    
+    /**
+     * Returns the async flag that is true when it is an async function
+     * 
+     * @return bool
+     */
+    public function getAsync()
+    {
+        return $this->async;
+    }
+    
+    /**
+     * Sets the async flag that is true when it is an async function
+     * 
+     * @param bool $async Async flag
+     * 
+     * @return $this
+     */
+    public function setAsync($async)
+    {
+        $this->async = (bool) $async;
         return $this;
     }
 }
