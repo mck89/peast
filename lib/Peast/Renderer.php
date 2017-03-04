@@ -128,6 +128,9 @@ class Renderer
                          "]";
             break;
             case "ArrowFunctionExpression":
+                if ($node->getAsync()) {
+                    $code .= "async" . $this->renderOpts->sao;
+                }
                 $code .= "(" .
                          $this->renderOpts->sirb .
                          $this->joinNodes(

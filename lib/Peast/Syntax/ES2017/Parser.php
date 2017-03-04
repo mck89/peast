@@ -210,14 +210,20 @@ class Parser extends \Peast\Syntax\ES2016\Parser
      * Checks if an async function can start from the current position. Returns
      * the async token or null if not found
      * 
+     * @param bool $checkFn If false it won't check if the async keyword is
+     *                      followed by "function"
+     * 
      * @return Token
      */
-    protected function checkAsyncFunctionStart()
+    protected function checkAsyncFunctionStart($checkFn = true)
     {
         return ($asyncToken = $this->scanner->getToken()) &&
                $asyncToken->getValue() === "async" &&
-               ($nextToken = $this->scanner->getNextToken()) &&
-               $nextToken->getValue() === "function" &&
+               (
+                    !$checkFn ||
+                    (($nextToken = $this->scanner->getNextToken()) &&
+                    $nextToken->getValue() === "function")
+               ) &&
                $this->scanner->noLineTerminators(true) ?
                $asyncToken :
                null;
@@ -376,10 +382,8 @@ class Parser extends \Peast\Syntax\ES2016\Parser
             $position = $token;
             $error = true;
             $generator = true;
-        } elseif ($token = $this->scanner->consume("async")) {
-            if (!$this->scanner->noLineTerminators()) {
-                return $this->error();
-            }
+        } elseif ($token = $this->checkAsyncFunctionStart(false)) {
+            $this->scanner->consumeToken();
             $position = $token;
             $error = true;
             $async = true;
@@ -467,6 +471,89 @@ class Parser extends \Peast\Syntax\ES2016\Parser
         } else {
             $this->scanner->setState($state);
         }
+        return null;
+    }
+    
+    /**
+     * Parses the body of an arrow function. The returned value is an array
+     * where the first element is the function body and the second element is
+     * a boolean indicating if the body is wrapped in curly braces
+     * 
+     * @param bool  $async  Async body mode
+     * 
+     * @return array|null
+     */
+    protected function parseConciseBody($async = false)
+    {
+        if ($token = $this->scanner->consume("{")) {
+            
+            if (($body = $this->isolateContext(
+                    $async ? array(null, "allowAwait" => true) : null,
+                    "parseFunctionBody"
+                )) &&
+                $this->scanner->consume("}")
+            ) {
+                $body->setStartPosition($token->getLocation()->getStart());
+                $body->setEndPosition($this->scanner->getPosition());
+                return array($body, false);
+            }
+            
+            return $this->error();
+        } elseif (!$this->scanner->isBefore(array("{")) &&
+            $body = $this->isolateContext(
+                $async ?
+                array("allowAwait" => true) :
+                array("allowYield" => false, "allowAwait" => false),
+                "parseAssignmentExpression"
+            )
+        ) {
+            return array($body, true);
+        }
+        return null;
+    }
+    
+    /**
+     * Parses an arrow function
+     * 
+     * @return Node\ArrowFunctionExpression|null
+     */
+    protected function parseArrowFunction()
+    {
+        $state = $this->scanner->getState();
+        $async = false;
+        if ($asyncToken = $this->checkAsyncFunctionStart(false)) {
+            $this->scanner->consumeToken();
+            $async = true;
+        }
+        if (($params = $this->parseArrowParameters()) !== null) {
+            
+            if ($this->scanner->noLineTerminators() &&
+                $this->scanner->consume("=>")
+            ) {
+                
+                if ($body = $this->parseConciseBody($async)) {
+                    if (is_array($params)) {
+                        $pos = $params[1];
+                        $params = $params[0];
+                    } else {
+                        $pos = $params;
+                        $params = array($params);
+                    }
+                    if ($async) {
+                        $pos = $asyncToken;
+                    }
+                    $node = $this->createNode("ArrowFunctionExpression", $pos);
+                    $node->setParams($params);
+                    $node->setBody($body[0]);
+                    $node->setExpression($body[1]);
+                    $node->setAsync($async);
+                    return $this->completeNode($node);
+                }
+            
+                return $this->error();
+            }
+        }
+        $this->scanner->setState($state);
         return null;
     }
 }

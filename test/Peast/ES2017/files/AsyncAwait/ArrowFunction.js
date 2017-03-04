@@ -1,0 +1,1 @@
+var test = async a => await test();

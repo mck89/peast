@@ -1,0 +1,12 @@
+var test = async (a, b) => {
+		alert(a);
+		await test(b);
+	};
+/**************************************************/
+var test=async(a,b)=>{alert(a);await test(b);};
+/**************************************************/
+var test = async ( a, b ) =>
+	{
+		alert( a );
+		await test( b );
+	};
