@@ -2103,9 +2103,8 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseMethodDefinition()
     {
         $state = $this->scanner->getState();
-        $generator = false;
+        $generator = $error = false;
         $position = null;
-        $error = false;
         $kind = Node\MethodDefinition::KIND_METHOD;
         if ($token = $this->scanner->consume("get")) {
             $position = $token;

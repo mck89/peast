@@ -352,4 +352,121 @@ class Parser extends \Peast\Syntax\ES2016\Parser
         }
         return null;
     }
+    
+    /**
+     * Parses a method definition
+     * 
+     * @return Node\MethodDefinition|null
+     */
+    protected function parseMethodDefinition()
+    {
+        $state = $this->scanner->getState();
+        $generator = $error = $async = false;
+        $position = null;
+        $kind = Node\MethodDefinition::KIND_METHOD;
+        if ($token = $this->scanner->consume("get")) {
+            $position = $token;
+            $kind = Node\MethodDefinition::KIND_GET;
+            $error = true;
+        } elseif ($token = $this->scanner->consume("set")) {
+            $position = $token;
+            $kind = Node\MethodDefinition::KIND_SET;
+            $error = true;
+        } elseif ($token = $this->scanner->consume("*")) {
+            $position = $token;
+            $error = true;
+            $generator = true;
+        } elseif ($token = $this->scanner->consume("async")) {
+            if (!$this->scanner->noLineTerminators()) {
+                return $this->error();
+            }
+            $position = $token;
+            $error = true;
+            $async = true;
+        }
+        
+        //Handle the case where get and set are methods name and not the
+        //definition of a getter/setter
+        if ($kind !== Node\MethodDefinition::KIND_METHOD &&
+            $this->scanner->consume("(")
+        ) {
+            $this->scanner->setState($state);
+            $kind = Node\MethodDefinition::KIND_METHOD;
+            $error = false;
+        }
+        
+        if ($prop = $this->parsePropertyName()) {
+            
+            if (!$position) {
+                $position = isset($prop[2]) ? $prop[2] : $prop[0];
+            }
+            if ($tokenFn = $this->scanner->consume("(")) {
+                
+                $error = true;
+                $params = array();
+                if ($kind === Node\MethodDefinition::KIND_SET) {
+                    $params = $this->isolateContext(
+                        null, "parseBindingElement"
+                    );
+                    if ($params) {
+                        $params = array($params);
+                    }
+                } elseif ($kind === Node\MethodDefinition::KIND_METHOD) {
+                    $params = $this->isolateContext(
+                        null, "parseFormalParameterList"
+                    );
+                }
+                
+                if ($generator) {
+                    $flags = array(null, "allowYield" => true);
+                } elseif ($async) {
+                    $flags = array(null, "allowAwait" => true);
+                } else {
+                    $flags = null;
+                }
+
+                if ($params !== null &&
+                    $this->scanner->consume(")") &&
+                    ($tokenBodyStart = $this->scanner->consume("{")) &&
+                    (($body = $this->isolateContext(
+                        $flags,
+                        "parseFunctionBody"
+                    )) || true) &&
+                    $this->scanner->consume("}")
+                ) {
+
+                    if ($prop[0] instanceof Node\Identifier &&
+                        $prop[0]->getName() === "constructor"
+                    ) {
+                        $kind = Node\MethodDefinition::KIND_CONSTRUCTOR;
+                    }
+
+                    $body->setStartPosition(
+                        $tokenBodyStart->getLocation()->getStart()
+                    );
+                    $body->setEndPosition($this->scanner->getPosition());
+                    
+                    $nodeFn = $this->createNode("FunctionExpression", $tokenFn);
+                    $nodeFn->setParams($params);
+                    $nodeFn->setBody($body);
+                    $nodeFn->setGenerator($generator);
+                    $nodeFn->setAsync($async);
+
+                    $node = $this->createNode("MethodDefinition", $position);
+                    $node->setKey($prop[0]);
+                    $node->setValue($this->completeNode($nodeFn));
+                    $node->setKind($kind);
+                    $node->setComputed($prop[1]);
+                    return $this->completeNode($node);
+                }
+            }
+        }
+        
+        if ($error) {
+            return $this->error();
+        } else {
+            $this->scanner->setState($state);
+        }
+        return null;
+    }
 }

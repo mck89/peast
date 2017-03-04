@@ -462,6 +462,8 @@ class Renderer
                 } elseif ($value->getGenerator()) {
                     $code .= "*" .
                              $this->renderOpts->sao;
+                } elseif ($value->getAsync()) {
+                    $code .= "async ";
                 }
                 if ($node->getComputed()) {
                     $code .= "[" .

@@ -1,0 +1,20 @@
+class test {
+	async method (param) {
+		await foo();
+	}
+	method2 () {
+	}
+}
+/**************************************************/
+class test{async method(param){await foo();}method2(){}}
+/**************************************************/
+class test
+{
+	async method ( param )
+	{
+		await foo(  );
+	}
+	method2 (  )
+	{
+	}
+}
