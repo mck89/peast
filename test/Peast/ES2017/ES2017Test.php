@@ -20,4 +20,17 @@ class ES2017Test extends \test\Peast\ES2016\ES2016Test
     }
     
     public function testParserAlias() {}
+    
+    public function keywordIdentifierProvider()
+    {
+        return array_merge(
+            parent::keywordIdentifierProvider(),
+            array(
+                array("var await = 1", true, true),
+                array("a.await", true, true),
+                array("var async = 1", true, true),
+                array("a.async", true, true)
+            )
+        );
+    }
 }
