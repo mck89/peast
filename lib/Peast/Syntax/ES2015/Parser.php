@@ -862,11 +862,11 @@ class Parser extends \Peast\Syntax\Parser
     }
     
     /**
-     * Parses do-while, while, for, for-in and for-of statements
+     * Parses a do-while statement
      * 
-     * @return Node\Node|null
+     * @return Node\DoWhileStatement|null
      */
-    protected function parseIterationStatement()
+    protected function parseDoWhileStatement()
     {
         if ($token = $this->scanner->consume("do")) {
             
@@ -884,9 +884,20 @@ class Parser extends \Peast\Syntax\Parser
                 $node->setTest($test);
                 return $this->completeNode($node);
             }
-            return $this->error();
             
-        } elseif ($token = $this->scanner->consume("while")) {
+            return $this->error();
+        }
+        return null;
+    }
+    
+    /**
+     * Parses a while statement
+     * 
+     * @return Node\WhileStatement|null
+     */
+    protected function parseWhileStatement()
+    {
+        if ($token = $this->scanner->consume("while")) {
             
             if ($this->scanner->consume("(") &&
                 ($test = $this->isolateContext(
@@ -901,219 +912,87 @@ class Parser extends \Peast\Syntax\Parser
                 $node->setBody($body);
                 return $this->completeNode($node);
             }
+            
             return $this->error();
+        }
+        return null;
+    }
+    
+    /**
+     * Parses do-while, while, for, for-in and for-of statements
+     * 
+     * @return Node\Node|null
+     */
+    protected function parseIterationStatement()
+    {
+        if (($node = $this->parseDoWhileStatement()) ||
+            ($node = $this->parseWhileStatement())
+        ) {
+            return $node;
+        }
+        
+        if (!($token = $this->scanner->consume("for"))) {
+            return null;
+        } elseif (!$this->scanner->consume("(")) {
+            return $this->error();
+        }
+        
+        $afterBracketState = $this->scanner->getState();
+        
+        if ($varToken = $this->scanner->consume("var")) {
             
-        } elseif ($token = $this->scanner->consume("for")) {
+            $state = $this->scanner->getState();
             
-            $hasBracket = $this->scanner->consume("(");
-            $afterBracketState = $this->scanner->getState();
-            
-            if (!$hasBracket) {
-                return $this->error();
-            } elseif ($varToken = $this->scanner->consume("var")) {
+            if (($decl = $this->isolateContext(
+                    array("allowIn" => false), "parseVariableDeclarationList"
+                )) &&
+                ($varEndPosition = $this->scanner->getPosition()) &&
+                $this->scanner->consume(";")
+            ) {
+                        
+                $init = $this->createNode(
+                    "VariableDeclaration", $varToken
+                );
+                $init->setKind($init::KIND_VAR);
+                $init->setDeclarations($decl);
+                $init = $this->completeNode($init, $varEndPosition);
                 
-                $state = $this->scanner->getState();
-                
-                if (($decl = $this->isolateContext(
-                        array("allowIn" => false), "parseVariableDeclarationList"
-                    )) &&
-                    ($varEndPosition = $this->scanner->getPosition()) &&
-                    $this->scanner->consume(";")
-                ) {
-                            
-                    $init = $this->createNode(
-                        "VariableDeclaration", $varToken
-                    );
-                    $init->setKind($init::KIND_VAR);
-                    $init->setDeclarations($decl);
-                    $init = $this->completeNode($init, $varEndPosition);
-                    
-                    $test = $this->isolateContext(
-                        array("allowIn" => true), "parseExpression"
-                    );
-                    
-                    if ($this->scanner->consume(";")) {
-                        
-                        $update = $this->isolateContext(
-                            array("allowIn" => true), "parseExpression"
-                        );
-                        
-                        if ($this->scanner->consume(")") &&
-                            $body = $this->parseStatement()
-                        ) {
-                            
-                            $node = $this->createNode("ForStatement", $token);
-                            $node->setInit($init);
-                            $node->setTest($test);
-                            $node->setUpdate($update);
-                            $node->setBody($body);
-                            return $this->completeNode($node);
-                        }
-                    }
-                } else {
-                    
-                    $this->scanner->setState($state);
-                    
-                    if ($decl = $this->parseForBinding()) {
-                        
-                        $left = $this->createNode(
-                            "VariableDeclaration", $varToken
-                        );
-                        $left->setKind($left::KIND_VAR);
-                        $left->setDeclarations(array($decl));
-                        $left = $this->completeNode($left);
-                        
-                        if ($this->scanner->consume("in")) {
-                            
-                            if (($right = $this->isolateContext(
-                                    array("allowIn" => true), "parseExpression"
-                                )) &&
-                                $this->scanner->consume(")") &&
-                                $body = $this->parseStatement()
-                            ) {
-                                
-                                $node = $this->createNode(
-                                    "ForInStatement", $token
-                                );
-                                $node->setLeft($left);
-                                $node->setRight($right);
-                                $node->setBody($body);
-                                return $this->completeNode($node);
-                            }
-                        } elseif ($this->scanner->consume("of")) {
-                            
-                            if (($right = $this->isolateContext(
-                                    array("allowIn" => true),
-                                    "parseAssignmentExpression"
-                                )) &&
-                                $this->scanner->consume(")") &&
-                                $body = $this->parseStatement()
-                            ) {
-                                
-                                $node = $this->createNode(
-                                    "ForOfStatement", $token
-                                );
-                                $node->setLeft($left);
-                                $node->setRight($right);
-                                $node->setBody($body);
-                                return $this->completeNode($node);
-                            }
-                        }
-                    }
-                }
-            } elseif ($init = $this->parseForDeclaration()) {
-                
-                if ($init && $this->scanner->consume("in")) {
-                    if (($right = $this->isolateContext(
-                            array("allowIn" => true), "parseExpression"
-                        )) &&
-                        $this->scanner->consume(")") &&
-                        $body = $this->parseStatement()
-                    ) {
-                        
-                        $node = $this->createNode("ForInStatement", $token);
-                        $node->setLeft($init);
-                        $node->setRight($right);
-                        $node->setBody($body);
-                        return $this->completeNode($node);
-                    }
-                } elseif ($init && $this->scanner->consume("of")) {
-                    if (($right = $this->isolateContext(
-                            array("allowIn" => true),
-                            "parseAssignmentExpression"
-                        )) &&
-                        $this->scanner->consume(")") &&
-                        $body = $this->parseStatement()
-                    ) {
-                        
-                        $node = $this->createNode("ForOfStatement", $token);
-                        $node->setLeft($init);
-                        $node->setRight($right);
-                        $node->setBody($body);
-                        return $this->completeNode($node);
-                    }
-                } else {
-                    
-                    $this->scanner->setState($afterBracketState);
-                    if (
-                        $init = $this->isolateContext(
-                            array("allowIn" => false), "parseLexicalDeclaration"
-                        )
-                    ) {
-                        
-                        $test = $this->isolateContext(
-                            array("allowIn" => true), "parseExpression"
-                        );
-                        if ($this->scanner->consume(";")) {
-                                
-                            $update = $this->isolateContext(
-                                array("allowIn" => true), "parseExpression"
-                            );
-                            
-                            if ($this->scanner->consume(")") &&
-                                $body = $this->parseStatement()
-                            ) {
-                                
-                                $node = $this->createNode(
-                                    "ForStatement", $token
-                                );
-                                $node->setInit($init);
-                                $node->setTest($test);
-                                $node->setUpdate($update);
-                                $node->setBody($body);
-                                return $this->completeNode($node);
-                            }
-                        }
-                    }
-                }
-                
-            } elseif (!$this->scanner->isBefore(array("let"))) {
-                
-                $state = $this->scanner->getState();
-                $notBeforeSB = !$this->scanner->isBefore(
-                    array(array("let", "[")), true
+                $test = $this->isolateContext(
+                    array("allowIn" => true), "parseExpression"
                 );
                 
-                if ($notBeforeSB &&
-                    (($init = $this->isolateContext(
-                        array("allowIn" => false), "parseExpression"
-                    )) || true) &&
-                    $this->scanner->consume(";")
-                ) {
-                
-                    $test = $this->isolateContext(
+                if ($this->scanner->consume(";")) {
+                    
+                    $update = $this->isolateContext(
                         array("allowIn" => true), "parseExpression"
                     );
                     
-                    if ($this->scanner->consume(";")) {
-                            
-                        $update = $this->isolateContext(
-                            array("allowIn" => true), "parseExpression"
-                        );
-                        
-                        if ($this->scanner->consume(")") &&
-                            $body = $this->parseStatement()
-                        ) {
-                            
-                            $node = $this->createNode(
-                                "ForStatement", $token
-                            );
-                            $node->setInit($init);
-                            $node->setTest($test);
-                            $node->setUpdate($update);
-                            $node->setBody($body);
-                            return $this->completeNode($node);
-                        }
-                    }
-                } else {
-                    
-                    $this->scanner->setState($state);
-                    $left = $this->parseLeftHandSideExpression();
-                    $left = $this->expressionToPattern($left);
-                    
-                    if ($notBeforeSB && $left &&
-                        $this->scanner->consume("in")
+                    if ($this->scanner->consume(")") &&
+                        $body = $this->parseStatement()
                     ) {
+                        
+                        $node = $this->createNode("ForStatement", $token);
+                        $node->setInit($init);
+                        $node->setTest($test);
+                        $node->setUpdate($update);
+                        $node->setBody($body);
+                        return $this->completeNode($node);
+                    }
+                }
+            } else {
+                
+                $this->scanner->setState($state);
+                
+                if ($decl = $this->parseForBinding()) {
+                    
+                    $left = $this->createNode(
+                        "VariableDeclaration", $varToken
+                    );
+                    $left->setKind($left::KIND_VAR);
+                    $left->setDeclarations(array($decl));
+                    $left = $this->completeNode($left);
+                    
+                    if ($this->scanner->consume("in")) {
                         
                         if (($right = $this->isolateContext(
                                 array("allowIn" => true), "parseExpression"
@@ -1130,7 +1009,7 @@ class Parser extends \Peast\Syntax\Parser
                             $node->setBody($body);
                             return $this->completeNode($node);
                         }
-                    } elseif ($left && $this->scanner->consume("of")) {
+                    } elseif ($this->scanner->consume("of")) {
                         
                         if (($right = $this->isolateContext(
                                 array("allowIn" => true),
@@ -1151,9 +1030,157 @@ class Parser extends \Peast\Syntax\Parser
                     }
                 }
             }
-            return $this->error();
+        } elseif ($init = $this->parseForDeclaration()) {
+            
+            if ($init && $this->scanner->consume("in")) {
+                if (($right = $this->isolateContext(
+                        array("allowIn" => true), "parseExpression"
+                    )) &&
+                    $this->scanner->consume(")") &&
+                    $body = $this->parseStatement()
+                ) {
+                    
+                    $node = $this->createNode("ForInStatement", $token);
+                    $node->setLeft($init);
+                    $node->setRight($right);
+                    $node->setBody($body);
+                    return $this->completeNode($node);
+                }
+            } elseif ($init && $this->scanner->consume("of")) {
+                if (($right = $this->isolateContext(
+                        array("allowIn" => true),
+                        "parseAssignmentExpression"
+                    )) &&
+                    $this->scanner->consume(")") &&
+                    $body = $this->parseStatement()
+                ) {
+                    
+                    $node = $this->createNode("ForOfStatement", $token);
+                    $node->setLeft($init);
+                    $node->setRight($right);
+                    $node->setBody($body);
+                    return $this->completeNode($node);
+                }
+            } else {
+                
+                $this->scanner->setState($afterBracketState);
+                if (
+                    $init = $this->isolateContext(
+                        array("allowIn" => false), "parseLexicalDeclaration"
+                    )
+                ) {
+                    
+                    $test = $this->isolateContext(
+                        array("allowIn" => true), "parseExpression"
+                    );
+                    if ($this->scanner->consume(";")) {
+                            
+                        $update = $this->isolateContext(
+                            array("allowIn" => true), "parseExpression"
+                        );
+                        
+                        if ($this->scanner->consume(")") &&
+                            $body = $this->parseStatement()
+                        ) {
+                            
+                            $node = $this->createNode(
+                                "ForStatement", $token
+                            );
+                            $node->setInit($init);
+                            $node->setTest($test);
+                            $node->setUpdate($update);
+                            $node->setBody($body);
+                            return $this->completeNode($node);
+                        }
+                    }
+                }
+            }
+            
+        } elseif (!$this->scanner->isBefore(array("let"))) {
+            
+            $state = $this->scanner->getState();
+            $notBeforeSB = !$this->scanner->isBefore(
+                array(array("let", "[")), true
+            );
+            
+            if ($notBeforeSB &&
+                (($init = $this->isolateContext(
+                    array("allowIn" => false), "parseExpression"
+                )) || true) &&
+                $this->scanner->consume(";")
+            ) {
+            
+                $test = $this->isolateContext(
+                    array("allowIn" => true), "parseExpression"
+                );
+                
+                if ($this->scanner->consume(";")) {
+                        
+                    $update = $this->isolateContext(
+                        array("allowIn" => true), "parseExpression"
+                    );
+                    
+                    if ($this->scanner->consume(")") &&
+                        $body = $this->parseStatement()
+                    ) {
+                        
+                        $node = $this->createNode(
+                            "ForStatement", $token
+                        );
+                        $node->setInit($init);
+                        $node->setTest($test);
+                        $node->setUpdate($update);
+                        $node->setBody($body);
+                        return $this->completeNode($node);
+                    }
+                }
+            } else {
+                
+                $this->scanner->setState($state);
+                $left = $this->parseLeftHandSideExpression();
+                $left = $this->expressionToPattern($left);
+                
+                if ($notBeforeSB && $left &&
+                    $this->scanner->consume("in")
+                ) {
+                    
+                    if (($right = $this->isolateContext(
+                            array("allowIn" => true), "parseExpression"
+                        )) &&
+                        $this->scanner->consume(")") &&
+                        $body = $this->parseStatement()
+                    ) {
+                        
+                        $node = $this->createNode(
+                            "ForInStatement", $token
+                        );
+                        $node->setLeft($left);
+                        $node->setRight($right);
+                        $node->setBody($body);
+                        return $this->completeNode($node);
+                    }
+                } elseif ($left && $this->scanner->consume("of")) {
+                    
+                    if (($right = $this->isolateContext(
+                            array("allowIn" => true),
+                            "parseAssignmentExpression"
+                        )) &&
+                        $this->scanner->consume(")") &&
+                        $body = $this->parseStatement()
+                    ) {
+                        
+                        $node = $this->createNode(
+                            "ForOfStatement", $token
+                        );
+                        $node->setLeft($left);
+                        $node->setRight($right);
+                        $node->setBody($body);
+                        return $this->completeNode($node);
+                    }
+                }
+            }
         }
-        return null;
+        return $this->error();
     }
     
     /**
