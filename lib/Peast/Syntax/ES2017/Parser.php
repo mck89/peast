@@ -556,4 +556,122 @@ class Parser extends \Peast\Syntax\ES2016\Parser
         $this->scanner->setState($state);
         return null;
     }
+    
+    /**
+     * Parses a for(var ...) statement
+     * 
+     * @param Token $forToken Token that corresponds to the "for" keyword
+     * 
+     * @return Node\Node|null
+     */
+    protected function parseForVarStatement($forToken)
+    {
+        if (!($varToken = $this->scanner->consume("var"))) {
+            return null;
+        }
+            
+        $state = $this->scanner->getState();
+        
+        if (($decl = $this->isolateContext(
+                array("allowIn" => false), "parseVariableDeclarationList"
+            )) &&
+            ($varEndPosition = $this->scanner->getPosition()) &&
+            $this->scanner->consume(";")
+        ) {
+                    
+            $init = $this->createNode(
+                "VariableDeclaration", $varToken
+            );
+            $init->setKind($init::KIND_VAR);
+            $init->setDeclarations($decl);
+            $init = $this->completeNode($init, $varEndPosition);
+            
+            $test = $this->isolateContext(
+                array("allowIn" => true), "parseExpression"
+            );
+            
+            if ($this->scanner->consume(";")) {
+                
+                $update = $this->isolateContext(
+                    array("allowIn" => true), "parseExpression"
+                );
+                
+                if ($this->scanner->consume(")") &&
+                    $body = $this->parseStatement()
+                ) {
+                    
+                    $node = $this->createNode("ForStatement", $forToken);
+                    $node->setInit($init);
+                    $node->setTest($test);
+                    $node->setUpdate($update);
+                    $node->setBody($body);
+                    return $this->completeNode($node);
+                }
+            }
+        } else {
+            
+            $this->scanner->setState($state);
+            
+            if ($decl = $this->parseForBinding()) {
+                
+                $init = $decl->getId()->getType() === "Identifier" ?
+                        $this->parseInitializer() :
+                        null;
+                if ($init) {
+                    $decl->setInit($init);
+                    $decl->setEndPosition($init->getLocation()->getEnd());
+                }
+                
+                $left = $this->createNode("VariableDeclaration", $varToken);
+                $left->setKind($left::KIND_VAR);
+                $left->setDeclarations(array($decl));
+                $left = $this->completeNode($left);
+                
+                if ($this->scanner->consume("in")) {
+                    
+                    if ($init && $this->scanner->getStrictMode()) {
+                        return $this->error(
+                            "For-in variable initializer not allowed in " .
+                            "strict mode"
+                        );
+                    }
+                    
+                    if (($right = $this->isolateContext(
+                            array("allowIn" => true), "parseExpression"
+                        )) &&
+                        $this->scanner->consume(")") &&
+                        $body = $this->parseStatement()
+                    ) {
+                        
+                        $node = $this->createNode(
+                            "ForInStatement", $forToken
+                        );
+                        $node->setLeft($left);
+                        $node->setRight($right);
+                        $node->setBody($body);
+                        return $this->completeNode($node);
+                    }
+                } elseif (!$init && $this->scanner->consume("of")) {
+                    
+                    if (($right = $this->isolateContext(
+                            array("allowIn" => true), "parseAssignmentExpression"
+                        )) &&
+                        $this->scanner->consume(")") &&
+                        $body = $this->parseStatement()
+                    ) {
+                        
+                        $node = $this->createNode(
+                            "ForOfStatement", $forToken
+                        );
+                        $node->setLeft($left);
+                        $node->setRight($right);
+                        $node->setBody($body);
+                        return $this->completeNode($node);
+                    }
+                }
+            }
+        }
+        
+        return $this->error();
+    }
 }
