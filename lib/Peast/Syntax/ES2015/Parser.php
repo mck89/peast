@@ -1068,8 +1068,7 @@ class Parser extends \Peast\Syntax\Parser
         } else {
             
             $this->scanner->setState($afterBracketState);
-            if (
-                $init = $this->isolateContext(
+            if ($init = $this->isolateContext(
                     array("allowIn" => false), "parseLexicalDeclaration"
                 )
             ) {
@@ -1152,9 +1151,7 @@ class Parser extends \Peast\Syntax\Parser
             $left = $this->parseLeftHandSideExpression();
             $left = $this->expressionToPattern($left);
             
-            if ($notBeforeSB && $left &&
-                $this->scanner->consume("in")
-            ) {
+            if ($notBeforeSB && $left && $this->scanner->consume("in")) {
                 
                 if (($right = $this->isolateContext(
                         array("allowIn" => true), "parseExpression"
