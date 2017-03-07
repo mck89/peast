@@ -19,8 +19,6 @@ class ES2017Test extends \test\Peast\ES2016\ES2016Test
         );
     }
     
-    public function testParserAlias() {}
-    
     public function keywordIdentifierProvider()
     {
         return array_merge(

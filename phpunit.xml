@@ -4,6 +4,9 @@
 	backupGlobals="false"
 	backupStaticAttributes="false">
     <testsuites>
+        <testsuite name="Peast">
+            <file>test/Peast/PeastTest.php</file>
+        </testsuite>
         <testsuite name="ES2015">
             <directory>test/Peast/ES2015</directory>
         </testsuite>

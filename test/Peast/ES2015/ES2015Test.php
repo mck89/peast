@@ -124,9 +124,4 @@ class ES2015Test extends \test\Peast\TestBase
             $this->assertSame($isValid, $validResult);
         }
     }
-    
-    public function testParserAlias()
-    {
-        $this->assertTrue(\Peast\Peast::ES6("") instanceof \Peast\Syntax\ES2015\Parser);
-    }
 }
