@@ -1180,9 +1180,9 @@ abstract class Scanner
      */
     protected function consumeUnicodeEscapeSequence()
     {
-        $char = $this->charAt();
-        if ($char !== "\\" ||
-            ($nextChar = $this->charAt($this->index + 1)) !== "u") {
+        if ($this->charAt() !== "\\" ||
+            $this->charAt($this->index + 1) !== "u"
+        ) {
             return null;
         }
         
