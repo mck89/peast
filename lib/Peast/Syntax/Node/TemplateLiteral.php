@@ -128,4 +128,16 @@ class TemplateLiteral extends Node implements Expression
         }
         return $this->setQuasis($quasis)->setExpressions($expressions);
     }
+    
+    /**
+     * Returns a serializable version of the node
+     * 
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $ret = parent::jsonSerialize();
+        unset($ret["parts"]);
+        return $ret;
+    }
 }
