@@ -16,6 +16,15 @@ namespace Peast\Syntax\Node;
  */
 class NumericLiteral extends Literal
 {
+    /**
+     * Map of node properties
+     * 
+     * @var array 
+     */
+    protected $propertiesMap = array(
+        "format" => false
+    );
+    
     //Format constants
     /**
      * Decimal number format

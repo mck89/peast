@@ -18,6 +18,15 @@ use Peast\Syntax\Utils;
  */
 class StringLiteral extends Literal
 {
+    /**
+     * Map of node properties
+     * 
+     * @var array 
+     */
+    protected $propertiesMap = array(
+        "format" => false
+    );
+    
     //Format constants
     /**
      * Double quoted string
