@@ -142,7 +142,7 @@ class Traverser
     {
         $continue = true;
         
-        foreach ($node->getChildNodesProps() as $prop) {
+        foreach (Syntax\Utils::getNodeProperties($node, true) as $prop) {
             $ucProp = ucfirst($prop);
             $getter = "get$ucProp";
             $setter = "set$ucProp";

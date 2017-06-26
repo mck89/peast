@@ -147,4 +147,48 @@ class Utils
         $str = preg_replace($reg, "\\\\$1", $str);
         return $quote . $str . $quote;
     }
+    
+    /**
+     * Returns the properties map for the given node
+     * 
+     * @param mixed $node Node or class to consider
+     * 
+     * @return array
+     */
+    static protected function getPropertiesMap($node)
+    {
+        static $cache = array();
+        
+        if ($node instanceof \ReflectionClass) {
+            $className = $node->getName();
+        } else {
+            $className = get_class($node);
+        }
+        
+        if (!isset($cache[$className])) {
+            $class = new \ReflectionClass($className);
+            $parent = $class->getParentClass();
+            $props = $parent ? self::getPropertiesMap($parent) : array();
+            $defaults = $class->getDefaultProperties();
+            if (isset($defaults["propertiesMap"])) {
+                $props = array_merge($props, $defaults["propertiesMap"]);
+            }
+            $cache[$className] = $props;
+        }
+        return $cache[$className];
+    }
+    
+    /**
+     * Returns the properties list for the given node
+     * 
+     * @param Node\Node $node        Node to consider
+     * @param bool      $traversable If true it returns only traversable properties
+     * 
+     * @return array
+     */
+    static public function getNodeProperties(Node\Node $node, $traversable = false)
+    {
+        $props = self::getPropertiesMap($node);
+        return array_keys($traversable ? array_filter($props) : $props);
+    }
 }
