@@ -18,11 +18,14 @@ namespace Peast\Syntax\Node;
 class WhileStatement extends Node implements Statement
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("test", "body");
+    protected $propertiesMap = array(
+        "test" => true,
+        "body" => true
+    );
     
     /**
      * The loop condition

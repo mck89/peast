@@ -18,6 +18,16 @@ namespace Peast\Syntax\Node;
 class MetaProperty extends Node implements Expression
 {
     /**
+     * Map of node properties
+     * 
+     * @var array 
+     */
+    protected $propertiesMap = array(
+        "meta" => false,
+        "property" => false
+    );
+    
+    /**
      * Subject
      * 
      * @var string 

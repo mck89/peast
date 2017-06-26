@@ -15,7 +15,17 @@ namespace Peast\Syntax\Node;
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 abstract class Literal extends Node implements Expression
-{   
+{
+    /**
+     * Map of node properties
+     * 
+     * @var array 
+     */
+    protected $propertiesMap = array(
+        "value" => false,
+        "raw" => false
+    );
+    
     /**
      * Node's value
      * 

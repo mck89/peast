@@ -17,11 +17,14 @@ namespace Peast\Syntax\Node;
 class LabeledStatement extends Node implements Statement
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("label", "body");
+    protected $propertiesMap = array(
+        "label" => true,
+        "body" => true
+    );
     
     /**
      * Label

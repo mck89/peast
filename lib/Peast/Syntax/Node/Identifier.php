@@ -17,6 +17,15 @@ namespace Peast\Syntax\Node;
 class Identifier extends Node implements Expression, Pattern
 {
     /**
+     * Map of node properties
+     * 
+     * @var array 
+     */
+    protected $propertiesMap = array(
+        "name" => false
+    );
+    
+    /**
      * The identifier's name
      * 
      * @var string

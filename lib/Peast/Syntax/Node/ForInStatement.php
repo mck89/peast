@@ -18,11 +18,15 @@ namespace Peast\Syntax\Node;
 class ForInStatement extends Node implements Statement
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("left", "right", "body");
+    protected $propertiesMap = array(
+        "left" => true,
+        "right" => true,
+        "body" => true
+    );
     
     /**
      * Iteration variable

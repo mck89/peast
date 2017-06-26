@@ -18,11 +18,14 @@ namespace Peast\Syntax\Node;
 class WithStatement extends Node implements Statement
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("object", "body");
+    protected $propertiesMap = array(
+        "object" => true,
+        "body" => true
+    );
     
     /**
      * The statement subject

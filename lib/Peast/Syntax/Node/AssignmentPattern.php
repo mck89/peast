@@ -18,11 +18,14 @@ namespace Peast\Syntax\Node;
 class AssignmentPattern extends Node implements Pattern
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("left", "right");
+    protected $propertiesMap = array(
+        "left" => true,
+        "right" => true
+    );
     
     /**
      * The left node of the assignment

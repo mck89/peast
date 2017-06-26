@@ -18,11 +18,14 @@ namespace Peast\Syntax\Node;
 class CallExpression extends Node implements Expression
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("callee", "arguments");
+    protected $propertiesMap = array(
+        "callee" => true,
+        "arguments" => true
+    );
     
     /**
      * The callee expression

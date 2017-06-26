@@ -17,11 +17,17 @@ namespace Peast\Syntax\Node;
 abstract class Function_ extends Node
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("id", "params", "body");
+    protected $propertiesMap = array(
+        "id" => true,
+        "params" => true,
+        "body" => true,
+        "generator" => false,
+        "async" => false
+    );
     
     /**
      * Function name

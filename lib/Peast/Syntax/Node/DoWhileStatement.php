@@ -18,11 +18,14 @@ namespace Peast\Syntax\Node;
 class DoWhileStatement extends Node implements Statement
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("body", "test");
+    protected $propertiesMap = array(
+        "body" => true,
+        "test" => true
+    );
     
     /**
      * The loop body

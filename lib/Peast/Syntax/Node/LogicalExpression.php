@@ -18,11 +18,15 @@ namespace Peast\Syntax\Node;
 class LogicalExpression extends Node implements Expression
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("left", "right");
+    protected $propertiesMap = array(
+        "left" => true,
+        "operator" => false,
+        "right" => true
+    );
     
     /**
      * Operator

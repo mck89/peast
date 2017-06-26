@@ -17,11 +17,17 @@ namespace Peast\Syntax\Node;
 class MethodDefinition extends Node
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("key", "value");
+    protected $propertiesMap = array(
+        "key" => true,
+        "value" => true,
+        "kind" => false,
+        "computed" => false,
+        "static" => false
+    );
     
     //Kind constants
     /**

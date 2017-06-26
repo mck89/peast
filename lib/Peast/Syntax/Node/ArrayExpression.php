@@ -18,11 +18,13 @@ namespace Peast\Syntax\Node;
 class ArrayExpression extends Node implements Expression
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("elements");
+    protected $propertiesMap = array(
+        "elements" => true
+    );
     
     /**
      * Array elements

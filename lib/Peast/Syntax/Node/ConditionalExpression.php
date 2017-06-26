@@ -18,11 +18,15 @@ namespace Peast\Syntax\Node;
 class ConditionalExpression extends Node implements Expression
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("test", "consequent", "alternate");
+    protected $propertiesMap = array(
+        "test" => true,
+        "consequent" => true,
+        "alternate" => true
+    );
     
     /**
      * The test expression

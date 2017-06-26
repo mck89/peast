@@ -18,11 +18,14 @@ namespace Peast\Syntax\Node;
 class VariableDeclarator extends Node
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("id", "init");
+    protected $propertiesMap = array(
+        "id" => true,
+        "init" => true
+    );
     
     /**
      * Declaration identifier or pattern

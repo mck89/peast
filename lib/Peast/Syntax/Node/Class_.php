@@ -17,11 +17,15 @@ namespace Peast\Syntax\Node;
 abstract class Class_ extends Node
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("id", "superClass", "body");
+    protected $propertiesMap = array(
+        "id" => true,
+        "superclass" => true,
+        "body" => true
+    );
     
     /**
      * Class name

@@ -17,11 +17,14 @@ namespace Peast\Syntax\Node;
 class YieldExpression extends Node implements Expression
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("argument");
+    protected $propertiesMap = array(
+        "argument" => true,
+        "delegate" => false
+    );
     
     /**
      * Yield argument

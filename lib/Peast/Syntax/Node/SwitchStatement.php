@@ -18,11 +18,14 @@ namespace Peast\Syntax\Node;
 class SwitchStatement extends Node implements Statement
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("discriminant", "cases");
+    protected $propertiesMap = array(
+        "discriminant" => true,
+        "cases" => true
+    );
     
     /**
      * Discriminant expression

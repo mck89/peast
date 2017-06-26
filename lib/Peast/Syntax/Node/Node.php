@@ -19,6 +19,15 @@ namespace Peast\Syntax\Node;
 abstract class Node
 {
     /**
+     * Map of node properties
+     * 
+     * @var array 
+     */
+    protected $propertiesMap = array(
+        "type" => false
+    );
+    
+    /**
      * Node location in the source code
      * 
      * @var \Peast\Syntax\SourceLocation 
@@ -85,16 +94,6 @@ abstract class Node
     {
         $this->location->setEnd($position);
         return $this;
-    }
-    
-    /**
-     * Returns the child nodes properties array
-     * 
-     * @return array
-     */
-    public function getChildNodesProps()
-    {
-        return $this->childNodesProps;
     }
     
     /**

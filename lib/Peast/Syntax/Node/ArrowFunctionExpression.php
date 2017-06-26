@@ -18,6 +18,15 @@ namespace Peast\Syntax\Node;
 class ArrowFunctionExpression extends Function_ implements Expression
 {
     /**
+     * Map of node properties
+     * 
+     * @var array 
+     */
+    protected $propertiesMap = array(
+        "expression" => false
+    );
+    
+    /**
      * This flag is true when function body is wrapped in curly braces
      * 
      * @var bool

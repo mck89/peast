@@ -20,6 +20,17 @@ use Peast\Syntax\Utils;
 class TemplateElement extends Node
 {
     /**
+     * Map of node properties
+     * 
+     * @var array 
+     */
+    protected $propertiesMap = array(
+        "value" => false,
+        "tail" => false,
+        "rawValue" => false
+    );
+    
+    /**
      * Node's value
      * 
      * @var string 

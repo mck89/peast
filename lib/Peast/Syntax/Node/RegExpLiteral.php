@@ -17,6 +17,16 @@ namespace Peast\Syntax\Node;
 class RegExpLiteral extends Literal
 {
     /**
+     * Map of node properties
+     * 
+     * @var array 
+     */
+    protected $propertiesMap = array(
+        "flags" => false,
+        "pattern" => false
+    );
+    
+    /**
      * Regex flags
      * 
      * @var string 

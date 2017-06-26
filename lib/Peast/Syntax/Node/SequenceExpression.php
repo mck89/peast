@@ -18,11 +18,13 @@ namespace Peast\Syntax\Node;
 class SequenceExpression  extends Node implements Expression
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("expressions");
+    protected $propertiesMap = array(
+        "expressions" => true
+    );
     
     /**
      * Expressions array

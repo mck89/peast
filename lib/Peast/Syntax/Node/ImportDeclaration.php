@@ -18,11 +18,14 @@ namespace Peast\Syntax\Node;
 class ImportDeclaration extends Node implements ModuleDeclaration
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("specifiers", "source");
+    protected $propertiesMap = array(
+        "specifiers" => true,
+        "source" => true
+    );
     
     /**
      * Import specifiers array

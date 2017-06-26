@@ -17,11 +17,14 @@ namespace Peast\Syntax\Node;
 class SwitchCase extends Node
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("test", "consequent");
+    protected $propertiesMap = array(
+        "test" => true,
+        "consequent" => true
+    );
     
     /**
      * Test expression that is null in the "default" case

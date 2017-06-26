@@ -18,11 +18,13 @@ namespace Peast\Syntax\Node;
 class ArrayPattern extends Node implements Pattern
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("elements");
+    protected $propertiesMap = array(
+        "elements" => true
+    );
     
     /**
      * Array elements

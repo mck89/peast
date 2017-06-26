@@ -18,11 +18,13 @@ namespace Peast\Syntax\Node;
 class ThrowStatement extends Node implements Statement
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("argument");
+    protected $propertiesMap = array(
+        "argument" => true
+    );
     
     /**
      * The thrown expression

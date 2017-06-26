@@ -18,11 +18,15 @@ namespace Peast\Syntax\Node;
 class TemplateLiteral extends Node implements Expression
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("parts");
+    protected $propertiesMap = array(
+        "parts" => true,
+        "quasis" => false,
+        "expressions" => false
+    );
     
     /**
      * Array of quasis that are the literal parts of the template

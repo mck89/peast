@@ -18,11 +18,14 @@ namespace Peast\Syntax\Node;
 class TaggedTemplateExpression extends Node implements Expression
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("tag", "quasi");
+    protected $propertiesMap = array(
+        "tag" => true,
+        "quasi" => true
+    );
     
     /**
      * Tag expression

@@ -18,11 +18,18 @@ namespace Peast\Syntax\Node;
 class Property extends Node
 {
     /**
-     * Properties containing child nodes
+     * Map of node properties
      * 
      * @var array 
      */
-    protected $childNodesProps = array("key", "value");
+    protected $propertiesMap = array(
+        "key" => true,
+        "value" => true,
+        "kind" => false,
+        "method" => false,
+        "shorthand" => false,
+        "computed" => false
+    );
     
     //Kind constants
     /**
