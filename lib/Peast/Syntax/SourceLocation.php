@@ -15,7 +15,7 @@ namespace Peast\Syntax;
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
-class SourceLocation
+class SourceLocation implements \JSONSerializable
 {
     /**
      * Start position
@@ -75,5 +75,18 @@ class SourceLocation
     {
         $this->end = $position;
         return $this;
+    }
+    
+    /**
+     * Returns a serializable version of the object
+     * 
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            "start" => $this->getStart(),
+            "end" => $this->getEnd()
+        );
     }
 }

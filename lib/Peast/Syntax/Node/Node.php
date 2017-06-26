@@ -16,7 +16,7 @@ namespace Peast\Syntax\Node;
  * 
  * @abstract
  */
-abstract class Node
+abstract class Node implements \JSONSerializable
 {
     /**
      * Map of node properties
@@ -24,7 +24,8 @@ abstract class Node
      * @var array 
      */
     protected $propertiesMap = array(
-        "type" => false
+        "type" => false,
+        "location" => false
     );
     
     /**
@@ -33,13 +34,6 @@ abstract class Node
      * @var \Peast\Syntax\SourceLocation 
      */
     protected $location;
-    
-    /**
-     * Properties containing child nodes
-     * 
-     * @var array 
-     */
-    protected $childNodesProps = array();
     
     /**
      * Class constructor
@@ -109,6 +103,21 @@ abstract class Node
         $traverser = new \Peast\Traverser();
         $traverser->addFunction($fn)->traverse($this);
         return $this;
+    }
+    
+    /**
+     * Returns a serializable version of the node
+     * 
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $ret = array();
+        $props = \Peast\Syntax\Utils::getNodeProperties($this);
+        foreach ($props as $prop) {
+            $ret[$prop] = $this->{"get" . ucfirst($prop)}();
+        }
+        return $ret;
     }
     
     /**

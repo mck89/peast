@@ -14,7 +14,7 @@ namespace Peast\Syntax;
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
-class Position
+class Position implements \JSONSerializable
 {
     /**
      * Source line
@@ -79,5 +79,19 @@ class Position
     public function getIndex()
     {
         return $this->index;
+    }
+    
+    /**
+     * Returns a serializable version of the object
+     * 
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            "line" => $this->getLine(),
+            "column" => $this->getColumn(),
+            "index" => $this->getIndex()
+        );
     }
 }
