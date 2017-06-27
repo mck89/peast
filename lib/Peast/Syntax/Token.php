@@ -14,7 +14,7 @@ namespace Peast\Syntax;
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
-class Token
+class Token implements \JSONSerializable
 {
     //Type constants
     /**
@@ -150,5 +150,19 @@ class Token
     {
         $this->location->setEnd($position);
         return $this;
+    }
+    
+    /**
+     * Returns a serializable version of the node
+     * 
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            "type" => $this->getType(),
+            "value" => $this->getValue(),
+            "location" => $this->getLocation()
+        );
     }
 }
