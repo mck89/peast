@@ -24,7 +24,7 @@ class TryStatement extends Node implements Statement
     protected $propertiesMap = array(
         "block" => true,
         "handler" => true,
-        "finalize" => true
+        "finalizer" => true
     );
     
     /**

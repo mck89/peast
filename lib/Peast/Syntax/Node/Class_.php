@@ -23,7 +23,7 @@ abstract class Class_ extends Node
      */
     protected $propertiesMap = array(
         "id" => true,
-        "superclass" => true,
+        "superClass" => true,
         "body" => true
     );
     
