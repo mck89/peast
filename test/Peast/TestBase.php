@@ -69,7 +69,8 @@ abstract class TestBase extends \PHPUnit_Framework_TestCase
     protected function compareJSFile($tree, $compareFile, $tokens = false)
     {
         $compareTree = json_decode(file_get_contents($compareFile));
-        $this->objectTestRecursive($compareTree, $tree, $tokens);
+        $origTree = json_decode(json_encode($tree));
+        $this->objectTestRecursive($compareTree, $origTree, $tokens);
     }
     
     protected function objectTestRecursive($compare, $obj, $tokens, $message = "")
@@ -86,8 +87,7 @@ abstract class TestBase extends \PHPUnit_Framework_TestCase
                     if ($tokens && isset($compare->type) && !in_array($k, $this->tokensTestProps)) {
                         continue;
                     }
-                    $fn = "get" . ucfirst($k);
-                    $objValue = $obj->$fn();
+                    $objValue = $obj->$k;
                     $objValue = $this->fixParenthesizedExpression($objValue);
                     $this->objectTestRecursive($v, $objValue, $tokens, "$message" . "->$k");
                 }
@@ -106,10 +106,9 @@ abstract class TestBase extends \PHPUnit_Framework_TestCase
     
     protected function fixParenthesizedExpression($val)
     {
-        if (is_object($val) &&
-            $val instanceof \Peast\Syntax\Node\Node &&
-            $val->getType() === "ParenthesizedExpression") {
-            return $this->fixParenthesizedExpression($val->getExpression());
+        if (is_object($val) && isset($val->type) &&
+            $val->type === "ParenthesizedExpression") {
+            return $this->fixParenthesizedExpression($val->expression);
         }
         return $val;
     }
