@@ -69,4 +69,4 @@ Changelog
 * Added ES2017 parser
 
 #### 1.5
-* Enabled JSON serialization of nodes and tokens
+* Enabled JSON serialization of nodes and tokens using json_encode()
