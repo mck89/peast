@@ -67,3 +67,6 @@ Changelog
     * `Peast::ES2016` method have been added to Peast main class, `Peast::ES7` method still exists to preserve BC and calls `Peast::ES2016` internally
     * `Peast::latest` method have been added to Peast main class to allow parsing with the latest EcmaScript version implemented
 * Added ES2017 parser
+
+#### 1.5
+* Enabled JSON serialization of nodes and tokens
