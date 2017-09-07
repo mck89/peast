@@ -26,13 +26,6 @@ abstract class Parser
     protected $scanner;
     
     /**
-     * Parsing options
-     * 
-     * @var array
-     */
-    protected $options;
-    
-    /**
      * Parser context
      * 
      * @var stdClass 
@@ -54,14 +47,12 @@ abstract class Parser
      */
     public function __construct($source, $options = array())
     {
-        $this->options = $options;
-        
         $encoding = isset($options["sourceEncoding"]) ?
                     $options["sourceEncoding"] :
                     null;
         
-        $this->sourceType = isset($this->options["sourceType"]) ?
-                            $this->options["sourceType"] :
+        $this->sourceType = isset($options["sourceType"]) ?
+                            $options["sourceType"] :
                             \Peast\Peast::SOURCE_TYPE_SCRIPT;
         
         //Create the scanner
@@ -69,8 +60,13 @@ abstract class Parser
         array_pop($classParts);
         $classParts[] = "Scanner";
         $scannerClasss = implode("\\", $classParts);
-        $isModule = $this->sourceType === \Peast\Peast::SOURCE_TYPE_MODULE;
-        $this->scanner = new $scannerClasss($source, $encoding, $isModule);
+        $this->scanner = new $scannerClasss($source, $encoding);
+        
+        //Enable module scanning if required
+        if ($this->sourceType === \Peast\Peast::SOURCE_TYPE_MODULE) {
+            $this->scanner->enableModuleMode(true);
+        }
+        
         $this->initContext();
     }
     

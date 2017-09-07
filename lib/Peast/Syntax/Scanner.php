@@ -244,12 +244,9 @@ abstract class Scanner
      * @param string $source   Source code
      * @param string $encoding Source code encoding, if not specified it
      *                         will assume UTF-8
-     * @param bool   $isModule If true the scanner will scan in module mode
      */
-    function __construct($source, $encoding = null, $isModule = false)
+    function __construct($source, $encoding = null)
     {
-        $this->isModule = $isModule;
-        
         //Convert to UTF8 if needed
         if ($encoding && !preg_match("/UTF-?8/i", $encoding)) {
             $source = mb_convert_encoding($source, "UTF-8", $encoding);
@@ -298,10 +295,22 @@ abstract class Scanner
     }
     
     /**
+     * Enables or disables module scanning mode
+     * 
+     * @param bool $enable True to enable module scanning mode, false to disable it
+     * 
+     * @return $this
+     */
+    public function enableModuleMode($enable = true)
+    {
+        $this->isModule = $enable;
+        return $this;
+    }
+    
+    /**
      * Enables or disables tokens registration in the token array
      * 
-     * @param bool $enable True to enable token registration, false to disable
-     *                     it
+     * @param bool $enable True to enable token registration, false to disable it
      * 
      * @return $this
      */
