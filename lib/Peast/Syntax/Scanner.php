@@ -946,26 +946,37 @@ abstract class Scanner
                     $inline = $nextChar === "/";
                     $this->index += 2;
                     $content .= $char . $nextChar;
-                    $closed = $inline;
                     
-                    while (($char = $this->charAt()) !== null) {
-                        $content .= $char;
-                        $this->index++;
-                        $isEnd = $inline ?
-                                 //Inline comment
-                                 in_array($char, $this->lineTerminators) :
-                                 //Multiline comment
-                                 $char === "*" && $this->charAt() === "/";
+                    while (true) {
+                        $char = $this->charAt();
+                        
+                        if ($char === null) {
+                            if (!$inline) {
+                                //If the end of the source has been reached and
+                                //a multiline comment is still open, it's an
+                                //error
+                                return $this->error("Unterminated comment");
+                            }
+                            $isEnd = true;
+                        } else {
+                            $content .= $char;
+                            $this->index++;
+                            $isEnd = $inline ?
+                                     //Inline comment
+                                     in_array($char, $this->lineTerminators) :
+                                     //Multiline comment
+                                     $char === "*" && $this->charAt() === "/";
+                        }
+                        
                         if ($isEnd) {
                             if (!$inline) {
                                 $content .= "/";
                                 $this->index++;
-                                $closed = true;
                             }
                             if ($this->comments) {
                                 //For inline comments the closing line
                                 //terminator must be excluded from comment text
-                                if ($inline) {
+                                if ($inline && $char !== null) {
                                     $content = substr($content, 0, -strlen($char));
                                 }
                                 $this->adjustColumnAndLine($content);
@@ -976,14 +987,10 @@ abstract class Scanner
                                 //For inline comments the new content contains
                                 //the closing line terminator since the char has
                                 //already been processed
-                                $content = $inline ? $char : "";
+                                $content = $inline && $char !== null ? $char : "";
                             }
                             break;
                         }
-                    }
-                    
-                    if (!$closed) {
-                        return $this->error("Unterminated comment");
                     }
                     
                 } else {
@@ -1009,20 +1016,28 @@ abstract class Scanner
                 //Open html comment
                 $this->index += 4;
                 $content .= "<!--";
-                while (($char = $this->charAt()) !== null) {
-                    $content .= $char;
-                    $this->index++;
-                    if (in_array($char, $this->lineTerminators)) {
+                while (true) {
+                    $char = $this->charAt();
+                    if ($char === null) {
+                        $isEnd = true;
+                    } else {
+                        $content .= $char;
+                        $this->index++;
+                        $isEnd = in_array($char, $this->lineTerminators);
+                    }
+                    if ($isEnd) {
                         if ($this->comments) {
                             //Remove the closing line terminator from the
                             //comment text
-                            $content = substr($content, 0, -strlen($char));
+                            if ($char !== null) {
+                                $content = substr($content, 0, -strlen($char));
+                            }
                             $this->adjustColumnAndLine($content);
                             $token = new Token(Token::TYPE_COMMENT, $content);
                             $token->setStartPosition($start)
                                   ->setEndPosition($this->getPosition(true));
                             $comments[] = $token;
-                            $content = $char;
+                            $content = $char !== null ? $char : "";
                         }
                         break;
                     }
@@ -1059,20 +1074,30 @@ abstract class Scanner
                     
                     $this->index += 3;
                     $content .= "-->";
-                    while (($char = $this->charAt()) !== null) {
-                        $content .= $char;
-                        $this->index++;
-                        if (in_array($char, $this->lineTerminators)) {
+                    while (true) {
+                        $char = $this->charAt();
+                        
+                        if ($char === null) {
+                            $isEnd = true;
+                        } else {
+                            $content .= $char;
+                            $this->index++;
+                            $isEnd = in_array($char, $this->lineTerminators);
+                        }
+                        
+                        if ($isEnd) {
                             if ($this->comments) {
                                 //Remove the closing line terminator from the
                                 //comment text
-                                $content = substr($content, 0, -strlen($char));
+                                if ($char !== null) {
+                                    $content = substr($content, 0, -strlen($char));
+                                }
                                 $this->adjustColumnAndLine($content);
                                 $token = new Token(Token::TYPE_COMMENT, $content);
                                 $token->setStartPosition($start)
                                       ->setEndPosition($this->getPosition(true));
                                 $comments[] = $token;
-                                $content = $char;
+                                $content = $char !== null ? $char : "";
                             }
                             break;
                         }
