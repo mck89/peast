@@ -42,6 +42,7 @@ class Peast
      *                          will work in script mode.
      *                        - "sourceEncoding": the encoding of the source.
      *                          If not specified the parser will assume UTF-8.
+     *                        - "comments": if true it enables comments parsing.
      * 
      * @return \Peast\Syntax\ES2015\Parser
      * 
@@ -88,6 +89,7 @@ class Peast
      *                          will work in script mode.
      *                        - "sourceEncoding": the encoding of the source.
      *                          If not specified the parser will assume UTF-8.
+     *                        - "comments": if true it enables comments parsing.
      * 
      * @return \Peast\Syntax\ES2016\Parser
      * 
@@ -111,6 +113,7 @@ class Peast
      *                          will work in script mode.
      *                        - "sourceEncoding": the encoding of the source.
      *                          If not specified the parser will assume UTF-8.
+     *                        - "comments": if true it enables comments parsing.
      * 
      * @return \Peast\Syntax\ES2016\Parser
      * 
@@ -134,6 +137,7 @@ class Peast
      *                          will work in script mode.
      *                        - "sourceEncoding": the encoding of the source.
      *                          If not specified the parser will assume UTF-8.
+     *                        - "comments": if true it enables comments parsing.
      * 
      * @return \Peast\Syntax\ES2017\Parser
      * 
@@ -158,6 +162,7 @@ class Peast
      *                          will work in script mode.
      *                        - "sourceEncoding": the encoding of the source.
      *                          If not specified the parser will assume UTF-8.
+     *                        - "comments": if true it enables comments parsing.
      * 
      * @return \Peast\Syntax\ES2017\Parser
      * 
