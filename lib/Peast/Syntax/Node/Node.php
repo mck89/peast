@@ -25,7 +25,9 @@ abstract class Node implements \JSONSerializable
      */
     protected $propertiesMap = array(
         "type" => false,
-        "location" => false
+        "location" => false,
+        "leadingComments" => false,
+        "trailingComments" => false
     );
     
     /**
@@ -35,6 +37,20 @@ abstract class Node implements \JSONSerializable
      */
     protected $location;
     
+    /**
+     * Leading comments array
+     *
+     * @var Comment[]
+     */
+    protected $leadingComments = array();
+
+    /**
+     * Trailing comments array
+     *
+     * @var Comment[]
+     */
+    protected $trailingComments = array();
+
     /**
      * Class constructor
      */
@@ -54,6 +70,54 @@ abstract class Node implements \JSONSerializable
         return array_pop($class);
     }
     
+    /**
+     * Sets leading comments array
+     *
+     * @param Comments[] $comments Comments array
+     *
+     * @return $this
+     */
+    public function setLeadingComments($comments)
+    {
+        $this->assertArrayOf($comments, "Comment");
+        $this->leadingComments = $comments;
+        return $this;
+    }
+
+    /**
+     * Returns leading comments array
+     *
+     * @return Comments[]
+     */
+    public function getLeadingComments()
+    {
+        return $this->leadingComments;
+    }
+
+    /**
+     * Sets trailing comments array
+     *
+     * @param Comments[] $comments Comments array
+     *
+     * @return $this
+     */
+    public function setTrailingComments($comments)
+    {
+        $this->assertArrayOf($comments, "Comment");
+        $this->trailingComments = $comments;
+        return $this;
+    }
+
+    /**
+     * Returns trailing comments array
+     *
+     * @return Comments[]
+     */
+    public function getTrailingComments()
+    {
+        return $this->trailingComments;
+    }
+
     /**
      * Returns node location in the source code
      * 
