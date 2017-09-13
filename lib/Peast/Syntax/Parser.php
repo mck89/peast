@@ -86,7 +86,7 @@ abstract class Parser
         if ($this->comments) {
             $this->scanner->enableComments(true);
             //Create the comments registry
-            new CommentsRegistry($this, $this->scanner);
+            new CommentsRegistry($this);
         }
         
         $this->initContext();
@@ -118,6 +118,16 @@ abstract class Parser
         $this->scanner->enableTokenRegistration();
         $this->parse();
         return $this->scanner->getTokens();
+    }
+    
+    /**
+     * Returns the scanner associated with the parser
+     * 
+     * @return Scanner
+     */
+    public function getScanner()
+    {
+        return $this->scanner;
     }
     
     /**

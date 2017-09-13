@@ -41,16 +41,15 @@ class CommentsRegistry
      * Class constructor
      * 
      * @param Parser    $parser     Parser
-     * @param Scanner   $scanner    Scanner
      */
-    public function __construct(Parser $parser, Scanner $scanner)
+    public function __construct(Parser $parser)
     {
         $parser->getEventsEmitter()
                ->addListener("NodeCompleted", array($this, "onNodeCompleted"))
                ->addListener("EndParsing", array($this, "onEndParsing"));
         
         //Force token registration on scanner
-        $this->scanner = $scanner->enableTokenRegistration(true);
+        $this->scanner = $parser->getScanner()->enableTokenRegistration(true);
     }
     
     /**
