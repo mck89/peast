@@ -63,6 +63,11 @@ class Token implements \JSONSerializable
     const TYPE_TEMPLATE = "Template";
     
     /**
+     * Comment
+     */
+    const TYPE_COMMENT = "Comment";
+    
+    /**
      * Tokens' type that is one of the type constants
      * 
      * @var string 
