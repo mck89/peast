@@ -40,6 +40,20 @@ abstract class Parser
     protected $sourceType;
     
     /**
+     * Comments handling
+     *
+     * @var bool
+     */
+    protected $comments;
+    
+    /**
+     * Events emitter
+     *
+     * @var EventsEmitter
+     */
+    protected $eventsEmitter;
+
+    /**
      * Class constructor
      * 
      * @param string $source  Source code
@@ -65,6 +79,14 @@ abstract class Parser
         //Enable module scanning if required
         if ($this->sourceType === \Peast\Peast::SOURCE_TYPE_MODULE) {
             $this->scanner->enableModuleMode(true);
+        }
+        
+        //Enable comments scanning
+        $this->comments = isset($options["comments"]) && $options["comments"];
+        if ($this->comments) {
+            $this->scanner->enableComments(true);
+            //Create the comments registry
+            new CommentsRegistry($this, $this->scanner);
         }
         
         $this->initContext();
@@ -96,6 +118,21 @@ abstract class Parser
         $this->scanner->enableTokenRegistration();
         $this->parse();
         return $this->scanner->getTokens();
+    }
+    
+    /**
+     * Returns the parser's events emitter
+     * 
+     * @return EventsEmitter
+     */
+    public function getEventsEmitter()
+    {
+        if (!$this->eventsEmitter) {
+            //The event emitter is created here so that it won't exist if not
+            //necessary
+            $this->eventsEmitter = new EventsEmitter;
+        }
+        return $this->eventsEmitter;
     }
     
     /**
@@ -152,8 +189,11 @@ abstract class Parser
      */
     protected function createNode($nodeType, $position)
     {
+        //Use the right class to get an instance of the node
         $nodeClass = "\\Peast\\Syntax\\Node\\" . $nodeType;
         $node = new $nodeClass;
+        
+        //Add the node start position
         if ($position instanceof Node\Node || $position instanceof Token) {
             $position = $position->getLocation()->getStart();
         } elseif (is_array($position)) {
@@ -163,7 +203,14 @@ abstract class Parser
                 $position = $this->scanner->getPosition();
             }
         }
-        return $node->setStartPosition($position);
+        $node->setStartPosition($position);
+        
+        //Emit the NodeCreated event for the node
+        $this->eventsEmitter && $this->eventsEmitter->fire(
+            "NodeCreated", array($node)
+        );
+        
+        return $node;
     }
     
     /**
@@ -178,9 +225,17 @@ abstract class Parser
      */
     protected function completeNode(Node\Node $node, $position = null)
     {
-        return $node->setEndPosition(
+        //Add the node end position
+        $node->setEndPosition(
             $position ? $position : $this->scanner->getPosition()
         );
+        
+        //Emit the NodeCompleted event for the node
+        $this->eventsEmitter && $this->eventsEmitter->fire(
+            "NodeCompleted", array($node)
+        );
+        
+        return $node;
     }
     
     /**

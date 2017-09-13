@@ -96,11 +96,32 @@ abstract class Scanner
     protected $isModule = false;
     
     /**
+     * Comments handling
+     * 
+     * @var bool 
+     */
+    protected $comments = false;
+    
+    /**
      * Registered tokens array
      * 
      * @var array 
      */
     protected $tokens = array();
+    
+    /**
+     * Comments to tokens map
+     * 
+     * @var array 
+     */
+    protected $commentsMap = array();
+    
+    /**
+     * Events emitter
+     *
+     * @var EventsEmitter
+     */
+    protected $eventsEmitter;
     
     /**
      * Regex to match identifiers starts
@@ -219,7 +240,8 @@ abstract class Scanner
      */
     protected $stateProps = array("position", "index", "column", "line",
                                   "currentToken", "nextToken", "strictMode",
-                                  "openBrackets", "openTemplates");
+                                  "openBrackets", "openTemplates",
+                                  "commentsMap");
     
     /**
      * Decimal numbers
@@ -308,6 +330,19 @@ abstract class Scanner
     }
     
     /**
+     * Enables or disables comments handling
+     * 
+     * @param bool $enable True to enable comments handling, false to disable it
+     * 
+     * @return $this
+     */
+    public function enableComments($enable = true)
+    {
+        $this->comments = $enable;
+        return $this;
+    }
+    
+    /**
      * Enables or disables tokens registration in the token array
      * 
      * @param bool $enable True to enable token registration, false to disable it
@@ -328,6 +363,21 @@ abstract class Scanner
     public function getTokens()
     {
         return $this->tokens;
+    }
+    
+    /**
+     * Returns the scanner's event emitter
+     * 
+     * @return EventsEmitter
+     */
+    public function getEventsEmitter()
+    {
+        if (!$this->eventsEmitter) {
+            //The event emitter is created here so that it won't exist if not
+            //necessary
+            $this->eventsEmitter = new EventsEmitter;
+        }
+        return $this->eventsEmitter;
     }
     
     /**
@@ -483,10 +533,20 @@ abstract class Scanner
         //Move the scanner position to the end of the current position
         $this->position = $this->currentToken->getLocation()->getEnd();
         
+        //Before consume the token, consume comments associated with it
+        if ($this->comments) {
+            $this->consumeCommentsForCurrentToken();
+        }
+        
         //Register the token if required
         if ($this->registerTokens) {
             $this->tokens[] = $this->currentToken;
         }
+        
+        //Emit the TokenConsumed event for the consumed token
+        $this->eventsEmitter && $this->eventsEmitter->fire(
+            "TokenConsumed", array($this->currentToken)
+        );
         
         $this->currentToken = $this->nextToken ? $this->nextToken : null;
         $this->nextToken = null;
@@ -619,7 +679,16 @@ abstract class Scanner
             return $this->currentToken;
         }
         
-        $this->skipWhitespacesAndComments();
+        $comments = $this->skipWhitespacesAndComments();
+        
+        //Emit the TokenCreated event for all the comments found
+        if ($comments) {
+            foreach ($comments as $comment) {
+                $this->eventsEmitter && $this->eventsEmitter->fire(
+                    "TokenCreated", array($comment)
+                );
+            }
+        }
         
         if ($this->isEOF()) {
             //When the end of the source is reached
@@ -629,10 +698,22 @@ abstract class Scanner
                     return $this->error("Unclosed $bracket");
                 }
             }
+            
             //Check if there are open templates
             if (count($this->openTemplates)) {
                 return $this->error("Unterminated template");
             }
+            
+            //Register comments and consume them
+            if ($this->comments && $comments) {
+                $this->commentsForCurrentToken($comments);
+            }
+            
+            //Emit the EndReached event when at the end of the source
+            $this->eventsEmitter && $this->eventsEmitter->fire(
+                "EndReached"
+            );
+            
             return null;
         }
         
@@ -646,6 +727,17 @@ abstract class Scanner
         ) {
             $this->currentToken = $token->setStartPosition($startPosition)
                                         ->setEndPosition($this->getPosition(true));
+                                        
+            //Register comments if required
+            if ($this->comments && $comments) {
+                $this->commentsForCurrentToken($comments);
+            }
+            
+            //Emit the TokenCreated event for the token just created
+            $this->eventsEmitter && $this->eventsEmitter->fire(
+                "TokenCreated", array($this->currentToken)
+            );
+            
             return $this->currentToken;
         }
         
@@ -658,6 +750,70 @@ abstract class Scanner
         
         //No valid token found, error
         return $this->error();
+    }
+    
+    /**
+     * Executes the operations to handle the end of the source scanning
+     * 
+     * @return $this
+     */
+    public function consumeEnd()
+    {
+        //Consume final comments
+        if ($this->comments) {
+            $this->consumeCommentsForCurrentToken();
+        }
+        
+        //Emit the EndReached event when at the end of the source
+        $this->eventsEmitter && $this->eventsEmitter->fire(
+            "EndReached"
+        );
+        
+        return $this;
+    }
+    
+    /**
+     * Gets or sets comments for the current token. If the parameter is an
+     * array it associates the given comments array to the current node,
+     * otherwise comments for the current token are returned
+     * 
+     * @param array $comments  Comments array
+     * 
+     * @return array
+     */
+    protected function commentsForCurrentToken($comments = null)
+    {
+        $id = $this->currentToken ? spl_object_hash($this->currentToken) : "";
+        if ($comments !== null) {
+            $this->commentsMap[$id] = $comments;
+        } elseif (isset($this->commentsMap[$id])) {
+            $comments = $this->commentsMap[$id];
+            unset($this->commentsMap[$id]);
+        }
+        return $comments;
+    }
+    
+    /**
+     * Consumes comment tokens associated with the current token
+     * 
+     * @return $this
+     */
+    protected function consumeCommentsForCurrentToken()
+    {
+        $comments = $this->commentsForCurrentToken();
+        if ($comments && ($this->registerTokens || $this->eventsEmitter)) {
+            foreach ($comments as $comment) {
+                //Register the token if required
+                if ($this->registerTokens) {
+                    $this->tokens[] = $comment;
+                }
+                //Emit the TokenConsumed event for the comment
+                $this->eventsEmitter && $this->eventsEmitter->fire(
+                    "TokenConsumed", array($comment)
+                );
+            }
+        }
+        return $this;
     }
     
     /**
@@ -755,60 +911,93 @@ abstract class Scanner
     }
     
     /**
-     * Skips whitespaces and comments from the current scan position
+     * Skips whitespaces and comments from the current scan position. If
+     * comments handling is enabled, the array of parsed comments
      * 
-     * @return void
+     * @return array
      */
     protected function skipWhitespacesAndComments()
     {
+        $comments = [];
         $content = "";
         while (($char = $this->charAt()) !== null) {
             //Whitespace
             if (in_array($char, $this->whitespaces)) {
+                
                 $content .= $char;
                 $this->index++;
+                
             } elseif ($char === "/") {
+                
                 //Comment
                 $nextChar = $this->charAt($this->index + 1);
-                if ($nextChar === "/") {
-                    //Inline comment
+                if ($nextChar === "/" || $nextChar === "*") {
+                    
+                    //If comments must be handled, empty the current content too
+                    //and get the comment start position
+                    if ($this->comments) {
+                        if ($content !== "") {
+                            $this->adjustColumnAndLine($content);
+                            $content = "";
+                        }
+                        $start = $this->getPosition(true);
+                    }
+                    
+                    $inline = $nextChar === "/";
                     $this->index += 2;
                     $content .= $char . $nextChar;
+                    $closed = $inline;
+                    
                     while (($char = $this->charAt()) !== null) {
                         $content .= $char;
                         $this->index++;
-                        if (in_array($char, $this->lineTerminators)) {
+                        $isEnd = $inline ?
+                                 //Inline comment
+                                 in_array($char, $this->lineTerminators) :
+                                 //Multiline comment
+                                 $char === "*" && $this->charAt() === "/";
+                        if ($isEnd) {
+                            if (!$inline) {
+                                $content .= "/";
+                                $this->index++;
+                                $closed = true;
+                            }
+                            if ($this->comments) {
+                                $this->adjustColumnAndLine($content);
+                                $token = new Token(Token::TYPE_COMMENT, $content);
+                                $token->setStartPosition($start)
+                                      ->setEndPosition($this->getPosition(true));
+                                $comments[] = $token;
+                                $content = "";
+                            }
                             break;
                         }
                     }
-                } elseif ($nextChar === "*") {
-                    //Multiline comment
-                    $this->index += 2;
-                    $content .= $char . $nextChar;
-                    $closed = false;
-                    while (($char = $this->charAt()) !== null) {
-                        $content .= $char;
-                        $this->index++;
-                        if ($char === "*" &&
-                            $nextChar = $this->charAt() === "/"
-                        ) {
-                            $content .= $nextChar;
-                            $this->index++;
-                            $closed = true;
-                            break;
-                        }
-                    }
+                    
                     if (!$closed) {
                         return $this->error("Unterminated comment");
                     }
+                    
                 } else {
                     break;
                 }
+                
             } elseif (!$this->isModule && $char === "<" &&
                 $this->charAt($this->index + 1) === "!" &&
                 $this->charAt($this->index + 2) === "-" &&
                 $this->charAt($this->index + 3) === "-"
             ) {
+                
+                //If comments must be handled, empty the current content too
+                //and get the comment start position
+                if ($this->comments) {
+                    if ($content !== "") {
+                        $this->adjustColumnAndLine($content);
+                        $content = "";
+                    }
+                    $start = $this->getPosition(true);
+                }
+                
                 //Open html comment
                 $this->index += 4;
                 $content .= "<!--";
@@ -816,13 +1005,23 @@ abstract class Scanner
                     $content .= $char;
                     $this->index++;
                     if (in_array($char, $this->lineTerminators)) {
+                        if ($this->comments) {
+                            $this->adjustColumnAndLine($content);
+                            $token = new Token(Token::TYPE_COMMENT, $content);
+                            $token->setStartPosition($start)
+                                  ->setEndPosition($this->getPosition(true));
+                            $comments[] = $token;
+                            $content = "";
+                        }
                         break;
                     }
                 }
+                
             } elseif (!$this->isModule && $char === "-" &&
                 $this->charAt($this->index + 1) === "-" &&
                 $this->charAt($this->index + 2) === ">"
             ) {
+                
                 //Close html comment
                 //Check if it is on it's own line
                 $allow = true;
@@ -836,18 +1035,38 @@ abstract class Scanner
                     }
                 }
                 if ($allow) {
+                    
+                    //If comments must be handled, empty the current content too
+                    //and get the comment start position
+                    if ($this->comments) {
+                        if ($content !== "") {
+                            $this->adjustColumnAndLine($content);
+                            $content = "";
+                        }
+                        $start = $this->getPosition(true);
+                    }
+                    
                     $this->index += 3;
                     $content .= "-->";
                     while (($char = $this->charAt()) !== null) {
                         $content .= $char;
                         $this->index++;
                         if (in_array($char, $this->lineTerminators)) {
+                            if ($this->comments) {
+                                $this->adjustColumnAndLine($content);
+                                $token = new Token(Token::TYPE_COMMENT, $content);
+                                $token->setStartPosition($start)
+                                      ->setEndPosition($this->getPosition(true));
+                                $comments[] = $token;
+                                $content = "";
+                            }
                             break;
                         }
                     }
                 } else {
                     break;
                 }
+                
             } else {
                 break;
             }
@@ -856,6 +1075,8 @@ abstract class Scanner
         if ($content !== "") {
             $this->adjustColumnAndLine($content);
         }
+        
+        return $comments;
     }
     
     /**

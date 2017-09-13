@@ -133,9 +133,20 @@ class Parser extends \Peast\Syntax\Parser
             $node->setBody($body);
         }
         $program = $this->completeNode($node);
+        
         if ($this->scanner->getToken()) {
             return $this->error();
         }
+        
+        //Execute scanner end operations
+        $this->scanner->consumeEnd();
+        
+        //Emit the EndParsing event and pass the resulting program node as
+        //event data
+        $this->eventsEmitter && $this->eventsEmitter->fire(
+            "EndParsing", array($program)
+        );
+        
         return $program;
     }
     
