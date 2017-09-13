@@ -17,13 +17,6 @@ namespace Peast\Syntax;
 class CommentsRegistry
 {
     /**
-     * Scanner
-     * 
-     * @var Scanner 
-     */
-    protected $scanner;
-    
-    /**
      * Map of the indices where nodes start
      * 
      * @var int 
@@ -38,6 +31,27 @@ class CommentsRegistry
     protected $nodesEndMap = array();
     
     /**
+     * Comments buffer
+     * 
+     * @var array
+     */
+    protected $buffer = null;
+    
+    /**
+     * Last token index
+     * 
+     * @var int
+     */
+    protected $lastTokenIndex = null;
+    
+    /**
+     * Comments registry
+     * 
+     * @var array
+     */
+    protected $registry = array();
+    
+    /**
      * Class constructor
      * 
      * @param Parser    $parser     Parser
@@ -48,8 +62,55 @@ class CommentsRegistry
                ->addListener("NodeCompleted", array($this, "onNodeCompleted"))
                ->addListener("EndParsing", array($this, "onEndParsing"));
         
-        //Force token registration on scanner
-        $this->scanner = $parser->getScanner()->enableTokenRegistration(true);
+        $parser->getScanner()->getEventsEmitter()
+               ->addListener("TokenConsumed", array($this, "onTokenConsumed"))
+               ->addListener("EndReached", array($this, "onTokenConsumed"));
+    }
+    
+    /**
+     * Listener called every time a token is consumed and when the scanner
+     * reaches the end of the source
+     * 
+     * @param Token|null   $token   Consumed token or null if the end has
+     *                              been reached
+     * 
+     * @return void
+     */
+    public function onTokenConsumed(Token $token = null)
+    {
+        //Check if it's a comment
+        if ($token && $token->getType() === Token::TYPE_COMMENT) {
+            //If there is not an open comments buffer, create it
+            if (!$this->buffer) {
+                $this->buffer = array(
+                    "prev" => $this->lastTokenIndex,
+                    "next" => null,
+                    "comments" => array()
+                );
+            }
+            //Add the comment token to the buffer
+            $this->buffer["comments"][] = $token;
+        } else {
+            
+            if ($token) {
+                $loc = $token->getLocation();
+                //Store the token end position
+                $this->lastTokenIndex = $loc->getEnd()->getIndex();
+                if ($this->buffer) {
+                    //Fill the "next" key on the comments buffer with the token
+                    //start position
+                    $this->buffer["next"] = $loc->getStart()->getIndex();
+                }
+            }
+            
+            //If there is an open comment buffer, close it and move it to the
+            //registry
+            if ($this->buffer) {
+                $this->registry[] = $this->buffer;
+                $this->buffer = null;
+            }
+            
+        }
     }
     
     /**
@@ -81,49 +142,16 @@ class CommentsRegistry
      */
     public function onEndParsing()
     {
-        //Make sure nodes start indices map is sorted
-        ksort($this->nodesStartMap);
-        
-        //Loop all registered tokens
-        $group = null;
-        $comments = array();
-        $tokens = $this->scanner->getTokens();
-        
-        foreach ($tokens as $k => $token) {
-            //Group adjacent comments
-            if ($token->getType() === Token::TYPE_COMMENT) {
-                
-                if (!$group) {
-                    $prev = $k ?
-                            $tokens[$k - 1]->getLocation()->getEnd()->getIndex() :
-                            null;
-                    
-                    //Create the comments group and store informations abuout
-                    //the indices from previous and next tokens
-                    $group = array(
-                        "prev" => $prev,
-                        "next" => null,
-                        "comments" => array(),
-                    );
-                }
-                
-                //Add the comment to the current comments group
-                $group["comments"][] = $token;
-                
-            } else {
-                
-                //The first non-comment token closes the comments group
-                if ($group) {
-                    $group["next"] = $token->getLocation()->getStart()->getIndex();
-                    $this->findNodeForCommentsGroup($group);
-                }
-                $group = false;
+        //Return if there are no comments to process
+        if ($this->registry) {
+            
+            //Make sure nodes start indices map is sorted
+            ksort($this->nodesStartMap);
+            
+            //Loop all comment groups in the registry
+            foreach ($this->registry as $group) {
+                $this->findNodeForCommentsGroup($group);
             }
-        }
-        
-        // At the end if there is an open comment group, analyze it
-        if ($group) {
-            $this->findNodeForCommentsGroup($group);
         }
     }
     
