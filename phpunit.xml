@@ -8,22 +8,22 @@
             <file>test/Peast/PeastTest.php</file>
         </testsuite>
         <testsuite name="ES2015">
-            <directory>test/Peast/ES2015</directory>
+            <directory>test/Peast/Syntax/ES2015</directory>
         </testsuite>
         <testsuite name="ES2016">
-            <directory>test/Peast/ES2016</directory>
+            <directory>test/Peast/Syntax/ES2016</directory>
         </testsuite>
         <testsuite name="ES2017">
-            <directory>test/Peast/ES2017</directory>
+            <directory>test/Peast/Syntax/ES2017</directory>
         </testsuite>
         <testsuite name="Traverser">
-            <directory>test/Peast/Traverser</directory>
+            <file>test/Peast/TraverserTest.php</file>
         </testsuite>
         <testsuite name="Renderer">
-            <directory>test/Peast/Renderer</directory>
+            <file>test/Peast/RendererTest.php</file>
         </testsuite>
         <testsuite name="Node">
-            <directory>test/Peast/Node</directory>
+            <directory>test/Peast/Syntax/Node</directory>
         </testsuite>
     </testsuites>
     <filter>

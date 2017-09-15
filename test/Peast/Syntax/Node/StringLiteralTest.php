@@ -1,5 +1,5 @@
 <?php
-namespace test\Peast\Node;
+namespace test\Peast\Syntax\Node;
 
 use \Peast\Syntax\Node;
 

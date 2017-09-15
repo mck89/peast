@@ -32,8 +32,8 @@ abstract class TestBase extends \PHPUnit_Framework_TestCase
         foreach ($this->getTestVersions() as $version) {
             $files = array_merge(
                 $files,
-                glob($dir . $ds . $version . $ds . "files" . $ds . "*" . $ds . "*.js"),
-                glob($dir . $ds . $version . $ds . "files" . $ds . "*" . $ds . "*" . $ds . "*.js")
+                glob($dir . $ds . "Syntax" . $ds . $version . $ds . "files" . $ds . "*" . $ds . "*.js"),
+                glob($dir . $ds . "Syntax" . $ds . $version . $ds . "files" . $ds . "*" . $ds . "*" . $ds . "*.js")
             );
         }
         $excludedTests = array_flip($this->getExcludedTests());
