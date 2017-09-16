@@ -25,6 +25,9 @@
         <testsuite name="Node">
             <directory>test/Peast/Syntax/Node</directory>
         </testsuite>
+        <testsuite name="Comments">
+            <file>test/Peast/Syntax/CommentsRegistryTest.php</file>
+        </testsuite>
     </testsuites>
     <filter>
         <whitelist>
