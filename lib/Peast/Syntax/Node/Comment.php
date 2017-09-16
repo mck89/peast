@@ -16,8 +16,7 @@ namespace Peast\Syntax\Node;
  */
 class Comment extends Node
 {
-    
-    //Comment type constants
+    //Comment kind constants
     /**
      * Inline comment
      */
@@ -44,16 +43,16 @@ class Comment extends Node
      * @var array 
      */
     protected $propertiesMap = array(
-        "type" => false,
+        "kind" => false,
         "text" => false
     );
     
     /**
-     * The comment type
+     * The comment kind
      * 
      * @var string 
      */
-    protected $type;
+    protected $kind;
     
     /**
      * The comment text
@@ -63,25 +62,25 @@ class Comment extends Node
     protected $text;
     
     /**
-     * Returns the comment type
+     * Returns the comment kind
      * 
      * @return string
      */
-    public function getType()
+    public function getKind()
     {
-        return $this->type;
+        return $this->kind;
     }
     
     /**
-     * Sets the comment type
+     * Sets the comment kind
      * 
-     * @param string $type Comment type
+     * @param string $kind Comment kind
      * 
      * @return $this
      */
-    public function setType($type)
+    public function setKind($kind)
     {
-        $this->type = $type;
+        $this->kind = $kind;
         return $this;
     }
     
@@ -116,13 +115,13 @@ class Comment extends Node
     public function getRawText()
     {
         $text = $this->getText();
-        $type = $this->getType();
+        $kind = $this->getKind();
         
-        if ($type === self::INLINE) {
+        if ($kind === self::INLINE) {
             return "//" . $text;
-        } elseif ($type === self::HTML_OPEN) {
+        } elseif ($kind === self::HTML_OPEN) {
             return "<!--" . $text;
-        } elseif ($type === self::HTML_CLOSE) {
+        } elseif ($kind === self::HTML_CLOSE) {
             return "-->" . $text;
         } else {
             return "/*" . $text . "*/";
@@ -140,21 +139,21 @@ class Comment extends Node
     {
         $start = substr($rawText, 0, 2);
         if ($start === "//") {
-            $type = self::INLINE;
+            $kind = self::INLINE;
             $text = substr($rawText, 2);
         } elseif ($start === "/*" && substr($rawText, -2) === "*/") {
-            $type = self::MULTILINE;
+            $kind = self::MULTILINE;
             $text = substr($rawText, 2, -2);
         } elseif ($start === "<!" && substr($rawText, 2, 2) === "--") {
-            $type = self::HTML_OPEN;
+            $kind = self::HTML_OPEN;
             $text = substr($rawText, 4);
         } elseif ($start === "--" && substr($rawText, 2, 1) === ">") {
-            $type = self::HTML_CLOSE;
+            $kind = self::HTML_CLOSE;
             $text = substr($rawText, 3);
         } else {
             throw new \Exception("Invalid comment");
         }
-        return $this->setType($type)->setText($text);
+        return $this->setKind($kind)->setText($text);
     }
     
     /**
