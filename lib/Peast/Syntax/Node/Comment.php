@@ -20,22 +20,22 @@ class Comment extends Node
     /**
      * Inline comment
      */
-    const INLINE = "inline";
+    const KIND_INLINE = "inline";
     
     /**
      * Multiline comment
      */
-    const MULTILINE = "multiline";
+    const KIND_MULTILINE = "multiline";
     
     /**
      * Html open comment
      */
-    const HTML_OPEN = "html-open";
+    const KIND_HTML_OPEN = "html-open";
     
     /**
      * Html close comment
      */
-    const HTML_CLOSE = "html-close";
+    const KIND_HTML_CLOSE = "html-close";
     
     /**
      * Map of node properties
@@ -117,11 +117,11 @@ class Comment extends Node
         $text = $this->getText();
         $kind = $this->getKind();
         
-        if ($kind === self::INLINE) {
+        if ($kind === self::KIND_INLINE) {
             return "//" . $text;
-        } elseif ($kind === self::HTML_OPEN) {
+        } elseif ($kind === self::KIND_HTML_OPEN) {
             return "<!--" . $text;
-        } elseif ($kind === self::HTML_CLOSE) {
+        } elseif ($kind === self::KIND_HTML_CLOSE) {
             return "-->" . $text;
         } else {
             return "/*" . $text . "*/";
@@ -139,16 +139,16 @@ class Comment extends Node
     {
         $start = substr($rawText, 0, 2);
         if ($start === "//") {
-            $kind = self::INLINE;
+            $kind = self::KIND_INLINE;
             $text = substr($rawText, 2);
         } elseif ($start === "/*" && substr($rawText, -2) === "*/") {
-            $kind = self::MULTILINE;
+            $kind = self::KIND_MULTILINE;
             $text = substr($rawText, 2, -2);
         } elseif ($start === "<!" && substr($rawText, 2, 2) === "--") {
-            $kind = self::HTML_OPEN;
+            $kind = self::KIND_HTML_OPEN;
             $text = substr($rawText, 4);
         } elseif ($start === "--" && substr($rawText, 2, 1) === ">") {
-            $kind = self::HTML_CLOSE;
+            $kind = self::KIND_HTML_CLOSE;
             $text = substr($rawText, 3);
         } else {
             throw new \Exception("Invalid comment");

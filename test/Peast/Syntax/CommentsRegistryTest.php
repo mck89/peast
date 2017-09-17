@@ -2,6 +2,7 @@
 namespace test\Peast\Syntax;
 
 use \Peast\Syntax\Node\Comment;
+use \Peast\Syntax\Token;
 
 class CommentsRegistryTest extends \test\Peast\TestBase
 {
@@ -24,7 +25,7 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "index" => 0,
                             "node" => "ForStatement",
                             "leading" => true,
-                            "kind" => Comment::HTML_OPEN,
+                            "kind" => Comment::KIND_HTML_OPEN,
                             "text" => " HTML comment start",
                             "rawText" => "<!-- HTML comment start"
                         ),
@@ -32,7 +33,7 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "index" => 1,
                             "node" => "ForStatement",
                             "leading" => true,
-                            "kind" => Comment::INLINE,
+                            "kind" => Comment::KIND_INLINE,
                             "text" => "Doc",
                             "rawText" => "//Doc"
                         ),
@@ -40,7 +41,7 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "index" => 2,
                             "node" => "ForStatement",
                             "leading" => true,
-                            "kind" => Comment::MULTILINE,
+                            "kind" => Comment::KIND_MULTILINE,
                             "text" => "1",
                             "rawText" => "/*1*/"
                         ),
@@ -48,7 +49,7 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "index" => 3,
                             "node" => "ForStatement",
                             "leading" => true,
-                            "kind" => Comment::MULTILINE,
+                            "kind" => Comment::KIND_MULTILINE,
                             "text" => "6",
                             "rawText" => "/*6*/"
                         ),
@@ -56,7 +57,7 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "index" => 4,
                             "node" => "ForStatement",
                             "leading" => true,
-                            "kind" => Comment::MULTILINE,
+                            "kind" => Comment::KIND_MULTILINE,
                             "text" => "7",
                             "rawText" => "/*7*/"
                         ),
@@ -64,7 +65,7 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "index" => 0,
                             "node" => "Identifier",
                             "leading" => true,
-                            "kind" => Comment::MULTILINE,
+                            "kind" => Comment::KIND_MULTILINE,
                             "text" => "2",
                             "rawText" => "/*2*/"
                         ),
@@ -72,7 +73,7 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "index" => 0,
                             "node" => "Identifier",
                             "leading" => false,
-                            "kind" => Comment::MULTILINE,
+                            "kind" => Comment::KIND_MULTILINE,
                             "text" => "3",
                             "rawText" => "/*3*/"
                         ),
@@ -80,7 +81,7 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "index" => 0,
                             "node" => "Literal",
                             "leading" => true,
-                            "kind" => Comment::MULTILINE,
+                            "kind" => Comment::KIND_MULTILINE,
                             "text" => "4",
                             "rawText" => "/*4*/"
                         ),
@@ -88,7 +89,7 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "index" => 0,
                             "node" => "Literal",
                             "leading" => false,
-                            "kind" => Comment::MULTILINE,
+                            "kind" => Comment::KIND_MULTILINE,
                             "text" => "5",
                             "rawText" => "/*5*/"
                         ),
@@ -96,7 +97,7 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "index" => 0,
                             "node" => "BlockStatement",
                             "leading" => true,
-                            "kind" => Comment::MULTILINE,
+                            "kind" => Comment::KIND_MULTILINE,
                             "text" => "8",
                             "rawText" => "/*8*/"
                         ),
@@ -104,7 +105,7 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "index" => 0,
                             "node" => "BlockStatement",
                             "leading" => false,
-                            "kind" => Comment::MULTILINE,
+                            "kind" => Comment::KIND_MULTILINE,
                             "text" => "13",
                             "rawText" => "/*13*/"
                         ),
@@ -112,7 +113,7 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "index" => 1,
                             "node" => "BlockStatement",
                             "leading" => false,
-                            "kind" => Comment::HTML_CLOSE,
+                            "kind" => Comment::KIND_HTML_CLOSE,
                             "text" => " HTML comment end",
                             "rawText" => "--> HTML comment end"
                         ),
@@ -120,7 +121,7 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "index" => 0,
                             "node" => "ExpressionStatement",
                             "leading" => false,
-                            "kind" => Comment::MULTILINE,
+                            "kind" => Comment::KIND_MULTILINE,
                             "text" => "12",
                             "rawText" => "/*12*/"
                         ),
@@ -128,7 +129,7 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "index" => 0,
                             "node" => "Identifier",
                             "leading" => true,
-                            "kind" => Comment::MULTILINE,
+                            "kind" => Comment::KIND_MULTILINE,
                             "text" => "9",
                             "rawText" => "/*9*/"
                         ),
@@ -136,7 +137,7 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "index" => 0,
                             "node" => "Identifier",
                             "leading" => true,
-                            "kind" => Comment::MULTILINE,
+                            "kind" => Comment::KIND_MULTILINE,
                             "text" => "10",
                             "rawText" => "/*10*/"
                         ),
@@ -144,7 +145,7 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "index" => 0,
                             "node" => "Identifier",
                             "leading" => false,
-                            "kind" => Comment::MULTILINE,
+                            "kind" => Comment::KIND_MULTILINE,
                             "text" => "11",
                             "rawText" => "/*11*/"
                         ),
