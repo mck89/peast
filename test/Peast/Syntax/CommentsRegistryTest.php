@@ -149,6 +149,168 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "text" => "11",
                             "rawText" => "/*11*/"
                         ),
+                    ),
+                    "tokens" => array(
+                        array(
+                            "endColumn" => 23,
+                            "endIndex" => 23,
+                            "endLine" => 1,
+                            "index" => 0,
+                            "startColumn" => 0,
+                            "startIndex" => 0,
+                            "startLine" => 1,
+                            "value" => "<!-- HTML comment start"
+                        ),
+                        array(
+                            "endColumn" => 5,
+                            "endIndex" => 29,
+                            "endLine" => 2,
+                            "index" => 1,
+                            "startColumn" => 0,
+                            "startIndex" => 24,
+                            "startLine" => 2,
+                            "value" => "//Doc"
+                        ),
+                        array(
+                            "endColumn" => 9,
+                            "endIndex" => 39,
+                            "endLine" => 3,
+                            "index" => 3,
+                            "startColumn" => 4,
+                            "startIndex" => 34,
+                            "startLine" => 3,
+                            "value" => "/*1*/"
+                        ),
+                        array(
+                            "endColumn" => 19,
+                            "endIndex" => 49,
+                            "endLine" => 3,
+                            "index" => 6,
+                            "startColumn" => 14,
+                            "startIndex" => 44,
+                            "startLine" => 3,
+                            "value" => "/*2*/"
+                        ),
+                        array(
+                            "endColumn" => 25,
+                            "endIndex" => 55,
+                            "endLine" => 3,
+                            "index" => 8,
+                            "startColumn" => 20,
+                            "startIndex" => 50,
+                            "startLine" => 3,
+                            "value" => "/*3*/"
+                        ),
+                        array(
+                            "endColumn" => 33,
+                            "endIndex" => 63,
+                            "endLine" => 3,
+                            "index" => 10,
+                            "startColumn" => 28,
+                            "startIndex" => 58,
+                            "startLine" => 3,
+                            "value" => "/*4*/"
+                        ),
+                        array(
+                            "endColumn" => 39,
+                            "endIndex" => 69,
+                            "endLine" => 3,
+                            "index" => 12,
+                            "startColumn" => 34,
+                            "startIndex" => 64,
+                            "startLine" => 3,
+                            "value" => "/*5*/"
+                        ),
+                        array(
+                            "endColumn" => 46,
+                            "endIndex" => 76,
+                            "endLine" => 3,
+                            "index" => 14,
+                            "startColumn" => 41,
+                            "startIndex" => 71,
+                            "startLine" => 3,
+                            "value" => "/*6*/"
+                        ),
+                        array(
+                            "endColumn" => 53,
+                            "endIndex" => 83,
+                            "endLine" => 3,
+                            "index" => 16,
+                            "startColumn" => 48,
+                            "startIndex" => 78,
+                            "startLine" => 3,
+                            "value" => "/*7*/"
+                        ),
+                        array(
+                            "endColumn" => 60,
+                            "endIndex" => 90,
+                            "endLine" => 3,
+                            "index" => 18,
+                            "startColumn" => 55,
+                            "startIndex" => 85,
+                            "startLine" => 3,
+                            "value" => "/*8*/"
+                        ),
+                        array(
+                            "endColumn" => 9,
+                            "endIndex" => 101,
+                            "endLine" => 4,
+                            "index" => 20,
+                            "startColumn" => 4,
+                            "startIndex" => 96,
+                            "startLine" => 4,
+                            "value" => "/*9*/"
+                        ),
+                        array(
+                            "endColumn" => 21,
+                            "endIndex" => 113,
+                            "endLine" => 4,
+                            "index" => 23,
+                            "startColumn" => 15,
+                            "startIndex" => 107,
+                            "startLine" => 4,
+                            "value" => "/*10*/"
+                        ),
+                        array(
+                            "endColumn" => 28,
+                            "endIndex" => 120,
+                            "endLine" => 4,
+                            "index" => 25,
+                            "startColumn" => 22,
+                            "startIndex" => 114,
+                            "startLine" => 4,
+                            "value" => "/*11*/"
+                        ),
+                        array(
+                            "endColumn" => 36,
+                            "endIndex" => 128,
+                            "endLine" => 4,
+                            "index" => 28,
+                            "startColumn" => 30,
+                            "startIndex" => 122,
+                            "startLine" => 4,
+                            "value" => "/*12*/"
+                        ),
+                        array(
+                            "endColumn" => 6,
+                            "endIndex" => 137,
+                            "endLine" => 6,
+                            "index" => 30,
+                            "startColumn" => 0,
+                            "startIndex" => 131,
+                            "startLine" => 6,
+                            "value" => "/*13*/"
+                        ),
+                        array(
+                            "endColumn" => 20,
+                            "endIndex" => 158,
+                            "endLine" => 7,
+                            "index" => 31,
+                            "startColumn" => 0,
+                            "startIndex" => 138,
+                            "startLine" => 7,
+                            "value" => "--> HTML comment end"
+                        )
                     )
                 )
             )
@@ -188,6 +350,36 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                 }
             }
             $this->assertEquals($node, $testComment);
+        }
+    }
+    
+    /**
+     * @dataProvider dataProvider
+     */
+    public function testTokenize($data)
+    {
+        $comments = array();
+        $tokens = \Peast\Peast::latest($data["source"], array("comments" => true))->tokenize();
+        foreach ($tokens as $idx => $token) {
+            if ($token->getType() === Token::TYPE_COMMENT) {
+                $loc = $token->getLocation();
+                $start = $loc->getStart();
+                $end = $loc->getEnd();
+                $comments[] = array(
+                    "index" => $idx,
+                    "value" => $token->getValue(),
+                    "startLine" => $start->getLine(),
+                    "startColumn" => $start->getColumn(),
+                    "startIndex" => $start->getIndex(),
+                    "endLine" => $end->getLine(),
+                    "endColumn" => $end->getColumn(),
+                    "endIndex" => $end->getIndex()
+                );
+            }
+        }
+        $this->assertEquals(count($data["tokens"]), count($comments));
+        foreach ($data["tokens"] as $k => $token) {
+            $this->assertEquals($token, $comments[$k]);
         }
     }
 }
