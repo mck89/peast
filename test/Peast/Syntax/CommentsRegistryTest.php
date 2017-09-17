@@ -312,6 +312,89 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "value" => "--> HTML comment end"
                         )
                     )
+                ),
+                array(
+                    "source" => implode("\n", array(
+                        "//Start",
+                        "/*Before*/[a, b, c] = [1, 2, 3]/*After*/",
+                        "//End",
+                    )),
+                    "nodes" => array(
+                        array(
+                            "index" => 0,
+                            "node" => "ArrayPattern",
+                            "leading" => true,
+                            "kind" => Comment::KIND_INLINE,
+                            "text" => "Start",
+                            "rawText" => "//Start"
+                        ),
+                        array(
+                            "index" => 1,
+                            "node" => "ArrayPattern",
+                            "leading" => true,
+                            "kind" => Comment::KIND_MULTILINE,
+                            "text" => "Before",
+                            "rawText" => "/*Before*/"
+                        ),
+                        array(
+                            "index" => 0,
+                            "node" => "ArrayExpression",
+                            "leading" => false,
+                            "kind" => Comment::KIND_MULTILINE,
+                            "text" => "After",
+                            "rawText" => "/*After*/"
+                        ),
+                        array(
+                            "index" => 1,
+                            "node" => "ArrayExpression",
+                            "leading" => false,
+                            "kind" => Comment::KIND_INLINE,
+                            "text" => "End",
+                            "rawText" => "/*End*/"
+                        ),
+                    ),
+                    "tokens" => array(
+                        array(
+                            "endColumn" => 7,
+                            "endIndex" => 7,
+                            "endLine" => 1,
+                            "index" => 0,
+                            "startColumn" => 0,
+                            "startIndex" => 0,
+                            "startLine" => 1,
+                            "value" => "//Start"
+                        ),
+                        array(
+                            "endColumn" => 10,
+                            "endIndex" => 18,
+                            "endLine" => 2,
+                            "index" => 1,
+                            "startColumn" => 0,
+                            "startIndex" => 8,
+                            "startLine" => 2,
+                            "value" => "/*Before*/"
+                        ),
+                        array(
+                            "endColumn" => 40,
+                            "endIndex" => 48,
+                            "endLine" => 2,
+                            "index" => 17,
+                            "startColumn" => 31,
+                            "startIndex" => 39,
+                            "startLine" => 2,
+                            "value" => "/*After*/"
+                        ),
+                        array(
+                            "endColumn" => 5,
+                            "endIndex" => 54,
+                            "endLine" => 3,
+                            "index" => 18,
+                            "startColumn" => 0,
+                            "startIndex" => 49,
+                            "startLine" => 3,
+                            "value" => "//End"
+                        ),
+                    )
                 )
             )
         );
