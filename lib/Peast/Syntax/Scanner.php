@@ -977,6 +977,7 @@ abstract class Scanner
                                 //For inline comments the closing line
                                 //terminator must be excluded from comment text
                                 if ($inline && $char !== null) {
+                                    $this->index--;
                                     $content = substr($content, 0, -strlen($char));
                                 }
                                 $this->adjustColumnAndLine($content);
@@ -987,7 +988,11 @@ abstract class Scanner
                                 //For inline comments the new content contains
                                 //the closing line terminator since the char has
                                 //already been processed
-                                $content = $inline && $char !== null ? $char : "";
+                                $content = "";
+                                if ($inline && $char !== null) {
+                                    $content = $char;
+                                    $this->index++;
+                                }
                             }
                             break;
                         }
@@ -1030,6 +1035,7 @@ abstract class Scanner
                             //Remove the closing line terminator from the
                             //comment text
                             if ($char !== null) {
+                                $this->index--;
                                 $content = substr($content, 0, -strlen($char));
                             }
                             $this->adjustColumnAndLine($content);
@@ -1037,7 +1043,11 @@ abstract class Scanner
                             $token->setStartPosition($start)
                                   ->setEndPosition($this->getPosition(true));
                             $comments[] = $token;
-                            $content = $char !== null ? $char : "";
+                            $content = "";
+                            if ($char !== null) {
+                                $content = $char;
+                                $this->index++;
+                            }
                         }
                         break;
                     }
@@ -1090,6 +1100,7 @@ abstract class Scanner
                                 //Remove the closing line terminator from the
                                 //comment text
                                 if ($char !== null) {
+                                    $this->index--;
                                     $content = substr($content, 0, -strlen($char));
                                 }
                                 $this->adjustColumnAndLine($content);
@@ -1097,7 +1108,11 @@ abstract class Scanner
                                 $token->setStartPosition($start)
                                       ->setEndPosition($this->getPosition(true));
                                 $comments[] = $token;
-                                $content = $char !== null ? $char : "";
+                                $content = "";
+                                if ($char !== null) {
+                                    $content = $char;
+                                    $this->index++;
+                                }
                             }
                             break;
                         }
