@@ -902,11 +902,21 @@ abstract class Scanner
             }
             $this->nextToken = null;
         }
+        
+        //If comments handling is enabled, get the comments associated with the
+        //current token
+        $comments = $this->comments ? $this->commentsForCurrentToken() : null;
             
         //Replace the current token with a regexp token
         $token = new Token(Token::TYPE_REGULAR_EXPRESSION, $buffer);
         $this->currentToken = $token->setStartPosition($startPosition)
                                     ->setEndPosition($this->getPosition(true));
+                                    
+        if ($comments) {
+            //Attach the comments to the new current token
+            $this->commentsForCurrentToken($comments);
+        }
+        
         return $this->currentToken;
     }
     
