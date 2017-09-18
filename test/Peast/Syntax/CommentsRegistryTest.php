@@ -395,6 +395,69 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "value" => "//End"
                         ),
                     )
+                ),
+                array(
+                    "source" => implode("\n", array(
+                        "/*1*/a = /*2*//\/*3*\/[/*4*/]//*5*/",
+                    )),
+                    "nodes" => array(
+                        array(
+                            "index" => 0,
+                            "node" => "Identifier",
+                            "leading" => true,
+                            "kind" => Comment::KIND_MULTILINE,
+                            "text" => "1",
+                            "rawText" => "/*1*/"
+                        ),
+                        array(
+                            "index" => 0,
+                            "node" => "RegExpLiteral",
+                            "leading" => true,
+                            "kind" => Comment::KIND_MULTILINE,
+                            "text" => "2",
+                            "rawText" => "/*2*/"
+                        ),
+                        array(
+                            "index" => 1,
+                            "node" => "RegExpLiteral",
+                            "leading" => false,
+                            "kind" => Comment::KIND_MULTILINE,
+                            "text" => "5",
+                            "rawText" => "/*5*/"
+                        ),
+                    ),
+                    "tokens" => array(
+                        array(
+                            "endColumn" => 5,
+                            "endIndex" => 5,
+                            "endLine" => 1,
+                            "index" => 0,
+                            "startColumn" => 0,
+                            "startIndex" => 0,
+                            "startLine" => 1,
+                            "value" => "/*1*/"
+                        ),
+                        array(
+                            "endColumn" => 14,
+                            "endIndex" => 14,
+                            "endLine" => 1,
+                            "index" => 3,
+                            "startColumn" => 9,
+                            "startIndex" => 9,
+                            "startLine" => 1,
+                            "value" => "/*2*/"
+                        ),
+                        array(
+                            "endColumn" => 35,
+                            "endIndex" => 35,
+                            "endLine" => 1,
+                            "index" => 5,
+                            "startColumn" => 30,
+                            "startIndex" => 30,
+                            "startLine" => 1,
+                            "value" => "/*5*/"
+                        ),
+                    )
                 )
             )
         );
