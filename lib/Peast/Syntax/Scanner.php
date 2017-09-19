@@ -435,6 +435,11 @@ abstract class Scanner
         if ($this->registerTokens) {
             $state["tokensNum"] = count($this->tokens);
         }
+        //Emit the FreezeState event and pass the given state so that listeners
+        //attached to this event can add data
+        $this->eventsEmitter && $this->eventsEmitter->fire(
+            "FreezeState", array(&$state)
+        );
         return $state;
     }
     
@@ -451,6 +456,10 @@ abstract class Scanner
             $this->tokens = array_slice($this->tokens, 0, $state["tokensNum"]);
             unset($state["tokensNum"]);
         }
+        //Emit the ResetState event and pass the given state
+        $this->eventsEmitter && $this->eventsEmitter->fire(
+            "ResetState", array(&$state)
+        );
         foreach ($state as $key => $value) {
             $this->$key = $value;
         }

@@ -64,7 +64,38 @@ class CommentsRegistry
         
         $parser->getScanner()->getEventsEmitter()
                ->addListener("TokenConsumed", array($this, "onTokenConsumed"))
-               ->addListener("EndReached", array($this, "onTokenConsumed"));
+               ->addListener("EndReached", array($this, "onTokenConsumed"))
+               ->addListener("FreezeState", array($this, "onScannerFreezeState"))
+               ->addListener("ResetState", array($this, "onScannerResetState"));
+    }
+    
+    /**
+     * Listener called every time the scanner compose the array that represents
+     * its current state
+     * 
+     * @param array   $state   State
+     * 
+     * @return void
+     */
+    public function onScannerFreezeState(&$state)
+    {
+        //Register the current last token index
+        $state["commentsLastTokenIndex"] = $this->lastTokenIndex;
+    }
+    
+    /**
+     * Listener called every time the scanner reset its state using the given
+     * array
+     * 
+     * @param array   $state   State
+     * 
+     * @return void
+     */
+    public function onScannerResetState(&$state)
+    {
+        //Reset the last token index and delete it from the state array
+        $this->lastTokenIndex = $state["commentsLastTokenIndex"];
+        unset($state["commentsLastTokenIndex"]);
     }
     
     /**
@@ -105,8 +136,15 @@ class CommentsRegistry
             
             //If there is an open comment buffer, close it and move it to the
             //registry
-            if ($this->buffer) {
-                $this->registry[] = $this->buffer;
+            if ($buffer = $this->buffer) {
+                //Use the location as key to add the group of comments to the
+                //registry, in this way if comments are reprocessed they won't
+                //be duplicated
+                $key = implode("-", array(
+                    $buffer["prev"] !== null ? $buffer["prev"] : "",
+                    $buffer["next"] !== null ? $buffer["next"] : ""
+                ));
+                $this->registry[$key] = $this->buffer;
                 $this->buffer = null;
             }
             
