@@ -247,6 +247,14 @@ class CommentsRegistry
                     }
                 }
             }
+            
+            //If comments can't be associated with any node, associate it as
+            //leading comments of the program, this happens when the source is
+            //empty
+            if (!$nodes) {
+                $firstNode = array_values($this->nodesStartMap);
+                $nodes = array($firstNode[0][0]);
+            }
         }
         
         //If there are multiple possible nodes to associate the comments to,
