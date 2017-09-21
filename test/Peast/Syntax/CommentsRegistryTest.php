@@ -584,6 +584,53 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                         ),
                     )
                 )
+            ),
+            array(
+                array(
+                    "source" => implode("\n", array(
+                        "/*Only*/ //Comments",
+                    )),
+                    "nodes" => array(
+                        array(
+                            "index" => 0,
+                            "node" => "Program",
+                            "leading" => true,
+                            "kind" => Comment::KIND_MULTILINE,
+                            "text" => "Only",
+                            "rawText" => "/*Only*/"
+                        ),
+                        array(
+                            "index" => 1,
+                            "node" => "Program",
+                            "leading" => true,
+                            "kind" => Comment::KIND_INLINE,
+                            "text" => "Comments",
+                            "rawText" => "//Comments"
+                        )
+                    ),
+                    "tokens" => array(
+                        array(
+                            "endColumn" => 8,
+                            "endIndex" => 8,
+                            "endLine" => 1,
+                            "index" => 0,
+                            "startColumn" => 0,
+                            "startIndex" => 0,
+                            "startLine" => 1,
+                            "value" => "/*Only*/"
+                        ),
+                        array(
+                            "endColumn" => 19,
+                            "endIndex" => 19,
+                            "endLine" => 1,
+                            "index" => 1,
+                            "startColumn" => 9,
+                            "startIndex" => 9,
+                            "startLine" => 1,
+                            "value" => "//Comments"
+                        )
+                    )
+                )
             )
         );
     }
