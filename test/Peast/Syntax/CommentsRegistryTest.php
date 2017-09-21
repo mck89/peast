@@ -312,7 +312,9 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "value" => "--> HTML comment end"
                         )
                     )
-                ),
+                )
+            ),
+            array(
                 array(
                     "source" => implode("\n", array(
                         "//Start",
@@ -350,7 +352,7 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "leading" => false,
                             "kind" => Comment::KIND_INLINE,
                             "text" => "End",
-                            "rawText" => "/*End*/"
+                            "rawText" => "//End"
                         ),
                     ),
                     "tokens" => array(
@@ -395,7 +397,9 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "value" => "//End"
                         ),
                     )
-                ),
+                )
+            ),
+            array(
                 array(
                     "source" => implode("\n", array(
                         "/*1*/a = /*2*//\/*3*\/[/*4*/]//*5*/",
@@ -418,7 +422,7 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "rawText" => "/*2*/"
                         ),
                         array(
-                            "index" => 1,
+                            "index" => 0,
                             "node" => "RegExpLiteral",
                             "leading" => false,
                             "kind" => Comment::KIND_MULTILINE,
@@ -456,6 +460,127 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                             "startIndex" => 30,
                             "startLine" => 1,
                             "value" => "/*5*/"
+                        ),
+                    )
+                )
+            ),
+            array(
+                array(
+                    "source" => implode("\n", array(
+                        "/*1*/(a)/*2*/;",
+                        "/*3*/(a)/*4*/;",
+                        "/*5*/(a) => a/*6*/;",
+                    )),
+                    "nodes" => array(
+                        array(
+                            "index" => 0,
+                            "node" => "ParenthesizedExpression",
+                            "leading" => true,
+                            "kind" => Comment::KIND_MULTILINE,
+                            "text" => "1",
+                            "rawText" => "/*1*/"
+                        ),
+                        array(
+                            "index" => 0,
+                            "node" => "ParenthesizedExpression",
+                            "leading" => false,
+                            "kind" => Comment::KIND_MULTILINE,
+                            "text" => "2",
+                            "rawText" => "/*2*/"
+                        ),
+                        array(
+                            "index" => 0,
+                            "node" => "ParenthesizedExpression",
+                            "leading" => true,
+                            "kind" => Comment::KIND_MULTILINE,
+                            "text" => "3",
+                            "rawText" => "/*3*/"
+                        ),
+                        array(
+                            "index" => 0,
+                            "node" => "ParenthesizedExpression",
+                            "leading" => false,
+                            "kind" => Comment::KIND_MULTILINE,
+                            "text" => "4",
+                            "rawText" => "/*4*/"
+                        ),
+                        array(
+                            "index" => 0,
+                            "node" => "ArrowFunctionExpression",
+                            "leading" => true,
+                            "kind" => Comment::KIND_MULTILINE,
+                            "text" => "5",
+                            "rawText" => "/*5*/"
+                        ),
+                        array(
+                            "index" => 0,
+                            "node" => "Identifier",
+                            "leading" => false,
+                            "kind" => Comment::KIND_MULTILINE,
+                            "text" => "6",
+                            "rawText" => "/*6*/"
+                        ),
+                    ),
+                    "tokens" => array(
+                        array(
+                            "endColumn" => 5,
+                            "endIndex" => 5,
+                            "endLine" => 1,
+                            "index" => 0,
+                            "startColumn" => 0,
+                            "startIndex" => 0,
+                            "startLine" => 1,
+                            "value" => "/*1*/"
+                        ),
+                        array(
+                            "endColumn" => 13,
+                            "endIndex" => 13,
+                            "endLine" => 1,
+                            "index" => 4,
+                            "startColumn" => 8,
+                            "startIndex" => 8,
+                            "startLine" => 1,
+                            "value" => "/*2*/"
+                        ),
+                        array(
+                            "endColumn" => 5,
+                            "endIndex" => 20,
+                            "endLine" => 2,
+                            "index" => 6,
+                            "startColumn" => 0,
+                            "startIndex" => 15,
+                            "startLine" => 2,
+                            "value" => "/*3*/"
+                        ),
+                        array(
+                            "endColumn" => 13,
+                            "endIndex" => 28,
+                            "endLine" => 2,
+                            "index" => 10,
+                            "startColumn" => 8,
+                            "startIndex" => 23,
+                            "startLine" => 2,
+                            "value" => "/*4*/"
+                        ),
+                        array(
+                            "endColumn" => 5,
+                            "endIndex" => 35,
+                            "endLine" => 3,
+                            "index" => 12,
+                            "startColumn" => 0,
+                            "startIndex" => 30,
+                            "startLine" => 3,
+                            "value" => "/*5*/"
+                        ),
+                        array(
+                            "endColumn" => 18,
+                            "endIndex" => 48,
+                            "endLine" => 3,
+                            "index" => 18,
+                            "startColumn" => 13,
+                            "startIndex" => 43,
+                            "startLine" => 3,
+                            "value" => "/*6*/"
                         ),
                     )
                 )
