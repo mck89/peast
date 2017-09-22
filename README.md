@@ -70,4 +70,4 @@ Changelog
 
 #### 1.5
 * Enabled JSON serialization of nodes and tokens using json_encode()
-* Added parsing, handling and rendering of comments
+* Added parsing and handling of comments
