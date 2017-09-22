@@ -64,6 +64,13 @@ abstract class Base
     protected $spacesInsideRoundBrackets = false;
     
     /**
+     * Boolean that indicates if comments must be rendered
+     * 
+     * @var bool
+     */
+    protected $renderComments = true;
+    
+    /**
      * Returns the new line character
      * 
      * @return string
@@ -125,5 +132,15 @@ abstract class Base
     public function getSpacesInsideRoundBrackets()
     {
         return $this->spacesInsideRoundBrackets;
+    }
+    
+    /**
+     * Returns a boolean that indicates if comments must be rendered
+     * 
+     * @return bool
+     */
+    public function getRenderComments()
+    {
+        return $this->renderComments;
     }
 }
