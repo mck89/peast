@@ -165,6 +165,7 @@ class Comment extends Node
      */
     public function setLeadingComments($comments)
     {
+        //Comments cannot be attached to other comments
         return $this;
     }
     
@@ -177,6 +178,7 @@ class Comment extends Node
      */
     public function setTrailingComments($comments)
     {
+        //Comments cannot be attached to other comments
         return $this;
     }
     
