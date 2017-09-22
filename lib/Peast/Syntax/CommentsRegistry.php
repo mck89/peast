@@ -165,11 +165,11 @@ class CommentsRegistry
         $loc = $node->getLocation();
         foreach (array("Start", "End") as $pos) {
             $val = $loc->{"get$pos"}()->getIndex();
-            $prop = "nodes{$pos}Map";
-            if (!isset($this->$prop[$val])) {
-                $this->$prop[$val] = array();
+            $map = &$this->{"nodes{$pos}Map"};
+            if (!isset($map[$val])) {
+                $map[$val] = array();
             }
-            $this->$prop[$val][] = $node;
+            $map[$val][] = $node;
         }
     }
     
