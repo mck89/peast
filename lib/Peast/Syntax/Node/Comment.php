@@ -131,7 +131,7 @@ class Comment extends Node
     /**
      * Sets the comment raw text
      * 
-     * @param string $text Comment text
+     * @param string $rawText Comment raw text
      * 
      * @return $this
      */
