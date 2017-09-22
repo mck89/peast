@@ -72,6 +72,7 @@ In the examples above you may have noticed the `$options` parameter. This parame
 * "sourceType": this can be one of the source type constants defined in the Peast class:
     * `Peast\Peast::SOURCE_TYPE_SCRIPT`: this is the default source type and indicates that the code is a script, this means that `import` and `export` keywords are not parsed
     * `Peast\Peast::SOURCE_TYPE_SCRIPT`: this indicates that the code is a module and it activates the parsing of `import` and `export` keywords
+* "comments" (from version 1.5): enables comments parsing and attaches the comments to the nodes in the tree. You can get comments attached to nodes using `getLeadingComments` and `getTrailingComments` methods
 
 Differences from Esprima and ESTree
 -------------
