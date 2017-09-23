@@ -588,13 +588,13 @@ class CommentsRegistryTest extends \test\Peast\TestBase
             array(
                 array(
                     "source" => implode("\n", array(
-                        "test",
+                        "1+1",
                         "<!--end"
                     )),
                     "nodes" => array(
                         array(
                             "index" => 0,
-                            "node" => "Identifier",
+                            "node" => "Literal",
                             "leading" => false,
                             "kind" => Comment::KIND_HTML_OPEN,
                             "text" => "end",
@@ -604,11 +604,11 @@ class CommentsRegistryTest extends \test\Peast\TestBase
                     "tokens" => array(
                         array(
                             "endColumn" => 7,
-                            "endIndex" => 12,
+                            "endIndex" => 11,
                             "endLine" => 2,
-                            "index" => 1,
+                            "index" => 3,
                             "startColumn" => 0,
-                            "startIndex" => 5,
+                            "startIndex" => 4,
                             "startLine" => 2,
                             "value" => "<!--end"
                         )
