@@ -272,6 +272,8 @@ class CommentsRegistry
      * @param Node\Node  $node2     Second node
      * 
      * @return int
+     * 
+     * @codeCoverageIgnore
      */
     public function compareNodesLength($node1, $node2)
     {

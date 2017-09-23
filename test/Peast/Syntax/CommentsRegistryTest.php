@@ -588,6 +588,36 @@ class CommentsRegistryTest extends \test\Peast\TestBase
             array(
                 array(
                     "source" => implode("\n", array(
+                        "test",
+                        "<!--end"
+                    )),
+                    "nodes" => array(
+                        array(
+                            "index" => 0,
+                            "node" => "Identifier",
+                            "leading" => false,
+                            "kind" => Comment::KIND_HTML_OPEN,
+                            "text" => "end",
+                            "rawText" => "<!--end"
+                        )
+                    ),
+                    "tokens" => array(
+                        array(
+                            "endColumn" => 7,
+                            "endIndex" => 12,
+                            "endLine" => 2,
+                            "index" => 1,
+                            "startColumn" => 0,
+                            "startIndex" => 5,
+                            "startLine" => 2,
+                            "value" => "<!--end"
+                        )
+                    )
+                )
+            ),
+            array(
+                array(
+                    "source" => implode("\n", array(
                         "/*Only*/ //Comments",
                     )),
                     "nodes" => array(
