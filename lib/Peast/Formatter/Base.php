@@ -133,14 +133,4 @@ abstract class Base
     {
         return $this->spacesInsideRoundBrackets;
     }
-    
-    /**
-     * Returns a boolean that indicates if comments must be rendered
-     * 
-     * @return bool
-     */
-    public function getRenderComments()
-    {
-        return $this->renderComments;
-    }
 }
