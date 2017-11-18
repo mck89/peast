@@ -2075,7 +2075,8 @@ class Parser extends \Peast\Syntax\Parser
     {
         if ($token = $this->scanner->consume("...")) {
             
-            if ($argument = $this->parseIdentifier(self::ID_MIXED)) {
+            if (($argument = $this->parseIdentifier(self::ID_MIXED)) ||
+                ($argument = $this->parseBindingPattern())) {
                 $node = $this->createNode("RestElement", $token);
                 $node->setArgument($argument);
                 return $this->completeNode($node);
