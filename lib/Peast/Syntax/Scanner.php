@@ -753,7 +753,7 @@ abstract class Scanner
         //If last token was "/" do not throw an error if the token has not be
         //recognized since it can be the first character in a regexp and it will
         //be consumed when the current token will be reconsumed as a regexp
-        if ($this->isAfterSlash()) {
+        if ($this->isAfterSlash($startPosition)) {
             return null;
         }
         
@@ -829,12 +829,15 @@ abstract class Scanner
      * Checks if the last scanned character is a slash, this method is used
      * to know if the scanner is at the beginning of a regex
      * 
+     * @param Position $position  Position to check. If not given the current
+     *                            scanner position will be used
+     * 
      * @return bool
      */
-    protected function isAfterSlash()
+    protected function isAfterSlash($position = null)
     {
-        return $this->index && ($char = $this->charAt($this->index - 1)) &&
-               $char === "/";
+        $index = $position ? $position ->getIndex() : $this->index;
+        return $index && $this->charAt($index - 1) === "/";
     }
     
     /**
