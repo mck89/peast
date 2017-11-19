@@ -1869,7 +1869,7 @@ class Parser extends \Peast\Syntax\Parser
                 $node->setSource($source);
                 return $this->completeNode($node);
                 
-            } elseif (($specifiers = $this->parseImportClause()) &&
+            } elseif (($specifiers = $this->parseImportClause()) !== null &&
                 $source = $this->parseFromClause()
             ) {
                 
@@ -1895,7 +1895,7 @@ class Parser extends \Peast\Syntax\Parser
     {
         if ($spec = $this->parseNameSpaceImport()) {
             return array($spec);
-        } elseif ($specs = $this->parseNamedImports()) {
+        } elseif (($specs = $this->parseNamedImports()) !== null) {
             return $specs;
         } elseif ($spec = $this->parseIdentifier(self::ID_ALLOW_NOTHING)) {
             
@@ -1908,7 +1908,7 @@ class Parser extends \Peast\Syntax\Parser
                 if ($spec = $this->parseNameSpaceImport()) {
                     $ret[] = $spec;
                     return $ret;
-                } elseif ($specs = $this->parseNamedImports()) {
+                } elseif (($specs = $this->parseNamedImports()) !== null) {
                     $ret = array_merge($ret, $specs);
                     return $ret;
                 }
