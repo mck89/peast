@@ -1,0 +1,1 @@
+result = { y: x = 1 } = vals;

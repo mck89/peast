@@ -159,7 +159,6 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function expressionToPattern($node)
     {
-        $retNode = $node;
         if ($node instanceof Node\ArrayExpression) {
             
             $loc = $node->getLocation();
@@ -190,7 +189,7 @@ class Parser extends \Peast\Syntax\Parser
             $retNode = $this->createNode(
                 "AssignmentProperty", $loc->getStart()
             );
-            $retNode->setValue($node->getValue());
+            $retNode->setValue($this->expressionToPattern($node->getValue()));
             $retNode->setKey($node->getKey());
             $retNode->setMethod($node->getMethod());
             $retNode->setShorthand($node->getShorthand());
@@ -211,9 +210,11 @@ class Parser extends \Peast\Syntax\Parser
             $loc = $node->getLocation();
             $retNode = $this->createNode("AssignmentPattern", $loc->getStart());
             $retNode->setLeft($this->expressionToPattern($node->getLeft()));
-            $retNode->setRight($node->getRight());
+            $retNode->setRight($this->expressionToPattern($node->getRight()));
             $this->completeNode($retNode, $loc->getEnd());
             
+        } else {
+            $retNode = $node;
         }
         return $retNode;
     }
