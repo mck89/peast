@@ -1,0 +1,1 @@
+result = { arrow = () => {} } = vals;

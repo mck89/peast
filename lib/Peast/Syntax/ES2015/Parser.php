@@ -189,8 +189,26 @@ class Parser extends \Peast\Syntax\Parser
             $retNode = $this->createNode(
                 "AssignmentProperty", $loc->getStart()
             );
-            $retNode->setValue($this->expressionToPattern($node->getValue()));
-            $retNode->setKey($node->getKey());
+            // If it's a shorthand property convert the value to an assignment
+            // pattern if necessary
+            $value = $node->getValue();
+            $key = $node->getKey();
+            if ($value && $node->getShorthand() &&
+                !$value instanceof Node\AssignmentExpression &&
+                (!$value instanceof Node\Identifier || (
+                $key instanceof Node\Identifier && $key->getName() !== $value->getName()
+                ))) {
+                $loc = $node->getLocation();
+                $valNode = $this->createNode("AssignmentPattern", $loc->getStart());
+                $valNode->setLeft($key);
+                $valNode->setRight($value);
+                $this->completeNode($valNode, $loc->getEnd());
+                $value = $valNode;
+            } else {
+                $value = $this->expressionToPattern($value);
+            }
+            $retNode->setValue($value);
+            $retNode->setKey($key);
             $retNode->setMethod($node->getMethod());
             $retNode->setShorthand($node->getShorthand());
             $retNode->setComputed($node->getComputed());
