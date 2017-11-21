@@ -826,18 +826,27 @@ abstract class Scanner
     }
     
     /**
-     * Checks if the last scanned character is a slash, this method is used
-     * to know if the scanner is at the beginning of a regex
+     * Checks if the consumed or the scanned position follow a slash.
      * 
-     * @param Position $position  Position to check. If not given the current
-     *                            scanner position will be used
+     * @param Position $position  Additional position to check
      * 
      * @return bool
      */
     protected function isAfterSlash($position = null)
     {
-        $index = $position ? $position ->getIndex() : $this->index;
-        return $index && $this->charAt($index - 1) === "/";
+        $checkIndices = array(
+            $this->getPosition()->getIndex(),
+            $this->index - 1
+        );
+        if ($position) {
+            $checkIndices[] = $position->getIndex() - 1;
+        }
+        foreach ($checkIndices as $i) {
+            if ($i >= 0 && $this->charAt($i) === "/") {
+                return true;
+            }
+        }
+        return false;
     }
     
     /**
