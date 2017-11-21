@@ -2495,6 +2495,7 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseObjectBindingPattern()
     {
+        $state = $this->scanner->getState();
         if ($token = $this->scanner->consume("{")) {
             
             $properties = array();
@@ -2513,7 +2514,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->scanner->setState($state);
         }
         return null;
     }
