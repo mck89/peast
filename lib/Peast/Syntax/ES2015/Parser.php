@@ -2540,8 +2540,8 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            return $this->error();
-            
+            $this->scanner->setState($state);
+            return null;
         }
             
         $this->scanner->setState($state);
