@@ -834,10 +834,8 @@ abstract class Scanner
      */
     protected function isAfterSlash($position = null)
     {
-        $checkIndices = array(
-            $this->getPosition()->getIndex(),
-            $this->index - 1
-        );
+        $consumedIndex = $this->getPosition()->getIndex();
+        $checkIndices = array($consumedIndex, $consumedIndex + 1);
         if ($position) {
             $checkIndices[] = $position->getIndex() - 1;
         }
@@ -1399,7 +1397,7 @@ abstract class Scanner
                 if (!isset($this->openBrackets[$openBracket]) ||
                     !$this->openBrackets[$openBracket]
                 ) {
-                    if (!$this->isAfterSlash()) {
+                    if (!$this->isAfterSlash($this->getPosition(true))) {
                         return $this->error();
                     }
                 } else {

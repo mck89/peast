@@ -1,0 +1,96 @@
+{
+	"type": "Program",
+	"body": [
+	    {
+	        "type": "ExpressionStatement",
+	        "expression": {
+	            "type": "AssignmentExpression",
+	            "operator": "=",
+	            "left": {
+	                "type": "Identifier",
+	                "name": "r",
+	                "range": [
+	                    0,
+	                    1
+	                ],
+	                "loc": {
+	                    "start": {
+	                        "line": 1,
+	                        "column": 0
+	                    },
+	                    "end": {
+	                        "line": 1,
+	                        "column": 1
+	                    }
+	                }
+	            },
+	            "right": {
+	                "type": "Literal",
+	                "value": {},
+	                "raw": "/\\u0037\\u0037/",
+	                "regex": {
+	                    "pattern": "\\u0037\\u0037",
+	                    "flags": ""
+	                },
+	                "range": [
+	                    4,
+	                    18
+	                ],
+	                "loc": {
+	                    "start": {
+	                        "line": 1,
+	                        "column": 4
+	                    },
+	                    "end": {
+	                        "line": 1,
+	                        "column": 18
+	                    }
+	                }
+	            },
+	            "range": [
+	                0,
+	                18
+	            ],
+	            "loc": {
+	                "start": {
+	                    "line": 1,
+	                    "column": 0
+	                },
+	                "end": {
+	                    "line": 1,
+	                    "column": 18
+	                }
+	            }
+	        },
+	        "range": [
+	            0,
+	            19
+	        ],
+	        "loc": {
+	            "start": {
+	                "line": 1,
+	                "column": 0
+	            },
+	            "end": {
+	                "line": 1,
+	                "column": 19
+	            }
+	        }
+	    }
+	],
+	"sourceType": "script",
+	"range": [
+	    0,
+	    19
+	],
+	"loc": {
+	    "start": {
+	        "line": 1,
+	        "column": 0
+	    },
+	    "end": {
+	        "line": 1,
+	        "column": 19
+	    }
+	}
+}
