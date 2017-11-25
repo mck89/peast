@@ -2604,6 +2604,7 @@ class Parser extends \Peast\Syntax\Parser
                 if ($operator = $this->scanner->consumeOneOf($operators)) {
                     
                     $right = $this->parseAssignmentExpression();
+                    
                     if ($right) {
                         $node = $this->createNode(
                             "AssignmentExpression", $expr
@@ -2632,7 +2633,9 @@ class Parser extends \Peast\Syntax\Parser
             
             if ($this->scanner->consume("?")) {
                 
-                $consequent = $this->parseAssignmentExpression();
+                $consequent = $this->isolateContext(
+                    array("allowIn" => true), "parseAssignmentExpression"
+                );
                 if ($consequent && $this->scanner->consume(":") &&
                     $alternate = $this->parseAssignmentExpression()
                 ) {

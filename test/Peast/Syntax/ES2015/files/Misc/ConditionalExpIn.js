@@ -1,0 +1,1 @@
+for (true ? '' in cond1() : cond2(); false; ) ;
