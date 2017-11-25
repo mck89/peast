@@ -228,7 +228,7 @@ class Parser extends \Peast\Syntax\Parser
             $loc = $node->getLocation();
             $retNode = $this->createNode("AssignmentPattern", $loc->getStart());
             $retNode->setLeft($this->expressionToPattern($node->getLeft()));
-            $retNode->setRight($this->expressionToPattern($node->getRight()));
+            $retNode->setRight($node->getRight());
             $this->completeNode($retNode, $loc->getEnd());
             
         } else {
