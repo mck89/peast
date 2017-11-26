@@ -101,7 +101,9 @@ class ES2015Test extends \test\Peast\TestBase
             array("yield.abc", true, false),
             array("var true", false, false),
             array("for (let in {}) { }", true, false),
-            array("for (let of {}) { }", false, false)
+            array("for (let of {}) { }", false, false),
+            array("let = 2", true, false),
+            array("const = 2", false, false)
         );
     }
     

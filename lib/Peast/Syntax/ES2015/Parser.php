@@ -1587,7 +1587,11 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            if ($this->scanner->getStrictMode() || $token->getValue() !== "let") {
+                return $this->error();
+            } else {
+                $this->scanner->setState($state);
+            }
         }
         return null;
     }
@@ -1676,7 +1680,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            if ($this->scanner->getStrictMode()) {
+            if ($this->scanner->getStrictMode() || $token->getValue() !== "let") {
                 return $this->error();
             } else {
                 $this->scanner->setState($state);
