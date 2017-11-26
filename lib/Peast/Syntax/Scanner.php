@@ -949,6 +949,7 @@ abstract class Scanner
     {
         $comments = [];
         $content = "";
+        $secStartIdx = $this->index;
         while (($char = $this->charAt()) !== null) {
             //Whitespace
             if (in_array($char, $this->whitespaces)) {
@@ -1089,14 +1090,15 @@ abstract class Scanner
                 
                 //Close html comment
                 //Check if it is on it's own line
-                $allow = true;
-                for ($index = $this->index - 1; $index >= 0; $index--) {
-                    $char = $this->charAt($index);
-                    if (!in_array($char, $this->whitespaces)) {
-                        $allow = false;
-                        break;
-                    } elseif (in_array($char, $this->lineTerminators)) {
-                        break;
+                $allow = false;
+                if (!$secStartIdx) {
+                    $allow = true;
+                } else {
+                    for ($index = $this->index - 1; $index >= $secStartIdx; $index--) {
+                        if (in_array($this->charAt($index), $this->lineTerminators)) {
+                            $allow = true;
+                            break;
+                        }
                     }
                 }
                 if ($allow) {
