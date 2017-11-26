@@ -1587,6 +1587,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
+            // "let" can be used as variable name in non-strict mode
             if ($this->scanner->getStrictMode() || $token->getValue() !== "let") {
                 return $this->error();
             } else {
@@ -1680,6 +1681,7 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
+            // "let" can be used as variable name in non-strict mode
             if ($this->scanner->getStrictMode() || $token->getValue() !== "let") {
                 return $this->error();
             } else {
