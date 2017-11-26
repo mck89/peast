@@ -99,7 +99,9 @@ class ES2015Test extends \test\Peast\TestBase
             array("var a = {yield:1, if:2, true:3}", true, true),
             array("a.yield.true.if", true, true),
             array("yield.abc", true, false),
-            array("var true", false, false)
+            array("var true", false, false),
+            array("for (let in {}) { }", true, false),
+            array("for (let of {}) { }", false, false)
         );
     }
     

@@ -1139,10 +1139,6 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseForNotVarLetConstStatement($forToken)
     {
-        if ($this->scanner->isBefore(array("let"))) {
-            return null;
-        }
-            
         $state = $this->scanner->getState();
         $notBeforeSB = !$this->scanner->isBefore(array(array("let", "[")), true);
         
@@ -1178,6 +1174,7 @@ class Parser extends \Peast\Syntax\Parser
         } else {
             
             $this->scanner->setState($state);
+            $notBeforeLet = !$this->scanner->isBefore(array("let"));
             $left = $this->parseLeftHandSideExpression();
             $left = $this->expressionToPattern($left);
             
@@ -1196,7 +1193,7 @@ class Parser extends \Peast\Syntax\Parser
                     $node->setBody($body);
                     return $this->completeNode($node);
                 }
-            } elseif ($left && $this->scanner->consume("of")) {
+            } elseif ($notBeforeLet && $left && $this->scanner->consume("of")) {
                 
                 if (($right = $this->isolateContext(
                         array("allowIn" => true),
@@ -1575,6 +1572,7 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseLexicalDeclaration()
     {
+        $state = $this->scanner->getState();
         if ($token = $this->scanner->consumeOneOf(array("let", "const"))) {
             
             $declarations = $this->charSeparatedListOf(
@@ -1667,6 +1665,7 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseForDeclaration()
     {
+        $state = $this->scanner->getState();
         if ($token = $this->scanner->consumeOneOf(array("let", "const"))) {
             
             if ($declaration = $this->parseForBinding()) {
@@ -1677,7 +1676,11 @@ class Parser extends \Peast\Syntax\Parser
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            if ($this->scanner->getStrictMode()) {
+                return $this->error();
+            } else {
+                $this->scanner->setState($state);
+            }
         }
         return null;
     }
