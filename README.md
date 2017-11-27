@@ -71,3 +71,6 @@ Changelog
 #### 1.5
 * Enabled JSON serialization of nodes and tokens using json_encode()
 * Added parsing and handling of comments
+
+#### 1.6
+* Fixed a lot of bugs and now Peast is compatible with all the tests from the
