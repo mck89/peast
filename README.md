@@ -73,4 +73,4 @@ Changelog
 * Added parsing and handling of comments
 
 #### 1.6
-* Fixed a lot of bugs and now Peast is compatible with all the tests from the
+* Fixed a lot of bugs and now Peast is compatible with all the [ECMAScript official tests](https://github.com/tc39/test262) for the implemented features
