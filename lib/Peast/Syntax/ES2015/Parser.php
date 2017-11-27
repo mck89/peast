@@ -2088,8 +2088,6 @@ class Parser extends \Peast\Syntax\Parser
                 $node->setElements($elements);
                 return $this->completeNode($node);
             }
-            
-            return $this->error();
         }
         return null;
     }
