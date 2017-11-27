@@ -103,7 +103,9 @@ class ES2015Test extends \test\Peast\TestBase
             array("for (let in {}) { }", true, false),
             array("for (let of {}) { }", false, false),
             array("let = 2", true, false),
-            array("const = 2", false, false)
+            array("const = 2", false, false),
+            array("import {if as a} from 'source'", true, true),
+            array("export {a as if};", true, true)
         );
     }
     

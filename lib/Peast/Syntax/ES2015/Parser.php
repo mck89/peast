@@ -2004,7 +2004,7 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseImportSpecifier()
     {
-        if ($imported = $this->parseIdentifier(self::ID_ALLOW_NOTHING)) {
+        if ($imported = $this->parseIdentifier(self::ID_ALLOW_ALL)) {
             
             $node = $this->createNode("ImportSpecifier", $imported);
             $node->setImported($imported);
