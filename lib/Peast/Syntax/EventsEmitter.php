@@ -45,7 +45,7 @@ class EventsEmitter
      * Fires an event
      * 
      * @param string    $event  Event name
-     * @param array     $fn     Arguments to pass to functions attached to the
+     * @param array     $args   Arguments to pass to functions attached to the
      *                          event
      * 
      * @return $this
