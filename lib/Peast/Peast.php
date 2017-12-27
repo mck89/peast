@@ -10,7 +10,42 @@
 namespace Peast;
 
 /**
- * Main class of Peast library
+ * Main class of Peast library.
+ * Every function of this class takes two arguments:
+ * - The source code to parse
+ * - The options array that is an associative array of parser settings.
+ *   Available options are:
+ *      - "sourceType": one of the source type constants declared in this class.
+ *        This option tells the parser to parse the source in script or module
+ *        mode. If this option is not provided the parser will work in script
+ *        mode.
+ *      - "sourceEncoding": the encoding of the source. If not specified the
+ *        parser will assume UTF-8.
+ *      - "comments": if true it enables comments parsing.
+ * 
+ * @method static Syntax\ES2015\Parser ES2015(string $source, array $options)
+ * Returns an instance of the ES2015 parser for the given source. See Peast
+ * class documentation to understand the function arguments.
+ * 
+ * @method static Syntax\ES2015\Parser ES6(string $source, array $options)
+ * Returns an instance of the ES2015 parser for the given source. See Peast
+ * class documentation to understand function arguments.
+ * 
+ * @method static Syntax\ES2016\Parser ES2016(string $source, array $options)
+ * Returns an instance of the ES2016 parser for the given source. See Peast
+ * class documentation to understand function arguments.
+ * 
+ * @method static Syntax\ES2016\Parser ES7(string $source, array $options)
+ * Returns an instance of the ES2016 parser for the given source. See Peast
+ * class documentation to understand function arguments.
+ * 
+ * @method static Syntax\ES2017\Parser ES2017(string $source, array $options)
+ * Returns an instance of the ES2017 parser for the given source. See Peast
+ * class documentation to understand function arguments.
+ * 
+ * @method static Syntax\ES2017\Parser ES8(string $source, array $options)
+ * Returns an instance of the ES2017 parser for the given source. See Peast
+ * class documentation to understand function arguments.
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
@@ -30,146 +65,41 @@ class Peast
     const SOURCE_TYPE_MODULE = "module";
     
     /**
-     * Returns an instance of the ES2015 parser for the given source
+     * Valid versions and aliases
      * 
-     * @param string $source  The source to parse
-     * @param array  $options Associative array for parser options. Available
-     *                        options are:
-     *                        - "sourceType": one of the source type constants
-     *                          declared in this class. This option tells the
-     *                          parser to parse the source in script or module
-     *                          mode. If this option is not provided the parser
-     *                          will work in script mode.
-     *                        - "sourceEncoding": the encoding of the source.
-     *                          If not specified the parser will assume UTF-8.
-     *                        - "comments": if true it enables comments parsing.
-     * 
-     * @return \Peast\Syntax\ES2015\Parser
-     * 
-     * @static
+     * @var array
      */
-    static public function ES2015($source, $options = array())
-    {
-        return new Syntax\ES2015\Parser($source, $options);
-    }
+    static protected $versions = array(
+        "ES6" => "ES2015",
+        "ES7" => "ES2016",
+        "ES8" => "ES2017"
+    );
     
     /**
-     * Returns an instance of the ES2015 parser for the given source
+     * Magic method that exposes all the functions to access specific parser
+     * versions
      * 
-     * @param string $source  The source to parse
-     * @param array  $options Associative array for parser options. Available
-     *                        options are:
-     *                        - "sourceType": one of the source type constants
-     *                          declared in this class. This option tells the
-     *                          parser to parse the source in script or module
-     *                          mode. If this option is not provided the parser
-     *                          will work in script mode.
-     *                        - "sourceEncoding": the encoding of the source.
-     *                          If not specified the parser will assume UTF-8.
+     * @param string    $version   Parser version
+     * @param array     $args      Parser arguments
      * 
-     * @return \Peast\Syntax\ES2015\Parser
-     * 
-     * @static
+     * @return mixed
      */
-    static public function ES6($source, $options = array())
+    public static function __callStatic($version, $args)
     {
-        return self::ES2015($source, $options);
-    }
-    
-    /**
-     * Returns an instance of the ES2016 parser for the given source
-     * 
-     * @param string $source  The source to parse
-     * @param array  $options Associative array for parser options. Available
-     *                        options are:
-     *                        - "sourceType": one of the source type constants
-     *                          declared in this class. This option tells the
-     *                          parser to parse the source in script or module
-     *                          mode. If this option is not provided the parser
-     *                          will work in script mode.
-     *                        - "sourceEncoding": the encoding of the source.
-     *                          If not specified the parser will assume UTF-8.
-     *                        - "comments": if true it enables comments parsing.
-     * 
-     * @return \Peast\Syntax\ES2016\Parser
-     * 
-     * @static
-     */
-    static public function ES2016($source, $options = array())
-    {
-        return new Syntax\ES2016\Parser($source, $options);
-    }
-    
-    /**
-     * Returns an instance of the ES2016 parser for the given source
-     * 
-     * @param string $source  The source to parse
-     * @param array  $options Associative array for parser options. Available
-     *                        options are:
-     *                        - "sourceType": one of the source type constants
-     *                          declared in this class. This option tells the
-     *                          parser to parse the source in script or module
-     *                          mode. If this option is not provided the parser
-     *                          will work in script mode.
-     *                        - "sourceEncoding": the encoding of the source.
-     *                          If not specified the parser will assume UTF-8.
-     *                        - "comments": if true it enables comments parsing.
-     * 
-     * @return \Peast\Syntax\ES2016\Parser
-     * 
-     * @static
-     */
-    static public function ES7($source, $options = array())
-    {
-        return self::ES2016($source, $options);
-    }
-    
-    /**
-     * Returns an instance of the ES2017 parser for the given source
-     * 
-     * @param string $source  The source to parse
-     * @param array  $options Associative array for parser options. Available
-     *                        options are:
-     *                        - "sourceType": one of the source type constants
-     *                          declared in this class. This option tells the
-     *                          parser to parse the source in script or module
-     *                          mode. If this option is not provided the parser
-     *                          will work in script mode.
-     *                        - "sourceEncoding": the encoding of the source.
-     *                          If not specified the parser will assume UTF-8.
-     *                        - "comments": if true it enables comments parsing.
-     * 
-     * @return \Peast\Syntax\ES2017\Parser
-     * 
-     * @static
-     */
-    static public function ES2017($source, $options = array())
-    {
-        return new Syntax\ES2017\Parser($source, $options);
-    }
-    
-    /**
-     * Returns an instance of the parser for the latest EcmaScript version
-     * implemented 
-     * 
-     * @param string $source  The source to parse
-     * @param array  $options Associative array for parser options. Available
-     *                        options are:
-     *                        - "sourceType": one of the source type constants
-     *                          declared in this class. This option tells the
-     *                          parser to parse the source in script or module
-     *                          mode. If this option is not provided the parser
-     *                          will work in script mode.
-     *                        - "sourceEncoding": the encoding of the source.
-     *                          If not specified the parser will assume UTF-8.
-     *                        - "comments": if true it enables comments parsing.
-     * 
-     * @return \Peast\Syntax\ES2017\Parser
-     * 
-     * @static
-     */
-    static public function latest($source, $options = array())
-    {
-        return self::ES2017($source, $options);
+        $source = $args[0];
+        $options = isset($args[1]) ? $args[1] : array();
+        
+        if (!in_array($version, self::$versions)) {
+            if ($version === "latest") {
+                $version = end(self::$versions);
+            } elseif (isset(self::$versions[$version])) {
+                $version = self::$versions[$version];
+            } else {
+                throw new \Exception("Invalid version $version");
+            }
+        }
+        
+        $class = "\\Peast\\Syntax\\$version\\Parser";
+        return new $class($source, $options);
     }
 }

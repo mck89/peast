@@ -18,10 +18,19 @@ class PeastTest extends TestBase
     public function testES2017()
     {
         $this->assertTrue(\Peast\Peast::ES2017("") instanceof \Peast\Syntax\ES2017\Parser);
+        $this->assertTrue(\Peast\Peast::ES8("") instanceof \Peast\Syntax\ES2017\Parser);
     }
     
     public function testLatest()
     {
         $this->assertTrue(\Peast\Peast::latest("") instanceof \Peast\Syntax\ES2017\Parser);
+    }
+    
+    /**
+     * @expectedException \Exception
+     */
+    public function testInvalidVersion()
+    {
+        \Peast\Peast::ES("");
     }
 }
