@@ -47,6 +47,10 @@ namespace Peast;
  * Returns an instance of the ES2017 parser for the given source. See Peast
  * class documentation to understand function arguments.
  * 
+ * @method static Syntax\ES2017\Parser latest(string $source, array $options)
+ * Returns an instance of the latest parser version for the given source. See
+ * Peast class documentation to understand function arguments.
+ * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class Peast
