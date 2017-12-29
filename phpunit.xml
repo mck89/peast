@@ -16,6 +16,9 @@
         <testsuite name="ES2017">
             <directory>test/Peast/Syntax/ES2017</directory>
         </testsuite>
+        <testsuite name="ES2018">
+            <directory>test/Peast/Syntax/ES2018</directory>
+        </testsuite>
         <testsuite name="Traverser">
             <file>test/Peast/TraverserTest.php</file>
         </testsuite>

@@ -21,9 +21,15 @@ class PeastTest extends TestBase
         $this->assertTrue(\Peast\Peast::ES8("") instanceof \Peast\Syntax\ES2017\Parser);
     }
     
+    public function testES2018()
+    {
+        $this->assertTrue(\Peast\Peast::ES2018("") instanceof \Peast\Syntax\ES2018\Parser);
+        $this->assertTrue(\Peast\Peast::ES9("") instanceof \Peast\Syntax\ES2018\Parser);
+    }
+    
     public function testLatest()
     {
-        $this->assertTrue(\Peast\Peast::latest("") instanceof \Peast\Syntax\ES2017\Parser);
+        $this->assertTrue(\Peast\Peast::latest("") instanceof \Peast\Syntax\ES2018\Parser);
     }
     
     /**
