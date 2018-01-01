@@ -89,8 +89,8 @@ class Utils
         //Handle escapes
         $patterns = array(
             "u\{[a-fA-F0-9]+\}",
-            "u[a-fA-F0-9]{1,4}",
-            "x[a-fA-F0-9]{1,2}",
+            "u[a-fA-F0-9]{4}",
+            "x[a-fA-F0-9]{2}",
             "0[0-7]{2}",
             "[1-7][0-7]",
             "."

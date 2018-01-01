@@ -130,4 +130,39 @@ class ES2015Test extends \test\Peast\TestBase
             $this->assertSame($isValid, $validResult);
         }
     }
+    
+    
+    public function escapeSequencesProvider()
+    {
+        return array(
+            array("'\\x'"),
+            array("'\\x1'"),
+            array("'\\x1G'"),
+            array("'\\u'"),
+            array("'\\u1'"),
+            array("'\\u11'"),
+            array("'\\u111'"),
+            array("'\\uG'"),
+            array("'\\u1G'"),
+            array("'\\u11G'"),
+            array("'\\u111G'"),
+            array("'\\u{}'"),
+            array("'\\u{'"),
+            array("'\\u{12'"),
+            array("'\\u{G}'"),
+            array("'\\u{1G}'"),
+            array("'\\u{1G1}'"),
+            array("'\\u{G1}'"),
+            array("'\\u{{'"),
+        );
+    }
+    
+    /**
+     * @dataProvider escapeSequencesProvider
+     * @expectedException \Peast\Syntax\Exception
+     */
+    public function testInvalidescapeSequences($code)
+    {
+        \Peast\Peast::{$this->parser}($code)->parse();
+    }
 }

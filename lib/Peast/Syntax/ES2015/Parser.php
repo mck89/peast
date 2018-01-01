@@ -3218,9 +3218,7 @@ class Parser extends \Peast\Syntax\Parser
         $token = $this->scanner->getToken();
         if ($token && $token->getType() === Token::TYPE_STRING_LITERAL) {
             $val = $token->getValue();
-            if ($this->scanner->getStrictMode()) {
-                $this->preventLegacyOctalSyntax($val);
-            }
+            $this->checkInvalidEscapeSequences($val);
             $this->scanner->consumeToken();
             $node = $this->createNode("StringLiteral", $token);
             $node->setRaw($val);
@@ -3239,9 +3237,7 @@ class Parser extends \Peast\Syntax\Parser
         $token = $this->scanner->getToken();
         if ($token && $token->getType() === Token::TYPE_NUMERIC_LITERAL) {
             $val = $token->getValue();
-            if ($this->scanner->getStrictMode()) {
-                $this->preventLegacyOctalSyntax($val, true);
-            }
+            $this->checkInvalidEscapeSequences($val, true);
             $this->scanner->consumeToken();
             $node = $this->createNode("NumericLiteral", $token);
             $node->setRaw($val);
@@ -3274,7 +3270,7 @@ class Parser extends \Peast\Syntax\Parser
         do {
             $this->scanner->consumeToken();
             $val = $token->getValue();
-            $this->preventLegacyOctalSyntax($val);
+            $this->checkInvalidEscapeSequences($val, false, true);
             $lastChar = substr($val, -1);
             
             $quasi = $this->createNode("TemplateElement", $token);
@@ -3355,30 +3351,56 @@ class Parser extends \Peast\Syntax\Parser
     }
     
     /**
-     * If a number is in the legacy octal form or if a string contains a legacy
-     * octal escape, it throws a syntax error
+     * Checks if the given string or number contains invalid esape sequences
      * 
-     * @param string  $val      Value to check
-     * @param bool    $number   True if the value is a number
+     * @param string  $val                      Value to check
+     * @param bool    $number                   True if the value is a number
+     * @param bool    $forceLegacyOctalCheck    True to force legacy octal
+     *                                          form check
      * 
      * @return void
      */
-    protected function preventLegacyOctalSyntax($val, $number = false)
-    {
-        $error = false;
+    protected function checkInvalidEscapeSequences(
+        $val, $number = false, $forceLegacyOctalCheck = false
+    ) {
+        $checkLegacyOctal = $forceLegacyOctalCheck || $this->scanner->getStrictMode();
         if ($number) {
-            $error = preg_match("#^0[0-7]+$#", $val);
-        } elseif (strpos($val, "\\") !== false &&
-            preg_match_all("#(\\\\+)([0-7]{1,2})#", $val, $matches, PREG_SET_ORDER)) {
-            foreach ($matches as $match) {
-                if (strlen($match[1]) % 2 && $match[2] !== "0") {
-                    $error = true;
-                    break;
+            if ($checkLegacyOctal && preg_match("#^0[0-7]+$#", $val)) {
+                return $this->error(
+                    "Octal literals are not allowed in strict mode"
+                );
+            }
+        } elseif (strpos($val, "\\") !== false) {
+            $hex = "0-9a-fA-F";
+            $invalidSyntaxes = array(
+                "x[$hex]?[^$hex]",
+                "x[$hex]?$",
+                "u\{\}",
+                "u\{(?:[$hex]*[^$hex\}]+)+[$hex]*\}",
+                "u\{[^\}]*$",
+                "u(?!{)[$hex]{0,3}[^$hex\{]",
+                "u[$hex]{0,3}$"
+            );
+            if ($checkLegacyOctal) {
+                $invalidSyntaxes[] = "[0-7]{2}";
+                $invalidSyntaxes[] = "[1-7]";
+            }
+            $reg = "#(\\\\+)(" . implode("|", $invalidSyntaxes) . ")#";
+            if (preg_match_all($reg, $val, $matches, PREG_SET_ORDER)) {
+                foreach ($matches as $match) {
+                    if (strlen($match[1]) % 2) {
+                        $first = $match[2][0];
+                        if ($first === "u") {
+                            $err = "Malformed unicode escape sequence";
+                        } elseif ($first === "x") {
+                            $err = "Malformed hexadecimal escape sequence";
+                        } else {
+                            $err = "Octal literals are not allowed in strict mode";
+                        }
+                        return $this->error($err);
+                    }
                 }
             }
-        }
-        if ($error) {
-            return $this->error("Octal literals are not allowed in strict mode");
         }
     }
 }
