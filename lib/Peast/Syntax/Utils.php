@@ -110,11 +110,19 @@ class Utils
                 // \n, \r, \t ...
                 return $simpleSequence[$type];
             } elseif ($type === "u" || $type === "x") {
+                //Invalid unicode or hexadecimal sequences
+                if (strlen($m[1]) === 1) {
+                    return "\\$type";
+                }
                 // \uFFFF, \u{FFFF}, \xFF
                 $code = substr($m[1], 1);
                 $code = str_replace(array("{", "}"), "", $code);
                 return Utils::unicodeToUtf8(hexdec($code));
             } elseif ($type >= "0" && $type <= "7") {
+                //Invalid octal sequences
+                if (strlen($m[1]) === 1) {
+                    return "\\$type";
+                }
                 // \123
                 return Utils::unicodeToUtf8(octdec($m[1]));
             } elseif (in_array($m[1], $lineTerminators)) {

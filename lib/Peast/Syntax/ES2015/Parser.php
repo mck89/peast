@@ -2848,7 +2848,7 @@ class Parser extends \Peast\Syntax\Parser
                     $valid = false;
                     break;
                 }
-            } elseif ($property = $this->parseTemplateLiteral()) {
+            } elseif ($property = $this->parseTemplateLiteral(true)) {
                 $properties[] = array(
                     "type"=> "template",
                     "info" => $property
@@ -3249,9 +3249,11 @@ class Parser extends \Peast\Syntax\Parser
     /**
      * Parses a template literal
      * 
+     * @param bool $tagged True if the template is tagged
+     * 
      * @return Node\Literal|null
      */
-    protected function parseTemplateLiteral()
+    protected function parseTemplateLiteral($tagged = false)
     {
         $token = $this->scanner->getToken();
         
@@ -3270,7 +3272,7 @@ class Parser extends \Peast\Syntax\Parser
         do {
             $this->scanner->consumeToken();
             $val = $token->getValue();
-            $this->checkInvalidEscapeSequences($val, false, true);
+            $this->checkInvalidEscapeSequences($val, false, true, $tagged);
             $lastChar = substr($val, -1);
             
             $quasi = $this->createNode("TemplateElement", $token);
@@ -3357,11 +3359,14 @@ class Parser extends \Peast\Syntax\Parser
      * @param bool    $number                   True if the value is a number
      * @param bool    $forceLegacyOctalCheck    True to force legacy octal
      *                                          form check
+     * @param bool    $taggedTemplate           True if the value is a tagged
+     *                                          template
      * 
      * @return void
      */
     protected function checkInvalidEscapeSequences(
-        $val, $number = false, $forceLegacyOctalCheck = false
+        $val, $number = false, $forceLegacyOctalCheck = false,
+        $taggedTemplate = false
     ) {
         $checkLegacyOctal = $forceLegacyOctalCheck || $this->scanner->getStrictMode();
         if ($number) {

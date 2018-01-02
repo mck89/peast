@@ -16,4 +16,26 @@ namespace Peast\Syntax\ES2018;
  */
 class Parser extends \Peast\Syntax\ES2017\Parser
 {
+    /**
+     * Checks if the given string or number contains invalid esape sequences
+     * 
+     * @param string  $val                      Value to check
+     * @param bool    $number                   True if the value is a number
+     * @param bool    $forceLegacyOctalCheck    True to force legacy octal
+     *                                          form check
+     * @param bool    $taggedTemplate           True if the value is a tagged
+     *                                          template
+     * 
+     * @return void
+     */
+    protected function checkInvalidEscapeSequences(
+        $val, $number = false, $forceLegacyOctalCheck = false,
+        $taggedTemplate = false
+    ) {
+        if (!$taggedTemplate) {
+            parent::checkInvalidEscapeSequences(
+                $val, $number, $forceLegacyOctalCheck, $taggedTemplate
+            );
+        }
+    }
 }
