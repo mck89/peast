@@ -2311,6 +2311,12 @@ class Parser extends \Peast\Syntax\Parser
             }
             if ($tokenFn = $this->scanner->consume("(")) {
                 
+                if ($generator) {
+                    $flags = array(null, "allowYield" => true);
+                } else {
+                    $flags = null;
+                }
+                
                 $error = true;
                 $params = array();
                 if ($kind === Node\MethodDefinition::KIND_SET) {
@@ -2322,7 +2328,7 @@ class Parser extends \Peast\Syntax\Parser
                     }
                 } elseif ($kind === Node\MethodDefinition::KIND_METHOD) {
                     $params = $this->isolateContext(
-                        null, "parseFormalParameterList"
+                        $flags, "parseFormalParameterList"
                     );
                 }
 
@@ -2330,8 +2336,7 @@ class Parser extends \Peast\Syntax\Parser
                     $this->scanner->consume(")") &&
                     ($tokenBodyStart = $this->scanner->consume("{")) &&
                     (($body = $this->isolateContext(
-                        $generator ? array(null, "allowYield" => true) : null,
-                        "parseFunctionBody"
+                        $flags, "parseFunctionBody"
                     )) || true) &&
                     $this->scanner->consume("}")
                 ) {

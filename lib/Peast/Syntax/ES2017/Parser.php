@@ -365,6 +365,14 @@ class Parser extends \Peast\Syntax\ES2016\Parser
             }
             if ($tokenFn = $this->scanner->consume("(")) {
                 
+                if ($generator) {
+                    $flags = array(null, "allowYield" => true);
+                } elseif ($async) {
+                    $flags = array(null, "allowAwait" => true);
+                } else {
+                    $flags = null;
+                }
+                
                 $error = true;
                 $params = array();
                 if ($kind === Node\MethodDefinition::KIND_SET) {
@@ -376,24 +384,15 @@ class Parser extends \Peast\Syntax\ES2016\Parser
                     }
                 } elseif ($kind === Node\MethodDefinition::KIND_METHOD) {
                     $params = $this->isolateContext(
-                        null, "parseFormalParameterList"
+                        $flags, "parseFormalParameterList"
                     );
-                }
-                
-                if ($generator) {
-                    $flags = array(null, "allowYield" => true);
-                } elseif ($async) {
-                    $flags = array(null, "allowAwait" => true);
-                } else {
-                    $flags = null;
                 }
 
                 if ($params !== null &&
                     $this->scanner->consume(")") &&
                     ($tokenBodyStart = $this->scanner->consume("{")) &&
                     (($body = $this->isolateContext(
-                        $flags,
-                        "parseFunctionBody"
+                        $flags, "parseFunctionBody"
                     )) || true) &&
                     $this->scanner->consume("}")
                 ) {
