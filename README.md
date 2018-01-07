@@ -74,3 +74,4 @@ Changelog
 
 #### 1.6
 * Fixed a lot of bugs and now Peast is compatible with all the [ECMAScript official tests](https://github.com/tc39/test262) for the implemented features. You can test Peast against ECMAScript tests using the [peast-test262](https://github.com/mck89/peast-test262) repository.
+* Added ES2018 parser
