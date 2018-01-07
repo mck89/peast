@@ -460,9 +460,7 @@ class Parser extends \Peast\Syntax\ES2016\Parser
             return $this->error();
         } elseif (!$this->scanner->isBefore(array("{")) &&
             $body = $this->isolateContext(
-                $async ?
-                array("allowAwait" => true) :
-                array("allowYield" => false, "allowAwait" => false),
+                array("allowYield" => false, "allowAwait" => $async),
                 "parseAssignmentExpression"
             )
         ) {
