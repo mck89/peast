@@ -38,6 +38,16 @@ class Parser extends \Peast\Syntax\ES2016\Parser
     );
     
     /**
+     * Array of keywords that depends on a context property
+     * 
+     * @var array 
+     */
+    protected $contextKeywords = array(
+        "yield" => "allowYield",
+        "await" => "allowAwait"
+    );
+    
+    /**
      * Initializes parser context
      * 
      * @return void
@@ -100,62 +110,6 @@ class Parser extends \Peast\Syntax\ES2016\Parser
             }
         }
         return $list;
-    }
-    
-    /**
-     * Parses an identifier
-     * 
-     * @param int   $mode       Parsing mode, one of the id parsing mode
-     *                          constants
-     * @param string $after     If a string is passed in this parameter, the
-     *                          identifier is parsed only if preceeds this string
-     * 
-     * @return Node\Identifier|null
-     */
-    protected function parseIdentifier($mode, $after = null)
-    {
-        $token = $this->scanner->getToken();
-        if (!$token) {
-            return null;
-        }
-        if ($after !== null) {
-            $next = $this->scanner->getNextToken();
-            if (!$next || $next->getValue() !== $after) {
-                return null;
-            }
-        }
-        $type = $token->getType();
-        switch ($type) {
-            case Token::TYPE_BOOLEAN_LITERAL:
-            case Token::TYPE_NULL_LITERAL:
-                if ($mode !== self::ID_ALLOW_ALL) {
-                    return null;
-                }
-            break;
-            case Token::TYPE_KEYWORD:
-                if ($mode === self::ID_ALLOW_NOTHING) {
-                    return null;
-                } elseif ($mode === self::ID_MIXED &&
-                    $this->scanner->isStrictModeKeyword($token)
-                ) {
-                    return null;
-                }
-            break;
-            default:
-                if ($type !== Token::TYPE_IDENTIFIER) {
-                    return null;
-                } elseif ($mode !== self::ID_ALLOW_ALL &&
-                    $this->context->allowAwait &&
-                    $token->getValue() === "await"
-                ) {
-                    return null;
-                }
-            break;
-        }
-        $this->scanner->consumeToken();
-        $node = $this->createNode("Identifier", $token);
-        $node->setName($token->getValue());
-        return $this->completeNode($node);
     }
     
     /**
@@ -249,7 +203,7 @@ class Parser extends \Peast\Syntax\ES2016\Parser
         if ($token = $this->scanner->consume("function")) {
             
             $generator = $allowGenerator && $this->scanner->consume("*");
-            $id = $this->parseIdentifier(self::ID_MIXED);
+            $id = $this->parseIdentifier(static::$bindingIdentifier);
             
             if ($generator) {
                 $flags = array(null, "allowYield" => true);
@@ -314,7 +268,6 @@ class Parser extends \Peast\Syntax\ES2016\Parser
         if ($token = $this->scanner->consume("function")) {
             
             $generator = $allowGenerator && $this->scanner->consume("*");
-            $id = $this->parseIdentifier(self::ID_MIXED);
             
             if ($generator) {
                 $flags = array(null, "allowYield" => true);
@@ -323,6 +276,12 @@ class Parser extends \Peast\Syntax\ES2016\Parser
             } else {
                 $flags = null;
             }
+            
+            $id = $this->isolateContext(
+                $flags,
+                "parseIdentifier",
+                array(static::$bindingIdentifier)
+            );
             
             if ($this->scanner->consume("(") &&
                 ($params = $this->isolateContext(

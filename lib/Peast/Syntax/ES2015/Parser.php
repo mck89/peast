@@ -32,9 +32,45 @@ class Parser extends \Peast\Syntax\Parser
     
     /**
      * Keywords, null and booleans are not allowed in any situation, future
-     * reserved words are allowed if not in strict mode
+     * reserved words are allowed if not in strict mode. Keywords that depend on
+     * parser context are evaluated only if the parser context allows them.
      */
     const ID_MIXED = 3;
+    
+    /**
+     * Binding identifier parsing rule
+     * 
+     * @var int 
+     */
+    protected static $bindingIdentifier = self::ID_MIXED;
+    
+    /**
+     * Labelled identifier parsing rule
+     * 
+     * @var int 
+     */
+    protected static $labelledIdentifier = self::ID_MIXED;
+    
+    /**
+     * Identifier reference parsing rule
+     * 
+     * @var int 
+     */
+    protected static $identifierReference = self::ID_MIXED;
+    
+    /**
+     * Identifier name parsing rule
+     * 
+     * @var int 
+     */
+    protected static $identifierName = self::ID_ALLOW_ALL;
+    
+    /**
+     * Imported binding parsing rule
+     * 
+     * @var int 
+     */
+    protected static $importedBinding = self::ID_ALLOW_NOTHING;
     
     /**
      * Assignment operators
@@ -96,6 +132,15 @@ class Parser extends \Peast\Syntax\Parser
      * @var array 
      */
     protected $postfixOperators = array("--", "++");
+    
+    /**
+     * Array of keywords that depends on a context property
+     * 
+     * @var array 
+     */
+    protected $contextKeywords = array(
+        "yield" => "allowYield"
+    );
     
     /**
      * Initializes parser context
@@ -540,7 +585,7 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseCatchParameter()
     {
-        if ($param = $this->parseIdentifier(self::ID_MIXED)) {
+        if ($param = $this->parseIdentifier(static::$bindingIdentifier)) {
             return $param;
         } elseif ($param = $this->parseBindingPattern()) {
             return $param;
@@ -578,7 +623,7 @@ class Parser extends \Peast\Syntax\Parser
             $node = $this->createNode("ContinueStatement", $token);
             
             if ($this->scanner->noLineTerminators()) {
-                if ($label = $this->parseIdentifier(self::ID_MIXED)) {
+                if ($label = $this->parseIdentifier(static::$labelledIdentifier)) {
                     $node->setLabel($label);
                 }
             }
@@ -602,7 +647,7 @@ class Parser extends \Peast\Syntax\Parser
             $node = $this->createNode("BreakStatement", $token);
             
             if ($this->scanner->noLineTerminators()) {
-                if ($label = $this->parseIdentifier(self::ID_MIXED)) {
+                if ($label = $this->parseIdentifier(static::$labelledIdentifier)) {
                     $node->setLabel($label);
                 }
             }
@@ -648,7 +693,7 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseLabelledStatement()
     {
-        if ($label = $this->parseIdentifier(self::ID_MIXED, ":")) {
+        if ($label = $this->parseIdentifier(static::$labelledIdentifier, ":")) {
             
             $this->scanner->consume(":");
                 
@@ -1256,7 +1301,7 @@ class Parser extends \Peast\Syntax\Parser
         if ($token = $this->scanner->consume("function")) {
             
             $generator = $allowGenerator && $this->scanner->consume("*");
-            $id = $this->parseIdentifier(self::ID_MIXED);
+            $id = $this->parseIdentifier(static::$bindingIdentifier);
             
             if (($default || $id) &&
                 $this->scanner->consume("(") &&
@@ -1302,17 +1347,28 @@ class Parser extends \Peast\Syntax\Parser
         if ($token = $this->scanner->consume("function")) {
             
             $generator = (bool) $this->scanner->consume("*");
-            $id = $this->parseIdentifier(self::ID_MIXED);
+            
+            if ($generator) {
+                $flags = array(null, "allowYield" => true);
+            } else {
+                $flags = null;
+            }
+            
+            $id = $this->isolateContext(
+                $flags,
+                "parseIdentifier",
+                array(static::$bindingIdentifier)
+            );
             
             if ($this->scanner->consume("(") &&
                 ($params = $this->isolateContext(
-                    $generator ? array("allowYield" => true) : null,
+                    $flags,
                     "parseFormalParameterList"
                 )) !== null &&
                 $this->scanner->consume(")") &&
                 ($tokenBodyStart = $this->scanner->consume("{")) &&
                 (($body = $this->isolateContext(
-                    $generator ? array("allowYield" => true) : null,
+                    $flags,
                     "parseFunctionBody"
                 )) || true) &&
                 $this->scanner->consume("}")
@@ -1423,7 +1479,11 @@ class Parser extends \Peast\Syntax\Parser
     {
         if ($token = $this->scanner->consume("class")) {
             
-            $id = $this->parseIdentifier(self::ID_ALLOW_NOTHING);
+            //Class declarations are strict mode by default
+            $prevStrict = $this->scanner->getStrictMode();
+            $this->scanner->setStrictMode(true);
+            
+            $id = $this->parseIdentifier(static::$bindingIdentifier);
             if (($default || $id) &&
                 $tail = $this->parseClassTail()
             ) {
@@ -1436,6 +1496,7 @@ class Parser extends \Peast\Syntax\Parser
                     $node->setSuperClass($tail[0]);
                 }
                 $node->setBody($tail[1]);
+                $this->scanner->setStrictMode($prevStrict);
                 return $this->completeNode($node);
             }
             
@@ -1452,7 +1513,12 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseClassExpression()
     {
         if ($token = $this->scanner->consume("class")) {
-            $id = $this->parseIdentifier(self::ID_ALLOW_NOTHING);
+            
+            //Class expressions are strict mode by default
+            $prevStrict = $this->scanner->getStrictMode();
+            $this->scanner->setStrictMode(true);
+            
+            $id = $this->parseIdentifier(static::$bindingIdentifier);
             $tail = $this->parseClassTail();
             $node = $this->createNode("ClassExpression", $token);
             if ($id) {
@@ -1462,6 +1528,7 @@ class Parser extends \Peast\Syntax\Parser
                 $node->setSuperClass($tail[0]);
             }
             $node->setBody($tail[1]);
+            $this->scanner->setStrictMode($prevStrict);
             return $this->completeNode($node);
         }
         return null;
@@ -1641,7 +1708,7 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseVariableDeclaration()
     {
-        if ($id = $this->parseIdentifier(self::ID_MIXED)) {
+        if ($id = $this->parseIdentifier(static::$bindingIdentifier)) {
             
             $node = $this->createNode("VariableDeclarator", $id);
             $node->setId($id);
@@ -1699,7 +1766,7 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseForBinding()
     {
-        if (($id = $this->parseIdentifier(self::ID_MIXED)) ||
+        if (($id = $this->parseIdentifier(static::$bindingIdentifier)) ||
             ($id = $this->parseBindingPattern())
         ) {
             
@@ -1860,14 +1927,14 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseExportSpecifier()
     {
-        if ($local = $this->parseIdentifier(self::ID_ALLOW_ALL)) {
+        if ($local = $this->parseIdentifier(static::$identifierName)) {
             
             $node = $this->createNode("ExportSpecifier", $local);
             $node->setLocal($local);
             
             if ($this->scanner->consume("as")) {
                 
-                if ($exported = $this->parseIdentifier(self::ID_ALLOW_ALL)) {
+                if ($exported = $this->parseIdentifier(static::$identifierName)) {
                     $node->setExported($exported);
                     return $this->completeNode($node);
                 }
@@ -1925,7 +1992,7 @@ class Parser extends \Peast\Syntax\Parser
             return array($spec);
         } elseif (($specs = $this->parseNamedImports()) !== null) {
             return $specs;
-        } elseif ($spec = $this->parseIdentifier(self::ID_ALLOW_NOTHING)) {
+        } elseif ($spec = $this->parseIdentifier(static::$importedBinding)) {
             
             $node = $this->createNode("ImportDefaultSpecifier", $spec);
             $node->setLocal($spec);
@@ -1959,7 +2026,7 @@ class Parser extends \Peast\Syntax\Parser
         if ($token = $this->scanner->consume("*")) {
             
             if ($this->scanner->consume("as") &&
-                $local = $this->parseIdentifier(self::ID_ALLOW_NOTHING)
+                $local = $this->parseIdentifier(static::$identifierReference)
             ) {
                 $node = $this->createNode("ImportNamespaceSpecifier", $token);
                 $node->setLocal($local);
@@ -2004,24 +2071,34 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseImportSpecifier()
     {
-        if ($imported = $this->parseIdentifier(self::ID_ALLOW_ALL)) {
-            
-            $node = $this->createNode("ImportSpecifier", $imported);
-            $node->setImported($imported);
-            if ($this->scanner->consume("as")) {
-                
-                if ($local = $this->parseIdentifier(self::ID_ALLOW_NOTHING)) {
-                    $node->setLocal($local);
-                    return $this->completeNode($node);
-                }
-                
-                return $this->error();
-            } else {
-                $node->setLocal($imported);
-                return $this->completeNode($node);
+        $requiredAs = false;
+        $imported = $this->parseIdentifier(static::$importedBinding);
+        if (!$imported) {
+            $imported = $this->parseIdentifier(static::$identifierName);
+            if (!$imported) {
+                return null;
             }
+            $requiredAs = true;
         }
-        return null;
+        
+        $node = $this->createNode("ImportSpecifier", $imported);
+        $node->setImported($imported);
+        
+        if ($this->scanner->consume("as")) {
+            
+            if (!($local = $this->parseIdentifier(static::$importedBinding))) {
+                return $this->error();
+            }
+            
+            $node->setLocal($local);
+            
+        } elseif ($requiredAs) {
+            return $this->error();
+        } else {
+            $node->setLocal($imported);
+        }
+        
+        return $this->completeNode($node);
     }
     
     /**
@@ -2101,7 +2178,7 @@ class Parser extends \Peast\Syntax\Parser
     {
         if ($token = $this->scanner->consume("...")) {
             
-            if (($argument = $this->parseIdentifier(self::ID_MIXED)) ||
+            if (($argument = $this->parseIdentifier(static::$bindingIdentifier)) ||
                 ($argument = $this->parseBindingPattern())) {
                 $node = $this->createNode("RestElement", $token);
                 $node->setArgument($argument);
@@ -2146,7 +2223,7 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseSingleNameBinding()
     {
-        if ($left = $this->parseIdentifier(self::ID_MIXED)) {
+        if ($left = $this->parseIdentifier(static::$bindingIdentifier)) {
             $right = $this->isolateContext(
                 array("allowIn" => true), "parseInitializer"
             );
@@ -2182,7 +2259,7 @@ class Parser extends \Peast\Syntax\Parser
             }
             
             return $this->error();
-        } elseif ($name = $this->parseIdentifier(self::ID_ALLOW_ALL)) {
+        } elseif ($name = $this->parseIdentifier(static::$identifierName)) {
             return array($name, false);
         } elseif ($name = $this->parseStringLiteral()) {
             return array($name, false);
@@ -2303,7 +2380,7 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseArrowParameters()
     {
-        if ($param = $this->parseIdentifier(self::ID_MIXED, "=>")) {
+        if ($param = $this->parseIdentifier(static::$bindingIdentifier, "=>")) {
             return $param;
         } elseif ($token = $this->scanner->consume("(")) {
             
@@ -2462,7 +2539,7 @@ class Parser extends \Peast\Syntax\Parser
             }
             return $this->completeNode($node);
             
-        } elseif ($key = $this->parseIdentifier(self::ID_MIXED)) {
+        } elseif ($key = $this->parseIdentifier(static::$identifierReference)) {
             
             $node = $this->createNode("Property", $key);
             $node->setShorthand(true);
@@ -2823,7 +2900,7 @@ class Parser extends \Peast\Syntax\Parser
         $properties = array();
         while (true) {
             if ($this->scanner->consume(".")) {
-                if ($property = $this->parseIdentifier(self::ID_ALLOW_ALL)) {
+                if ($property = $this->parseIdentifier(static::$identifierName)) {
                     $properties[] = array(
                         "type"=> "id",
                         "info" => $property
@@ -3066,7 +3143,7 @@ class Parser extends \Peast\Syntax\Parser
             
             if ($this->scanner->consume(".")) {
                 
-                if ($property = $this->parseIdentifier(self::ID_ALLOW_ALL)) {
+                if ($property = $this->parseIdentifier(static::$identifierName)) {
                     $node->setProperty($property);
                     return $this->completeNode($node);
                 }
@@ -3111,7 +3188,7 @@ class Parser extends \Peast\Syntax\Parser
             return $exp;
         } elseif ($exp = $this->parseTemplateLiteral()) {
             return $exp;
-        } elseif ($exp = $this->parseIdentifier(self::ID_MIXED)) {
+        } elseif ($exp = $this->parseIdentifier(static::$identifierReference)) {
             return $exp;
         } elseif ($token = $this->scanner->consume("(")) {
             
@@ -3176,9 +3253,19 @@ class Parser extends \Peast\Syntax\Parser
                 }
             break;
         }
+        
+        //Exclude keywords that depend on parser context
+        $value = $token->getValue();
+        if ($mode === self::ID_MIXED &&
+            isset($this->contextKeywords[$value]) &&
+            $this->context->{$this->contextKeywords[$value]}
+        ) {
+            return null;
+        }
+        
         $this->scanner->consumeToken();
         $node = $this->createNode("Identifier", $token);
-        $node->setName($token->getValue());
+        $node->setName($value);
         return $this->completeNode($node);
     }
     

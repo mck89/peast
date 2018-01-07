@@ -105,7 +105,10 @@ class ES2015Test extends \test\Peast\TestBase
             array("let = 2", true, false),
             array("const = 2", false, false),
             array("import {if as a} from 'source'", true, true),
-            array("export {a as if};", true, true)
+            array("import {if} from 'source'", false, false),
+            array("import * as yield from 'source'", false, false),
+            array("export {a as if};", true, true),
+            array("function *test(){var yield;}", false, false)
         );
     }
     

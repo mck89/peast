@@ -27,7 +27,9 @@ class ES2017Test extends \test\Peast\Syntax\ES2016\ES2016Test
                 array("var await = 1", true, true),
                 array("a.await", true, true),
                 array("var async = 1", true, true),
-                array("a.async", true, true)
+                array("a.async", true, true),
+                array("async function test(await){}", false, false),
+                array("async function test(){var await}", false, false)
             )
         );
     }
