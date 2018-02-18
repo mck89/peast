@@ -1,0 +1,1 @@
+var {...rest, ...rest2} = a;

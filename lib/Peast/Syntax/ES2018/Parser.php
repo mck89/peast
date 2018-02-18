@@ -38,4 +38,59 @@ class Parser extends \Peast\Syntax\ES2017\Parser
             );
         }
     }
+    
+    /**
+     * Parses an object binding pattern
+     * 
+     * @return Node\ObjectPattern|null
+     */
+    protected function parseObjectBindingPattern()
+    {
+        $state = $this->scanner->getState();
+        if ($token = $this->scanner->consume("{")) {
+            
+            $properties = array();
+            while ($prop = $this->parseBindingProperty()) {
+                $properties[] = $prop;
+                if (!$this->scanner->consume(",")) {
+                    break;
+                }
+            }
+            
+            if ($rest = $this->parseRestProperty()) {
+                $properties[] = $rest;
+            }
+            
+            if ($this->scanner->consume("}")) {
+                $node = $this->createNode("ObjectPattern", $token);
+                if ($properties) {
+                    $node->setProperties($properties);
+                }
+                return $this->completeNode($node);
+            }
+            
+            $this->scanner->setState($state);
+        }
+        return null;
+    }
+    
+    /**
+     * Parses a rest property
+     * 
+     * @return Node\RestElement|null
+     */
+    protected function parseRestProperty()
+    {
+        if ($token = $this->scanner->consume("...")) {
+            
+            if ($argument = $this->parseIdentifier(static::$bindingIdentifier)) {
+                $node = $this->createNode("RestElement", $token);
+                $node->setArgument($argument);
+                return $this->completeNode($node);
+            }
+            
+            return $this->error();
+        }
+        return null;
+    }
 }

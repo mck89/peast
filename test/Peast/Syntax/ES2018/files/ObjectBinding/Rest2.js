@@ -1,0 +1,1 @@
+var {a, b, ...rest} = c;
