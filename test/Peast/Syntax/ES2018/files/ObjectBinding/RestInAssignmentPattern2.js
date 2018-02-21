@@ -1,0 +1,1 @@
+({a, b,...rest} = {a, b,...rest} = obj)
