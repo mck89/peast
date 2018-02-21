@@ -93,4 +93,17 @@ class Parser extends \Peast\Syntax\ES2017\Parser
         }
         return null;
     }
+    
+    /**
+     * Parses a property in an object literal
+     * 
+     * @return Node\Property|Node\SpreadElement|null
+     */
+    protected function parsePropertyDefinition()
+    {
+        if ($prop = $this->parseSpreadElement()) {
+            return $prop;
+        }
+        return parent::parsePropertyDefinition();
+    }
 }

@@ -52,7 +52,7 @@ class ObjectExpression extends Node implements Expression
      */
     public function setProperties($properties)
     {
-        $this->assertArrayOf($properties, "Property");
+        $this->assertArrayOf($properties, array("Property", "SpreadElement"));
         $this->properties = $properties;
         return $this;
     }
