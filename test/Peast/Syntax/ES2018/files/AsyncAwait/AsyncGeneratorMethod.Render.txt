@@ -1,0 +1,17 @@
+class test {
+	async * test () {
+		var res = await operation(param);
+		yield res;
+	}
+}
+/**************************************************/
+class test{async *test(){var res=await operation(param);yield res;}}
+/**************************************************/
+class test
+{
+	async * test (  )
+	{
+		var res = await operation( param );
+		yield res;
+	}
+}

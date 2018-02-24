@@ -1,0 +1,12 @@
+async function * test (param) {
+	var res = await operation(param);
+	yield res;
+}
+/**************************************************/
+async function*test(param){var res=await operation(param);yield res;}
+/**************************************************/
+async function * test ( param )
+{
+	var res = await operation( param );
+	yield res;
+}

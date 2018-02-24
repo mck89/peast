@@ -462,11 +462,14 @@ class Renderer
                 $kind = $node->getKind();
                 if ($kind === $node::KIND_GET || $kind === $node::KIND_SET) {
                     $code .= $kind . " ";
-                } elseif ($value->getGenerator()) {
-                    $code .= "*" .
-                             $this->renderOpts->sao;
-                } elseif ($value->getAsync()) {
-                    $code .= "async ";
+                } else {
+                    if ($value->getAsync()) {
+                        $code .= "async ";
+                    }
+                    if ($value->getGenerator()) {
+                        $code .= "*" .
+                                 $this->renderOpts->sao;
+                    }
                 }
                 if ($node->getComputed()) {
                     $code .= "[" .
