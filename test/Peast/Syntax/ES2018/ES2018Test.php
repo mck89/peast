@@ -1,7 +1,7 @@
 <?php
-namespace test\Peast\Syntax\ES2018;
+namespace Peast\test\Syntax\ES2018;
 
-class ES2018Test extends \test\Peast\Syntax\ES2017\ES2017Test
+class ES2018Test extends \Peast\test\Syntax\ES2017\ES2017Test
 {
     protected $parser = "ES2018";
     

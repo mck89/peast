@@ -1,10 +1,10 @@
 <?php
-namespace test\Peast\Syntax;
+namespace Peast\test\Syntax;
 
 use \Peast\Syntax\Node\Comment;
 use \Peast\Syntax\Token;
 
-class CommentsRegistryTest extends \test\Peast\TestBase
+class CommentsRegistryTest extends \Peast\test\TestBase
 {
     public function dataProvider()
     {

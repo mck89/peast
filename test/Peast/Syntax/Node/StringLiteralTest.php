@@ -1,9 +1,9 @@
 <?php
-namespace test\Peast\Syntax\Node;
+namespace Peast\test\Syntax\Node;
 
 use \Peast\Syntax\Node;
 
-class StringLiteralTest extends \test\Peast\TestBase
+class StringLiteralTest extends \Peast\test\TestBase
 {
     public function testValue()
     {

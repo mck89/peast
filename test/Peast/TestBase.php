@@ -1,5 +1,5 @@
 <?php
-namespace test\Peast;
+namespace Peast\test;
 
 abstract class TestBase extends \PHPUnit_Framework_TestCase
 {

@@ -1,10 +1,10 @@
 <?php
-namespace test\Peast\Traverser;
+namespace Peast\test\Traverser;
 
 use \Peast\Traverser;
 use \Peast\Syntax\Node;
 
-class TraverserTest extends \test\Peast\TestBase
+class TraverserTest extends \Peast\test\TestBase
 {
     public function testModifyNodes()
     {

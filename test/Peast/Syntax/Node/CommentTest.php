@@ -1,9 +1,9 @@
 <?php
-namespace test\Peast\Syntax\Node;
+namespace Peast\test\Syntax\Node;
 
 use \Peast\Syntax\Node;
 
-class CommentTest extends \test\Peast\TestBase
+class CommentTest extends \Peast\test\TestBase
 {
     public function testAddComments()
     {

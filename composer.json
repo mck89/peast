@@ -16,7 +16,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Peast\\": "lib/Peast/"
+            "Peast\\": "lib/Peast/",
+            "Peast\\test\\": "test/Peast/"
         }
     },
     "extra": {

@@ -1,5 +1,5 @@
 <?php
-namespace test\Peast;
+namespace Peast\test;
 
 class PeastTest extends TestBase
 {

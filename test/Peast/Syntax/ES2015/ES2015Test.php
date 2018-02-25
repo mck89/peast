@@ -1,7 +1,7 @@
 <?php
-namespace test\Peast\Syntax\ES2015;
+namespace Peast\test\Syntax\ES2015;
 
-class ES2015Test extends \test\Peast\TestBase
+class ES2015Test extends \Peast\test\TestBase
 {
     protected $parser = "ES2015";
     
