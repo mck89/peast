@@ -108,11 +108,11 @@
 	    }
 	},
 	{
-	    "type": "Identifier",
-	    "value": "await",
+	    "type": "Keyword",
+	    "value": "for",
 	    "range": [
 	        28,
-	        33
+	        31
 	    ],
 	    "loc": {
 	        "start": {
@@ -121,21 +121,21 @@
 	        },
 	        "end": {
 	            "line": 2,
-	            "column": 9
+	            "column": 7
 	        }
 	    }
 	},
 	{
-	    "type": "Keyword",
-	    "value": "for",
+	    "type": "Identifier",
+	    "value": "await",
 	    "range": [
-	        34,
+	        32,
 	        37
 	    ],
 	    "loc": {
 	        "start": {
 	            "line": 2,
-	            "column": 10
+	            "column": 8
 	        },
 	        "end": {
 	            "line": 2,

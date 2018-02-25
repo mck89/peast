@@ -1,3 +1,3 @@
 async function test() {
-    await for (;;) {}
+    for await (;;) {}
 }

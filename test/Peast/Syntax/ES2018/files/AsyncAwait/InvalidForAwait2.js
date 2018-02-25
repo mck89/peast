@@ -1,3 +1,3 @@
 async function test() {
-    await for (a in b) {}
+    for await (a in b) {}
 }

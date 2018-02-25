@@ -381,46 +381,33 @@ class Parser extends \Peast\Syntax\ES2017\Parser
             return $node;
         } elseif ($node = $this->parseDoWhileStatement()) {
             return $node;
-        } else {
-            
+        } elseif ($startForToken = $this->scanner->consume("for")) {
+                
             $forAwait = false;
-            $startForToken = null;
-            $token = $this->scanner->getToken();
-            $val = $token ? $token->getValue() : null;
-            if ($val === "for") {
-                $startForToken = $token;
-                $this->scanner->consumeToken();
-            } elseif ($this->context->allowAwait && $val === "await") {
-                $next = $this->scanner->getNextToken();
-                if ($next && $next->getValue() === "for") {
-                    $startForToken = $token;
-                    $this->scanner->consumeToken();
-                    $this->scanner->consumeToken();
-                    $forAwait = true;
-                }
+            if ($this->context->allowAwait &&
+                $this->scanner->consume("await")
+            ) {
+                $forAwait = true;
             }
             
-            if ($startForToken) {
-                
-                if ($this->scanner->consume("(") && (
-                    ($node = $this->parseForVarStatement($startForToken)) ||
-                    ($node = $this->parseForLetConstStatement($startForToken)) ||
-                    ($node = $this->parseForNotVarLetConstStatement($startForToken)))
-                ) {
-                    if ($forAwait) {
-                        if (!$node instanceof Node\ForOfStatement) {
-                            $this->error(
-                                "Async iteration is allowed only with for-of statements",
-                                $startForToken->getLocation()->getStart()
-                            );
-                        }
-                        $node->setAwait(true);
+            if ($this->scanner->consume("(") && (
+                ($node = $this->parseForVarStatement($startForToken)) ||
+                ($node = $this->parseForLetConstStatement($startForToken)) ||
+                ($node = $this->parseForNotVarLetConstStatement($startForToken)))
+            ) {
+                if ($forAwait) {
+                    if (!$node instanceof Node\ForOfStatement) {
+                        $this->error(
+                            "Async iteration is allowed only with for-of statements",
+                            $startForToken->getLocation()->getStart()
+                        );
                     }
-                    return $node;
+                    $node->setAwait(true);
                 }
-                
-                return $this->error();
+                return $node;
             }
+            
+            return $this->error();
         }
         
         return null;

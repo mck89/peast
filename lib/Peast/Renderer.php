@@ -293,10 +293,8 @@ class Renderer
             case "ForOfStatement":
                 //Force single line mode for substatements
                 $this->renderOpts->forceSingleLine = true;
-                if ($type === "ForOfStatement" && $node->getAwait()) {
-                    $code .= "await ";
-                }
                 $code .= "for" .
+                         ($type === "ForOfStatement" && $node->getAwait() ? " await" : "") .
                          $this->renderOpts->sao .
                          "(" .
                          $this->renderOpts->sirb .
