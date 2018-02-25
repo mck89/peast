@@ -1,0 +1,13 @@
+async function test () {
+	await for (var a of b) {
+	}
+}
+/**************************************************/
+async function test(){await for(var a of b){}}
+/**************************************************/
+async function test (  )
+{
+	await for ( var a of b )
+	{
+	}
+}

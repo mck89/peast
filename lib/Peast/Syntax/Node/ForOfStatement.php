@@ -17,4 +17,45 @@ namespace Peast\Syntax\Node;
  */
 class ForOfStatement extends ForInStatement
 {
+    /**
+     * Map of node properties
+     * 
+     * @var array 
+     */
+    protected $propertiesMap = array(
+        "left" => true,
+        "right" => true,
+        "body" => true,
+        "await" => false
+    );
+    
+    /**
+     * Async iteration flag
+     * 
+     * @var bool
+     */
+    protected $await = false;
+    
+    /**
+     * Returns the async iteration flag
+     * 
+     * @return bool
+     */
+    public function getAwait()
+    {
+        return $this->await;
+    }
+    
+    /**
+     * Sets the async iteration flag
+     * 
+     * @param bool $await Async iteration flag
+     * 
+     * @return $this
+     */
+    public function setAwait($await)
+    {
+        $this->await = (bool) $await;
+        return $this;
+    }
 }

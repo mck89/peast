@@ -369,4 +369,60 @@ class Parser extends \Peast\Syntax\ES2017\Parser
         }
         return null;
     }
+    
+    /**
+     * Parses do-while, while, for, for-in and for-of statements
+     * 
+     * @return Node\Node|null
+     */
+    protected function parseIterationStatement()
+    {
+        if ($node = $this->parseWhileStatement()) {
+            return $node;
+        } elseif ($node = $this->parseDoWhileStatement()) {
+            return $node;
+        } else {
+            
+            $forAwait = false;
+            $startForToken = null;
+            $token = $this->scanner->getToken();
+            $val = $token ? $token->getValue() : null;
+            if ($val === "for") {
+                $startForToken = $token;
+                $this->scanner->consumeToken();
+            } elseif ($this->context->allowAwait && $val === "await") {
+                $next = $this->scanner->getNextToken();
+                if ($next && $next->getValue() === "for") {
+                    $startForToken = $token;
+                    $this->scanner->consumeToken();
+                    $this->scanner->consumeToken();
+                    $forAwait = true;
+                }
+            }
+            
+            if ($startForToken) {
+                
+                if ($this->scanner->consume("(") && (
+                    ($node = $this->parseForVarStatement($startForToken)) ||
+                    ($node = $this->parseForLetConstStatement($startForToken)) ||
+                    ($node = $this->parseForNotVarLetConstStatement($startForToken)))
+                ) {
+                    if ($forAwait) {
+                        if (!$node instanceof Node\ForOfStatement) {
+                            $this->error(
+                                "Async iteration is allowed only with for-of statements",
+                                $startForToken->getLocation()->getStart()
+                            );
+                        }
+                        $node->setAwait(true);
+                    }
+                    return $node;
+                }
+                
+                return $this->error();
+            }
+        }
+        
+        return null;
+    }
 }
