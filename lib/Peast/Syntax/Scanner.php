@@ -103,6 +103,13 @@ abstract class Scanner
     protected $comments = false;
     
     /**
+     * JSX mode
+     * 
+     * @var bool 
+     */
+    protected $jsx = false;
+    
+    /**
      * Registered tokens array
      * 
      * @var array 
@@ -343,6 +350,21 @@ abstract class Scanner
     }
     
     /**
+     * Enables or disables jsx mode
+     * 
+     * @param bool $enable True to enable jsx mode, false to disable it
+     * 
+     * @return $this
+     */
+    public function enableJSX($enable = true)
+    {
+        $this->currentToken = null;
+        $this->nextToken = null;
+        $this->jsx = $enable;
+        return $this;
+    }
+    
+    /**
      * Enables or disables tokens registration in the token array
      * 
      * @param bool $enable True to enable token registration, false to disable it
@@ -482,6 +504,21 @@ abstract class Scanner
         } else {
             return $this->position;
         }
+    }
+    
+    /**
+     * Sets the current scan position at the given one
+     * 
+     * @param Position $position Position at which the scan position will be set
+     * 
+     * @return $this
+     */
+    public function setScanPosition(Position $position = null)
+    {
+        $this->line = $position->getLine();
+        $this->column = $position->getColumn();
+        $this->index = $position->getIndex();
+        return $this;
     }
     
     /**
@@ -864,9 +901,7 @@ abstract class Scanner
         
         //Reset the scanner position to the token's start position
         $startPosition = $token->getLocation()->getStart();
-        $this->index = $startPosition->getIndex();
-        $this->column = $startPosition->getColumn();
-        $this->line = $startPosition->getLine();
+        $this->setScanPosition($startPosition);
         
         $buffer = "/";
         $this->index++;
@@ -936,6 +971,26 @@ abstract class Scanner
             $this->commentsForCurrentToken($comments);
         }
         
+        return $this->currentToken;
+    }
+    
+    /**
+     * Tries to reconsume the current token as a jsx text if possible
+     * 
+     * @return Token|null
+     */
+    public function reconsumeCurrentTokenAsJSXText()
+    {
+        $this->nextToken = null;
+        $this->currentToken = null;
+        $startPosition = $this->getPosition();
+        $this->setScanPosition($startPosition);
+        $result = $this->consumeUntil(array("{", "<", ">", "}"), false, false);
+        if ($result) {
+            $this->currentToken = new Token(Token::TYPE_JSX_TEXT, $result[0]);
+            $this->currentToken->setStartPosition($startPosition)
+                               ->setEndPosition($this->getPosition(true));
+        }
         return $this->currentToken;
     }
     
@@ -1176,7 +1231,7 @@ abstract class Scanner
             $this->index++;
             $this->column++;
             $stops = array_merge($this->lineTerminators, array($char));
-            $buffer = $this->consumeUntil($stops);
+            $buffer = $this->consumeUntil($stops, !$this->jsx);
             if ($buffer === null || $buffer[1] !== $char) {
                 return $this->error("Unterminated string");
             }
@@ -1458,12 +1513,18 @@ abstract class Scanner
                 $buffer .= $char;
                 $this->index++;
                 $this->column++;
-            } elseif ($seq = $this->consumeUnicodeEscapeSequence()) {
+            } elseif (
+                !$this->jsx && ($seq = $this->consumeUnicodeEscapeSequence())
+            ) {
                 //Verify that is a valid character
                 if (!$this->$fn($seq)) {
                     break;
                 }
                 $buffer .= $seq;
+            } elseif ($this->jsx && $char === "-" && $buffer !== "") {
+                $buffer .= $char;
+                $this->index++;
+                $this->column++;
             } else {
                 break;
             }
@@ -1473,6 +1534,8 @@ abstract class Scanner
         //Identify token type
         if ($buffer === "") {
             return null;
+        } elseif ($this->jsx) {
+            $type = Token::TYPE_JSX_IDENTIFIER;
         } elseif ($buffer === "null") {
             $type = Token::TYPE_NULL_LITERAL;
         } elseif ($buffer === "true" || $buffer === "false") {
@@ -1589,21 +1652,29 @@ abstract class Scanner
     /**
      * Consumes characters until one of the given characters is found
      * 
-     * @param array $stops Characters to search
+     * @param array $stops       Characters to search
+     * @param bool $handleEscape True to handle escaping
      * 
      * @return string|null
      */
-    protected function consumeUntil($stops)
-    {
+    protected function consumeUntil(
+        $stops, $handleEscape = true, $collectStop = true
+    ) {
         $buffer = "";
         $escaped = false;
         while (($char = $this->charAt()) !== null) {
-            $this->index++;
-            $buffer .= $char;
-            if (!$escaped && in_array($char, $stops)) {
+            $isStop = !$escaped && in_array($char, $stops);
+            if (!$isStop || $collectStop) {
+                $this->index++;
+                $buffer .= $char;
+            }
+            if ($isStop) {
+                if (!$collectStop && $buffer === "") {
+                    return null;
+                }
                 $this->adjustColumnAndLine($buffer);
                 return array($buffer, $char);
-            } elseif (!$escaped && $char === "\\") {
+            } elseif (!$escaped && $char === "\\" && $handleEscape) {
                 $escaped = true;
             } else {
                 $escaped = false;

@@ -19,6 +19,8 @@ use \Peast\Syntax\Node;
  */
 class Parser extends \Peast\Syntax\Parser
 {
+    use \Peast\Syntax\JSX\Parser;
+    
     //Identifier parsing mode constants
     /**
      * Everything is allowed as identifier, including keywords, null and booleans
@@ -3194,6 +3196,10 @@ class Parser extends \Peast\Syntax\Parser
         } elseif ($exp = $this->parseTemplateLiteral()) {
             return $exp;
         } elseif ($exp = $this->parseIdentifier(static::$identifierReference)) {
+            return $exp;
+        } elseif ($this->jsx && ($exp = $this->parseJSXFragment())) {
+            return $exp;
+        } elseif ($this->jsx && ($exp = $this->parseJSXElement())) {
             return $exp;
         } elseif ($token = $this->scanner->consume("(")) {
             

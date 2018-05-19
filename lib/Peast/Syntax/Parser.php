@@ -47,6 +47,13 @@ abstract class Parser
     protected $comments;
     
     /**
+     * JSX syntax handling
+     *
+     * @var bool
+     */
+    protected $jsx;
+    
+    /**
      * Events emitter
      *
      * @var EventsEmitter
@@ -88,6 +95,9 @@ abstract class Parser
             //Create the comments registry
             new CommentsRegistry($this);
         }
+        
+        // Enable jsx syntax if required
+        $this->jsx = isset($options["jsx"]) && $options["jsx"];
         
         $this->initContext();
     }

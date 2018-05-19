@@ -68,6 +68,16 @@ class Token implements \JSONSerializable
     const TYPE_COMMENT = "Comment";
     
     /**
+     * JSX text
+     */
+    const TYPE_JSX_TEXT = "JSXText";
+    
+    /**
+     * JSX identifier
+     */
+    const TYPE_JSX_IDENTIFIER = "JSXIdentifier";
+    
+    /**
      * Tokens' type that is one of the type constants
      * 
      * @var string 

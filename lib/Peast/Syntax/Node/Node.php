@@ -273,6 +273,9 @@ abstract class Node implements \JSONSerializable
      */
     protected function addNamespace($class)
     {
+        if ($class[0] === "\\") {
+            return $class;
+        }
         $parts = explode("\\", get_class($this));
         $parts[count($parts) -1] = $class;
         return implode("\\", $parts);
