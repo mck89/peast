@@ -365,6 +365,7 @@ trait Parser
             return null;
         }
         
+        $value = null;
         if ($this->scanner->consume("=")) {
             $value = $this->parseStringLiteral();
             if (!$value) {
