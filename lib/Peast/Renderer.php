@@ -245,6 +245,7 @@ class Renderer
                          $this->renderOpts->sirb .
                          ")";
             break;
+            case "JSXEmptyExpression":
             case "EmptyStatement":
             break;
             case "ExportAllDeclaration":
@@ -359,6 +360,7 @@ class Renderer
                          ")" .
                          $this->renderStatementBlock($node->getBody(), true);
             break;
+            case "JSXIdentifier":
             case "Identifier":
                 $code .= $node->getName();
             break;
@@ -428,6 +430,57 @@ class Renderer
                          $local :
                          $ref . " as " . $local;
             break;
+            case "JSXAttribute":
+                $code .= $this->renderNode($node->getName());
+                if ($value = $node->getValue()) {
+                    $code .= "=" . $this->renderNode($value);
+                }
+            break;
+            case "JSXClosingElement":
+                $code .= "</" . $this->renderNode($node->getName()) . ">";
+            break;
+            case "JSXClosingFragment":
+                $code .= "</>";
+            break;
+            case "JSXElement":
+                $code .= $this->renderNode($node->getOpeningElement()) .
+                         $this->joinNodes($node->getChildren(), "");
+                if ($closing = $node->getClosingElement()) {
+                    $code .= $this->renderNode($node->getClosingElement());
+                }
+            break;
+            case "JSXExpressionContainer":
+                $code .= "{" . $this->renderNode($node->getExpression()) . "}";
+            break;
+            case "JSXFragment":
+                $code .= $this->renderNode($node->getOpeningFragment()) .
+                         $this->joinNodes($node->getChildren(), "") .
+                         $this->renderNode($node->getClosingFragment());
+            break;
+            case "JSXNamespacedName":
+                $code .= $this->renderNode($node->getNamespace()) . ":" .
+                         $this->renderNode($node->getName());
+            break;
+            case "JSXOpeningElement":
+                $code .= "<" . $this->renderNode($node->getName());
+                $attributes = $node->getAttributes();
+                if (count($attributes)) {
+                    $code .= " " . $this->joinNodes($node->getChildren(), " ");
+                }
+                if ($node->getSelfClosing()) {
+                    $code .= "/";
+                }
+                $code .= ">";
+            break;
+            case "JSXOpeningFragment":
+                $code .= "<>";
+            break;
+            case "JSXSpreadAttribute":
+                $code .= "{..." . $this->renderNode($node->getArgument()) . "}";
+            break;
+            case "JSXSpreadChild":
+                $code .= "{..." . $this->renderNode($node->getExpression()) . "}";
+            break;
             case "LabeledStatement":
                 $body = $node->getBody();
                 $code .= $this->renderNode($node->getLabel()) .
@@ -439,13 +492,15 @@ class Renderer
                     $code .= ";";
                 }
             break;
+            case "JSXText":
             case "Literal":
                 $code .= $node->getRaw();
             break;
+            case "JSXMemberExpression":
             case "MemberExpression":
                 $property = $this->renderNode($node->getProperty());
                 $code .= $this->renderNode($node->getObject());
-                if ($node->getComputed()) {
+                if ($type === "MemberExpression" && $node->getComputed()) {
                     $code .= "[" . $property . "]";
                 } else {
                     $code .= "." . $property;
