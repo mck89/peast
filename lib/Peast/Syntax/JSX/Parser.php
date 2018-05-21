@@ -109,7 +109,7 @@ trait Parser
     {
         if ($node = $this->parseJSXText()) {
             return $node;
-        } elseif($node->$this->parseJSXElement()) {
+        } elseif($node = $this->parseJSXElement()) {
             return $node;
         } elseif ($startToken = $this->scanner->consume("{")) {
             $spread = $this->scanner->consume("...");
