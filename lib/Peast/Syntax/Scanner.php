@@ -358,8 +358,10 @@ abstract class Scanner
      */
     public function enableJSX($enable = true)
     {
+        //Reset tokens and position 
         $this->currentToken = null;
         $this->nextToken = null;
+        $this->setScanPosition($this->getPosition());
         $this->jsx = $enable;
         return $this;
     }

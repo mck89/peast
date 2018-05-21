@@ -120,7 +120,7 @@ class JSXElement extends Node implements Expression
      */
     public function setClosingElement($closingElement)
     {
-        $thids->assertType($closingElement, "JSXClosingElement", true);
+        $this->assertType($closingElement, "JSXClosingElement", true);
         $this->closingElement = $closingElement;
         return $this;
     }

@@ -59,7 +59,7 @@ trait Parser
             return $this->error();
         }
         
-        // Opening tag
+        //Opening tag
         $openingNode = $this->createJSXNode(
             "JSXOpeningFragment",
             $startOpeningToken
@@ -69,14 +69,14 @@ trait Parser
             $endOpeningToken->getLocation()->getEnd()
         );
         
-        // Closing tag
+        //Closing tag
         $closingNode = $this->createJSXNode(
             "JSXClosingFragment",
             $startClosingToken
         );
         $this->completeNode($closingNode);
         
-        // Fragment
+        //Fragment
         $node = $this->createJSXNode("JSXFragment", $startOpeningToken);
         $node->setOpeningFragment($openingNode);
         $node->setClosingFragment($closingNode);
@@ -156,11 +156,19 @@ trait Parser
      */
     protected function parseJSXElement()
     {
-        if (!($startOpeningToken = $this->scanner->consume("<"))) {
+        $startOpeningToken = $this->scanner->getToken();
+        if (!$startOpeningToken || $startOpeningToken->getValue() !== "<") {
             return null;
         }
         
-        // This enables the correct parsing of identifiers and strings for jsx
+        $nextToken = $this->scanner->getNextToken();
+        if ($nextToken && $nextToken->getValue() === "/") {
+            return null;
+        }
+        
+        $this->scanner->consumeToken();
+        
+        //This enables the correct parsing of identifiers and strings for jsx
         $this->scanner->enableJSX(true);
         
         if (!($name = $this->parseJSXIdentifierOrMemberExpression())) {
@@ -182,7 +190,7 @@ trait Parser
             if (
                 !($startClosingToken = $this->scanner->consume("<")) ||
                 !$this->scanner->consume("/") ||
-                !($closingName = $this->parseJSXElementName()) ||
+                !($closingName = $this->parseJSXIdentifierOrMemberExpression()) ||
                 !($endClosingToken = $this->scanner->consume(">"))
             ) {
                 return $this->error();
@@ -195,7 +203,7 @@ trait Parser
         
         $this->scanner->enableJSX(false);
         
-        // Opening tag
+        //Opening tag
         $openingNode = $this->createJSXNode(
             "JSXOpeningElement",
             $startOpeningToken
@@ -210,7 +218,7 @@ trait Parser
             $endOpeningToken->getLocation()->getEnd()
         );
         
-        // Closing tag
+        //Closing tag
         $closingNode = null;
         if (!$selfClosing) {
             $closingNode = $this->createJSXNode(
@@ -221,11 +229,11 @@ trait Parser
             $this->completeNode($closingNode);
         }
         
-        // Element
+        //Element
         $node = $this->createJSXNode("JSXElement", $startOpeningToken);
         $node->setOpeningElement($openingNode);
         if ($closingNode) {
-            $node->setClosingFragment($closingNode);
+            $node->setClosingElement($closingNode);
             if ($children) {
                 $node->setChildren($children);
             }
@@ -252,7 +260,7 @@ trait Parser
         $idNode->setName($idToken->getValue());
         $idNode = $this->completeNode($idNode);
         
-        // Namespaced identifier
+        //Namespaced identifier
         if ($this->scanner->consume(":")) {
             
             $idToken2 = $this->scanner->getToken();
@@ -272,7 +280,7 @@ trait Parser
             
         }
         
-        // Get following identifiers
+        //Get following identifiers
         $nextIds = array();
         if ($allowMember) {
             while ($this->scanner->consume(".")) {
@@ -285,7 +293,7 @@ trait Parser
             }
         }
         
-        // Create the member expression if required
+        //Create the member expression if required
         $objectNode = $idNode;
         foreach ($nextIds as $nid) {
             $propEnd = $nid->getLocation->getEnd();
@@ -351,7 +359,7 @@ trait Parser
      * 
      * @return \Peast\Syntax\Node\JSXSpreadAttribute|null
      */
-    protected function parseAttribute()
+    protected function parseJSXAttribute()
     {
         if (!($name = $this->parseJSXIdentifierOrMemberExpression(false))) {
             return null;
