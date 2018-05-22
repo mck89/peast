@@ -188,17 +188,19 @@ trait Parser
             $children = $this->parseJSXChildren();
             
             if (
-                !($startClosingToken = $this->scanner->consume("<")) ||
-                !$this->scanner->consume("/") ||
-                !($closingName = $this->parseJSXIdentifierOrMemberExpression()) ||
-                !($endClosingToken = $this->scanner->consume(">"))
+                ($startClosingToken = $this->scanner->consume("<")) &&
+                $this->scanner->consume("/") &&
+                ($closingName = $this->parseJSXIdentifierOrMemberExpression()) &&
+                ($endClosingToken = $this->scanner->consume(">"))
             ) {
+                if (!$this->isSameJSXElementName($name, $closingName)) {
+                    return $this->error("Closing tag does not match opening tag");
+                }
+            } else {
                 return $this->error();
             }
             
-            if (!$this->isSameJSXElementName($name, $closingName)) {
-                return $this->error("Closing tag does not match opening tag");
-            }
+            
         }
         
         $this->scanner->enableJSX(false);
@@ -225,7 +227,7 @@ trait Parser
                 "JSXClosingElement",
                 $startClosingToken
             );
-            $closingNode->setName($name);
+            $closingNode->setName($closingName);
             $this->completeNode($closingNode);
         }
         
