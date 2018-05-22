@@ -43,10 +43,13 @@ class ES2015Test extends \Peast\test\TestBase
      */
     public function testTokenizer($sourceFile, $compareFile)
     {
+        $module = strpos($sourceFile, "modules") !== false;
+        $jsx = strpos($sourceFile, "JSX") !== false;
         $options = array(
-            "sourceType" => strpos($sourceFile, "modules") !== false ?
+            "sourceType" => $module ?
                             \Peast\Peast::SOURCE_TYPE_MODULE :
-                            \Peast\Peast::SOURCE_TYPE_SCRIPT
+                            \Peast\Peast::SOURCE_TYPE_SCRIPT,
+            "jsx" => $jsx
         );
         $source = file_get_contents($sourceFile);
         $tree = \Peast\Peast::{$this->parser}($source, $options)->tokenize();
