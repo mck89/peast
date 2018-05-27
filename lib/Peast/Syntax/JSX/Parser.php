@@ -116,7 +116,7 @@ trait Parser
             $exp = $this->parseAssignmentExpression();
             $midPos = $this->scanner->getPosition();
             if (($spread && !$exp) ||
-                !($endToken = $thi->scanner->consume("}"))) {
+                !($endToken = $this->scanner->consume("}"))) {
                 return $this->error();
             }
             $node = $this->createJSXNode(

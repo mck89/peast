@@ -47,14 +47,16 @@ class JSXExpressionContainer extends Node
     /**
      * Sets the wrapped expression
      * 
-     * @param \Peast\Syntax\Node\Expression|JSXEmptyExpression $expression Wrappedexpression
+     * @param \Peast\Syntax\Node\Expression|JSXEmptyExpression $expression Wrapped
+     *                                                                     expression
      * 
      * @return $this
      */
     public function setExpression($expression)
     {
         $this->assertType(
-            $left, array("\Peast\Syntax\Node\Expression", "JSXEmptyExpression")
+            $expression,
+            array("\Peast\Syntax\Node\Expression", "JSXEmptyExpression")
         );
         $this->expression = $expression;
         return $this;
