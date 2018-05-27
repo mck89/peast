@@ -1,0 +1,17 @@
+a = <main>
+        test
+        <sub>test2</sub>
+        test3
+    </main>;
+/**************************************************/
+a=<main>
+        test
+        <sub>test2</sub>
+        test3
+    </main>;
+/**************************************************/
+a = <main>
+        test
+        <sub>test2</sub>
+        test3
+    </main>;

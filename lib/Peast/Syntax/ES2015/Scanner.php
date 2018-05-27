@@ -16,6 +16,8 @@ namespace Peast\Syntax\ES2015;
  */
 class Scanner extends \Peast\Syntax\Scanner
 {
+    use \Peast\Syntax\JSX\Scanner;
+    
     /**
      * Regex to match identifiers starts
      * 

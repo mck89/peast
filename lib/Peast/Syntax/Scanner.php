@@ -103,13 +103,6 @@ abstract class Scanner
     protected $comments = false;
     
     /**
-     * JSX mode
-     * 
-     * @var bool 
-     */
-    protected $jsx = false;
-    
-    /**
      * Registered tokens array
      * 
      * @var array 
@@ -346,23 +339,6 @@ abstract class Scanner
     public function enableComments($enable = true)
     {
         $this->comments = $enable;
-        return $this;
-    }
-    
-    /**
-     * Enables or disables jsx mode
-     * 
-     * @param bool $enable True to enable jsx mode, false to disable it
-     * 
-     * @return $this
-     */
-    public function enableJSX($enable = true)
-    {
-        //Reset tokens and position 
-        $this->currentToken = null;
-        $this->nextToken = null;
-        $this->setScanPosition($this->getPosition());
-        $this->jsx = $enable;
         return $this;
     }
     
@@ -977,26 +953,6 @@ abstract class Scanner
     }
     
     /**
-     * Tries to reconsume the current token as a jsx text if possible
-     * 
-     * @return Token|null
-     */
-    public function reconsumeCurrentTokenAsJSXText()
-    {
-        $this->nextToken = null;
-        $this->currentToken = null;
-        $startPosition = $this->getPosition();
-        $this->setScanPosition($startPosition);
-        $result = $this->consumeUntil(array("{", "<", ">", "}"), false, false);
-        if ($result) {
-            $this->currentToken = new Token(Token::TYPE_JSX_TEXT, $result[0]);
-            $this->currentToken->setStartPosition($startPosition)
-                               ->setEndPosition($this->getPosition(true));
-        }
-        return $this->currentToken;
-    }
-    
-    /**
      * Skips whitespaces and comments from the current scan position. If
      * comments handling is enabled, the array of parsed comments
      * 
@@ -1224,16 +1180,18 @@ abstract class Scanner
     /**
      * String scanning method
      * 
+     * @param bool $handleEscape True to handle escaping
+     * 
      * @return Token|null
      */
-    protected function scanString()
+    protected function scanString($handleEscape = true)
     {
         $char = $this->charAt();
         if ($char === "'" || $char === '"') {
             $this->index++;
             $this->column++;
             $stops = array_merge($this->lineTerminators, array($char));
-            $buffer = $this->consumeUntil($stops, !$this->jsx);
+            $buffer = $this->consumeUntil($stops, $handleEscape);
             if ($buffer === null || $buffer[1] !== $char) {
                 return $this->error("Unterminated string");
             }
@@ -1515,18 +1473,12 @@ abstract class Scanner
                 $buffer .= $char;
                 $this->index++;
                 $this->column++;
-            } elseif (
-                !$this->jsx && ($seq = $this->consumeUnicodeEscapeSequence())
-            ) {
+            } elseif ($seq = $this->consumeUnicodeEscapeSequence()) {
                 //Verify that is a valid character
                 if (!$this->$fn($seq)) {
                     break;
                 }
                 $buffer .= $seq;
-            } elseif ($this->jsx && $char === "-" && $buffer !== "") {
-                $buffer .= $char;
-                $this->index++;
-                $this->column++;
             } else {
                 break;
             }
@@ -1536,8 +1488,6 @@ abstract class Scanner
         //Identify token type
         if ($buffer === "") {
             return null;
-        } elseif ($this->jsx) {
-            $type = Token::TYPE_JSX_IDENTIFIER;
         } elseif ($buffer === "null") {
             $type = Token::TYPE_NULL_LITERAL;
         } elseif ($buffer === "true" || $buffer === "false") {
@@ -1656,6 +1606,7 @@ abstract class Scanner
      * 
      * @param array $stops       Characters to search
      * @param bool $handleEscape True to handle escaping
+     * @param bool $collectStop  True to include the stop character
      * 
      * @return string|null
      */

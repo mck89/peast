@@ -168,9 +168,6 @@ trait Parser
         
         $this->scanner->consumeToken();
         
-        //This enables the correct parsing of identifiers and strings for jsx
-        $this->scanner->enableJSX(true);
-        
         if (!($name = $this->parseJSXIdentifierOrMemberExpression())) {
             return $this->error();
         }
@@ -200,10 +197,7 @@ trait Parser
                 return $this->error();
             }
             
-            
         }
-        
-        $this->scanner->enableJSX(false);
         
         //Opening tag
         $openingNode = $this->createJSXNode(
@@ -252,8 +246,8 @@ trait Parser
      */
     protected function parseJSXIdentifierOrMemberExpression($allowMember = true)
     {
-        $idToken = $this->scanner->getToken();
-        if (!$idToken || $idToken->getType() !== Token::TYPE_JSX_IDENTIFIER) {
+        $idToken = $this->scanner->reconsumeCurrentTokenAsJSXIdentifier();
+        if (!$idToken) {
             return null;
         }
         $this->scanner->consumeToken();
@@ -338,16 +332,13 @@ trait Parser
     {
         if (!($openToken = $this->scanner->consume("{"))) {
             return null;
-        } 
-        
-        $this->scanner->enableJSX(false);
+        }
         
         if (
             $this->scanner->consume("...") &&
             ($exp = $this->parseAssignmentExpression()) &&
             $this->scanner->consume("}")
         ) {
-            $this->scanner->enableJSX(true);
             $node = $this->createJSXNode("JSXSpreadAttribute", $openToken);
             $node->setArgument($exp);
             return $this->completeNode($node);
@@ -369,38 +360,34 @@ trait Parser
         
         $value = null;
         if ($this->scanner->consume("=")) {
-            $value = $this->parseStringLiteral();
-            if (!$value) {
+            if ($strToken = $this->scanner->reconsumeCurrentTokenAsJSXString()) {
+                $this->scanner->consumeToken();
+                $node = $this->createNode("StringLiteral", $token);
+                $node->setRaw($token->getValue());
+                $value = $this->completeNode($value);
+            } elseif ($startExp = $this->scanner->consume("{")) {
                 
-                $this->scanner->enableJSX(false);
-                
-                if ($startExp = $this->scanner->consume("{")) {
-                    
-                    if (
-                        ($exp = $this->parseAssignmentExpression()) &&
-                        $this->scanner->consume("}")
-                    ) {
-                        
-                        $value = $this->createJSXNode(
-                            "JSXExpressionContainer",
-                            $startExp
-                        );
-                        $value->setExpression($exp);
-                        $value = $this->completeNode($value);
-                        
-                    } else {
-                        return $this->error();
-                    }
-                    
-                } elseif (
-                    !($value = $this->parseJSXFragment()) &&
-                    !($value = $this->parseJSXElement())
+                if (
+                    ($exp = $this->parseAssignmentExpression()) &&
+                    $this->scanner->consume("}")
                 ) {
+                    
+                    $value = $this->createJSXNode(
+                        "JSXExpressionContainer",
+                        $startExp
+                    );
+                    $value->setExpression($exp);
+                    $value = $this->completeNode($value);
+                    
+                } else {
                     return $this->error();
                 }
                 
-                $this->scanner->enableJSX(true);
-                
+            } elseif (
+                !($value = $this->parseJSXFragment()) &&
+                !($value = $this->parseJSXElement())
+            ) {
+                return $this->error();
             }
         }
         
