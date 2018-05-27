@@ -1,0 +1,491 @@
+{
+	"type": "Program",
+	"body": [
+	    {
+	        "type": "ExpressionStatement",
+	        "expression": {
+	            "type": "JSXElement",
+	            "openingElement": {
+	                "type": "JSXOpeningElement",
+	                "name": {
+	                    "type": "JSXIdentifier",
+	                    "name": "main",
+	                    "range": [
+	                        1,
+	                        5
+	                    ],
+	                    "loc": {
+	                        "start": {
+	                            "line": 1,
+	                            "column": 1
+	                        },
+	                        "end": {
+	                            "line": 1,
+	                            "column": 5
+	                        }
+	                    }
+	                },
+	                "selfClosing": false,
+	                "attributes": [],
+	                "range": [
+	                    0,
+	                    6
+	                ],
+	                "loc": {
+	                    "start": {
+	                        "line": 1,
+	                        "column": 0
+	                    },
+	                    "end": {
+	                        "line": 1,
+	                        "column": 6
+	                    }
+	                }
+	            },
+	            "children": [
+	                {
+	                    "type": "JSXElement",
+	                    "openingElement": {
+	                        "type": "JSXOpeningElement",
+	                        "name": {
+	                            "type": "JSXIdentifier",
+	                            "name": "sub",
+	                            "range": [
+	                                7,
+	                                10
+	                            ],
+	                            "loc": {
+	                                "start": {
+	                                    "line": 1,
+	                                    "column": 7
+	                                },
+	                                "end": {
+	                                    "line": 1,
+	                                    "column": 10
+	                                }
+	                            }
+	                        },
+	                        "selfClosing": false,
+	                        "attributes": [],
+	                        "range": [
+	                            6,
+	                            11
+	                        ],
+	                        "loc": {
+	                            "start": {
+	                                "line": 1,
+	                                "column": 6
+	                            },
+	                            "end": {
+	                                "line": 1,
+	                                "column": 11
+	                            }
+	                        }
+	                    },
+	                    "children": [
+	                        {
+	                            "type": "JSXExpressionContainer",
+	                            "expression": {
+	                                "type": "ConditionalExpression",
+	                                "test": {
+	                                    "type": "Identifier",
+	                                    "name": "condition",
+	                                    "range": [
+	                                        12,
+	                                        21
+	                                    ],
+	                                    "loc": {
+	                                        "start": {
+	                                            "line": 1,
+	                                            "column": 12
+	                                        },
+	                                        "end": {
+	                                            "line": 1,
+	                                            "column": 21
+	                                        }
+	                                    }
+	                                },
+	                                "consequent": {
+	                                    "type": "JSXElement",
+	                                    "openingElement": {
+	                                        "type": "JSXOpeningElement",
+	                                        "name": {
+	                                            "type": "JSXIdentifier",
+	                                            "name": "a",
+	                                            "range": [
+	                                                25,
+	                                                26
+	                                            ],
+	                                            "loc": {
+	                                                "start": {
+	                                                    "line": 1,
+	                                                    "column": 25
+	                                                },
+	                                                "end": {
+	                                                    "line": 1,
+	                                                    "column": 26
+	                                                }
+	                                            }
+	                                        },
+	                                        "selfClosing": false,
+	                                        "attributes": [],
+	                                        "range": [
+	                                            24,
+	                                            27
+	                                        ],
+	                                        "loc": {
+	                                            "start": {
+	                                                "line": 1,
+	                                                "column": 24
+	                                            },
+	                                            "end": {
+	                                                "line": 1,
+	                                                "column": 27
+	                                            }
+	                                        }
+	                                    },
+	                                    "children": [
+	                                        {
+	                                            "type": "JSXText",
+	                                            "value": "test",
+	                                            "raw": "test",
+	                                            "range": [
+	                                                27,
+	                                                31
+	                                            ],
+	                                            "loc": {
+	                                                "start": {
+	                                                    "line": 1,
+	                                                    "column": 27
+	                                                },
+	                                                "end": {
+	                                                    "line": 1,
+	                                                    "column": 31
+	                                                }
+	                                            }
+	                                        }
+	                                    ],
+	                                    "closingElement": {
+	                                        "type": "JSXClosingElement",
+	                                        "name": {
+	                                            "type": "JSXIdentifier",
+	                                            "name": "a",
+	                                            "range": [
+	                                                33,
+	                                                34
+	                                            ],
+	                                            "loc": {
+	                                                "start": {
+	                                                    "line": 1,
+	                                                    "column": 33
+	                                                },
+	                                                "end": {
+	                                                    "line": 1,
+	                                                    "column": 34
+	                                                }
+	                                            }
+	                                        },
+	                                        "range": [
+	                                            31,
+	                                            35
+	                                        ],
+	                                        "loc": {
+	                                            "start": {
+	                                                "line": 1,
+	                                                "column": 31
+	                                            },
+	                                            "end": {
+	                                                "line": 1,
+	                                                "column": 35
+	                                            }
+	                                        }
+	                                    },
+	                                    "range": [
+	                                        24,
+	                                        35
+	                                    ],
+	                                    "loc": {
+	                                        "start": {
+	                                            "line": 1,
+	                                            "column": 24
+	                                        },
+	                                        "end": {
+	                                            "line": 1,
+	                                            "column": 35
+	                                        }
+	                                    }
+	                                },
+	                                "alternate": {
+	                                    "type": "JSXElement",
+	                                    "openingElement": {
+	                                        "type": "JSXOpeningElement",
+	                                        "name": {
+	                                            "type": "JSXIdentifier",
+	                                            "name": "b",
+	                                            "range": [
+	                                                39,
+	                                                40
+	                                            ],
+	                                            "loc": {
+	                                                "start": {
+	                                                    "line": 1,
+	                                                    "column": 39
+	                                                },
+	                                                "end": {
+	                                                    "line": 1,
+	                                                    "column": 40
+	                                                }
+	                                            }
+	                                        },
+	                                        "selfClosing": false,
+	                                        "attributes": [],
+	                                        "range": [
+	                                            38,
+	                                            41
+	                                        ],
+	                                        "loc": {
+	                                            "start": {
+	                                                "line": 1,
+	                                                "column": 38
+	                                            },
+	                                            "end": {
+	                                                "line": 1,
+	                                                "column": 41
+	                                            }
+	                                        }
+	                                    },
+	                                    "children": [
+	                                        {
+	                                            "type": "JSXText",
+	                                            "value": "test2",
+	                                            "raw": "test2",
+	                                            "range": [
+	                                                41,
+	                                                46
+	                                            ],
+	                                            "loc": {
+	                                                "start": {
+	                                                    "line": 1,
+	                                                    "column": 41
+	                                                },
+	                                                "end": {
+	                                                    "line": 1,
+	                                                    "column": 46
+	                                                }
+	                                            }
+	                                        }
+	                                    ],
+	                                    "closingElement": {
+	                                        "type": "JSXClosingElement",
+	                                        "name": {
+	                                            "type": "JSXIdentifier",
+	                                            "name": "b",
+	                                            "range": [
+	                                                48,
+	                                                49
+	                                            ],
+	                                            "loc": {
+	                                                "start": {
+	                                                    "line": 1,
+	                                                    "column": 48
+	                                                },
+	                                                "end": {
+	                                                    "line": 1,
+	                                                    "column": 49
+	                                                }
+	                                            }
+	                                        },
+	                                        "range": [
+	                                            46,
+	                                            50
+	                                        ],
+	                                        "loc": {
+	                                            "start": {
+	                                                "line": 1,
+	                                                "column": 46
+	                                            },
+	                                            "end": {
+	                                                "line": 1,
+	                                                "column": 50
+	                                            }
+	                                        }
+	                                    },
+	                                    "range": [
+	                                        38,
+	                                        50
+	                                    ],
+	                                    "loc": {
+	                                        "start": {
+	                                            "line": 1,
+	                                            "column": 38
+	                                        },
+	                                        "end": {
+	                                            "line": 1,
+	                                            "column": 50
+	                                        }
+	                                    }
+	                                },
+	                                "range": [
+	                                    12,
+	                                    50
+	                                ],
+	                                "loc": {
+	                                    "start": {
+	                                        "line": 1,
+	                                        "column": 12
+	                                    },
+	                                    "end": {
+	                                        "line": 1,
+	                                        "column": 50
+	                                    }
+	                                }
+	                            },
+	                            "range": [
+	                                11,
+	                                51
+	                            ],
+	                            "loc": {
+	                                "start": {
+	                                    "line": 1,
+	                                    "column": 11
+	                                },
+	                                "end": {
+	                                    "line": 1,
+	                                    "column": 51
+	                                }
+	                            }
+	                        }
+	                    ],
+	                    "closingElement": {
+	                        "type": "JSXClosingElement",
+	                        "name": {
+	                            "type": "JSXIdentifier",
+	                            "name": "sub",
+	                            "range": [
+	                                53,
+	                                56
+	                            ],
+	                            "loc": {
+	                                "start": {
+	                                    "line": 1,
+	                                    "column": 53
+	                                },
+	                                "end": {
+	                                    "line": 1,
+	                                    "column": 56
+	                                }
+	                            }
+	                        },
+	                        "range": [
+	                            51,
+	                            57
+	                        ],
+	                        "loc": {
+	                            "start": {
+	                                "line": 1,
+	                                "column": 51
+	                            },
+	                            "end": {
+	                                "line": 1,
+	                                "column": 57
+	                            }
+	                        }
+	                    },
+	                    "range": [
+	                        6,
+	                        57
+	                    ],
+	                    "loc": {
+	                        "start": {
+	                            "line": 1,
+	                            "column": 6
+	                        },
+	                        "end": {
+	                            "line": 1,
+	                            "column": 57
+	                        }
+	                    }
+	                }
+	            ],
+	            "closingElement": {
+	                "type": "JSXClosingElement",
+	                "name": {
+	                    "type": "JSXIdentifier",
+	                    "name": "main",
+	                    "range": [
+	                        59,
+	                        63
+	                    ],
+	                    "loc": {
+	                        "start": {
+	                            "line": 1,
+	                            "column": 59
+	                        },
+	                        "end": {
+	                            "line": 1,
+	                            "column": 63
+	                        }
+	                    }
+	                },
+	                "range": [
+	                    57,
+	                    64
+	                ],
+	                "loc": {
+	                    "start": {
+	                        "line": 1,
+	                        "column": 57
+	                    },
+	                    "end": {
+	                        "line": 1,
+	                        "column": 64
+	                    }
+	                }
+	            },
+	            "range": [
+	                0,
+	                64
+	            ],
+	            "loc": {
+	                "start": {
+	                    "line": 1,
+	                    "column": 0
+	                },
+	                "end": {
+	                    "line": 1,
+	                    "column": 64
+	                }
+	            }
+	        },
+	        "range": [
+	            0,
+	            65
+	        ],
+	        "loc": {
+	            "start": {
+	                "line": 1,
+	                "column": 0
+	            },
+	            "end": {
+	                "line": 1,
+	                "column": 65
+	            }
+	        }
+	    }
+	],
+	"sourceType": "script",
+	"range": [
+	    0,
+	    65
+	],
+	"loc": {
+	    "start": {
+	        "line": 1,
+	        "column": 0
+	    },
+	    "end": {
+	        "line": 1,
+	        "column": 65
+	    }
+	}
+}
