@@ -1443,7 +1443,11 @@ abstract class Scanner
                     if (in_array($buffer, $map)) {
                         $bestMatch = array($consumed, $buffer);
                     }
-                    $buffer .= $this->charAt($this->index + $consumed);
+                    $nextChar = $this->charAt($this->index + $consumed);
+                    if ($nextChar === null) {
+                        break;
+                    }
+                    $buffer .= $nextChar;
                     $consumed++;
                 } while ($consumed <= $maxLen);
             }
