@@ -465,7 +465,7 @@ class Renderer
                 $code .= "<" . $this->renderNode($node->getName());
                 $attributes = $node->getAttributes();
                 if (count($attributes)) {
-                    $code .= " " . $this->joinNodes($node->getChildren(), " ");
+                    $code .= " " . $this->joinNodes($attributes, " ");
                 }
                 if ($node->getSelfClosing()) {
                     $code .= "/";

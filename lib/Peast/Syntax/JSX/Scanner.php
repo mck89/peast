@@ -40,37 +40,43 @@ trait Scanner
     
     
     /**
-     * Tries to reconsume the current token as a valid jsx string  if possible
+     * Reconsumes the current token in jsx mode
      * 
      * @return Token|null
      */
-    public function reconsumeCurrentTokenAsJSXString()
+    public function reconsumeCurrentTokenInJSXMode()
     {
+        $this->jsx = true;
         $this->nextToken = null;
         $this->currentToken = null;
         $startPosition = $this->getPosition();
         $this->setScanPosition($startPosition);
-        $this->currentToken = $this->scanString(false);
-        return $this->currentToken;
+        $token = $this->getToken();
+        $this->jsx = false;
+        return $token;
     }
     
     /**
-     * Tries to reconsume the current token as a valid jsx identifier if
-     * possible
+     * String scanning method in jsx mode
      * 
      * @return Token|null
      */
-    public function reconsumeCurrentTokenAsJSXIdentifier()
+    public function scanJSXString()
     {
-        $this->nextToken = null;
-        $this->currentToken = null;
-        $startPosition = $this->getPosition();
-        $this->setScanPosition($startPosition);
-        
+        return $this->scanString(false);
+    }
+    
+    /**
+     * Identifier scanning method in jsx mode
+     * 
+     * @return Token|null
+     */
+    public function scanJSXIdentifier()
+    {
+        $buffer = "";
         $char = $this->charAt();
         if ($char !== null && $this->isIdentifierStart($char)) {
             
-            $buffer = "";
             do {
                 $buffer .= $char;
                 $this->index++;
@@ -80,12 +86,8 @@ trait Scanner
                 $char !== null &&
                 ($this->isIdentifierPart($char) || $char === "-")
             );
-            
-            $this->currentToken = new Token(Token::TYPE_JSX_IDENTIFIER, $buffer);
-            $this->currentToken->setStartPosition($startPosition)
-                               ->setEndPosition($this->getPosition(true));
         }
         
-        return $this->currentToken;
+        return $buffer === "" ? null : new Token(Token::TYPE_JSX_IDENTIFIER, $buffer);
     }
 }

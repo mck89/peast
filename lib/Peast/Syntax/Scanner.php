@@ -103,6 +103,13 @@ abstract class Scanner
     protected $comments = false;
     
     /**
+     * Internal JSX scan flag
+     * 
+     * @var bool
+     */
+    protected $jsx = false;
+    
+    /**
      * Registered tokens array
      * 
      * @var array 
@@ -743,7 +750,12 @@ abstract class Scanner
         
         //Try to match a token
         $startPosition = $this->getPosition(true);
-        if (($token = $this->scanString()) ||
+        if (
+            ($this->jsx && (
+                ($token = $this->scanJSXString()) ||
+                ($token = $this->scanJSXIdentifier())
+            )) ||
+            ($token = $this->scanString()) ||
             ($token = $this->scanTemplate()) ||
             ($token = $this->scanNumber()) ||
             ($token = $this->scanPunctutator()) ||

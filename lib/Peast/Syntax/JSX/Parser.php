@@ -246,8 +246,8 @@ trait Parser
      */
     protected function parseJSXIdentifierOrMemberExpression($allowMember = true)
     {
-        $idToken = $this->scanner->reconsumeCurrentTokenAsJSXIdentifier();
-        if (!$idToken) {
+        $idToken = $this->scanner->reconsumeCurrentTokenInJSXMode();
+        if (!$idToken || $idToken->getType() !== Token::TYPE_JSX_IDENTIFIER) {
             return null;
         }
         $this->scanner->consumeToken();
@@ -259,7 +259,7 @@ trait Parser
         //Namespaced identifier
         if ($this->scanner->consume(":")) {
             
-            $idToken2 = $this->scanner->getToken();
+            $idToken2 = $this->scanner->reconsumeCurrentTokenInJSXMode();
             if (!$idToken2 || $idToken2->getType() !== Token::TYPE_JSX_IDENTIFIER) {
                 return $this->error();
             }
@@ -280,7 +280,7 @@ trait Parser
         $nextIds = array();
         if ($allowMember) {
             while ($this->scanner->consume(".")) {
-                $nextId = $this->scanner->getToken();
+                $nextId = $this->scanner->reconsumeCurrentTokenInJSXMode();
                 if (!$nextId || $nextId->getType() !== Token::TYPE_JSX_IDENTIFIER) {
                     return $this->error();
                 }
@@ -360,10 +360,11 @@ trait Parser
         
         $value = null;
         if ($this->scanner->consume("=")) {
-            if ($strToken = $this->scanner->reconsumeCurrentTokenAsJSXString()) {
+            $strToken = $this->scanner->reconsumeCurrentTokenInJSXMode();
+            if ($strToken && $strToken->getType() === Token::TYPE_STRING_LITERAL) {
                 $this->scanner->consumeToken();
-                $node = $this->createNode("StringLiteral", $token);
-                $node->setRaw($token->getValue());
+                $value = $this->createNode("StringLiteral", $strToken);
+                $value->setRaw($strToken->getValue());
                 $value = $this->completeNode($value);
             } elseif ($startExp = $this->scanner->consume("{")) {
                 
