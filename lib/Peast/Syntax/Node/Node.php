@@ -79,7 +79,7 @@ abstract class Node implements \JSONSerializable
      */
     public function setLeadingComments($comments)
     {
-        $this->assertArrayOf($comments, "Comment");
+        $this->assertArrayOf($comments, "\Peast\Syntax\Node\Comment");
         $this->leadingComments = $comments;
         return $this;
     }
@@ -103,7 +103,7 @@ abstract class Node implements \JSONSerializable
      */
     public function setTrailingComments($comments)
     {
-        $this->assertArrayOf($comments, "Comment");
+        $this->assertArrayOf($comments, "\Peast\Syntax\Node\Comment");
         $this->trailingComments = $comments;
         return $this;
     }
