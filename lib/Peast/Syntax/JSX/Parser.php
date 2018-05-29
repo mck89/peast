@@ -56,7 +56,7 @@ trait Parser
         if (!($startClosingToken = $this->scanner->consume("<")) ||
             !$this->scanner->consume("/") ||
             !($encClosingToken = $this->scanner->reconsumeCurrentTokenInJSXMode()) ||
-            !($endOpeningToken->getValue() !== ">")) {
+            $endOpeningToken->getValue() !== ">") {
             return $this->error();
         }
         $this->scanner->consumeToken();
