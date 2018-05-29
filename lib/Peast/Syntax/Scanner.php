@@ -751,13 +751,12 @@ abstract class Scanner
         //Try to match a token
         $startPosition = $this->getPosition(true);
         if (
-            ($this->jsx && (
-                ($token = $this->scanJSXString()) ||
-                ($token = $this->scanJSXIdentifier())
-            )) ||
+            ($this->jsx && ($token = $this->scanJSXString())) ||
+            ($this->jsx && ($token = $this->scanJSXIdentifier())) ||
             ($token = $this->scanString()) ||
             ($token = $this->scanTemplate()) ||
             ($token = $this->scanNumber()) ||
+            ($this->jsx && ($token = $this->scanJSXPunctutator())) ||
             ($token = $this->scanPunctutator()) ||
             ($token = $this->scanKeywordOrIdentifier())
         ) {

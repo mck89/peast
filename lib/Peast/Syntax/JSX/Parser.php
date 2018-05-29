@@ -55,9 +55,11 @@ trait Parser
         
         if (!($startClosingToken = $this->scanner->consume("<")) ||
             !$this->scanner->consume("/") ||
-            !$this->scanner->consume(">")) {
+            !($encClosingToken = $this->scanner->reconsumeCurrentTokenInJSXMode()) ||
+            !($endOpeningToken->getValue() !== ">")) {
             return $this->error();
         }
+        $this->scanner->consumeToken();
         
         //Opening tag
         $openingNode = $this->createJSXNode(
@@ -176,9 +178,11 @@ trait Parser
         
         $selfClosing = $this->scanner->consume("/");
         
-        if (!($endOpeningToken = $this->scanner->consume(">"))) {
+        $endOpeningToken = $this->scanner->reconsumeCurrentTokenInJSXMode();
+        if (!$endOpeningToken || $endOpeningToken->getValue() !== ">") {
             return $this->error();
         }
+        $this->scanner->consumeToken();
         
         if (!$selfClosing) {
             
@@ -188,8 +192,10 @@ trait Parser
                 ($startClosingToken = $this->scanner->consume("<")) &&
                 $this->scanner->consume("/") &&
                 ($closingName = $this->parseJSXIdentifierOrMemberExpression()) &&
-                ($endClosingToken = $this->scanner->consume(">"))
+                ($endClosingToken = $this->scanner->reconsumeCurrentTokenInJSXMode()) &&
+                ($endClosingToken->getValue() === ">")
             ) {
+                $this->scanner->consumeToken();
                 if (!$this->isSameJSXElementName($name, $closingName)) {
                     return $this->error("Closing tag does not match opening tag");
                 }

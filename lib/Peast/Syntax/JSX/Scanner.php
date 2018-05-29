@@ -67,6 +67,24 @@ trait Scanner
     }
     
     /**
+     * String punctutator method in jsx mode
+     * 
+     * @return Token|null
+     */
+    public function scanJSXPunctutator()
+    {
+        //The ">" character in jsx mode must be emitted in its own token
+        //without matching longer sequences like ">>"
+        $char = $this->charAt();
+        if ($char === ">") {
+            $this->index++;
+            $this->column++;
+            return new Token(Token::TYPE_PUNCTUTATOR, $char);
+        }
+        return $this->scanPunctutator();
+    }
+    
+    /**
      * Identifier scanning method in jsx mode
      * 
      * @return Token|null
