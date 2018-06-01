@@ -298,13 +298,13 @@ trait Parser
         //Create the member expression if required
         $objectNode = $idNode;
         foreach ($nextIds as $nid) {
-            $propEnd = $nid->getLocation->getEnd();
+            $propEnd = $nid->getLocation()->getEnd();
             $propNode = $this->createJSXNode("JSXIdentifier", $nid);
             $propNode->setName($nid->getValue());
             $propNode = $this->completeNode($propNode, $propEnd);
             
             $node = $this->createJSXNode("JSXMemberExpression", $objectNode);
-            $node->setObject($object);
+            $node->setObject($objectNode);
             $node->setProperty($propNode);
             $objectNode = $this->completeNode($node, $propEnd);
         }
