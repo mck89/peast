@@ -147,7 +147,7 @@ trait Parser
         }
         $this->scanner->consumeToken();
         $node = $this->createJSXNode("JSXText", $token);
-        $node->setValue($token->getValue());
+        $node->setRaw($token->getValue());
         return $this->completeNode($node, $token->getLocation()->getEnd());
     }
     
