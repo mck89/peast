@@ -1,7 +1,7 @@
 <?php
 namespace Peast\test;
 
-abstract class TestBase extends \PHPUnit_Framework_TestCase
+abstract class TestBase extends TestCaseBase
 {
     const JS_INVALID = 1;
     
