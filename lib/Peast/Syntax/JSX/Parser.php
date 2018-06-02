@@ -330,9 +330,9 @@ trait Parser
     }
     
     /**
-     * Parses a jsx attribute
+     * Parses a jsx spread attribute
      * 
-     * @return \Peast\Syntax\Node\JSXAttribute|null
+     * @return \Peast\Syntax\Node\JSXSpreadAttribute|null
      */
     protected function parseJSXSpreadAttribute()
     {
