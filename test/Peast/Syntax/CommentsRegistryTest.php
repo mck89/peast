@@ -661,6 +661,57 @@ class CommentsRegistryTest extends \Peast\test\TestBase
                         )
                     )
                 )
+            ),
+            //
+            array(
+                array(
+                    "source" => implode("\n", array(
+                        "var a = /*Start*/<element/>//End",
+                    )),
+                    "nodes" => array(
+                        array(
+                            "index" => 0,
+                            "node" => "JSXOpeningElement",
+                            "leading" => true,
+                            "kind" => Comment::KIND_MULTILINE,
+                            "text" => "Start",
+                            "rawText" => "/*Start*/"
+                        ),
+                        array(
+                            "index" => 0,
+                            "node" => "JSXOpeningElement",
+                            "leading" => false,
+                            "kind" => Comment::KIND_INLINE,
+                            "text" => "End",
+                            "rawText" => "//End"
+                        )
+                    ),
+                    "tokens" => array(
+                        array(
+                            "endColumn" => 17,
+                            "endIndex" => 17,
+                            "endLine" => 1,
+                            "index" => 3,
+                            "startColumn" => 8,
+                            "startIndex" => 8,
+                            "startLine" => 1,
+                            "value" => "/*Start*/"
+                        ),
+                        array(
+                            "endColumn" => 32,
+                            "endIndex" => 32,
+                            "endLine" => 1,
+                            "index" => 8,
+                            "startColumn" => 27,
+                            "startIndex" => 27,
+                            "startLine" => 1,
+                            "value" => "//End"
+                        )
+                    ),
+                    "options" => array(
+                        "jsx" => true
+                    )
+                )
             )
         );
     }
@@ -671,7 +722,11 @@ class CommentsRegistryTest extends \Peast\test\TestBase
     public function testParse($data)
     {
         $comments = array();
-        \Peast\Peast::latest($data["source"], array("comments" => true))->parse()->traverse(function ($node) use (&$comments) {
+        $options = array("comments" => true);
+        if (isset($data["options"])) {
+            $options = array_merge($options, $data["options"]);
+        }
+        \Peast\Peast::latest($data["source"], $options)->parse()->traverse(function ($node) use (&$comments) {
             foreach(array("getLeadingComments", "getTrailingComments") as $k => $fn) {
                 $nodeComments = $node->$fn();
                 if ($nodeComments) {
@@ -707,7 +762,11 @@ class CommentsRegistryTest extends \Peast\test\TestBase
     public function testTokenize($data)
     {
         $comments = array();
-        $tokens = \Peast\Peast::latest($data["source"], array("comments" => true))->tokenize();
+        $options = array("comments" => true);
+        if (isset($data["options"])) {
+            $options = array_merge($options, $data["options"]);
+        }
+        $tokens = \Peast\Peast::latest($data["source"], $options)->tokenize();
         foreach ($tokens as $idx => $token) {
             if ($token->getType() === Token::TYPE_COMMENT) {
                 $loc = $token->getLocation();

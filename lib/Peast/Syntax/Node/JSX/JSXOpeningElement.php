@@ -26,7 +26,7 @@ class JSXOpeningElement extends JSXBoundaryElement
      */
     protected $propertiesMap = array(
         "attributes" => true,
-        "selfClosing" => true
+        "selfClosing" => false
     );
     
     /**
