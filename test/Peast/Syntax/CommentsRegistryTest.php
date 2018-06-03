@@ -666,7 +666,7 @@ class CommentsRegistryTest extends \Peast\test\TestBase
             array(
                 array(
                     "source" => implode("\n", array(
-                        "var a = /*Start*/<element/>//End",
+                        "var a = /*Start*/<element></element>//End",
                     )),
                     "nodes" => array(
                         array(
@@ -679,7 +679,7 @@ class CommentsRegistryTest extends \Peast\test\TestBase
                         ),
                         array(
                             "index" => 0,
-                            "node" => "JSXOpeningElement",
+                            "node" => "JSXClosingElement",
                             "leading" => false,
                             "kind" => Comment::KIND_INLINE,
                             "text" => "End",
@@ -698,12 +698,12 @@ class CommentsRegistryTest extends \Peast\test\TestBase
                             "value" => "/*Start*/"
                         ),
                         array(
-                            "endColumn" => 32,
-                            "endIndex" => 32,
+                            "endColumn" => 41,
+                            "endIndex" => 41,
                             "endLine" => 1,
-                            "index" => 8,
-                            "startColumn" => 27,
-                            "startIndex" => 27,
+                            "index" => 11,
+                            "startColumn" => 36,
+                            "startIndex" => 36,
                             "startLine" => 1,
                             "value" => "//End"
                         )
