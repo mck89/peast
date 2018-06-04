@@ -73,7 +73,8 @@ In the examples above you may have noticed the `$options` parameter. This parame
 * "sourceType": this can be one of the source type constants defined in the Peast class:
     * `Peast\Peast::SOURCE_TYPE_SCRIPT`: this is the default source type and indicates that the code is a script, this means that `import` and `export` keywords are not parsed
     * `Peast\Peast::SOURCE_TYPE_SCRIPT`: this indicates that the code is a module and it activates the parsing of `import` and `export` keywords
-* "comments" (from version 1.5): enables comments parsing and attaches the comments to the nodes in the tree. You can get comments attached to nodes using `getLeadingComments` and `getTrailingComments` methods
+* "comments" (from version 1.5): enables comments parsing and attaches the comments to the nodes in the tree. You can get comments attached to nodes using `getLeadingComments` and `getTrailingComments` methods.
+* "jsx" (from version 1.8): enables parsing of JSX syntax.
 
 Differences from Esprima and ESTree
 -------------
@@ -81,4 +82,6 @@ Peast is not a porting of [Esprima](https://github.com/jquery/esprima) to PHP, b
 
 There is only one big difference from ESTree and Esprima: parenthesized expressions. This type of expressions have been introduced to let the user know if when an expression is wrapped in round brackets. For example `(a + b)` is a parenthesized expression and generates a ParenthesizedExpression node.
 
-Additionally, from version 1.3, literals have their own classes: StringLiteral, NumericLiteral, BooleanLiteral and NullLiteral.
+From version 1.3, literals have their own classes: `StringLiteral`, `NumericLiteral`, `BooleanLiteral` and `NullLiteral`.
+
+From version 1.8, when parsing JSX, 2 new token types are emitted: `JSXIdentifier`, that represents a valid JSX identifier, and `JSXText`, that represents text inside JSX elements and fragments.

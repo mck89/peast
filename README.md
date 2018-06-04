@@ -78,3 +78,6 @@ Changelog
 
 #### 1.7
 * Implemented missing features of es2018: object rest and spread, async generators and async iteration
+
+#### 1.8
+* Implemented parsing of JSX syntax

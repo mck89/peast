@@ -22,6 +22,7 @@ namespace Peast;
  *      - "sourceEncoding": the encoding of the source. If not specified the
  *        parser will assume UTF-8.
  *      - "comments": if true it enables comments parsing.
+ *      - "jsx": if true it enables parsing of JSX syntax.
  * 
  * @method static Syntax\ES2015\Parser ES2015(string $source, array $options)
  * Returns an instance of the ES2015 parser for the given source. See Peast
