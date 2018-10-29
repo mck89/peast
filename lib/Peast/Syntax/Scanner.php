@@ -549,7 +549,7 @@ abstract class Scanner
     protected function error($message = null)
     {
         if (!$message) {
-            $message = "Unexpectd " . $this->charAt();
+            $message = "Unexpected " . $this->charAt();
         }
         throw new Exception($message, $this->getPosition(true));
     }
