@@ -1,0 +1,362 @@
+[
+	{
+	    "type": "RegularExpression",
+	    "value": "/\"/",
+	    "range": [
+	        0,
+	        3
+	    ],
+	    "loc": {
+	        "start": {
+	            "line": 1,
+	            "column": 0
+	        },
+	        "end": {
+	            "line": 1,
+	            "column": 3
+	        }
+	    },
+	    "regex": {
+	        "pattern": "\"",
+	        "flags": ""
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ";",
+	    "range": [
+	        3,
+	        4
+	    ],
+	    "loc": {
+	        "start": {
+	            "line": 1,
+	            "column": 3
+	        },
+	        "end": {
+	            "line": 1,
+	            "column": 4
+	        }
+	    }
+	},
+	{
+	    "type": "RegularExpression",
+	    "value": "/'/",
+	    "range": [
+	        5,
+	        8
+	    ],
+	    "loc": {
+	        "start": {
+	            "line": 2,
+	            "column": 0
+	        },
+	        "end": {
+	            "line": 2,
+	            "column": 3
+	        }
+	    },
+	    "regex": {
+	        "pattern": "'",
+	        "flags": ""
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ";",
+	    "range": [
+	        8,
+	        9
+	    ],
+	    "loc": {
+	        "start": {
+	            "line": 2,
+	            "column": 3
+	        },
+	        "end": {
+	            "line": 2,
+	            "column": 4
+	        }
+	    }
+	},
+	{
+	    "type": "RegularExpression",
+	    "value": "/\"'/",
+	    "range": [
+	        10,
+	        14
+	    ],
+	    "loc": {
+	        "start": {
+	            "line": 3,
+	            "column": 0
+	        },
+	        "end": {
+	            "line": 3,
+	            "column": 4
+	        }
+	    },
+	    "regex": {
+	        "pattern": "\"'",
+	        "flags": ""
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ";",
+	    "range": [
+	        14,
+	        15
+	    ],
+	    "loc": {
+	        "start": {
+	            "line": 3,
+	            "column": 4
+	        },
+	        "end": {
+	            "line": 3,
+	            "column": 5
+	        }
+	    }
+	},
+	{
+	    "type": "RegularExpression",
+	    "value": "/'\"/",
+	    "range": [
+	        16,
+	        20
+	    ],
+	    "loc": {
+	        "start": {
+	            "line": 4,
+	            "column": 0
+	        },
+	        "end": {
+	            "line": 4,
+	            "column": 4
+	        }
+	    },
+	    "regex": {
+	        "pattern": "'\"",
+	        "flags": ""
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ";",
+	    "range": [
+	        20,
+	        21
+	    ],
+	    "loc": {
+	        "start": {
+	            "line": 4,
+	            "column": 4
+	        },
+	        "end": {
+	            "line": 4,
+	            "column": 5
+	        }
+	    }
+	},
+	{
+	    "type": "RegularExpression",
+	    "value": "/\"\"/",
+	    "range": [
+	        22,
+	        26
+	    ],
+	    "loc": {
+	        "start": {
+	            "line": 5,
+	            "column": 0
+	        },
+	        "end": {
+	            "line": 5,
+	            "column": 4
+	        }
+	    },
+	    "regex": {
+	        "pattern": "\"\"",
+	        "flags": ""
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ";",
+	    "range": [
+	        26,
+	        27
+	    ],
+	    "loc": {
+	        "start": {
+	            "line": 5,
+	            "column": 4
+	        },
+	        "end": {
+	            "line": 5,
+	            "column": 5
+	        }
+	    }
+	},
+	{
+	    "type": "RegularExpression",
+	    "value": "/''/",
+	    "range": [
+	        28,
+	        32
+	    ],
+	    "loc": {
+	        "start": {
+	            "line": 6,
+	            "column": 0
+	        },
+	        "end": {
+	            "line": 6,
+	            "column": 4
+	        }
+	    },
+	    "regex": {
+	        "pattern": "''",
+	        "flags": ""
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ";",
+	    "range": [
+	        32,
+	        33
+	    ],
+	    "loc": {
+	        "start": {
+	            "line": 6,
+	            "column": 4
+	        },
+	        "end": {
+	            "line": 6,
+	            "column": 5
+	        }
+	    }
+	},
+	{
+	    "type": "RegularExpression",
+	    "value": "/`/",
+	    "range": [
+	        34,
+	        37
+	    ],
+	    "loc": {
+	        "start": {
+	            "line": 7,
+	            "column": 0
+	        },
+	        "end": {
+	            "line": 7,
+	            "column": 3
+	        }
+	    },
+	    "regex": {
+	        "pattern": "`",
+	        "flags": ""
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ";",
+	    "range": [
+	        37,
+	        38
+	    ],
+	    "loc": {
+	        "start": {
+	            "line": 7,
+	            "column": 3
+	        },
+	        "end": {
+	            "line": 7,
+	            "column": 4
+	        }
+	    }
+	},
+	{
+	    "type": "RegularExpression",
+	    "value": "/0x/",
+	    "range": [
+	        39,
+	        43
+	    ],
+	    "loc": {
+	        "start": {
+	            "line": 8,
+	            "column": 0
+	        },
+	        "end": {
+	            "line": 8,
+	            "column": 4
+	        }
+	    },
+	    "regex": {
+	        "pattern": "0x",
+	        "flags": ""
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ";",
+	    "range": [
+	        43,
+	        44
+	    ],
+	    "loc": {
+	        "start": {
+	            "line": 8,
+	            "column": 4
+	        },
+	        "end": {
+	            "line": 8,
+	            "column": 5
+	        }
+	    }
+	},
+	{
+	    "type": "RegularExpression",
+	    "value": "/1ea/",
+	    "range": [
+	        45,
+	        50
+	    ],
+	    "loc": {
+	        "start": {
+	            "line": 9,
+	            "column": 0
+	        },
+	        "end": {
+	            "line": 9,
+	            "column": 5
+	        }
+	    },
+	    "regex": {
+	        "pattern": "1ea",
+	        "flags": ""
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ";",
+	    "range": [
+	        50,
+	        51
+	    ],
+	    "loc": {
+	        "start": {
+	            "line": 9,
+	            "column": 5
+	        },
+	        "end": {
+	            "line": 9,
+	            "column": 6
+	        }
+	    }
+	}
+]

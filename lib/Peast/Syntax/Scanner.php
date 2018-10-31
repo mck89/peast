@@ -748,42 +748,56 @@ abstract class Scanner
             return null;
         }
         
-        //Try to match a token
         $startPosition = $this->getPosition(true);
-        if (
-            ($this->jsx && ($token = $this->scanJSXString())) ||
-            ($this->jsx && ($token = $this->scanJSXIdentifier())) ||
-            ($token = $this->scanString()) ||
-            ($token = $this->scanTemplate()) ||
-            ($token = $this->scanNumber()) ||
-            ($this->jsx && ($token = $this->scanJSXPunctutator())) ||
-            ($token = $this->scanPunctutator()) ||
-            ($token = $this->scanKeywordOrIdentifier())
-        ) {
-            $this->currentToken = $token->setStartPosition($startPosition)
-                                        ->setEndPosition($this->getPosition(true));
-                                        
-            //Register comments if required
-            if ($this->comments && $comments) {
-                $this->commentsForCurrentToken($comments);
+        $origException = null;
+        try {
+            
+            //Try to match a token
+            if (
+                ($this->jsx && ($token = $this->scanJSXString())) ||
+                ($this->jsx && ($token = $this->scanJSXIdentifier())) ||
+                ($token = $this->scanString()) ||
+                ($token = $this->scanTemplate()) ||
+                ($token = $this->scanNumber()) ||
+                ($this->jsx && ($token = $this->scanJSXPunctutator())) ||
+                ($token = $this->scanPunctutator()) ||
+                ($token = $this->scanKeywordOrIdentifier())
+            ) {
+                //Set the token stard and end positions
+                $token->setStartPosition($startPosition)
+                      ->setEndPosition($this->getPosition(true));
+                $this->currentToken = $token;
+                                            
+                //Register comments if required
+                if ($this->comments && $comments) {
+                    $this->commentsForCurrentToken($comments);
+                }
+                
+                //Emit the TokenCreated event for the token just created
+                $this->eventsEmitter && $this->eventsEmitter->fire(
+                    "TokenCreated", array($this->currentToken)
+                );
+                
+                return $this->currentToken;
             }
             
-            //Emit the TokenCreated event for the token just created
-            $this->eventsEmitter && $this->eventsEmitter->fire(
-                "TokenCreated", array($this->currentToken)
-            );
-            
-            return $this->currentToken;
+        } catch (Exception $e) {
+            $origException = $e;
         }
         
         //If last token was "/" do not throw an error if the token has not be
         //recognized since it can be the first character in a regexp and it will
         //be consumed when the current token will be reconsumed as a regexp
         if ($this->isAfterSlash($startPosition)) {
+            $this->setScanPosition($startPosition);
             return null;
         }
         
-        //No valid token found, error
+        //No valid token found. If there was a scan error, throw the same
+        //exception again, otherwise throw a new error
+        if ($origException) {
+            throw $origException;
+        }
         return $this->error();
     }
     
