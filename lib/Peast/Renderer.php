@@ -377,7 +377,7 @@ class Renderer
                     $code .= $this->renderOpts->sao .
                              "else" .
                              $this->renderStatementBlock(
-                                 $node->getAlternate(),
+                                 $alternate,
                                  null,
                                  true
                              );
@@ -446,7 +446,7 @@ class Renderer
                 $code .= $this->renderNode($node->getOpeningElement()) .
                          $this->joinNodes($node->getChildren(), "");
                 if ($closing = $node->getClosingElement()) {
-                    $code .= $this->renderNode($node->getClosingElement());
+                    $code .= $this->renderNode($closing);
                 }
             break;
             case "JSXExpressionContainer":

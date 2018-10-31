@@ -55,7 +55,7 @@ trait Parser
         
         if (!($startClosingToken = $this->scanner->consume("<")) ||
             !$this->scanner->consume("/") ||
-            !($encClosingToken = $this->scanner->reconsumeCurrentTokenInJSXMode()) ||
+            !$this->scanner->reconsumeCurrentTokenInJSXMode() ||
             $endOpeningToken->getValue() !== ">") {
             return $this->error();
         }
@@ -117,8 +117,7 @@ trait Parser
             $spread = $this->scanner->consume("...");
             $exp = $this->parseAssignmentExpression();
             $midPos = $this->scanner->getPosition();
-            if (($spread && !$exp) ||
-                !($endToken = $this->scanner->consume("}"))) {
+            if (($spread && !$exp) || !$this->scanner->consume("}")) {
                 return $this->error();
             }
             $node = $this->createJSXNode(
