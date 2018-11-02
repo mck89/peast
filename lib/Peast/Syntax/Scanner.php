@@ -288,7 +288,7 @@ abstract class Scanner
                         preg_split('//u', $source, null, PREG_SPLIT_NO_EMPTY);
         $this->length = count($this->source);
         
-        //Generate a map by grouping punctutars by their first character
+        //Generate a map by grouping punctutators by their first character
         foreach ($this->punctutators as $p) {
             $first = $p[0];
             $len = strlen($p);
