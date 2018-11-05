@@ -143,7 +143,6 @@ class ES2015Test extends \Peast\test\TestBase
         }
     }
     
-    
     public function escapeSequencesProvider()
     {
         return array(
@@ -176,5 +175,24 @@ class ES2015Test extends \Peast\test\TestBase
     public function testInvalidescapeSequences($code)
     {
         \Peast\Peast::{$this->parser}($code)->parse();
+    }
+    
+    public function validStringsProvider()
+    {
+        return array(
+            array("\\\n"), //LF
+            array("\\\r"), //CR
+            array("\\\r\n"), //CR+LF
+            array(\Peast\Syntax\Utils::unicodeToUtf8(0x2028)), //LineSeparator
+            array(\Peast\Syntax\Utils::unicodeToUtf8(0x2029)), //ParagraphSeparator
+        );
+    }
+    
+    /**
+     * @dataProvider validStringsProvider
+     */
+    public function testValidStrings($code)
+    {
+        \Peast\Peast::{$this->parser}("'$code'")->parse();
     }
 }

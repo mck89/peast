@@ -166,11 +166,18 @@ abstract class Scanner
     protected $punctutators = array();
     
     /**
-     * Punctutators map
+     * Punctutators LSM
      * 
-     * @var array 
+     * @var LSM 
      */
-    protected $punctutatorsMap = array();
+    protected $punctutatorsLSM;
+    
+    /**
+     * Strings stops LSM
+     * 
+     * @var LSM 
+     */
+    protected $stringsStopsLSM;
     
     /**
      * Brackets array
@@ -288,22 +295,6 @@ abstract class Scanner
                         preg_split('//u', $source, null, PREG_SPLIT_NO_EMPTY);
         $this->length = count($this->source);
         
-        //Generate a map by grouping punctutators by their first character
-        foreach ($this->punctutators as $p) {
-            $first = $p[0];
-            $len = strlen($p);
-            if (!isset($this->punctutatorsMap[$first])) {
-                $this->punctutatorsMap[$first] = array(
-                    "maxLen" => 0,
-                    "map" => array()
-                );
-            }
-            $this->punctutatorsMap[$first]["map"][] = $p;
-            $this->punctutatorsMap[$first]["maxLen"] = max(
-                $this->punctutatorsMap[$first]["maxLen"], $len
-            );
-        }
-        
         //Convert character codes to UTF8 characters in whitespaces and line
         //terminators
         $this->lineTerminators = array_merge(
@@ -316,6 +307,21 @@ abstract class Scanner
                 }
             }
         }
+        
+        //Create a LSM for punctutators array
+        $this->punctutatorsLSM = new LSM($this->punctutators);
+        
+        //Create a LSM for strings stops
+        $this->stringsStopsLSM = new LSM(
+            array_diff(
+                $this->lineTerminators,
+                //Paragraph and line separators are allowed in strings
+                array(
+                    Utils::unicodeToUtf8(0x2028),
+                    Utils::unicodeToUtf8(0x2029)
+                )
+            )
+        );
         
         $this->linesSplitter = "/" .
                                implode("|", $this->lineTerminators) .
@@ -1215,8 +1221,10 @@ abstract class Scanner
         if ($char === "'" || $char === '"') {
             $this->index++;
             $this->column++;
-            $stops = array_merge($this->lineTerminators, array($char));
-            $buffer = $this->consumeUntil($stops, $handleEscape);
+            //Add the quote to the LSM and then remove it after consuming
+            $this->stringsStopsLSM->add($char);
+            $buffer = $this->consumeUntil($this->stringsStopsLSM, $handleEscape);
+            $this->stringsStopsLSM->remove($char);
             if ($buffer === null || $buffer[1] !== $char) {
                 return $this->error("Unterminated string");
             }
@@ -1426,8 +1434,7 @@ abstract class Scanner
      */
     protected function scanPunctutator()
     {
-        $bestMatch = null;
-        $consumed = 1;
+        $token = null;
         $char = $this->charAt();
         
         //Check if the next char is a bracket
@@ -1451,38 +1458,18 @@ abstract class Scanner
                 }
                 $this->openBrackets[$char]++;
             }
-            $bestMatch = array($consumed, $char);
-        } elseif (isset($this->punctutatorsMap[$char])) {
-            //If the character is a valid punctutator, first check if the
-            //punctutators map for that character has a max length of 1 and in
-            //that case match immediatelly
-            if ($this->punctutatorsMap[$char]["maxLen"] === 1) {
-                $bestMatch = array($consumed, $char);
-            } else {
-                //Otherwise consume a number of characters equal to the max
-                //length and find the longest match
-                $buffer = $char;
-                $map = $this->punctutatorsMap[$char]["map"];
-                $maxLen = $this->punctutatorsMap[$char]["maxLen"];
-                do {
-                    if (in_array($buffer, $map)) {
-                        $bestMatch = array($consumed, $buffer);
-                    }
-                    $nextChar = $this->charAt($this->index + $consumed);
-                    if ($nextChar === null) {
-                        break;
-                    }
-                    $buffer .= $nextChar;
-                    $consumed++;
-                } while ($consumed <= $maxLen);
-            }
-        } else {
-            return null;
+            $this->index++;
+            $this->column++;
+            $token = new Token(Token::TYPE_PUNCTUTATOR, $char);
+        } elseif (
+            //Try to match the longest puncutator
+            $match = $this->punctutatorsLSM->match($this, $this->index, $char)
+        ) {
+            $this->index += $match[0];
+            $this->column += $match[0];
+            $token = new Token(Token::TYPE_PUNCTUTATOR, $match[1]);
         }
-        
-        $this->index += $bestMatch[0];
-        $this->column += $bestMatch[0];
-        return new Token(Token::TYPE_PUNCTUTATOR, $bestMatch[1]);
+        return $token;
     }
     
     /**
@@ -1633,24 +1620,37 @@ abstract class Scanner
     /**
      * Consumes characters until one of the given characters is found
      * 
-     * @param array $stops       Characters to search
-     * @param bool $handleEscape True to handle escaping
-     * @param bool $collectStop  True to include the stop character
+     * @param array|LSM $stops          Characters to search
+     * @param bool      $handleEscape   True to handle escaping
+     * @param bool      $collectStop    True to include the stop character
      * 
      * @return string|null
      */
     protected function consumeUntil(
         $stops, $handleEscape = true, $collectStop = true
     ) {
+        $isLSM = $stops instanceof LSM;
         $buffer = "";
         $escaped = false;
         while (($char = $this->charAt()) !== null) {
-            $isStop = !$escaped && in_array($char, $stops);
-            if (!$isStop || $collectStop) {
-                $this->index++;
+            $incrIndex = 1;
+            $isStop = false;
+            if ($isLSM) {
+                $m = $stops->match($this, $this->index, $char);
+                if ($m) {
+                    $isStop = true;
+                    $incrIndex = $m[0];
+                    $char = $m[1];
+                }
+            } else {
+                $isStop = in_array($char, $stops);
+            }
+            $validStop = $isStop && !$escaped;
+            if (!$validStop || $collectStop) {
+                $this->index += $incrIndex;
                 $buffer .= $char;
             }
-            if ($isStop) {
+            if ($validStop) {
                 if (!$collectStop && $buffer === "") {
                     return null;
                 }
