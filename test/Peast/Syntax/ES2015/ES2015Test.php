@@ -193,6 +193,10 @@ class ES2015Test extends \Peast\test\TestBase
      */
     public function testValidStrings($code)
     {
-        \Peast\Peast::{$this->parser}("'$code'")->parse();
+        $code = "'$code'";
+        $tree = \Peast\Peast::{$this->parser}($code)->parse();
+        $items = $tree->getBody();
+        $str = $items[0]->getExpression()->getRaw();
+        $this->assertSame($code, $str);
     }
 }
