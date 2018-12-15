@@ -56,7 +56,15 @@ namespace Peast;
  * Returns an instance of the ES2018 parser for the given source. See Peast
  * class documentation to understand function arguments.
  * 
- * @method static Syntax\ES2018\Parser latest(string $source, array $options)
+ * @method static Syntax\ES2019\Parser ES2019(string $source, array $options)
+ * Returns an instance of the ES2019 parser for the given source. See Peast
+ * class documentation to understand function arguments.
+ * 
+ * @method static Syntax\ES2019\Parser ES10(string $source, array $options)
+ * Returns an instance of the ES2019 parser for the given source. See Peast
+ * class documentation to understand function arguments.
+ * 
+ * @method static Syntax\ES2019\Parser latest(string $source, array $options)
  * Returns an instance of the latest parser version for the given source. See
  * Peast class documentation to understand function arguments.
  * 
@@ -86,7 +94,8 @@ class Peast
         "ES6" => "ES2015",
         "ES7" => "ES2016",
         "ES8" => "ES2017",
-        "ES9" => "ES2018"
+        "ES9" => "ES2018",
+        "ES10" => "ES2019"
     );
     
     /**

@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.9
+* Added ES2019 parser
+
 #### 1.8.1
 * Fixed parsing of regular expressions by disabling scan errors inside them
 * Added LSM utility class to handle correctly punctutators and strings stop characters

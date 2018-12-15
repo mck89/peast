@@ -5,7 +5,7 @@ class RendererTest extends \Peast\test\TestBase
 {
     protected function getTestVersions()
     {
-        return array("ES2015", "ES2016", "ES2017", "ES2018");
+        return array("ES2015", "ES2016", "ES2017", "ES2018", "ES2019");
     }
     
     public function jsParserTestFilesProvider()
