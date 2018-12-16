@@ -290,9 +290,7 @@ abstract class Scanner
         
         //Instead of using mb_substr for each character, split the source
         //into an array of UTF8 characters for performance reasons
-        $this->source = $source === "" ?
-                        array() :
-                        preg_split('//u', $source, null, PREG_SPLIT_NO_EMPTY);
+        $this->source = Utils::stringToUTF8Array($source);
         $this->length = count($this->source);
         
         //Convert character codes to UTF8 characters in whitespaces and line
@@ -312,16 +310,7 @@ abstract class Scanner
         $this->punctutatorsLSM = new LSM($this->punctutators);
         
         //Create a LSM for strings stops
-        $this->stringsStopsLSM = new LSM(
-            array_diff(
-                $this->lineTerminators,
-                //Paragraph and line separators are allowed in strings
-                array(
-                    Utils::unicodeToUtf8(0x2028),
-                    Utils::unicodeToUtf8(0x2029)
-                )
-            )
-        );
+        $this->stringsStopsLSM = new LSM($this->lineTerminators, true);
         
         $this->linesSplitter = "/" .
                                implode("|", $this->lineTerminators) .

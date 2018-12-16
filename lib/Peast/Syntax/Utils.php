@@ -17,6 +17,20 @@ namespace Peast\Syntax;
 class Utils
 {
     /**
+     * Converts a string to an array of UTF-8 characters
+     * 
+     * @param string $str String to convert
+     * 
+     * @return array
+     */
+    static public function stringToUTF8Array($str)
+    {
+        return $str === "" ?
+               array() :
+               preg_split('//u', $str, null, PREG_SPLIT_NO_EMPTY);
+    }
+    
+    /**
      * Converts an unicode code point to UTF-8
      * 
      * @param int $num Unicode code point

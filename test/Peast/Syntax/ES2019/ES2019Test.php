@@ -9,4 +9,19 @@ class ES2019Test extends \Peast\test\Syntax\ES2018\ES2018Test
     {
         return array("ES2015", "ES2016", "ES2017", "ES2018", "ES2019");
     }
+    
+    public function stringCharsProvider()
+    {
+        $chars = parent::stringCharsProvider();
+        $validChars = array(
+            \Peast\Syntax\Utils::unicodeToUtf8(0x2028),
+            \Peast\Syntax\Utils::unicodeToUtf8(0x2029)
+        );
+        foreach ($chars as $k => $v) {
+            if (in_array($v[0], $validChars)) {
+                $chars[$k][1] = true;
+            }
+        }
+        return $chars;
+    }
 }

@@ -143,60 +143,52 @@ class ES2015Test extends \Peast\test\TestBase
         }
     }
     
-    public function escapeSequencesProvider()
+    public function stringCharsProvider()
     {
         return array(
-            array("'\\x'"),
-            array("'\\x1'"),
-            array("'\\x1G'"),
-            array("'\\u'"),
-            array("'\\u1'"),
-            array("'\\u11'"),
-            array("'\\u111'"),
-            array("'\\uG'"),
-            array("'\\u1G'"),
-            array("'\\u11G'"),
-            array("'\\u111G'"),
-            array("'\\u{}'"),
-            array("'\\u{'"),
-            array("'\\u{12'"),
-            array("'\\u{G}'"),
-            array("'\\u{1G}'"),
-            array("'\\u{1G1}'"),
-            array("'\\u{G1}'"),
-            array("'\\u{{'"),
+            array("\\x", false),
+            array("\\x1", false),
+            array("\\x1G", false),
+            array("\\u", false),
+            array("\\u1", false),
+            array("\\u11", false),
+            array("\\u111", false),
+            array("\\uG", false),
+            array("\\u1G", false),
+            array("\\u11G", false),
+            array("\\u111G", false),
+            array("\\u{}", false),
+            array("\\u{", false),
+            array("\\u{12", false),
+            array("\\u{G}", false),
+            array("\\u{1G}", false),
+            array("\\u{1G1}", false),
+            array("\\u{G1}", false),
+            array("\\u{{", false),
+            array("\n", false),
+            array("\r", false),
+            array(\Peast\Syntax\Utils::unicodeToUtf8(0x2028), false),
+            array(\Peast\Syntax\Utils::unicodeToUtf8(0x2029), false),
+            array("\\\n", true),
+            array("\\\r", true),
+            array("\\\r\n", true),
+            array("\\" . \Peast\Syntax\Utils::unicodeToUtf8(0x2028), true),
+            array("\\" . \Peast\Syntax\Utils::unicodeToUtf8(0x2029), true)
         );
     }
     
     /**
-     * @dataProvider escapeSequencesProvider
-     * @expectedException \Peast\Syntax\Exception
+     * @dataProvider stringCharsProvider
      */
-    public function testInvalidescapeSequences($code)
+    public function testStringsParsing($chars, $valid)
     {
-        \Peast\Peast::{$this->parser}($code)->parse();
-    }
-    
-    public function validStringsProvider()
-    {
-        return array(
-            array("\\\n"), //LF
-            array("\\\r"), //CR
-            array("\\\r\n"), //CR+LF
-            array(\Peast\Syntax\Utils::unicodeToUtf8(0x2028)), //LineSeparator
-            array(\Peast\Syntax\Utils::unicodeToUtf8(0x2029)), //ParagraphSeparator
-        );
-    }
-    
-    /**
-     * @dataProvider validStringsProvider
-     */
-    public function testValidStrings($code)
-    {
-        $code = "'$code'";
-        $tree = \Peast\Peast::{$this->parser}($code)->parse();
-        $items = $tree->getBody();
-        $str = $items[0]->getExpression()->getRaw();
-        $this->assertSame($code, $str);
+        $code = "'$chars'";
+        $validResult = true;
+        try {
+            \Peast\Peast::{$this->parser}($code)->parse();
+        } catch (\Exception $ex) {
+            $validResult = false;
+        }
+        $this->assertSame($valid, $validResult);
     }
 }

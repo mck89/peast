@@ -25,19 +25,21 @@ class LSM
     protected $map = array();
     
     /**
-     * Scanner instance
+     * Encoding handle flag
      * 
-     * @var Scanner 
+     * @var bool 
      */
-    protected $scanner;
+    protected $handleEncoding = false;
     
     /**
      * Class constructor
      *
-     * @param array $sequences Allowed characters sequences
+     * @param array $sequences      Allowed characters sequences
+     * @param bool  $handleEncoding True to handle encoding when matching
      */
-    function __construct($sequences)
+    function __construct($sequences, $handleEncoding = false)
     {
+        $this->handleEncoding = $handleEncoding;
         foreach ($sequences as $s) {
             $this->add($s);
         }
@@ -52,8 +54,14 @@ class LSM
      */
     public function add($sequence)
     {
-        $first = $sequence[0];
-        $len = strlen($sequence);
+        if ($this->handleEncoding) {
+            $s = Utils::stringToUTF8Array($sequence);
+            $first = $s[0];
+            $len = count($s);
+        } else {    
+            $first = $sequence[0];
+            $len = strlen($sequence);
+        }
         if (!isset($this->map[$first])) {
             $this->map[$first] = array(
                 "maxLen" => $len,
@@ -75,14 +83,20 @@ class LSM
      */
     public function remove($sequence)
     {
-        $first = $sequence[0];
+        if ($this->handleEncoding) {
+            $s = Utils::stringToUTF8Array($sequence);
+            $first = $s[0];
+        } else {
+            $first = $sequence[0];
+        }
         if (isset($this->map[$first])) {
+            $len = $this->handleEncoding ? count($s) : strlen($sequence);
             $this->map[$first]["map"] = array_diff(
                 $this->map[$first]["map"], array($sequence)
             );
             if (!count($this->map[$first]["map"])) {
                 unset($this->map[$first]);
-            } elseif ($this->map[$first]["maxLen"] === strlen($sequence)) {
+            } elseif ($this->map[$first]["maxLen"] === $len) {
                 // Recalculate the max length if necessary
                 foreach ($this->map[$first]["map"] as $m) {
                     $this->map[$first]["maxLen"] = max(
