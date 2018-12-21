@@ -195,14 +195,16 @@ class Renderer
                          ")";
             break;
             case "CatchClause":
-                $code .= "catch" .
-                         $this->renderOpts->sao .
-                         "(" .
-                         $this->renderOpts->sirb .
-                         $this->renderNode($node->getParam()) .
-                         $this->renderOpts->sirb .
-                         ")" .
-                         $this->renderStatementBlock($node->getBody(), true);
+                $code .= "catch";
+                if ($params = $node->getParam()) {
+                    $code .= $this->renderOpts->sao .
+                             "(" .
+                             $this->renderOpts->sirb .
+                             $this->renderNode($params) .
+                             $this->renderOpts->sirb .
+                             ")";
+                }
+                $code .= $this->renderStatementBlock($node->getBody(), true);
             break;
             case "ClassExpression":
             case "ClassDeclaration":

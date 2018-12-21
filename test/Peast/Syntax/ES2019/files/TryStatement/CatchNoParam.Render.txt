@@ -1,0 +1,15 @@
+try {
+	fn();
+} catch {
+	console.log("error");
+}
+/**************************************************/
+try{fn();}catch{console.log("error");}
+/**************************************************/
+try
+{
+	fn(  );
+} catch
+{
+	console.log( "error" );
+}

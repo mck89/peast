@@ -10,6 +10,17 @@ class ES2019Test extends \Peast\test\Syntax\ES2018\ES2018Test
         return array("ES2015", "ES2016", "ES2017", "ES2018", "ES2019");
     }
     
+    protected function getExcludedTests()
+    {
+        $excluded = parent::getExcludedTests();
+        return array_merge(
+            $excluded,
+            array(
+                "TryStatement/InvalidCatch2.js"
+            )
+        );
+    }
+    
     public function stringCharsProvider()
     {
         $chars = parent::stringCharsProvider();

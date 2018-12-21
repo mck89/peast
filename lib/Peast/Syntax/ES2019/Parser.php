@@ -18,4 +18,33 @@ use \Peast\Syntax\Node;
  */
 class Parser extends \Peast\Syntax\ES2018\Parser
 {
+    /**
+     * Parses the catch block of a try-catch statement
+     * 
+     * @return Node\CatchClause|null
+     */
+    protected function parseCatch()
+    {
+        if ($token = $this->scanner->consume("catch")) {
+            
+            $node = $this->createNode("CatchClause", $token);
+            
+            if ($this->scanner->consume("(")) {
+                if (!($param = $this->parseCatchParameter()) ||
+                    !$this->scanner->consume(")")) {
+                    return $this->error();
+                }
+                $node->setParam($param);
+            }
+            
+            if (!($body = $this->parseBlock())) {
+                return $this->error();
+            }
+            
+            $node->setBody($body);
+            
+            return $this->completeNode($node);
+        }
+        return null;
+    }
 }

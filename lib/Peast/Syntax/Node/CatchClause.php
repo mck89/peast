@@ -57,8 +57,9 @@ class CatchClause extends Node
      * 
      * @return $this
      */
-    public function setParam(Pattern $param)
+    public function setParam($param)
     {
+        $this->assertType($param, "Pattern", true);
         $this->param = $param;
         return $this;
     }
