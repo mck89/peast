@@ -140,8 +140,13 @@ class Renderer
                          $this->renderOpts->sirb .
                          ")" .
                          $this->renderOpts->sao .
-                         "=>" .
-                         $this->renderStatementBlock($node->getBody(), true);
+                         "=>";
+                $body = $node->getBody();
+                if ($body->getType() !== "BlockStatement") {
+                    $code .= $this->renderOpts->sao . $this->renderNode($body);
+                } else {
+                    $code .= $this->renderStatementBlock($body, true);
+                }
             break;
             case "AwaitExpression":
                 $code .= "await " . $this->renderNode($node->getArgument());
