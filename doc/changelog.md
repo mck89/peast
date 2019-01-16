@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.9.1
+* Fixed rendering of arrow functions that generates invalid code
+
 #### 1.9
 * Added ES2019 parser
 
