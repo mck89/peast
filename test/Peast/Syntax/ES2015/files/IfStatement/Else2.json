@@ -1,0 +1,251 @@
+{
+	"type": "Program",
+	"body": [
+	    {
+	        "type": "IfStatement",
+	        "test": {
+	            "type": "Identifier",
+	            "name": "a",
+	            "range": [
+	                4,
+	                5
+	            ],
+	            "loc": {
+	                "start": {
+	                    "line": 1,
+	                    "column": 4
+	                },
+	                "end": {
+	                    "line": 1,
+	                    "column": 5
+	                }
+	            }
+	        },
+	        "consequent": {
+	            "type": "BlockStatement",
+	            "body": [
+	                {
+	                    "type": "WhileStatement",
+	                    "test": {
+	                        "type": "Identifier",
+	                        "name": "b",
+	                        "range": [
+	                            18,
+	                            19
+	                        ],
+	                        "loc": {
+	                            "start": {
+	                                "line": 2,
+	                                "column": 9
+	                            },
+	                            "end": {
+	                                "line": 2,
+	                                "column": 10
+	                            }
+	                        }
+	                    },
+	                    "body": {
+	                        "type": "IfStatement",
+	                        "test": {
+	                            "type": "Identifier",
+	                            "name": "c",
+	                            "range": [
+	                                29,
+	                                30
+	                            ],
+	                            "loc": {
+	                                "start": {
+	                                    "line": 3,
+	                                    "column": 8
+	                                },
+	                                "end": {
+	                                    "line": 3,
+	                                    "column": 9
+	                                }
+	                            }
+	                        },
+	                        "consequent": {
+	                            "type": "ExpressionStatement",
+	                            "expression": {
+	                                "type": "CallExpression",
+	                                "callee": {
+	                                    "type": "Identifier",
+	                                    "name": "ok",
+	                                    "range": [
+	                                        38,
+	                                        40
+	                                    ],
+	                                    "loc": {
+	                                        "start": {
+	                                            "line": 4,
+	                                            "column": 6
+	                                        },
+	                                        "end": {
+	                                            "line": 4,
+	                                            "column": 8
+	                                        }
+	                                    }
+	                                },
+	                                "arguments": [],
+	                                "range": [
+	                                    38,
+	                                    42
+	                                ],
+	                                "loc": {
+	                                    "start": {
+	                                        "line": 4,
+	                                        "column": 6
+	                                    },
+	                                    "end": {
+	                                        "line": 4,
+	                                        "column": 10
+	                                    }
+	                                }
+	                            },
+	                            "range": [
+	                                38,
+	                                43
+	                            ],
+	                            "loc": {
+	                                "start": {
+	                                    "line": 4,
+	                                    "column": 6
+	                                },
+	                                "end": {
+	                                    "line": 4,
+	                                    "column": 11
+	                                }
+	                            }
+	                        },
+	                        "alternate": null,
+	                        "range": [
+	                            25,
+	                            43
+	                        ],
+	                        "loc": {
+	                            "start": {
+	                                "line": 3,
+	                                "column": 4
+	                            },
+	                            "end": {
+	                                "line": 4,
+	                                "column": 11
+	                            }
+	                        }
+	                    },
+	                    "range": [
+	                        11,
+	                        43
+	                    ],
+	                    "loc": {
+	                        "start": {
+	                            "line": 2,
+	                            "column": 2
+	                        },
+	                        "end": {
+	                            "line": 4,
+	                            "column": 11
+	                        }
+	                    }
+	                }
+	            ],
+	            "range": [
+	                7,
+	                45
+	            ],
+	            "loc": {
+	                "start": {
+	                    "line": 1,
+	                    "column": 7
+	                },
+	                "end": {
+	                    "line": 5,
+	                    "column": 1
+	                }
+	            }
+	        },
+	        "alternate": {
+	            "type": "ExpressionStatement",
+	            "expression": {
+	                "type": "CallExpression",
+	                "callee": {
+	                    "type": "Identifier",
+	                    "name": "fail",
+	                    "range": [
+	                        51,
+	                        55
+	                    ],
+	                    "loc": {
+	                        "start": {
+	                            "line": 6,
+	                            "column": 5
+	                        },
+	                        "end": {
+	                            "line": 6,
+	                            "column": 9
+	                        }
+	                    }
+	                },
+	                "arguments": [],
+	                "range": [
+	                    51,
+	                    57
+	                ],
+	                "loc": {
+	                    "start": {
+	                        "line": 6,
+	                        "column": 5
+	                    },
+	                    "end": {
+	                        "line": 6,
+	                        "column": 11
+	                    }
+	                }
+	            },
+	            "range": [
+	                51,
+	                58
+	            ],
+	            "loc": {
+	                "start": {
+	                    "line": 6,
+	                    "column": 5
+	                },
+	                "end": {
+	                    "line": 6,
+	                    "column": 12
+	                }
+	            }
+	        },
+	        "range": [
+	            0,
+	            58
+	        ],
+	        "loc": {
+	            "start": {
+	                "line": 1,
+	                "column": 0
+	            },
+	            "end": {
+	                "line": 6,
+	                "column": 12
+	            }
+	        }
+	    }
+	],
+	"sourceType": "script",
+	"range": [
+	    0,
+	    58
+	],
+	"loc": {
+	    "start": {
+	        "line": 1,
+	        "column": 0
+	    },
+	    "end": {
+	        "line": 6,
+	        "column": 12
+	    }
+	}
+}
