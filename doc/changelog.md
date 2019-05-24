@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.9.2
+* Fixed rendering of nested "if" statements with Compact formatter
+
 #### 1.9.1
 * Fixed rendering of arrow functions that generates invalid code
 
