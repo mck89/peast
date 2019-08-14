@@ -57,7 +57,7 @@ if ( fn( param ) )
 Custom Formatter
 -------------
 Peast allows you to create your own formatter.
-You can do it by creating a class that extends `Peast\Formatter\Base` class and overwriting its proteceted properties:
+You can do it by creating a class that extends `Peast\Formatter\Base` class and overwriting its protected properties:
 
 ```php
 class MyFormatter extends Peast\Formatter\Base {
