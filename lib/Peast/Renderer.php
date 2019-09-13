@@ -382,45 +382,25 @@ class Renderer
                 $consequent = $node->getConsequent();
                 $alternate = $node->getAlternate();
                 
-                //If curly braces can be omitted and the "else" part is present,
-                //child nodes must be checked in order to avoid the pattern
-                //where the "else" code is rendered as part of an inner
-                //IfStatement. In this case curly braces insertion will be
-                //mandatory to prevent the bug.
-                $forceBrackets = null;
+                $forceBracketsConsequent = $forceBracketsAlternate = null;
                 if (!$this->renderOpts->awb && $alternate) {
-                    $optBracketNodes = array(
-                        "DoWhileStatement", "ForInStatement", "ForOfStatement",
-                        "ForStatement", "WhileStatement", "WithStatement"
+                    $forceBracketsConsequent = $this->checkIfPartsBracketsRequirement(
+                        $consequent
                     );
-                    //Check if the consequent part contains an IfStatement,
-                    //without the "else" part, that is not inside a block
-                    $consequent->traverse(
-                        function ($n) use ($optBracketNodes, &$forceBrackets) {
-                            $type = $n->getType();
-                            if ($type === "IfStatement") {
-                                if (!$n->getAlternate()) {
-                                    $forceBrackets = true;
-                                }
-                                return Traverser::DONT_TRAVERSE_CHILD_NODES;
-                            } elseif ($type === "BlockStatement") {
-                                if (count($n->getBody()) !== 1) {
-                                    return Traverser::DONT_TRAVERSE_CHILD_NODES;
-                                }
-                            } elseif (!in_array($type, $optBracketNodes)) {
-                                return Traverser::DONT_TRAVERSE_CHILD_NODES;
-                            }
-                        }
+                    $forceBracketsAlternate = $this->checkIfPartsBracketsRequirement(
+                        $alternate
                     );
                 }
                 
-                $code .= $this->renderStatementBlock($consequent, $forceBrackets);
+                $code .= $this->renderStatementBlock(
+                    $consequent, $forceBracketsConsequent
+                );
                 if ($alternate) {
                     $code .= $this->renderOpts->sao .
                              "else" .
                              $this->renderStatementBlock(
                                  $alternate,
-                                 null,
+                                 $forceBracketsAlternate,
                                  true
                              );
                 }
@@ -942,6 +922,44 @@ class Renderer
             $parts[] = $code;
         }
         return implode($separator, $parts);
+    }
+    
+    /**
+     * Checks if consequent and alternate nodes of an IfStatement require the
+     * mandatory insertion of brackets around them to avoid the pattern where
+     * the "else" code is rendered as part of an inner IfStatement.
+     * 
+     * @param Syntax\Node\Node  $node   Node
+     * 
+     * @return null|bool
+     */
+    protected function checkIfPartsBracketsRequirement($node)
+    {
+        $forceBrackets = null;
+        if ($node->getType() === "BlockStatement" && count($node->getBody()) > 1) {
+            return $forceBrackets;
+        }
+        $optBracketNodes = array(
+            "DoWhileStatement", "ForInStatement", "ForOfStatement",
+            "ForStatement", "WhileStatement", "WithStatement"
+        );
+        $checkFn = function ($n) use ($optBracketNodes, &$forceBrackets) {
+            $type = $n->getType();
+            if ($type === "IfStatement") {
+                if (!$n->getAlternate()) {
+                    $forceBrackets = true;
+                }
+                return Traverser::DONT_TRAVERSE_CHILD_NODES;
+            } elseif ($type === "BlockStatement") {
+                if (count($n->getBody()) !== 1) {
+                    return Traverser::DONT_TRAVERSE_CHILD_NODES;
+                }
+            } elseif (!in_array($type, $optBracketNodes)) {
+                return Traverser::DONT_TRAVERSE_CHILD_NODES;
+            }
+        };
+        $node->traverse($checkFn);
+        return $forceBrackets;
     }
     
     /**

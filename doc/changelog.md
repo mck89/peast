@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.9.3
+* Fixed another bug when rendering nested "if" statements with Compact formatter
+
 #### 1.9.2
 * Fixed rendering of nested "if" statements with Compact formatter
 
