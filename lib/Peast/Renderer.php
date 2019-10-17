@@ -605,7 +605,9 @@ class Renderer
                 $key = $node->getKey();
                 $compiledKey = $this->renderNode($key);
                 $compiledValue = $this->renderNode($value);
-                if ($value->getType() === "AssignmentPattern" &&
+                $keyType = $key->getType();
+                $valueType = $value->getType();
+                if ($valueType === "AssignmentPattern" &&
                     $compiledKey === $this->renderNode($value->getLeft())) {
                     $code .= $compiledValue;
                 } else {
@@ -627,7 +629,10 @@ class Renderer
                     if ($node->getMethod() || $getterSetter) {
                         $code .= $this->renderOpts->sao .
                                  preg_replace("/^[^\(]+/", "", $compiledValue);
-                    } elseif ($compiledKey !== $compiledValue) {
+                    } elseif ($keyType !== "Identifier" ||
+                              $valueType !== "Identifier" ||
+                              $compiledKey !== $compiledValue
+                    ) {
                         $code .= ($node->getShorthand() ? "=" : ":") .
                                  $this->renderOpts->sao .
                                  $compiledValue;

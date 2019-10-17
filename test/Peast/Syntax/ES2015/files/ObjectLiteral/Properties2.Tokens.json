@@ -1,0 +1,38 @@
+[
+    {
+        "type": "Identifier",
+        "value": "a"
+    },
+    {
+        "type": "Punctuator",
+        "value": "="
+    },
+    {
+        "type": "Punctuator",
+        "value": "{"
+    },
+    {
+        "type": "String",
+        "value": "\"b\""
+    },
+    {
+        "type": "Punctuator",
+        "value": ":"
+    },
+    {
+        "type": "String",
+        "value": "\"b\""
+    },
+    {
+        "type": "Punctuator",
+        "value": ","
+    },
+    {
+        "type": "Identifier",
+        "value": "c"
+    },
+    {
+        "type": "Punctuator",
+        "value": "}"
+    }
+]
