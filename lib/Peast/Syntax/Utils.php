@@ -19,15 +19,31 @@ class Utils
     /**
      * Converts a string to an array of UTF-8 characters
      * 
-     * @param string $str String to convert
+     * @param string $str            String to convert
+     * @param bool   $strictEncoding If false and the string contains invalid
+     *                               UTF-8 characters, it will replace those
+     *                               characters with the one defined in the
+     *                               mbstring.substitute_character setting
      * 
      * @return array
+     * 
+     * @throws EncodingException
      */
-    static public function stringToUTF8Array($str)
+    static public function stringToUTF8Array($str, $strictEncoding = true)
     {
-        return $str === "" ?
-               array() :
-               preg_split('//u', $str, null, PREG_SPLIT_NO_EMPTY);
+        if ($str === "") {
+            return array();
+        }
+        $ret = preg_split('//u', $str, null, PREG_SPLIT_NO_EMPTY);
+        if (preg_last_error() === PREG_BAD_UTF8_ERROR) {
+            if (!$strictEncoding) {
+                $str = mb_convert_encoding($str, 'UTF-8', 'UTF-8');
+                $ret = self::stringToUTF8Array($str, false);
+            } else {
+                throw new EncodingException("String contains invalid UTF-8");
+            }
+        }
+        return $ret;
     }
     
     /**

@@ -34,6 +34,9 @@
         <testsuite name="Comments">
             <file>test/Peast/Syntax/CommentsRegistryTest.php</file>
         </testsuite>
+        <testsuite name="Scanner">
+            <file>test/Peast/Syntax/ScannerTest.php</file>
+        </testsuite>
     </testsuites>
     <filter>
         <whitelist>

@@ -70,12 +70,13 @@ Options
 -------------
 
 In the examples above you may have noticed the `$options` parameter. This parameter is an associative array that specifies parsing settings for the parser. Available options are:
-* "sourceEncoding": to specify the encoding of the code to parse, if not spcified the parser will assume UTF-8.
 * "sourceType": this can be one of the source type constants defined in the Peast class:
     * `Peast\Peast::SOURCE_TYPE_SCRIPT`: this is the default source type and indicates that the code is a script, this means that `import` and `export` keywords are not parsed
     * `Peast\Peast::SOURCE_TYPE_MODULE`: this indicates that the code is a module and it activates the parsing of `import` and `export` keywords
 * "comments" (from version 1.5): enables comments parsing and attaches the comments to the nodes in the tree. You can get comments attached to nodes using `getLeadingComments` and `getTrailingComments` methods.
 * "jsx" (from version 1.8): enables parsing of JSX syntax.
+* "sourceEncoding": to specify the encoding of the code to parse, if not spcified the parser will assume UTF-8.
+* "strictEncoding": if false the parser will handle invalid UTF8 characters in the source code by replacing them with the character defined in the "mbstring.substitute_character" ini setting, otherwise it will throw an exception. (available from version 1.9.4)
 
 Differences from Esprima and ESTree
 -------------

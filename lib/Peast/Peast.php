@@ -21,6 +21,10 @@ namespace Peast;
  *        mode.
  *      - "sourceEncoding": the encoding of the source. If not specified the
  *        parser will assume UTF-8.
+ *      - "strictEncoding": if false the parser will handle invalid UTF8
+ *        characters in the source code by replacing them with the character
+ *        defined in the "mbstring.substitute_character" ini setting, otherwise
+ *        it will throw an exception.
  *      - "comments": if true it enables comments parsing.
  *      - "jsx": if true it enables parsing of JSX syntax.
  * 

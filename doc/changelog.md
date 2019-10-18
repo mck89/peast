@@ -1,6 +1,10 @@
 Changelog
 ==========
 
+#### 1.9.4
+* Handled invalid UTF-8 characters in the source code by throwing an exception or replacing them with a substitution character by setting the new strictEncoding option to false
+* Fixed bug when rendering object properties with equal key and value
+
 #### 1.9.3
 * Fixed another bug when rendering nested "if" statements with Compact formatter
 

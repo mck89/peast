@@ -68,10 +68,6 @@ abstract class Parser
      */
     public function __construct($source, $options = array())
     {
-        $encoding = isset($options["sourceEncoding"]) ?
-                    $options["sourceEncoding"] :
-                    null;
-        
         $this->sourceType = isset($options["sourceType"]) ?
                             $options["sourceType"] :
                             \Peast\Peast::SOURCE_TYPE_SCRIPT;
@@ -81,7 +77,7 @@ abstract class Parser
         array_pop($classParts);
         $classParts[] = "Scanner";
         $scannerClasss = implode("\\", $classParts);
-        $this->scanner = new $scannerClasss($source, $encoding);
+        $this->scanner = new $scannerClasss($source, $options);
         
         //Enable module scanning if required
         if ($this->sourceType === \Peast\Peast::SOURCE_TYPE_MODULE) {

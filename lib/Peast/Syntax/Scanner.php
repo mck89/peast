@@ -278,11 +278,14 @@ abstract class Scanner
      * Class constructor
      * 
      * @param string $source   Source code
-     * @param string $encoding Source code encoding, if not specified it
-     *                         will assume UTF-8
+     * @param array  $options Parsing options
      */
-    function __construct($source, $encoding = null)
+    function __construct($source, $options)
     {
+        $encoding = isset($options["sourceEncoding"]) ?
+                    $options["sourceEncoding"] :
+                    null;
+        
         //Convert to UTF8 if needed
         if ($encoding && !preg_match("/UTF-?8/i", $encoding)) {
             $source = mb_convert_encoding($source, "UTF-8", $encoding);
@@ -290,7 +293,10 @@ abstract class Scanner
         
         //Instead of using mb_substr for each character, split the source
         //into an array of UTF8 characters for performance reasons
-        $this->source = Utils::stringToUTF8Array($source);
+        $this->source = Utils::stringToUTF8Array(
+            $source,
+            !isset($options["strictEncoding"]) || $options["strictEncoding"]
+        );
         $this->length = count($this->source);
         
         //Convert character codes to UTF8 characters in whitespaces and line
