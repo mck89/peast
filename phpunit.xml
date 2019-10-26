@@ -22,6 +22,9 @@
         <testsuite name="ES2019">
             <directory>test/Peast/Syntax/ES2019</directory>
         </testsuite>
+        <testsuite name="ES2020">
+            <directory>test/Peast/Syntax/ES2020</directory>
+        </testsuite>
         <testsuite name="Traverser">
             <file>test/Peast/TraverserTest.php</file>
         </testsuite>
