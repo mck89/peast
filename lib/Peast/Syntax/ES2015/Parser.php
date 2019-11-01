@@ -41,6 +41,27 @@ class Parser extends \Peast\Syntax\Parser
      * @var bool
      */
     protected $featureForInInitializer = false;
+
+    /**
+     * Async iteration and generators feature activation
+     *
+     * @var bool
+     */
+    protected $featureAsyncIterationGenerators = false;
+
+    /**
+     * Rest/spread properties feature activation
+     *
+     * @var bool
+     */
+    protected $featureRestSpreadProperties = false;
+
+    /**
+     * Skip escape sequences checks in tagged template feature activation
+     *
+     * @var bool
+     */
+    protected $featureSkipEscapeSeqCheckInTaggedTemplates = false;
     
     //Identifier parsing mode constants
     /**
@@ -1298,19 +1319,36 @@ class Parser extends \Peast\Syntax\Parser
             return $node;
         } elseif ($node = $this->parseDoWhileStatement()) {
             return $node;
-        } elseif ($forToken = $this->scanner->consume("for")) {
-            
-            if ($this->scanner->consume("(") && (
-                ($node = $this->parseForVarStatement($forToken)) ||
-                ($node = $this->parseForLetConstStatement($forToken)) ||
-                ($node = $this->parseForNotVarLetConstStatement($forToken)))
+        } elseif ($startForToken = $this->scanner->consume("for")) {
+
+            $forAwait = false;
+            if ($this->featureAsyncIterationGenerators &&
+                $this->context->allowAwait &&
+                $this->scanner->consume("await")
             ) {
+                $forAwait = true;
+            }
+
+            if ($this->scanner->consume("(") && (
+                ($node = $this->parseForVarStatement($startForToken)) ||
+                ($node = $this->parseForLetConstStatement($startForToken)) ||
+                ($node = $this->parseForNotVarLetConstStatement($startForToken)))
+            ) {
+                if ($forAwait) {
+                    if (!$node instanceof Node\ForOfStatement) {
+                        $this->error(
+                            "Async iteration is allowed only with for-of statements",
+                            $startForToken->getLocation()->getStart()
+                        );
+                    }
+                    $node->setAwait(true);
+                }
                 return $node;
             }
-            
+
             return $this->error();
         }
-        
+
         return null;
     }
 
@@ -1352,17 +1390,23 @@ class Parser extends \Peast\Syntax\Parser
         if ($this->featureAsyncAwait &&
             ($async = $this->checkAsyncFunctionStart())) {
             $this->scanner->consumeToken();
-            $allowGenerator = false;
+            if (!$this->featureAsyncIterationGenerators) {
+                $allowGenerator = false;
+            }
         }
         if ($token = $this->scanner->consume("function")) {
 
             $generator = $allowGenerator && $this->scanner->consume("*");
             $id = $this->parseIdentifier(static::$bindingIdentifier);
 
-            if ($generator) {
-                $flags = array(null, "allowYield" => true);
-            } elseif ($async) {
-                $flags = array(null, "allowAwait" => true);
+            if ($generator || $async) {
+                $flags = array(null);
+                if ($generator) {
+                    $flags["allowYield"] = true;
+                }
+                if ($async) {
+                    $flags["allowAwait"] = true;
+                }
             } else {
                 $flags = null;
             }
@@ -1417,16 +1461,22 @@ class Parser extends \Peast\Syntax\Parser
         if ($this->featureAsyncAwait &&
             ($async = $this->checkAsyncFunctionStart())) {
             $this->scanner->consumeToken();
-            $allowGenerator = false;
+            if (!$this->featureAsyncIterationGenerators) {
+                $allowGenerator = false;
+            }
         }
         if ($token = $this->scanner->consume("function")) {
 
             $generator = $allowGenerator && $this->scanner->consume("*");
 
-            if ($generator) {
-                $flags = array(null, "allowYield" => true);
-            } elseif ($async) {
-                $flags = array(null, "allowAwait" => true);
+            if ($generator || $async) {
+                $flags = array(null);
+                if ($generator) {
+                    $flags["allowYield"] = true;
+                }
+                if ($async) {
+                    $flags["allowAwait"] = true;
+                }
             } else {
                 $flags = null;
             }
@@ -2383,6 +2433,10 @@ class Parser extends \Peast\Syntax\Parser
             $position = $token;
             $error = true;
             $async = true;
+            if ($this->featureAsyncIterationGenerators &&
+                ($token = $this->scanner->consume("*"))) {
+                $generator = true;
+            }
         }
 
         //Handle the case where get and set are methods name and not the
@@ -2402,10 +2456,14 @@ class Parser extends \Peast\Syntax\Parser
             }
             if ($tokenFn = $this->scanner->consume("(")) {
 
-                if ($generator) {
-                    $flags = array(null, "allowYield" => true);
-                } elseif ($async) {
-                    $flags = array(null, "allowAwait" => true);
+                if ($generator || $async) {
+                    $flags = array(null);
+                    if ($generator) {
+                        $flags["allowYield"] = true;
+                    }
+                    if ($async) {
+                        $flags["allowAwait"] = true;
+                    }
                 } else {
                     $flags = null;
                 }
@@ -2613,6 +2671,11 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parsePropertyDefinition()
     {
+        if ($this->featureRestSpreadProperties &&
+            ($prop = $this->parseSpreadElement())) {
+            return $prop;
+        }
+
         $state = $this->scanner->getState();
         if (($property = $this->parsePropertyName()) &&
             $this->scanner->consume(":")
@@ -2693,7 +2756,7 @@ class Parser extends \Peast\Syntax\Parser
     {
         $state = $this->scanner->getState();
         if ($token = $this->scanner->consume("{")) {
-            
+
             $properties = array();
             while ($prop = $this->parseBindingProperty()) {
                 $properties[] = $prop;
@@ -2701,7 +2764,12 @@ class Parser extends \Peast\Syntax\Parser
                     break;
                 }
             }
-            
+
+            if ($this->featureRestSpreadProperties &&
+                ($rest = $this->parseRestProperty())) {
+                $properties[] = $rest;
+            }
+
             if ($this->scanner->consume("}")) {
                 $node = $this->createNode("ObjectPattern", $token);
                 if ($properties) {
@@ -2709,8 +2777,28 @@ class Parser extends \Peast\Syntax\Parser
                 }
                 return $this->completeNode($node);
             }
-            
+
             $this->scanner->setState($state);
+        }
+        return null;
+    }
+
+    /**
+     * Parses a rest property
+     *
+     * @return Node\RestElement|null
+     */
+    protected function parseRestProperty()
+    {
+        if ($token = $this->scanner->consume("...")) {
+
+            if ($argument = $this->parseIdentifier(static::$bindingIdentifier)) {
+                $node = $this->createNode("RestElement", $token);
+                $node->setArgument($argument);
+                return $this->completeNode($node);
+            }
+
+            return $this->error();
         }
         return null;
     }
@@ -3568,7 +3656,7 @@ class Parser extends \Peast\Syntax\Parser
     }
     
     /**
-     * Checks if the given string or number contains invalid esape sequences
+     * Checks if the given string or number contains invalid ecsape sequences
      * 
      * @param string  $val                      Value to check
      * @param bool    $number                   True if the value is a number
@@ -3583,6 +3671,9 @@ class Parser extends \Peast\Syntax\Parser
         $val, $number = false, $forceLegacyOctalCheck = false,
         $taggedTemplate = false
     ) {
+        if ($this->featureSkipEscapeSeqCheckInTaggedTemplates && $taggedTemplate) {
+            return;
+        }
         $checkLegacyOctal = $forceLegacyOctalCheck || $this->scanner->getStrictMode();
         if ($number) {
             if ($checkLegacyOctal && preg_match("#^0[0-7]+$#", $val)) {
@@ -3592,7 +3683,7 @@ class Parser extends \Peast\Syntax\Parser
             }
         } elseif (strpos($val, "\\") !== false) {
             $hex = "0-9a-fA-F";
-            $invalidSyntaxes = array(
+            $invalidSyntax = array(
                 "x[$hex]?[^$hex]",
                 "x[$hex]?$",
                 "u\{\}",
@@ -3602,10 +3693,10 @@ class Parser extends \Peast\Syntax\Parser
                 "u[$hex]{0,3}$"
             );
             if ($checkLegacyOctal) {
-                $invalidSyntaxes[] = "[0-7]{2}";
-                $invalidSyntaxes[] = "[1-7]";
+                $invalidSyntax[] = "[0-7]{2}";
+                $invalidSyntax[] = "[1-7]";
             }
-            $reg = "#(\\\\+)(" . implode("|", $invalidSyntaxes) . ")#";
+            $reg = "#(\\\\+)(" . implode("|", $invalidSyntax) . ")#";
             if (preg_match_all($reg, $val, $matches, PREG_SET_ORDER)) {
                 foreach ($matches as $match) {
                     if (strlen($match[1]) % 2) {
