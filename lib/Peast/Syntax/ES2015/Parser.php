@@ -62,6 +62,13 @@ class Parser extends \Peast\Syntax\Parser
      * @var bool
      */
     protected $featureSkipEscapeSeqCheckInTaggedTemplates = false;
+
+    /**
+     * Optional catch binding feature activation
+     *
+     * @var bool
+     */
+    protected $featureOptionalCatchBinding = false;
     
     //Identifier parsing mode constants
     /**
@@ -588,20 +595,26 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseCatch()
     {
         if ($token = $this->scanner->consume("catch")) {
-            
-            if ($this->scanner->consume("(") &&
-                ($param = $this->parseCatchParameter()) &&
-                $this->scanner->consume(")") &&
-                $body = $this->parseBlock()
-            ) {
 
-                $node = $this->createNode("CatchClause", $token);
+            $node = $this->createNode("CatchClause", $token);
+
+            if ($this->scanner->consume("(")) {
+                if (!($param = $this->parseCatchParameter()) ||
+                    !$this->scanner->consume(")")) {
+                    return $this->error();
+                }
                 $node->setParam($param);
-                $node->setBody($body);
-                return $this->completeNode($node);
+            } elseif (!$this->featureOptionalCatchBinding) {
+                return $this->error();
             }
-            
-            return $this->error();
+
+            if (!($body = $this->parseBlock())) {
+                return $this->error();
+            }
+
+            $node->setBody($body);
+
+            return $this->completeNode($node);
         }
         return null;
     }

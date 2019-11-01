@@ -22,12 +22,11 @@ class Scanner extends \Peast\Syntax\ES2018\Scanner
      * Class constructor
      * 
      * @param string $source   Source code
-     * @param string $encoding Source code encoding, if not specified it
-     *                         will assume UTF-8
+     * @param array  $options  Parsing options
      */
-    function __construct($source, $encoding = null)
+    function __construct($source, $options)
     {
-        parent::__construct($source, $encoding);
+        parent::__construct($source, $options);
         
         //Allow paragraph and line separators in strings
         $this->stringsStopsLSM->remove(Utils::unicodeToUtf8(0x2028));
