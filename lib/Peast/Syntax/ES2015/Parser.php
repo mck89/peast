@@ -20,6 +20,27 @@ use \Peast\Syntax\Node;
 class Parser extends \Peast\Syntax\Parser
 {
     use \Peast\Syntax\JSX\Parser;
+
+    /**
+     * Async/await feature activation
+     *
+     * @var bool
+     */
+    protected $featureAsyncAwait = false;
+
+    /**
+     * Trailing comma in function calls and declarations feature activation
+     *
+     * @var bool
+     */
+    protected $featureTrailingCommaFunctionCallDeclaration = false;
+
+    /**
+     * For-in initializer feature activation
+     *
+     * @var bool
+     */
+    protected $featureForInInitializer = false;
     
     //Identifier parsing mode constants
     /**
@@ -101,22 +122,6 @@ class Parser extends \Peast\Syntax\Parser
         ">>>" => 7, "<<" => 7, ">>" => 7,
         "+" => 8, "-" => 8,
         "*" => 9, "/" => 9, "%" => 9
-    );
-    
-    /**
-     * Configurable lookaheads
-     * 
-     * @var array 
-     */
-    protected $lookahead = array(
-        "export" => array(
-            "tokens" => array("function", "class"),
-            "next"=> false
-        ),    
-        "expression" => array(
-            "tokens" => array("{", "function", "class", array("let", "[")),
-            "next"=> true
-        )
     );
     
     /**
@@ -921,10 +926,14 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseExpressionStatement()
     {
-        if (!$this->scanner->isBefore(
-                $this->lookahead["expression"]["tokens"],
-                $this->lookahead["expression"]["next"]
-            ) &&
+        $lookaheadTokens = array("{", "function", "class", array("let", "["));
+        if ($this->featureAsyncAwait) {
+            array_splice(
+                $lookaheadTokens, 3, 0,
+                array(array("async", true))
+            );
+        }
+        if (!$this->scanner->isBefore($lookaheadTokens, true) &&
             $expression = $this->isolateContext(
                 array("allowIn" => true), "parseExpression"
             )
@@ -1007,37 +1016,37 @@ class Parser extends \Peast\Syntax\Parser
         if (!($varToken = $this->scanner->consume("var"))) {
             return null;
         }
-            
+
         $state = $this->scanner->getState();
-        
+
         if (($decl = $this->isolateContext(
                 array("allowIn" => false), "parseVariableDeclarationList"
             )) &&
             ($varEndPosition = $this->scanner->getPosition()) &&
             $this->scanner->consume(";")
         ) {
-                    
+
             $init = $this->createNode(
                 "VariableDeclaration", $varToken
             );
             $init->setKind($init::KIND_VAR);
             $init->setDeclarations($decl);
             $init = $this->completeNode($init, $varEndPosition);
-            
+
             $test = $this->isolateContext(
                 array("allowIn" => true), "parseExpression"
             );
-            
+
             if ($this->scanner->consume(";")) {
-                
+
                 $update = $this->isolateContext(
                     array("allowIn" => true), "parseExpression"
                 );
-                
+
                 if ($this->scanner->consume(")") &&
                     $body = $this->parseStatement()
                 ) {
-                    
+
                     $node = $this->createNode("ForStatement", $forToken);
                     $node->setInit($init);
                     $node->setTest($test);
@@ -1047,27 +1056,43 @@ class Parser extends \Peast\Syntax\Parser
                 }
             }
         } else {
-            
+
             $this->scanner->setState($state);
-            
+
             if ($decl = $this->parseForBinding()) {
-                
-                $left = $this->createNode(
-                    "VariableDeclaration", $varToken
-                );
+
+                $init = null;
+                if ($this->featureForInInitializer &&
+                    $decl->getId()->getType() === "Identifier") {
+                    $init = $this->parseInitializer();
+                }
+
+                if ($init) {
+                    $decl->setInit($init);
+                    $decl->setEndPosition($init->getLocation()->getEnd());
+                }
+
+                $left = $this->createNode("VariableDeclaration", $varToken);
                 $left->setKind($left::KIND_VAR);
                 $left->setDeclarations(array($decl));
                 $left = $this->completeNode($left);
-                
+
                 if ($this->scanner->consume("in")) {
-                    
+
+                    if ($init && $this->scanner->getStrictMode()) {
+                        return $this->error(
+                            "For-in variable initializer not allowed in " .
+                            "strict mode"
+                        );
+                    }
+
                     if (($right = $this->isolateContext(
                             array("allowIn" => true), "parseExpression"
                         )) &&
                         $this->scanner->consume(")") &&
                         $body = $this->parseStatement()
                     ) {
-                        
+
                         $node = $this->createNode(
                             "ForInStatement", $forToken
                         );
@@ -1076,15 +1101,15 @@ class Parser extends \Peast\Syntax\Parser
                         $node->setBody($body);
                         return $this->completeNode($node);
                     }
-                } elseif ($this->scanner->consume("of")) {
-                    
+                } elseif (!$init && $this->scanner->consume("of")) {
+
                     if (($right = $this->isolateContext(
                             array("allowIn" => true), "parseAssignmentExpression"
                         )) &&
                         $this->scanner->consume(")") &&
                         $body = $this->parseStatement()
                     ) {
-                        
+
                         $node = $this->createNode(
                             "ForOfStatement", $forToken
                         );
@@ -1096,7 +1121,7 @@ class Parser extends \Peast\Syntax\Parser
                 }
             }
         }
-        
+
         return $this->error();
     }
     
@@ -1288,6 +1313,29 @@ class Parser extends \Peast\Syntax\Parser
         
         return null;
     }
+
+    /**
+     * Checks if an async function can start from the current position. Returns
+     * the async token or null if not found
+     *
+     * @param bool $checkFn If false it won't check if the async keyword is
+     *                      followed by "function"
+     *
+     * @return Token
+     */
+    protected function checkAsyncFunctionStart($checkFn = true)
+    {
+        return ($asyncToken = $this->scanner->getToken()) &&
+        $asyncToken->getValue() === "async" &&
+        (
+            !$checkFn ||
+            (($nextToken = $this->scanner->getNextToken()) &&
+                $nextToken->getValue() === "function")
+        ) &&
+        $this->scanner->noLineTerminators(true) ?
+            $asyncToken :
+            null;
+    }
     
     /**
      * Parses function or generator declaration
@@ -1300,40 +1348,58 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseFunctionOrGeneratorDeclaration(
         $default = false, $allowGenerator = true
     ) {
+        $async = null;
+        if ($this->featureAsyncAwait &&
+            ($async = $this->checkAsyncFunctionStart())) {
+            $this->scanner->consumeToken();
+            $allowGenerator = false;
+        }
         if ($token = $this->scanner->consume("function")) {
-            
+
             $generator = $allowGenerator && $this->scanner->consume("*");
             $id = $this->parseIdentifier(static::$bindingIdentifier);
-            
+
+            if ($generator) {
+                $flags = array(null, "allowYield" => true);
+            } elseif ($async) {
+                $flags = array(null, "allowAwait" => true);
+            } else {
+                $flags = null;
+            }
+
             if (($default || $id) &&
                 $this->scanner->consume("(") &&
                 ($params = $this->isolateContext(
-                    $generator ? array("allowYield" => true) : null,
+                    $flags,
                     "parseFormalParameterList"
                 )) !== null &&
                 $this->scanner->consume(")") &&
                 ($tokenBodyStart = $this->scanner->consume("{")) &&
                 (($body = $this->isolateContext(
-                    $generator ? array("allowYield" => true) : null,
-                    "parseFunctionBody"
-                )) || true) &&
+                        $flags,
+                        "parseFunctionBody"
+                    )) || true) &&
                 $this->scanner->consume("}")
             ) {
-                
+
                 $body->setStartPosition(
                     $tokenBodyStart->getLocation()->getStart()
                 );
                 $body->setEndPosition($this->scanner->getPosition());
-                $node = $this->createNode("FunctionDeclaration", $token);
+                $node = $this->createNode(
+                    "FunctionDeclaration",
+                    $async ? $async : $token
+                );
                 if ($id) {
                     $node->setId($id);
                 }
                 $node->setParams($params);
                 $node->setBody($body);
                 $node->setGenerator($generator);
+                $node->setAsync((bool) $async);
                 return $this->completeNode($node);
             }
-            
+
             return $this->error();
         }
         return null;
@@ -1346,22 +1412,31 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseFunctionOrGeneratorExpression()
     {
+        $allowGenerator = true;
+        $async = false;
+        if ($this->featureAsyncAwait &&
+            ($async = $this->checkAsyncFunctionStart())) {
+            $this->scanner->consumeToken();
+            $allowGenerator = false;
+        }
         if ($token = $this->scanner->consume("function")) {
-            
-            $generator = (bool) $this->scanner->consume("*");
-            
+
+            $generator = $allowGenerator && $this->scanner->consume("*");
+
             if ($generator) {
                 $flags = array(null, "allowYield" => true);
+            } elseif ($async) {
+                $flags = array(null, "allowAwait" => true);
             } else {
                 $flags = null;
             }
-            
+
             $id = $this->isolateContext(
                 $flags,
                 "parseIdentifier",
                 array(static::$bindingIdentifier)
             );
-            
+
             if ($this->scanner->consume("(") &&
                 ($params = $this->isolateContext(
                     $flags,
@@ -1370,24 +1445,28 @@ class Parser extends \Peast\Syntax\Parser
                 $this->scanner->consume(")") &&
                 ($tokenBodyStart = $this->scanner->consume("{")) &&
                 (($body = $this->isolateContext(
-                    $flags,
-                    "parseFunctionBody"
-                )) || true) &&
+                        $flags,
+                        "parseFunctionBody"
+                    )) || true) &&
                 $this->scanner->consume("}")
             ) {
-                
+
                 $body->setStartPosition(
                     $tokenBodyStart->getLocation()->getStart()
                 );
                 $body->setEndPosition($this->scanner->getPosition());
-                $node = $this->createNode("FunctionExpression", $token);
+                $node = $this->createNode(
+                    "FunctionExpression",
+                    $async ? $async : $token
+                );
                 $node->setId($id);
                 $node->setParams($params);
                 $node->setBody($body);
                 $node->setGenerator($generator);
+                $node->setAsync((bool) $async);
                 return $this->completeNode($node);
             }
-            
+
             return $this->error();
         }
         return null;
@@ -1427,23 +1506,24 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseFormalParameterList()
     {
-        $valid = true;
+        $hasComma = false;
         $list = array();
         while (
             ($param = $this->parseBindingRestElement()) ||
             $param = $this->parseBindingElement()
         ) {
-            $valid = true;
+            $hasComma = false;
             $list[] = $param;
             if ($param->getType() === "RestElement") {
                 break;
             } elseif ($this->scanner->consume(",")) {
-                $valid = false;
+                $hasComma = true;
             } else {
                 break;
             }
         }
-        if (!$valid) {
+        if ($hasComma &&
+            !$this->featureTrailingCommaFunctionCallDeclaration) {
             return $this->error();
         }
         return $list;
@@ -1832,7 +1912,10 @@ class Parser extends \Peast\Syntax\Parser
                 }
                 
             } elseif ($this->scanner->consume("default")) {
-                
+                $lookaheadTokens = array("function", "class");
+                if ($this->featureAsyncAwait) {
+                    $lookaheadTokens[] = array("async", true);
+                }
                 if (($declaration = $this->isolateContext(
                         null,
                         "parseFunctionOrGeneratorDeclaration",
@@ -1850,8 +1933,8 @@ class Parser extends \Peast\Syntax\Parser
                     return $this->completeNode($node);
                     
                 } elseif (!$this->scanner->isBefore(
-                        $this->lookahead["export"]["tokens"],
-                        $this->lookahead["export"]["next"]
+                        $lookaheadTokens,
+                        $this->featureAsyncAwait
                     ) &&
                     ($declaration = $this->isolateContext(
                         array(null, "allowIn" => true),
@@ -2279,7 +2362,7 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseMethodDefinition()
     {
         $state = $this->scanner->getState();
-        $generator = $error = false;
+        $generator = $error = $async = false;
         $position = null;
         $kind = Node\MethodDefinition::KIND_METHOD;
         if ($token = $this->scanner->consume("get")) {
@@ -2294,8 +2377,14 @@ class Parser extends \Peast\Syntax\Parser
             $position = $token;
             $error = true;
             $generator = true;
+        } elseif ($this->featureAsyncAwait &&
+                 ($token = $this->checkAsyncFunctionStart(false))) {
+            $this->scanner->consumeToken();
+            $position = $token;
+            $error = true;
+            $async = true;
         }
-        
+
         //Handle the case where get and set are methods name and not the
         //definition of a getter/setter
         if ($kind !== Node\MethodDefinition::KIND_METHOD &&
@@ -2305,20 +2394,22 @@ class Parser extends \Peast\Syntax\Parser
             $kind = Node\MethodDefinition::KIND_METHOD;
             $error = false;
         }
-        
+
         if ($prop = $this->parsePropertyName()) {
-            
+
             if (!$position) {
                 $position = isset($prop[2]) ? $prop[2] : $prop[0];
             }
             if ($tokenFn = $this->scanner->consume("(")) {
-                
+
                 if ($generator) {
                     $flags = array(null, "allowYield" => true);
+                } elseif ($async) {
+                    $flags = array(null, "allowAwait" => true);
                 } else {
                     $flags = null;
                 }
-                
+
                 $error = true;
                 $params = array();
                 if ($kind === Node\MethodDefinition::KIND_SET) {
@@ -2353,11 +2444,12 @@ class Parser extends \Peast\Syntax\Parser
                         $tokenBodyStart->getLocation()->getStart()
                     );
                     $body->setEndPosition($this->scanner->getPosition());
-                    
+
                     $nodeFn = $this->createNode("FunctionExpression", $tokenFn);
                     $nodeFn->setParams($params);
                     $nodeFn->setBody($body);
                     $nodeFn->setGenerator($generator);
+                    $nodeFn->setAsync($async);
 
                     $node = $this->createNode("MethodDefinition", $position);
                     $node->setKey($prop[0]);
@@ -2368,7 +2460,7 @@ class Parser extends \Peast\Syntax\Parser
                 }
             }
         }
-        
+
         if ($error) {
             return $this->error();
         } else {
@@ -2399,20 +2491,22 @@ class Parser extends \Peast\Syntax\Parser
         }
         return null;
     }
-    
+
     /**
      * Parses the body of an arrow function. The returned value is an array
      * where the first element is the function body and the second element is
      * a boolean indicating if the body is wrapped in curly braces
-     * 
+     *
+     * @param bool  $async  Async body mode
+     *
      * @return array|null
      */
-    protected function parseConciseBody()
+    protected function parseConciseBody($async = false)
     {
         if ($token = $this->scanner->consume("{")) {
-            
+
             if (($body = $this->isolateContext(
-                    null,
+                    $async ? array(null, "allowAwait" => true) : null,
                     "parseFunctionBody"
                 )) &&
                 $this->scanner->consume("}")
@@ -2421,10 +2515,12 @@ class Parser extends \Peast\Syntax\Parser
                 $body->setEndPosition($this->scanner->getPosition());
                 return array($body, false);
             }
-            
+
             return $this->error();
         } elseif (!$this->scanner->isBefore(array("{")) &&
             $body = $this->isolateContext(
+                $this->featureAsyncAwait ?
+                array("allowYield" => false, "allowAwait" => $async) :
                 array("allowYield" => false),
                 "parseAssignmentExpression"
             )
@@ -2442,13 +2538,18 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseArrowFunction()
     {
         $state = $this->scanner->getState();
+        $async = false;
+        if ($this->featureAsyncAwait &&
+            ($async = $this->checkAsyncFunctionStart(false))) {
+            $this->scanner->consumeToken();
+        }
         if (($params = $this->parseArrowParameters()) !== null) {
-            
+
             if ($this->scanner->noLineTerminators() &&
                 $this->scanner->consume("=>")
             ) {
-                
-                if ($body = $this->parseConciseBody()) {
+
+                if ($body = $this->parseConciseBody((bool) $async)) {
                     if (is_array($params)) {
                         $pos = $params[1];
                         $params = $params[0];
@@ -2456,13 +2557,17 @@ class Parser extends \Peast\Syntax\Parser
                         $pos = $params;
                         $params = array($params);
                     }
+                    if ($async) {
+                        $pos = $async;
+                    }
                     $node = $this->createNode("ArrowFunctionExpression", $pos);
                     $node->setParams($params);
                     $node->setBody($body[0]);
                     $node->setExpression($body[1]);
+                    $node->setAsync((bool) $async);
                     return $this->completeNode($node);
                 }
-            
+
                 return $this->error();
             }
         }
@@ -2802,13 +2907,17 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseUnaryExpression()
     {
+        $operators = $this->unaryOperators;
+        if ($this->featureAsyncAwait && $this->context->allowAwait) {
+            $operators[] = "await";
+        }
         if ($expr = $this->parsePostfixExpression()) {
             return $expr;
-        } elseif ($token = $this->scanner->consumeOneOf($this->unaryOperators)) {
+        } elseif ($token = $this->scanner->consumeOneOf($operators)) {
             if ($argument = $this->parseUnaryExpression()) {
-                
+
                 $op = $token->getValue();
-                
+
                 //Deleting a variable without accessing its properties is a
                 //syntax error in strict mode
                 if ($op === "delete" &&
@@ -2818,14 +2927,18 @@ class Parser extends \Peast\Syntax\Parser
                         "Deleting an unqualified identifier is not allowed in strict mode"
                     );
                 }
-                
-                if ($op === "++" || $op === "--") {
-                    $node = $this->createNode("UpdateExpression", $token);
-                    $node->setPrefix(true);
+
+                if ($this->featureAsyncAwait && $op === "await") {
+                    $node = $this->createNode("AwaitExpression", $token);
                 } else {
-                    $node = $this->createNode("UnaryExpression", $token);
+                    if ($op === "++" || $op === "--") {
+                        $node = $this->createNode("UpdateExpression", $token);
+                        $node->setPrefix(true);
+                    } else {
+                        $node = $this->createNode("UnaryExpression", $token);
+                    }
+                    $node->setOperator($op);
                 }
-                $node->setOperator($op);
                 $node->setArgument($argument);
                 return $this->completeNode($node);
             }
@@ -3096,16 +3209,25 @@ class Parser extends \Peast\Syntax\Parser
     protected function parseArgumentList()
     {
         $list = array();
-        $start = $valid = true;
+        $hasComma = false;
         while (true) {
             $spread = $this->scanner->consume("...");
             $exp = $this->isolateContext(
                 array("allowIn" => true), "parseAssignmentExpression"
             );
+
             if (!$exp) {
-                $valid = $valid && $start && !$spread;
+                //If there's no expression and the spread dots have been found
+                //or there is a trailing comma that is not allowed, throw an
+                //error
+                if ($spread ||
+                    ($hasComma &&
+                    !$this->featureTrailingCommaFunctionCallDeclaration)) {
+                    return $this->error();
+                }
                 break;
             }
+
             if ($spread) {
                 $node = $this->createNode("SpreadElement", $spread);
                 $node->setArgument($exp);
@@ -3113,16 +3235,11 @@ class Parser extends \Peast\Syntax\Parser
             } else {
                 $list[] = $exp;
             }
-            $start = false;
-            $valid = true;
+
             if (!$this->scanner->consume(",")) {
                 break;
-            } else {
-                $valid = false;
             }
-        }
-        if (!$valid) {
-            return $this->error();
+            $hasComma = true;
         }
         return $list;
     }
