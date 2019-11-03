@@ -1,6 +1,10 @@
 Changelog
 ==========
 
+#### 1.10.0
+* Implemented ES2020 parser with dynamic import
+* Refactored all parsers to use feature flags instead of overwrite entire methods
+
 #### 1.9.4
 * Handled invalid UTF-8 characters in the source code by throwing an exception or replacing them with a substitution character by setting the new strictEncoding option to false
 * Fixed bug when rendering object properties with equal key and value
