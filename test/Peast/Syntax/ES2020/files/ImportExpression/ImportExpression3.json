@@ -1,0 +1,186 @@
+{
+	"type": "Program",
+	"location": {
+		"start": {
+			"line": 1,
+			"column": 0,
+			"index": 0
+		},
+		"end": {
+			"line": 3,
+			"column": 1,
+			"index": 61
+		}
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+		{
+			"type": "FunctionDeclaration",
+			"location": {
+				"start": {
+					"line": 1,
+					"column": 0,
+					"index": 0
+				},
+				"end": {
+					"line": 3,
+					"column": 1,
+					"index": 61
+				}
+			},
+			"leadingComments": [],
+			"trailingComments": [],
+			"id": {
+				"type": "Identifier",
+				"location": {
+					"start": {
+						"line": 1,
+						"column": 15,
+						"index": 15
+					},
+					"end": {
+						"line": 1,
+						"column": 19,
+						"index": 19
+					}
+				},
+				"leadingComments": [],
+				"trailingComments": [],
+				"name": "test"
+			},
+			"params": [],
+			"body": {
+				"type": "BlockStatement",
+				"location": {
+					"start": {
+						"line": 1,
+						"column": 22,
+						"index": 22
+					},
+					"end": {
+						"line": 3,
+						"column": 1,
+						"index": 61
+					}
+				},
+				"leadingComments": [],
+				"trailingComments": [],
+				"body": [
+					{
+						"type": "VariableDeclaration",
+						"location": {
+							"start": {
+								"line": 2,
+								"column": 1,
+								"index": 25
+							},
+							"end": {
+								"line": 2,
+								"column": 35,
+								"index": 59
+							}
+						},
+						"leadingComments": [],
+						"trailingComments": [],
+						"declarations": [
+							{
+								"type": "VariableDeclarator",
+								"location": {
+									"start": {
+										"line": 2,
+										"column": 5,
+										"index": 29
+									},
+									"end": {
+										"line": 2,
+										"column": 34,
+										"index": 58
+									}
+								},
+								"leadingComments": [],
+								"trailingComments": [],
+								"id": {
+									"type": "Identifier",
+									"location": {
+										"start": {
+											"line": 2,
+											"column": 5,
+											"index": 29
+										},
+										"end": {
+											"line": 2,
+											"column": 6,
+											"index": 30
+										}
+									},
+									"leadingComments": [],
+									"trailingComments": [],
+									"name": "a"
+								},
+								"init": {
+									"type": "AwaitExpression",
+									"location": {
+										"start": {
+											"line": 2,
+											"column": 9,
+											"index": 33
+										},
+										"end": {
+											"line": 2,
+											"column": 34,
+											"index": 58
+										}
+									},
+									"leadingComments": [],
+									"trailingComments": [],
+									"argument": {
+										"type": "ImportExpression",
+										"location": {
+											"start": {
+												"line": 2,
+												"column": 15,
+												"index": 39
+											},
+											"end": {
+												"line": 2,
+												"column": 34,
+												"index": 58
+											}
+										},
+										"leadingComments": [],
+										"trailingComments": [],
+										"source": {
+											"type": "Literal",
+											"location": {
+												"start": {
+													"line": 2,
+													"column": 22,
+													"index": 46
+												},
+												"end": {
+													"line": 2,
+													"column": 33,
+													"index": 57
+												}
+											},
+											"leadingComments": [],
+											"trailingComments": [],
+											"value": "module.js",
+											"raw": "\"module.js\"",
+											"format": "double"
+										}
+									}
+								}
+							}
+						],
+						"kind": "let"
+					}
+				]
+			},
+			"generator": false,
+			"async": true
+		}
+	],
+	"sourceType": "script"
+}

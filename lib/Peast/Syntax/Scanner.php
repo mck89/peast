@@ -1321,7 +1321,7 @@ abstract class Scanner
      */
     protected function scanNumber()
     {
-        //Numbers can start with a decimal nuber or with a dot (.5)
+        //Numbers can start with a decimal number or with a dot (.5)
         $char = $this->charAt();
         if (!(($char >= "0" && $char <= "9") || $char === ".")) {
             return null;

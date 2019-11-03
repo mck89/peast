@@ -69,6 +69,13 @@ class Parser extends \Peast\Syntax\Parser
      * @var bool
      */
     protected $featureOptionalCatchBinding = false;
+
+    /**
+     * Dynamic import feature activation
+     *
+     * @var bool
+     */
+    protected $featureDynamicImport = false;
     
     //Identifier parsing mode constants
     /**
@@ -3108,6 +3115,9 @@ class Parser extends \Peast\Syntax\Parser
         
         if (!$object &&
             !($object = $this->parseSuperPropertyOrCall()) &&
+            !($this->featureDynamicImport &&
+                ($object = $this->parseImportCall())
+            ) &&
             !($object = $this->parsePrimaryExpression())
         ) {
             
@@ -3666,6 +3676,31 @@ class Parser extends \Peast\Syntax\Parser
             }
         }
         return count($nodes) ? array($nodes, $directives) : null;
+    }
+
+    /**
+     * Parses an import call
+     *
+     * @return Node\Node|null
+     */
+    protected function parseImportCall()
+    {
+        if (($token = $this->scanner->consume("import")) &&
+            $this->scanner->consume("(")) {
+
+            if (($source = $this->isolateContext(
+                    array("allowIn" => true), "parseAssignmentExpression"
+                )) &&
+                $this->scanner->consume(")")
+            ) {
+                $node = $this->createNode("ImportExpression", $token);
+                $node->setSource($source);
+                return $this->completeNode($node);
+            }
+
+            return $this->error();
+        }
+        return null;
     }
     
     /**

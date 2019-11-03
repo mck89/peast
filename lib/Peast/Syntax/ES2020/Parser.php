@@ -9,6 +9,8 @@
  */
 namespace Peast\Syntax\ES2020;
 
+use \Peast\Syntax\Node;
+
 /**
  * ES2020 parser class
  * 
@@ -16,5 +18,10 @@ namespace Peast\Syntax\ES2020;
  */
 class Parser extends \Peast\Syntax\ES2019\Parser
 {
-
+    /**
+     * Dynamic import feature activation
+     *
+     * @var bool
+     */
+    protected $featureDynamicImport = true;
 }

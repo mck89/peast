@@ -1,0 +1,10 @@
+async function test () {
+	let a = await import("module.js");
+}
+/**************************************************/
+async function test(){let a=await import("module.js");}
+/**************************************************/
+async function test (  )
+{
+	let a = await import( "module.js" );
+}

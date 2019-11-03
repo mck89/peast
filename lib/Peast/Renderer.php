@@ -367,6 +367,13 @@ class Renderer
                          ")" .
                          $this->renderStatementBlock($node->getBody(), true);
             break;
+            case "ImportExpression":
+                $code .= "import(" .
+                         $this->renderOpts->sirb .
+                         $this->renderNode($node->getSource()) .
+                         $this->renderOpts->sirb .
+                         ")";
+            break;
             case "JSXIdentifier":
             case "Identifier":
                 $code .= $node->getName();

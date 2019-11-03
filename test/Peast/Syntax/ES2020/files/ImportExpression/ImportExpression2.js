@@ -1,0 +1,1 @@
+import("module.js").then((m)=>console.log(m));
