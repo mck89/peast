@@ -2,7 +2,7 @@ Changelog
 ==========
 
 #### 1.10.0
-* Implemented ES2020 parser with dynamic import
+* Implemented ES2020 parser with dynamic import and BigInt
 * Refactored all parsers to use feature flags instead of overwrite entire methods
 
 #### 1.9.4

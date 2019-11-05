@@ -1,0 +1,95 @@
+{
+	"type": "Program",
+	"location": {
+	    "start": {
+	        "line": 1,
+	        "column": 0,
+	        "index": 0
+	    },
+	    "end": {
+	        "line": 1,
+	        "column": 107,
+	        "index": 107
+	    }
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+	    {
+	        "type": "VariableDeclaration",
+	        "location": {
+	            "start": {
+	                "line": 1,
+	                "column": 0,
+	                "index": 0
+	            },
+	            "end": {
+	                "line": 1,
+	                "column": 107,
+	                "index": 107
+	            }
+	        },
+	        "leadingComments": [],
+	        "trailingComments": [],
+	        "declarations": [
+	            {
+	                "type": "VariableDeclarator",
+	                "location": {
+	                    "start": {
+	                        "line": 1,
+	                        "column": 4,
+	                        "index": 4
+	                    },
+	                    "end": {
+	                        "line": 1,
+	                        "column": 106,
+	                        "index": 106
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "id": {
+	                    "type": "Identifier",
+	                    "location": {
+	                        "start": {
+	                            "line": 1,
+	                            "column": 4,
+	                            "index": 4
+	                        },
+	                        "end": {
+	                            "line": 1,
+	                            "column": 5,
+	                            "index": 5
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "name": "a"
+	                },
+	                "init": {
+	                    "type": "Literal",
+	                    "location": {
+	                        "start": {
+	                            "line": 1,
+	                            "column": 8,
+	                            "index": 8
+	                        },
+	                        "end": {
+	                            "line": 1,
+	                            "column": 106,
+	                            "index": 106
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "value": "1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n",
+	                    "raw": "1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n",
+	                    "bigint": "1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n"
+	                }
+	            }
+	        ],
+	        "kind": "let"
+	    }
+	],
+	"sourceType": "script"
+}

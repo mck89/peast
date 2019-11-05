@@ -3529,6 +3529,8 @@ class Parser extends \Peast\Syntax\Parser
                 return $literal;
             } elseif ($literal = $this->parseNumericLiteral()) {
                 return $literal;
+            } elseif ($literal = $this->parseBigIntLiteral()) {
+                return $literal;
             }
         }
         return null;
@@ -3566,6 +3568,24 @@ class Parser extends \Peast\Syntax\Parser
             $this->checkInvalidEscapeSequences($val, true);
             $this->scanner->consumeToken();
             $node = $this->createNode("NumericLiteral", $token);
+            $node->setRaw($val);
+            return $this->completeNode($node);
+        }
+        return null;
+    }
+    
+    /**
+     * Parses a BigInt literal
+     * 
+     * @return Node\BigInt|null
+     */
+    protected function parseBigIntLiteral()
+    {
+        $token = $this->scanner->getToken();
+        if ($token && $token->getType() === Token::TYPE_BIGINT_LITERAL) {
+            $val = $token->getValue();
+            $this->scanner->consumeToken();
+            $node = $this->createNode("BigIntLiteral", $token);
             $node->setRaw($val);
             return $this->completeNode($node);
         }

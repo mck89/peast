@@ -16,4 +16,10 @@ namespace Peast\Syntax\ES2020;
  */
 class Scanner extends \Peast\Syntax\ES2019\Scanner
 {
+    /**
+     * BigInt feature activation
+     *
+     * @var bool
+     */
+    protected $featureBigInt = true;
 }

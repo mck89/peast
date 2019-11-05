@@ -21,6 +21,13 @@ abstract class Scanner
     use \Peast\Syntax\JSX\Scanner;
 
     /**
+     * BigInt feature activation
+     *
+     * @var bool
+     */
+    protected $featureBigInt = false;
+
+    /**
      * Current column
      * 
      * @var int
@@ -1336,6 +1343,13 @@ abstract class Scanner
             //Consume all decimal numbers
             $buffer = $this->consumeNumbers();
             $char = $this->charAt();
+            
+            if ($this->featureBigInt && $char === "n") {
+                $this->index++;
+                $this->column++;
+                return new Token(Token::TYPE_BIGINT_LITERAL, $buffer . $char);
+            }
+            
             $lower = $char !== null ? strtolower($char) : null;
             
             //Handle hexadecimal (0x), octal (0o) and binary (0b) forms

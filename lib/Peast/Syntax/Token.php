@@ -43,6 +43,11 @@ class Token implements \JSONSerializable
     const TYPE_NUMERIC_LITERAL = "Numeric";
     
     /**
+     * BigInt literal
+     */
+    const TYPE_BIGINT_LITERAL = "BigInt";
+    
+    /**
      * Punctutator
      */
     const TYPE_PUNCTUTATOR = "Punctuator";
