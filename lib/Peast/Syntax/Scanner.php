@@ -323,6 +323,9 @@ abstract class Scanner
                     $options["sourceEncoding"] :
                     null;
         
+        //Strip BOM characters from the source
+        $this->stripBOM($source, $encoding);
+        
         //Convert to UTF8 if needed
         if ($encoding && !preg_match("/UTF-?8/i", $encoding)) {
             $source = mb_convert_encoding($source, "UTF-8", $encoding);
@@ -359,6 +362,36 @@ abstract class Scanner
                                implode("|", $this->lineTerminators) .
                                "/u";
         $this->position = new Position(0, 0, 0);
+    }
+    
+    /**
+     * Strips BOM characters from the source and detects source encoding if not
+     * given by the user
+     * 
+     * @param string $source   Source
+     * @param string $encoding User specified encoding
+     */
+    public function stripBOM(&$source, &$encoding)
+    {
+        $boms = array(
+            "\xEF" => array(array("\xBB", "\xBF"), "UTF-8"),
+            "\xFE" => array(array("\xFF"), "UTF-16BE"),
+            "\xFF" => array(array("\xFE"), "UTF-16LE"),
+        );
+        if (!isset($source[0]) || !isset($boms[$source[0]])) {
+            return;
+        }
+        $bom = $boms[$source[0]];
+        $l = count($bom[0]);
+        for ($i = 0; $i < $l; $i++) {
+            if (!isset($source[$i + 1]) || $source[$i + 1] !== $bom[0][$i]) {
+                return;
+            }
+        }
+        $source = substr($source, $l + 1);
+        if (!$encoding) {
+            $encoding = $bom[1];
+        }
     }
     
     /**

@@ -3,6 +3,7 @@ Changelog
 
 #### 1.10.0
 * Implemented ES2020 parser with dynamic import and BigInt
+* Implemented handling of UTF-8 and UTF-16 BOM when parsing the source
 * Refactored all parsers to use feature flags instead of overwrite entire methods
 
 #### 1.9.4
