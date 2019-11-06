@@ -1,0 +1,494 @@
+{
+	"type": "Program",
+	"location": {
+	    "start": {
+	        "line": 1,
+	        "column": 0,
+	        "index": 0
+	    },
+	    "end": {
+	        "line": 4,
+	        "column": 6,
+	        "index": 44
+	    }
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+	    {
+	        "type": "ExpressionStatement",
+	        "location": {
+	            "start": {
+	                "line": 1,
+	                "column": 0,
+	                "index": 0
+	            },
+	            "end": {
+	                "line": 1,
+	                "column": 13,
+	                "index": 13
+	            }
+	        },
+	        "leadingComments": [],
+	        "trailingComments": [],
+	        "expression": {
+	            "type": "BinaryExpression",
+	            "location": {
+	                "start": {
+	                    "line": 1,
+	                    "column": 0,
+	                    "index": 0
+	                },
+	                "end": {
+	                    "line": 1,
+	                    "column": 12,
+	                    "index": 12
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "left": {
+	                "type": "BinaryExpression",
+	                "location": {
+	                    "start": {
+	                        "line": 1,
+	                        "column": 0,
+	                        "index": 0
+	                    },
+	                    "end": {
+	                        "line": 1,
+	                        "column": 7,
+	                        "index": 7
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "left": {
+	                    "type": "Literal",
+	                    "location": {
+	                        "start": {
+	                            "line": 1,
+	                            "column": 0,
+	                            "index": 0
+	                        },
+	                        "end": {
+	                            "line": 1,
+	                            "column": 2,
+	                            "index": 2
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "value": "",
+	                    "raw": "\"\"",
+	                    "format": "double"
+	                },
+	                "operator": "+",
+	                "right": {
+	                    "type": "UpdateExpression",
+	                    "location": {
+	                        "start": {
+	                            "line": 1,
+	                            "column": 4,
+	                            "index": 4
+	                        },
+	                        "end": {
+	                            "line": 1,
+	                            "column": 7,
+	                            "index": 7
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "argument": {
+	                        "type": "Identifier",
+	                        "location": {
+	                            "start": {
+	                                "line": 1,
+	                                "column": 6,
+	                                "index": 6
+	                            },
+	                            "end": {
+	                                "line": 1,
+	                                "column": 7,
+	                                "index": 7
+	                            }
+	                        },
+	                        "leadingComments": [],
+	                        "trailingComments": [],
+	                        "name": "a"
+	                    },
+	                    "operator": "++",
+	                    "prefix": true
+	                }
+	            },
+	            "operator": "+",
+	            "right": {
+	                "type": "Literal",
+	                "location": {
+	                    "start": {
+	                        "line": 1,
+	                        "column": 10,
+	                        "index": 10
+	                    },
+	                    "end": {
+	                        "line": 1,
+	                        "column": 12,
+	                        "index": 12
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "value": "",
+	                "raw": "\"\"",
+	                "format": "double"
+	            }
+	        }
+	    },
+	    {
+	        "type": "ExpressionStatement",
+	        "location": {
+	            "start": {
+	                "line": 2,
+	                "column": 0,
+	                "index": 14
+	            },
+	            "end": {
+	                "line": 2,
+	                "column": 11,
+	                "index": 25
+	            }
+	        },
+	        "leadingComments": [],
+	        "trailingComments": [],
+	        "expression": {
+	            "type": "BinaryExpression",
+	            "location": {
+	                "start": {
+	                    "line": 2,
+	                    "column": 0,
+	                    "index": 14
+	                },
+	                "end": {
+	                    "line": 2,
+	                    "column": 10,
+	                    "index": 24
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "left": {
+	                "type": "BinaryExpression",
+	                "location": {
+	                    "start": {
+	                        "line": 2,
+	                        "column": 0,
+	                        "index": 14
+	                    },
+	                    "end": {
+	                        "line": 2,
+	                        "column": 6,
+	                        "index": 20
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "left": {
+	                    "type": "Identifier",
+	                    "location": {
+	                        "start": {
+	                            "line": 2,
+	                            "column": 0,
+	                            "index": 14
+	                        },
+	                        "end": {
+	                            "line": 2,
+	                            "column": 1,
+	                            "index": 15
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "name": "a"
+	                },
+	                "operator": "-",
+	                "right": {
+	                    "type": "UpdateExpression",
+	                    "location": {
+	                        "start": {
+	                            "line": 2,
+	                            "column": 3,
+	                            "index": 17
+	                        },
+	                        "end": {
+	                            "line": 2,
+	                            "column": 6,
+	                            "index": 20
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "argument": {
+	                        "type": "Identifier",
+	                        "location": {
+	                            "start": {
+	                                "line": 2,
+	                                "column": 5,
+	                                "index": 19
+	                            },
+	                            "end": {
+	                                "line": 2,
+	                                "column": 6,
+	                                "index": 20
+	                            }
+	                        },
+	                        "leadingComments": [],
+	                        "trailingComments": [],
+	                        "name": "b"
+	                    },
+	                    "operator": "--",
+	                    "prefix": true
+	                }
+	            },
+	            "operator": "-",
+	            "right": {
+	                "type": "Identifier",
+	                "location": {
+	                    "start": {
+	                        "line": 2,
+	                        "column": 9,
+	                        "index": 23
+	                    },
+	                    "end": {
+	                        "line": 2,
+	                        "column": 10,
+	                        "index": 24
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "name": "c"
+	            }
+	        }
+	    },
+	    {
+	        "type": "ExpressionStatement",
+	        "location": {
+	            "start": {
+	                "line": 3,
+	                "column": 0,
+	                "index": 26
+	            },
+	            "end": {
+	                "line": 3,
+	                "column": 11,
+	                "index": 37
+	            }
+	        },
+	        "leadingComments": [],
+	        "trailingComments": [],
+	        "expression": {
+	            "type": "BinaryExpression",
+	            "location": {
+	                "start": {
+	                    "line": 3,
+	                    "column": 0,
+	                    "index": 26
+	                },
+	                "end": {
+	                    "line": 3,
+	                    "column": 10,
+	                    "index": 36
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "left": {
+	                "type": "BinaryExpression",
+	                "location": {
+	                    "start": {
+	                        "line": 3,
+	                        "column": 0,
+	                        "index": 26
+	                    },
+	                    "end": {
+	                        "line": 3,
+	                        "column": 6,
+	                        "index": 32
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "left": {
+	                    "type": "UpdateExpression",
+	                    "location": {
+	                        "start": {
+	                            "line": 3,
+	                            "column": 0,
+	                            "index": 26
+	                        },
+	                        "end": {
+	                            "line": 3,
+	                            "column": 3,
+	                            "index": 29
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "argument": {
+	                        "type": "Identifier",
+	                        "location": {
+	                            "start": {
+	                                "line": 3,
+	                                "column": 0,
+	                                "index": 26
+	                            },
+	                            "end": {
+	                                "line": 3,
+	                                "column": 1,
+	                                "index": 27
+	                            }
+	                        },
+	                        "leadingComments": [],
+	                        "trailingComments": [],
+	                        "name": "a"
+	                    },
+	                    "operator": "--",
+	                    "prefix": false
+	                },
+	                "operator": "-",
+	                "right": {
+	                    "type": "Identifier",
+	                    "location": {
+	                        "start": {
+	                            "line": 3,
+	                            "column": 5,
+	                            "index": 31
+	                        },
+	                        "end": {
+	                            "line": 3,
+	                            "column": 6,
+	                            "index": 32
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "name": "b"
+	                }
+	            },
+	            "operator": "-",
+	            "right": {
+	                "type": "Identifier",
+	                "location": {
+	                    "start": {
+	                        "line": 3,
+	                        "column": 9,
+	                        "index": 35
+	                    },
+	                    "end": {
+	                        "line": 3,
+	                        "column": 10,
+	                        "index": 36
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "name": "c"
+	            }
+	        }
+	    },
+	    {
+	        "type": "ExpressionStatement",
+	        "location": {
+	            "start": {
+	                "line": 4,
+	                "column": 0,
+	                "index": 38
+	            },
+	            "end": {
+	                "line": 4,
+	                "column": 6,
+	                "index": 44
+	            }
+	        },
+	        "leadingComments": [],
+	        "trailingComments": [],
+	        "expression": {
+	            "type": "BinaryExpression",
+	            "location": {
+	                "start": {
+	                    "line": 4,
+	                    "column": 0,
+	                    "index": 38
+	                },
+	                "end": {
+	                    "line": 4,
+	                    "column": 5,
+	                    "index": 43
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "left": {
+	                "type": "Identifier",
+	                "location": {
+	                    "start": {
+	                        "line": 4,
+	                        "column": 0,
+	                        "index": 38
+	                    },
+	                    "end": {
+	                        "line": 4,
+	                        "column": 1,
+	                        "index": 39
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "name": "a"
+	            },
+	            "operator": "-",
+	            "right": {
+	                "type": "UnaryExpression",
+	                "location": {
+	                    "start": {
+	                        "line": 4,
+	                        "column": 3,
+	                        "index": 41
+	                    },
+	                    "end": {
+	                        "line": 4,
+	                        "column": 5,
+	                        "index": 43
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "argument": {
+	                    "type": "Literal",
+	                    "location": {
+	                        "start": {
+	                            "line": 4,
+	                            "column": 4,
+	                            "index": 42
+	                        },
+	                        "end": {
+	                            "line": 4,
+	                            "column": 5,
+	                            "index": 43
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "value": 1,
+	                    "raw": "1",
+	                    "format": "decimal"
+	                },
+	                "operator": "-",
+	                "prefix": true
+	            }
+	        }
+	    }
+	],
+	"sourceType": "script"
+}

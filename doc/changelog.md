@@ -5,6 +5,7 @@ Changelog
 * Implemented ES2020 parser with dynamic import and BigInt
 * Implemented handling of UTF-8 and UTF-16 BOM when parsing the source
 * Refactored all parsers to use feature flags instead of overwrite entire methods
+* Fixed wrong rendering of unary and update expressions inside binary expressions in compact mode
 
 #### 1.9.4
 * Handled invalid UTF-8 characters in the source code by throwing an exception or replacing them with a substitution character by setting the new strictEncoding option to false

@@ -159,16 +159,34 @@ class Renderer
                             "=" :
                             $node->getOperator();
                 $code .= $this->renderNode($node->getLeft());
+                $codeRight = $this->renderNode($node->getRight());
                 if (preg_match("#^[a-z]+$#i", $operator)) {
                     $code .= " " .
                              $operator .
                              " ";
                 } else {
+                    //If there's no space around the operator, additional checks must
+                    //be performed to prevent errors when rendering unary and update
+                    //expressions inside binary expressions
+                    $checkSpace = !$this->renderOpts->sao && $type === "BinaryExpression";
+                    
+                    //The space is mandatory if the left part ends with the same
+                    //character used as operator
+                    if ($checkSpace && $code && substr($code, -1) === $operator) {
+                        $code .= " ";
+                    }
+                    
                     $code .= $this->renderOpts->sao .
                              $operator .
                              $this->renderOpts->sao;
+                    
+                    //The space is mandatory if the right part begins with the same
+                    //character used as operator
+                    if ($checkSpace && $codeRight && $codeRight[0] === $operator) {
+                        $code .= " ";
+                    }
                 }
-                $code .= $this->renderNode($node->getRight());
+                $code .= $codeRight;
             break;
             case "BlockStatement":
             case "ClassBody":
