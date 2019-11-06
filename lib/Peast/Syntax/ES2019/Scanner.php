@@ -19,17 +19,9 @@ use \Peast\Syntax\Utils;
 class Scanner extends \Peast\Syntax\ES2018\Scanner
 {
     /**
-     * Class constructor
-     * 
-     * @param string $source   Source code
-     * @param array  $options  Parsing options
+     * Paragraph and line sepeartor in strings feature activation
+     *
+     * @var bool
      */
-    function __construct($source, $options)
-    {
-        parent::__construct($source, $options);
-        
-        //Allow paragraph and line separators in strings
-        $this->stringsStopsLSM->remove(Utils::unicodeToUtf8(0x2028));
-        $this->stringsStopsLSM->remove(Utils::unicodeToUtf8(0x2029));
-    }
+    protected $featureParagraphLineSepInStrings = true;
 }

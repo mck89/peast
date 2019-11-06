@@ -28,6 +28,13 @@ abstract class Scanner
     protected $featureBigInt = false;
 
     /**
+     * Paragraph and line sepeartor in strings feature activation
+     *
+     * @var bool
+     */
+    protected $featureParagraphLineSepInStrings = false;
+
+    /**
      * Current column
      * 
      * @var int
@@ -357,6 +364,12 @@ abstract class Scanner
         
         //Create a LSM for strings stops
         $this->stringsStopsLSM = new LSM($this->lineTerminators, true);
+        
+        //Allow paragraph and line separators in strings
+        if ($this->featureParagraphLineSepInStrings) {
+            $this->stringsStopsLSM->remove(Utils::unicodeToUtf8(0x2028));
+            $this->stringsStopsLSM->remove(Utils::unicodeToUtf8(0x2029));
+        }
         
         $this->linesSplitter = "/" .
                                implode("|", $this->lineTerminators) .
