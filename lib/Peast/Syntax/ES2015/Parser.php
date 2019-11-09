@@ -2110,6 +2110,12 @@ class Parser extends \Peast\Syntax\Parser
      */
     protected function parseImportDeclaration()
     {
+        //Delay parsing of dynamic import so that it is handled
+        //by the relative method
+        if ($this->featureDynamicImport &&
+            $this->scanner->isBefore(array(array("import", "(")), true)) {
+            return null;
+        }
         if ($token = $this->scanner->consume("import")) {
             
             if ($source = $this->parseStringLiteral()) {
