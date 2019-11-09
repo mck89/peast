@@ -1415,6 +1415,12 @@ abstract class Scanner
                 if ($this->consumeNumbers() !== null) {
                     return $this->error();
                 }
+
+                if ($this->featureBigInt && $this->charAt() === "n") {
+                    $this->index++;
+                    $this->column++;
+                    return new Token(Token::TYPE_BIGINT_LITERAL, $buffer . $char);
+                }
                 
                 return new Token(Token::TYPE_NUMERIC_LITERAL, $buffer);
             }
