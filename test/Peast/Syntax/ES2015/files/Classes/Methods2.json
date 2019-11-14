@@ -1,0 +1,152 @@
+{
+	"type": "Program",
+	"location": {
+	    "start": {
+	        "line": 1,
+	        "column": 0,
+	        "index": 0
+	    },
+	    "end": {
+	        "line": 4,
+	        "column": 1,
+	        "index": 29
+	    }
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+	    {
+	        "type": "ClassDeclaration",
+	        "location": {
+	            "start": {
+	                "line": 1,
+	                "column": 0,
+	                "index": 0
+	            },
+	            "end": {
+	                "line": 4,
+	                "column": 1,
+	                "index": 29
+	            }
+	        },
+	        "leadingComments": [],
+	        "trailingComments": [],
+	        "id": {
+	            "type": "Identifier",
+	            "location": {
+	                "start": {
+	                    "line": 1,
+	                    "column": 6,
+	                    "index": 6
+	                },
+	                "end": {
+	                    "line": 1,
+	                    "column": 10,
+	                    "index": 10
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "name": "test"
+	        },
+	        "superClass": null,
+	        "body": {
+	            "type": "ClassBody",
+	            "location": {
+	                "start": {
+	                    "line": 2,
+	                    "column": 0,
+	                    "index": 11
+	                },
+	                "end": {
+	                    "line": 4,
+	                    "column": 1,
+	                    "index": 29
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "body": [
+	                {
+	                    "type": "MethodDefinition",
+	                    "location": {
+	                        "start": {
+	                            "line": 3,
+	                            "column": 4,
+	                            "index": 17
+	                        },
+	                        "end": {
+	                            "line": 3,
+	                            "column": 14,
+	                            "index": 27
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "key": {
+	                        "type": "Identifier",
+	                        "location": {
+	                            "start": {
+	                                "line": 3,
+	                                "column": 4,
+	                                "index": 17
+	                            },
+	                            "end": {
+	                                "line": 3,
+	                                "column": 10,
+	                                "index": 23
+	                            }
+	                        },
+	                        "leadingComments": [],
+	                        "trailingComments": [],
+	                        "name": "static"
+	                    },
+	                    "value": {
+	                        "type": "FunctionExpression",
+	                        "location": {
+	                            "start": {
+	                                "line": 3,
+	                                "column": 10,
+	                                "index": 23
+	                            },
+	                            "end": {
+	                                "line": 3,
+	                                "column": 14,
+	                                "index": 27
+	                            }
+	                        },
+	                        "leadingComments": [],
+	                        "trailingComments": [],
+	                        "id": null,
+	                        "params": [],
+	                        "body": {
+	                            "type": "BlockStatement",
+	                            "location": {
+	                                "start": {
+	                                    "line": 3,
+	                                    "column": 12,
+	                                    "index": 25
+	                                },
+	                                "end": {
+	                                    "line": 3,
+	                                    "column": 14,
+	                                    "index": 27
+	                                }
+	                            },
+	                            "leadingComments": [],
+	                            "trailingComments": [],
+	                            "body": []
+	                        },
+	                        "generator": false,
+	                        "async": false
+	                    },
+	                    "kind": "method",
+	                    "computed": false,
+	                    "static": false
+	                }
+	            ]
+	        }
+	    }
+	],
+	"sourceType": "script"
+}

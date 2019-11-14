@@ -1769,8 +1769,11 @@ class Parser extends \Peast\Syntax\Parser
         if ($this->scanner->consume(";")) {
             return true;
         }
-        
-        $staticToken = $this->scanner->consume("static");
+        $staticToken = null;
+        //This code handles the case where "static" is the method name
+        if (!$this->scanner->isBefore(array(array("static", "(")), true)) {
+            $staticToken = $this->scanner->consume("static");
+        }
         if ($def = $this->parseMethodDefinition()) {
             if ($staticToken) {
                 $def->setStatic(true);
