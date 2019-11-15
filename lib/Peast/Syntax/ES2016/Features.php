@@ -10,9 +10,18 @@
 namespace Peast\Syntax\ES2016;
 
 /**
- * ES2016 parser class
+ * ES2016 features class
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
+ * 
+ * @codeCoverageIgnore
  */
-class Parser extends \Peast\Syntax\ES2015\Parser
-{   
+class Features extends \Peast\Syntax\ES2015\Features
+{
+    /**
+     * Exponentiation operator
+     *
+     * @var bool
+     */
+    public $exponentiationOperator = true;
+}

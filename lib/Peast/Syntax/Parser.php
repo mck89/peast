@@ -78,7 +78,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
      */
     protected $assignmentOperators = array(
         "=", "+=", "-=", "*=", "/=", "%=", "<<=", ">>=", ">>>=", "&=", "^=",
-        "|="
+        "|=", "**="
     );
     
     /**
@@ -97,7 +97,8 @@ class Parser extends \Peast\Syntax\ParserAbstract
         "instanceof" => 6, "in" => 6,
         ">>>" => 7, "<<" => 7, ">>" => 7,
         "+" => 8, "-" => 8,
-        "*" => 9, "/" => 9, "%" => 9
+        "*" => 9, "/" => 9, "%" => 9,
+        "**" => 10
     );
     
     /**
@@ -137,6 +138,24 @@ class Parser extends \Peast\Syntax\ParserAbstract
             "allowIn" => false,
             "allowYield" => false
         );
+    }
+    
+    /**
+     * Post initialize operations
+     * 
+     * @return void
+     */
+    protected function postInit()
+    {
+        //Remove exponentation operator if the feature
+        //is not enabled
+        if (!$this->features->exponentiationOperator) {
+            Utils::removeArrayValue(
+                $this->assignmentOperators,
+                "**="
+            );
+            unset($this->logicalBinaryOperators["**"]);
+        }
     }
     
     /**

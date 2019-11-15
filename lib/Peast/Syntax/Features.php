@@ -19,6 +19,13 @@ namespace Peast\Syntax;
 class Features
 {
     /**
+     * Exponentiation operator
+     *
+     * @var bool
+     */
+    public $exponentiationOperator = false;
+
+    /**
      * Async/await
      *
      * @var bool

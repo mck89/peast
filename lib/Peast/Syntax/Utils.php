@@ -229,4 +229,17 @@ class Utils
         $props = self::getPropertiesMap($node);
         return array_keys($traversable ? array_filter($props) : $props);
     }
+
+    /**
+     * Delete an array element by value
+     * 
+     * @param array $array Array
+     * @param mixed $val   Value to remove
+     * 
+     * @return void
+     */
+    static public function removeArrayValue(&$array, $val)
+    {
+        array_splice($array, array_search($val, $array), 1);
+    }
 }

@@ -103,14 +103,22 @@ abstract class ParserAbstract
         $this->jsx = isset($options["jsx"]) && $options["jsx"];
         
         $this->initContext();
+        $this->postInit();
     }
     
     /**
      * Initializes parser context
      * 
-     * @return stdClass
+     * @return void
      */
     abstract protected function initContext();
+    
+    /**
+     * Post initialize operations
+     * 
+     * @return void
+     */
+    abstract protected function postInit();
     
     /**
      * Parses the source

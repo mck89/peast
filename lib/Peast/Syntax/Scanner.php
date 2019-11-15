@@ -185,7 +185,7 @@ abstract class Scanner
         ".", ";", ",", "<", ">", "<=", ">=", "==", "!=", "===", "!==", "+",
         "-", "*", "%", "++", "--", "<<", ">>", ">>>", "&", "|", "^", "!", "~",
         "&&", "||", "?", ":", "=", "+=", "-=", "*=", "%=", "<<=", ">>=", ">>>=",
-        "&=", "|=", "^=", "=>", "...", "/", "/="
+        "&=", "|=", "^=", "=>", "...", "/", "/=", "**", "**="
     );
     
     /**
@@ -366,6 +366,13 @@ abstract class Scanner
         if ($this->features->paragraphLineSepInStrings) {
             $this->stringsStopsLSM->remove(Utils::unicodeToUtf8(0x2028));
             $this->stringsStopsLSM->remove(Utils::unicodeToUtf8(0x2029));
+        }
+
+        //Remove exponentation operator if the feature
+        //is not enabled
+        if (!$this->features->exponentiationOperator) {
+            Utils::removeArrayValue($this->punctutators, "**");
+            Utils::removeArrayValue($this->punctutators, "**=");
         }
         
         $this->linesSplitter = "/" .
