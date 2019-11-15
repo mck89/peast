@@ -363,7 +363,7 @@ abstract class Scanner
         $this->stringsStopsLSM = new LSM($this->lineTerminators, true);
         
         //Allow paragraph and line separators in strings
-        if ($this->featureParagraphLineSepInStrings) {
+        if ($this->features->paragraphLineSepInStrings) {
             $this->stringsStopsLSM->remove(Utils::unicodeToUtf8(0x2028));
             $this->stringsStopsLSM->remove(Utils::unicodeToUtf8(0x2029));
         }
@@ -1387,7 +1387,7 @@ abstract class Scanner
             $buffer = $this->consumeNumbers();
             $char = $this->charAt();
             
-            if ($this->featureBigInt && $char === "n") {
+            if ($this->features->bigInt && $char === "n") {
                 $this->index++;
                 $this->column++;
                 return new Token(Token::TYPE_BIGINT_LITERAL, $buffer . $char);
@@ -1413,7 +1413,7 @@ abstract class Scanner
                     return $this->error();
                 }
 
-                if ($this->featureBigInt && $this->charAt() === "n") {
+                if ($this->features->bigInt && $this->charAt() === "n") {
                     $this->index++;
                     $this->column++;
                     return new Token(Token::TYPE_BIGINT_LITERAL, $buffer . $char);

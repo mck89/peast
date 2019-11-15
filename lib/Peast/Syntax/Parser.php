@@ -552,7 +552,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
                     return $this->error();
                 }
                 $node->setParam($param);
-            } elseif (!$this->featureOptionalCatchBinding) {
+            } elseif (!$this->features->optionalCatchBinding) {
                 return $this->error();
             }
 
@@ -909,7 +909,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
     protected function parseExpressionStatement()
     {
         $lookaheadTokens = array("{", "function", "class", array("let", "["));
-        if ($this->featureAsyncAwait) {
+        if ($this->features->asyncAwait) {
             array_splice(
                 $lookaheadTokens, 3, 0,
                 array(array("async", true))
@@ -1044,7 +1044,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
             if ($decl = $this->parseForBinding()) {
 
                 $init = null;
-                if ($this->featureForInInitializer &&
+                if ($this->features->forInInitializer &&
                     $decl->getId()->getType() === "Identifier") {
                     $init = $this->parseInitializer();
                 }
@@ -1283,7 +1283,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
         } elseif ($startForToken = $this->scanner->consume("for")) {
 
             $forAwait = false;
-            if ($this->featureAsyncIterationGenerators &&
+            if ($this->features->asyncIterationGenerators &&
                 $this->context->allowAwait &&
                 $this->scanner->consume("await")
             ) {
@@ -1348,10 +1348,10 @@ class Parser extends \Peast\Syntax\ParserAbstract
         $default = false, $allowGenerator = true
     ) {
         $async = null;
-        if ($this->featureAsyncAwait &&
+        if ($this->features->asyncAwait &&
             ($async = $this->checkAsyncFunctionStart())) {
             $this->scanner->consumeToken();
-            if (!$this->featureAsyncIterationGenerators) {
+            if (!$this->features->asyncIterationGenerators) {
                 $allowGenerator = false;
             }
         }
@@ -1419,10 +1419,10 @@ class Parser extends \Peast\Syntax\ParserAbstract
     {
         $allowGenerator = true;
         $async = false;
-        if ($this->featureAsyncAwait &&
+        if ($this->features->asyncAwait &&
             ($async = $this->checkAsyncFunctionStart())) {
             $this->scanner->consumeToken();
-            if (!$this->featureAsyncIterationGenerators) {
+            if (!$this->features->asyncIterationGenerators) {
                 $allowGenerator = false;
             }
         }
@@ -1534,7 +1534,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
             }
         }
         if ($hasComma &&
-            !$this->featureTrailingCommaFunctionCallDeclaration) {
+            !$this->features->trailingCommaFunctionCallDeclaration) {
             return $this->error();
         }
         return $list;
@@ -1927,7 +1927,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
                 
             } elseif ($this->scanner->consume("default")) {
                 $lookaheadTokens = array("function", "class");
-                if ($this->featureAsyncAwait) {
+                if ($this->features->asyncAwait) {
                     $lookaheadTokens[] = array("async", true);
                 }
                 if (($declaration = $this->isolateContext(
@@ -1948,7 +1948,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
                     
                 } elseif (!$this->scanner->isBefore(
                         $lookaheadTokens,
-                        $this->featureAsyncAwait
+                        $this->features->asyncAwait
                     ) &&
                     ($declaration = $this->isolateContext(
                         array(null, "allowIn" => true),
@@ -2056,7 +2056,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
     {
         //Delay parsing of dynamic import so that it is handled
         //by the relative method
-        if ($this->featureDynamicImport &&
+        if ($this->features->dynamicImport &&
             $this->scanner->isBefore(array(array("import", "(")), true)) {
             return null;
         }
@@ -2397,13 +2397,13 @@ class Parser extends \Peast\Syntax\ParserAbstract
             $position = $token;
             $error = true;
             $generator = true;
-        } elseif ($this->featureAsyncAwait &&
+        } elseif ($this->features->asyncAwait &&
                  ($token = $this->checkAsyncFunctionStart(false))) {
             $this->scanner->consumeToken();
             $position = $token;
             $error = true;
             $async = true;
-            if ($this->featureAsyncIterationGenerators &&
+            if ($this->features->asyncIterationGenerators &&
                 ($token = $this->scanner->consume("*"))) {
                 $generator = true;
             }
@@ -2547,7 +2547,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
             return $this->error();
         } elseif (!$this->scanner->isBefore(array("{")) &&
             $body = $this->isolateContext(
-                $this->featureAsyncAwait ?
+                $this->features->asyncAwait ?
                 array("allowYield" => false, "allowAwait" => $async) :
                 array("allowYield" => false),
                 "parseAssignmentExpression"
@@ -2567,7 +2567,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
     {
         $state = $this->scanner->getState();
         $async = false;
-        if ($this->featureAsyncAwait &&
+        if ($this->features->asyncAwait &&
             ($async = $this->checkAsyncFunctionStart(false))) {
             $this->scanner->consumeToken();
         }
@@ -2641,7 +2641,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
      */
     protected function parsePropertyDefinition()
     {
-        if ($this->featureRestSpreadProperties &&
+        if ($this->features->restSpreadProperties &&
             ($prop = $this->parseSpreadElement())) {
             return $prop;
         }
@@ -2735,7 +2735,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
                 }
             }
 
-            if ($this->featureRestSpreadProperties &&
+            if ($this->features->restSpreadProperties &&
                 ($rest = $this->parseRestProperty())) {
                 $properties[] = $rest;
             }
@@ -2966,7 +2966,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
     protected function parseUnaryExpression()
     {
         $operators = $this->unaryOperators;
-        if ($this->featureAsyncAwait && $this->context->allowAwait) {
+        if ($this->features->asyncAwait && $this->context->allowAwait) {
             $operators[] = "await";
         }
         if ($expr = $this->parsePostfixExpression()) {
@@ -2986,7 +2986,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
                     );
                 }
 
-                if ($this->featureAsyncAwait && $op === "await") {
+                if ($this->features->asyncAwait && $op === "await") {
                     $node = $this->createNode("AwaitExpression", $token);
                 } else {
                     if ($op === "++" || $op === "--") {
@@ -3065,7 +3065,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
         
         if (!$object &&
             !($object = $this->parseSuperPropertyOrCall()) &&
-            !($this->featureDynamicImport &&
+            !($this->features->dynamicImport &&
                 ($object = $this->parseImportCall())
             ) &&
             !($object = $this->parsePrimaryExpression())
@@ -3283,7 +3283,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
                 //error
                 if ($spread ||
                     ($hasComma &&
-                    !$this->featureTrailingCommaFunctionCallDeclaration)) {
+                    !$this->features->trailingCommaFunctionCallDeclaration)) {
                     return $this->error();
                 }
                 break;
@@ -3689,7 +3689,8 @@ class Parser extends \Peast\Syntax\ParserAbstract
         $val, $number = false, $forceLegacyOctalCheck = false,
         $taggedTemplate = false
     ) {
-        if ($this->featureSkipEscapeSeqCheckInTaggedTemplates && $taggedTemplate) {
+        if ($this->features->skipEscapeSeqCheckInTaggedTemplates &&
+            $taggedTemplate) {
             return;
         }
         $checkLegacyOctal = $forceLegacyOctalCheck || $this->scanner->getStrictMode();
