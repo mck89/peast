@@ -17,62 +17,6 @@ namespace Peast\Syntax;
 class Parser extends \Peast\Syntax\ParserAbstract
 {
     use JSX\Parser;
-
-    /**
-     * Async/await feature activation
-     *
-     * @var bool
-     */
-    protected $featureAsyncAwait = false;
-
-    /**
-     * Trailing comma in function calls and declarations feature activation
-     *
-     * @var bool
-     */
-    protected $featureTrailingCommaFunctionCallDeclaration = false;
-
-    /**
-     * For-in initializer feature activation
-     *
-     * @var bool
-     */
-    protected $featureForInInitializer = false;
-
-    /**
-     * Async iteration and generators feature activation
-     *
-     * @var bool
-     */
-    protected $featureAsyncIterationGenerators = false;
-
-    /**
-     * Rest/spread properties feature activation
-     *
-     * @var bool
-     */
-    protected $featureRestSpreadProperties = false;
-
-    /**
-     * Skip escape sequences checks in tagged template feature activation
-     *
-     * @var bool
-     */
-    protected $featureSkipEscapeSeqCheckInTaggedTemplates = false;
-
-    /**
-     * Optional catch binding feature activation
-     *
-     * @var bool
-     */
-    protected $featureOptionalCatchBinding = false;
-
-    /**
-     * Dynamic import feature activation
-     *
-     * @var bool
-     */
-    protected $featureDynamicImport = false;
     
     //Identifier parsing mode constants
     /**

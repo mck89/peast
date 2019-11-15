@@ -24,6 +24,13 @@ abstract class ParserAbstract
      * @var Scanner 
      */
     protected $scanner;
+
+    /**
+     * Parser features
+     * 
+     * @var Features
+     */
+    protected $features;
     
     /**
      * Parser context
@@ -63,21 +70,21 @@ abstract class ParserAbstract
     /**
      * Class constructor
      * 
-     * @param string $source  Source code
-     * @param array  $options Parsing options
+     * @param string   $source   Source code
+     * @param Features $features Parser features
+     * @param array    $options  Parsing options
      */
-    public function __construct($source, $options = array())
-    {
+    public function __construct(
+        $source, Features $features, $options = array()
+    ) {
+        $this->features = $features;
+        
         $this->sourceType = isset($options["sourceType"]) ?
                             $options["sourceType"] :
                             \Peast\Peast::SOURCE_TYPE_SCRIPT;
         
         //Create the scanner
-        $classParts = explode("\\", get_class($this));
-        array_pop($classParts);
-        $classParts[] = "Scanner";
-        $scannerClasss = implode("\\", $classParts);
-        $this->scanner = new $scannerClasss($source, $options);
+        $this->scanner = new Scanner($source, $features, $options);
         
         //Enable module scanning if required
         if ($this->sourceType === \Peast\Peast::SOURCE_TYPE_MODULE) {
@@ -134,6 +141,16 @@ abstract class ParserAbstract
     public function getScanner()
     {
         return $this->scanner;
+    }
+    
+    /**
+     * Returns the parser features class
+     * 
+     * @return Features
+     */
+    public function getFeatures()
+    {
+        return $this->features;
     }
     
     /**

@@ -1,0 +1,90 @@
+<?php
+/**
+ * This file is part of the Peast package
+ *
+ * (c) Marco Marchiò <marco.mm89@gmail.com>
+ *
+ * For the full copyright and license information refer to the LICENSE file
+ * distributed with this source code
+ */
+namespace Peast\Syntax;
+
+/**
+ * Parser features class
+ * 
+ * @author Marco Marchiò <marco.mm89@gmail.com>
+ * 
+ * @codeCoverageIgnore
+ */
+class Features
+{
+    /**
+     * Async/await
+     *
+     * @var bool
+     */
+    public $asyncAwait = false;
+
+    /**
+     * Trailing comma in function calls and declarations
+     *
+     * @var bool
+     */
+    public $trailingCommaFunctionCallDeclaration = false;
+
+    /**
+     * For-in initializer
+     *
+     * @var bool
+     */
+    public $forInInitializer = false;
+
+    /**
+     * Async iteration and generators
+     *
+     * @var bool
+     */
+    public $asyncIterationGenerators = false;
+
+    /**
+     * Rest/spread properties
+     *
+     * @var bool
+     */
+    public $restSpreadProperties = false;
+
+    /**
+     * Skip escape sequences checks in tagged template
+     *
+     * @var bool
+     */
+    public $skipEscapeSeqCheckInTaggedTemplates = false;
+
+    /**
+     * Optional catch binding
+     *
+     * @var bool
+     */
+    public $optionalCatchBinding = false;
+
+    /**
+     * Paragraph and line sepeartor in strings
+     *
+     * @var bool
+     */
+    public $paragraphLineSepInStrings = false;
+
+    /**
+     * Dynamic import
+     *
+     * @var bool
+     */
+    public $dynamicImport = false;
+
+    /**
+     * BigInt literals
+     *
+     * @var bool
+     */
+    public $bigInt = false;
+}

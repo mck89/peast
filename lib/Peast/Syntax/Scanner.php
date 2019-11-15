@@ -21,18 +21,11 @@ abstract class Scanner
     use \Peast\Syntax\JSX\Scanner;
 
     /**
-     * BigInt feature activation
-     *
-     * @var bool
+     * Scanner features
+     * 
+     * @var Features
      */
-    protected $featureBigInt = false;
-
-    /**
-     * Paragraph and line sepeartor in strings feature activation
-     *
-     * @var bool
-     */
-    protected $featureParagraphLineSepInStrings = false;
+    protected $features;
 
     /**
      * Current column
@@ -321,11 +314,15 @@ abstract class Scanner
     /**
      * Class constructor
      * 
-     * @param string $source   Source code
-     * @param array  $options Parsing options
+     * @param string   $source   Source code
+     * @param Features $features Scanner features
+     * @param array    $options  Parsing options
      */
-    function __construct($source, $options)
-    {
+    function __construct(
+        $source, Features $features, $options
+    ) {
+        $this->features = $features;
+
         $encoding = isset($options["sourceEncoding"]) ?
                     $options["sourceEncoding"] :
                     null;
