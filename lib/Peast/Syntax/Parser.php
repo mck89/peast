@@ -7,19 +7,19 @@
  * For the full copyright and license information refer to the LICENSE file
  * distributed with this source code
  */
-namespace Peast\Syntax\ES2015;
+namespace Peast\Syntax;
 
 use Peast\Syntax\Token;
 use \Peast\Syntax\Node;
 
 /**
- * ES2015 parser class
+ * Parser class
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
-class Parser extends \Peast\Syntax\Parser
+class Parser extends \Peast\Syntax\ParserAbstract
 {
-    use \Peast\Syntax\JSX\Parser;
+    use JSX\Parser;
 
     /**
      * Async/await feature activation
