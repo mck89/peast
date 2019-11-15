@@ -9,9 +9,6 @@
  */
 namespace Peast\Syntax;
 
-use Peast\Syntax\Token;
-use \Peast\Syntax\Node;
-
 /**
  * Parser class
  * 
