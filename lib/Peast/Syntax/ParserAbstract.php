@@ -16,7 +16,7 @@ namespace Peast\Syntax;
  * 
  * @abstract
  */
-abstract class Parser
+abstract class ParserAbstract
 {
     /**
      * Associated scanner
