@@ -10,16 +10,25 @@
 namespace Peast\Syntax\ES2020;
 
 /**
- * ES2020 scanner.
+ * ES2020 features class
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
+ * 
+ * @codeCoverageIgnore
  */
-class Scanner extends \Peast\Syntax\ES2019\Scanner
+class Features extends \Peast\Syntax\ES2019\Features
 {
     /**
-     * BigInt feature activation
+     * Dynamic import
      *
      * @var bool
      */
-    protected $featureBigInt = true;
+    public $dynamicImport = true;
+
+    /**
+     * BigInt literals
+     *
+     * @var bool
+     */
+    public $bigInt = true;
 }
