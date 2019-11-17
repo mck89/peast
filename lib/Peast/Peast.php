@@ -28,55 +28,55 @@ namespace Peast;
  *      - "comments": if true it enables comments parsing.
  *      - "jsx": if true it enables parsing of JSX syntax.
  * 
- * @method static Syntax\ES2015\Parser ES2015(string $source, array $options)
- * Returns an instance of the ES2015 parser for the given source. See Peast
+ * @method static Syntax\Parser ES2015(string $source, array $options)
+ * Returns a parser instance with ES2015 features for the given source. See Peast
  * class documentation to understand the function arguments.
  * 
- * @method static Syntax\ES2015\Parser ES6(string $source, array $options)
- * Returns an instance of the ES2015 parser for the given source. See Peast
+ * @method static Syntax\Parser ES6(string $source, array $options)
+ * Returns a parser instance with ES2015 features for the given source. See Peast
  * class documentation to understand function arguments.
  * 
- * @method static Syntax\ES2016\Parser ES2016(string $source, array $options)
- * Returns an instance of the ES2016 parser for the given source. See Peast
+ * @method static Syntax\Parser ES2016(string $source, array $options)
+ * Returns a parser instance with ES2016 features for the given source. See Peast
  * class documentation to understand function arguments.
  * 
- * @method static Syntax\ES2016\Parser ES7(string $source, array $options)
- * Returns an instance of the ES2016 parser for the given source. See Peast
+ * @method static Syntax\Parser ES7(string $source, array $options)
+ * Returns a parser instance with ES2016 features for the given source. See Peast
  * class documentation to understand function arguments.
  * 
- * @method static Syntax\ES2017\Parser ES2017(string $source, array $options)
- * Returns an instance of the ES2017 parser for the given source. See Peast
+ * @method static Syntax\Parser ES2017(string $source, array $options)
+ * Returns a parser instance with ES2017 features for the given source. See Peast
  * class documentation to understand function arguments.
  * 
- * @method static Syntax\ES2017\Parser ES8(string $source, array $options)
- * Returns an instance of the ES2017 parser for the given source. See Peast
+ * @method static Syntax\Parser ES8(string $source, array $options)
+ * Returns a parser instance with ES2017 features for the given source. See Peast
  * class documentation to understand function arguments.
  * 
- * @method static Syntax\ES2018\Parser ES2018(string $source, array $options)
- * Returns an instance of the ES2018 parser for the given source. See Peast
+ * @method static Syntax\Parser ES2018(string $source, array $options)
+ * Returns a parser instance with ES2018 features for the given source. See Peast
  * class documentation to understand function arguments.
  * 
- * @method static Syntax\ES2018\Parser ES9(string $source, array $options)
- * Returns an instance of the ES2018 parser for the given source. See Peast
+ * @method static Syntax\Parser ES9(string $source, array $options)
+ * Returns a parser instance with ES2018 features for the given source. See Peast
  * class documentation to understand function arguments.
  * 
- * @method static Syntax\ES2019\Parser ES2019(string $source, array $options)
- * Returns an instance of the ES2019 parser for the given source. See Peast
+ * @method static Syntax\Parser ES2019(string $source, array $options)
+ * Returns a parser instance with ES2019 features for the given source. See Peast
  * class documentation to understand function arguments.
  * 
- * @method static Syntax\ES2019\Parser ES10(string $source, array $options)
- * Returns an instance of the ES2019 parser for the given source. See Peast
+ * @method static Syntax\Parser ES10(string $source, array $options)
+ * Returns a parser instance with ES2019 features for the given source. See Peast
  * class documentation to understand function arguments.
  *
- * @method static Syntax\ES2020\Parser ES2020(string $source, array $options)
- * Returns an instance of the ES2020 parser for the given source. See Peast
+ * @method static Syntax\Parser ES2020(string $source, array $options)
+ * Returns a parser instance with ES2020 features for the given source. See Peast
  * class documentation to understand function arguments.
  *
- * @method static Syntax\ES2020\Parser ES11(string $source, array $options)
- * Returns an instance of the ES2020 parser for the given source. See Peast
+ * @method static Syntax\Parser ES11(string $source, array $options)
+ * Returns a parser instance with ES2020 features for the given source. See Peast
  * class documentation to understand function arguments.
  * 
- * @method static Syntax\ES2020\Parser latest(string $source, array $options)
+ * @method static Syntax\Parser latest(string $source, array $options)
  * Returns an instance of the latest parser version for the given source. See
  * Peast class documentation to understand function arguments.
  * 
@@ -112,13 +112,15 @@ class Peast
     );
     
     /**
-     * Magic method that exposes all the functions to access specific parser
-     * versions
+     * Magic method that exposes all the functions to access parser with
+     * specific features
      * 
      * @param string    $version   Parser version
      * @param array     $args      Parser arguments
      * 
-     * @return mixed
+     * @return Syntax/Parser
+     * 
+     * @throws \Exception
      */
     public static function __callStatic($version, $args)
     {
@@ -135,7 +137,9 @@ class Peast
             }
         }
         
-        $class = "\\Peast\\Syntax\\$version\\Parser";
-        return new $class($source, $options);
+        $featuresClass = "\\Peast\\Syntax\\$version\\Features";
+        return new Syntax\Parser(
+            $source, new $featuresClass, $options
+        );
     }
 }
