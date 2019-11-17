@@ -123,7 +123,8 @@ class Parser extends \Peast\Syntax\ParserAbstract
      * @var array 
      */
     protected $contextKeywords = array(
-        "yield" => "allowYield"
+        "yield" => "allowYield",
+        "await" => "allowAwait"
     );
     
     /**
@@ -133,11 +134,19 @@ class Parser extends \Peast\Syntax\ParserAbstract
      */
     protected function initContext()
     {
-        $this->context = (object) array(
+        $context = array(
             "allowReturn" => false,
             "allowIn" => false,
-            "allowYield" => false
+            "allowYield" => false,
+            "allowAwait" => false
         );
+        //If async/await is not enabled remove the
+        //relative context properties
+        if (!$this->features->asyncAwait) {
+            unset($context["allowAwait"]);
+            unset($this->contextKeywords["await"]);
+        }
+        $this->context = (object) $context;
     }
     
     /**

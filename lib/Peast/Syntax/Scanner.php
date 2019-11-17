@@ -374,6 +374,11 @@ abstract class Scanner
             Utils::removeArrayValue($this->punctutators, "**");
             Utils::removeArrayValue($this->punctutators, "**=");
         }
+
+        //Remove await as keyword if async/await is enabled
+        if ($this->features->asyncAwait) {
+            Utils::removeArrayValue($this->keywords, "await");
+        }
         
         $this->linesSplitter = "/" .
                                implode("|", $this->lineTerminators) .
