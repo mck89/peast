@@ -13,10 +13,8 @@ namespace Peast\Syntax;
  * Base class for scanners.
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
- * 
- * @abstract
  */
-abstract class Scanner
+class Scanner
 {
     use \Peast\Syntax\JSX\Scanner;
 
