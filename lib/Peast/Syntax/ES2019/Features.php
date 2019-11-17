@@ -9,19 +9,26 @@
  */
 namespace Peast\Syntax\ES2019;
 
-use \Peast\Syntax\Utils;
-
 /**
- * ES2019 scanner.
+ * ES2019 features class
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
+ * 
+ * @codeCoverageIgnore
  */
-class Scanner extends \Peast\Syntax\ES2018\Scanner
+class Features extends \Peast\Syntax\ES2018\Features
 {
     /**
-     * Paragraph and line sepeartor in strings feature activation
+     * Optional catch binding
      *
      * @var bool
      */
-    protected $featureParagraphLineSepInStrings = true;
+    public $optionalCatchBinding = true;
+
+    /**
+     * Paragraph and line sepeartor in strings
+     *
+     * @var bool
+     */
+    public $paragraphLineSepInStrings = true;
 }
