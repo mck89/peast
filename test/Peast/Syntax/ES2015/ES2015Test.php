@@ -1,82 +1,13 @@
 <?php
 namespace Peast\test\Syntax\ES2015;
 
-class ES2015Test extends \Peast\test\TestBase
+class ES2015Test extends \Peast\test\TestParser
 {
     protected $parser = "ES2015";
     
     protected function getTestVersions()
     {
         return array("ES2015");
-    }
-    
-    public function jsParserTestFilesProvider()
-    {
-        return parent::getJsTestFiles();
-    }
-    
-    /**
-     * @dataProvider jsParserTestFilesProvider
-     */
-    public function testParser($sourceFile, $compareFile)
-    {
-        $module = strpos($sourceFile, "modules") !== false;
-        $jsx = strpos($sourceFile, "JSX") !== false;
-        $options = array(
-            "sourceType" => $module ?
-                            \Peast\Peast::SOURCE_TYPE_MODULE :
-                            \Peast\Peast::SOURCE_TYPE_SCRIPT,
-            "jsx" => $jsx
-        );
-        $source = file_get_contents($sourceFile);
-        $tree = \Peast\Peast::{$this->parser}($source, $options)->parse();
-        $this->compareJSFile($tree, $compareFile);
-    }
-    
-    public function jsTokenizerTestFilesProvider()
-    {
-        return parent::getJsTestFiles(self::JS_TOKENIZE);
-    }
-    
-    /**
-     * @dataProvider jsTokenizerTestFilesProvider
-     */
-    public function testTokenizer($sourceFile, $compareFile)
-    {
-        $module = strpos($sourceFile, "modules") !== false;
-        $jsx = strpos($sourceFile, "JSX") !== false;
-        $options = array(
-            "sourceType" => $module ?
-                            \Peast\Peast::SOURCE_TYPE_MODULE :
-                            \Peast\Peast::SOURCE_TYPE_SCRIPT,
-            "jsx" => $jsx
-        );
-        $source = file_get_contents($sourceFile);
-        $tree = \Peast\Peast::{$this->parser}($source, $options)->tokenize();
-        $this->compareJSFile($tree, $compareFile, true);
-    }
-    
-    public function invalidJsTestFilesProvider()
-    {
-        return parent::getJsTestFiles(self::JS_INVALID);
-    }
-    
-    /**
-     * @expectedException \Peast\Syntax\Exception
-     * @dataProvider invalidJsTestFilesProvider
-     */
-    public function testParserException($sourceFile)
-    {
-        $module = strpos($sourceFile, "modules") !== false;
-        $jsx = strpos($sourceFile, "JSX") !== false;
-        $options = array(
-            "sourceType" => $module ?
-                            \Peast\Peast::SOURCE_TYPE_MODULE :
-                            \Peast\Peast::SOURCE_TYPE_SCRIPT,
-            "jsx" => $jsx
-        );
-        $source = file_get_contents($sourceFile);
-        \Peast\Peast::{$this->parser}($source, $options)->parse();
     }
     
     public function testParseEmptySource()
