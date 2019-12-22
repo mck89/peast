@@ -1,85 +1,85 @@
 {
-    "range": [
-        0,
-        26
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 1,
-            "column": 26
+            "column": 26,
+            "index": 26
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                26
-            ],
-            "loc": {
+            "type": "ForOfStatement",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 1,
-                    "column": 26
+                    "column": 26,
+                    "index": 26
                 }
             },
-            "type": "ForOfStatement",
+            "leadingComments": [],
+            "trailingComments": [],
             "left": {
-                "range": [
-                    5,
-                    12
-                ],
-                "loc": {
+                "type": "VariableDeclaration",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 5
+                        "column": 5,
+                        "index": 5
                     },
                     "end": {
                         "line": 1,
-                        "column": 12
+                        "column": 12,
+                        "index": 12
                     }
                 },
-                "type": "VariableDeclaration",
+                "leadingComments": [],
+                "trailingComments": [],
                 "declarations": [
                     {
-                        "range": [
-                            11,
-                            12
-                        ],
-                        "loc": {
+                        "type": "VariableDeclarator",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 11
+                                "column": 11,
+                                "index": 11
                             },
                             "end": {
                                 "line": 1,
-                                "column": 12
+                                "column": 12,
+                                "index": 12
                             }
                         },
-                        "type": "VariableDeclarator",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "id": {
-                            "range": [
-                                11,
-                                12
-                            ],
-                            "loc": {
+                            "type": "Identifier",
+                            "location": {
                                 "start": {
                                     "line": 1,
-                                    "column": 11
+                                    "column": 11,
+                                    "index": 11
                                 },
                                 "end": {
                                     "line": 1,
-                                    "column": 12
+                                    "column": 12,
+                                    "index": 12
                                 }
                             },
-                            "type": "Identifier",
+                            "leadingComments": [],
+                            "trailingComments": [],
                             "name": "i"
                         },
                         "init": null
@@ -88,40 +88,41 @@
                 "kind": "const"
             },
             "right": {
-                "range": [
-                    16,
-                    24
-                ],
-                "loc": {
+                "type": "Identifier",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 16
+                        "column": 16,
+                        "index": 16
                     },
                     "end": {
                         "line": 1,
-                        "column": 24
+                        "column": 24,
+                        "index": 24
                     }
                 },
-                "type": "Identifier",
+                "leadingComments": [],
+                "trailingComments": [],
                 "name": "iterable"
             },
             "body": {
-                "range": [
-                    25,
-                    26
-                ],
-                "loc": {
+                "type": "EmptyStatement",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 25
+                        "column": 25,
+                        "index": 25
                     },
                     "end": {
                         "line": 1,
-                        "column": 26
+                        "column": 26,
+                        "index": 26
                     }
                 },
-                "type": "EmptyStatement"
-            }
+                "leadingComments": [],
+                "trailingComments": []
+            },
+            "await": false
         }
     ],
     "sourceType": "script"

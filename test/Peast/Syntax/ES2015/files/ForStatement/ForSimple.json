@@ -1,357 +1,359 @@
 {
-    "range": [
-        0,
-        78
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 1,
-            "column": 78
+            "column": 78,
+            "index": 78
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                78
-            ],
-            "loc": {
+            "type": "ForStatement",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 1,
-                    "column": 78
+                    "column": 78,
+                    "index": 78
                 }
             },
-            "type": "ForStatement",
+            "leadingComments": [],
+            "trailingComments": [],
             "init": {
-                "range": [
-                    5,
-                    14
-                ],
-                "loc": {
+                "type": "AssignmentExpression",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 5
+                        "column": 5,
+                        "index": 5
                     },
                     "end": {
                         "line": 1,
-                        "column": 14
+                        "column": 14,
+                        "index": 14
                     }
                 },
-                "type": "AssignmentExpression",
-                "operator": "=",
+                "leadingComments": [],
+                "trailingComments": [],
                 "left": {
-                    "range": [
-                        5,
-                        10
-                    ],
-                    "loc": {
+                    "type": "Identifier",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 5
+                            "column": 5,
+                            "index": 5
                         },
                         "end": {
                             "line": 1,
-                            "column": 10
+                            "column": 10,
+                            "index": 10
                         }
                     },
-                    "type": "Identifier",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "name": "index"
                 },
+                "operator": "=",
                 "right": {
-                    "range": [
-                        13,
-                        14
-                    ],
-                    "loc": {
+                    "type": "Literal",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 13
+                            "column": 13,
+                            "index": 13
                         },
                         "end": {
                             "line": 1,
-                            "column": 14
+                            "column": 14,
+                            "index": 14
                         }
                     },
-                    "type": "Literal",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "value": 0,
-                    "raw": "0"
+                    "raw": "0",
+                    "format": "decimal"
                 }
             },
             "test": {
-                "range": [
-                    16,
-                    35
-                ],
-                "loc": {
+                "type": "LogicalExpression",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 16
+                        "column": 16,
+                        "index": 16
                     },
                     "end": {
                         "line": 1,
-                        "column": 35
+                        "column": 35,
+                        "index": 35
                     }
                 },
-                "type": "LogicalExpression",
-                "operator": "&&",
+                "leadingComments": [],
+                "trailingComments": [],
                 "left": {
-                    "range": [
-                        16,
-                        26
-                    ],
-                    "loc": {
+                    "type": "BinaryExpression",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 16
+                            "column": 16,
+                            "index": 16
                         },
                         "end": {
                             "line": 1,
-                            "column": 26
+                            "column": 26,
+                            "index": 26
                         }
                     },
-                    "type": "BinaryExpression",
-                    "operator": "<",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "left": {
-                        "range": [
-                            16,
-                            21
-                        ],
-                        "loc": {
+                        "type": "Identifier",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 16
+                                "column": 16,
+                                "index": 16
                             },
                             "end": {
                                 "line": 1,
-                                "column": 21
+                                "column": 21,
+                                "index": 21
                             }
                         },
-                        "type": "Identifier",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "name": "index"
                     },
+                    "operator": "<",
                     "right": {
-                        "range": [
-                            24,
-                            26
-                        ],
-                        "loc": {
+                        "type": "Literal",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 24
+                                "column": 24,
+                                "index": 24
                             },
                             "end": {
                                 "line": 1,
-                                "column": 26
+                                "column": 26,
+                                "index": 26
                             }
                         },
-                        "type": "Literal",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "value": 10,
-                        "raw": "10"
+                        "raw": "10",
+                        "format": "decimal"
                     }
                 },
+                "operator": "&&",
                 "right": {
-                    "range": [
-                        30,
-                        35
-                    ],
-                    "loc": {
+                    "type": "Identifier",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 30
+                            "column": 30,
+                            "index": 30
                         },
                         "end": {
                             "line": 1,
-                            "column": 35
+                            "column": 35,
+                            "index": 35
                         }
                     },
-                    "type": "Identifier",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "name": "valid"
                 }
             },
             "update": {
-                "range": [
-                    37,
-                    44
-                ],
-                "loc": {
+                "type": "UpdateExpression",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 37
+                        "column": 37,
+                        "index": 37
                     },
                     "end": {
                         "line": 1,
-                        "column": 44
+                        "column": 44,
+                        "index": 44
                     }
                 },
-                "type": "UpdateExpression",
-                "operator": "++",
+                "leadingComments": [],
+                "trailingComments": [],
                 "argument": {
-                    "range": [
-                        37,
-                        42
-                    ],
-                    "loc": {
+                    "type": "Identifier",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 37
+                            "column": 37,
+                            "index": 37
                         },
                         "end": {
                             "line": 1,
-                            "column": 42
+                            "column": 42,
+                            "index": 42
                         }
                     },
-                    "type": "Identifier",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "name": "index"
                 },
+                "operator": "++",
                 "prefix": false
             },
             "body": {
-                "range": [
-                    47,
-                    78
-                ],
-                "loc": {
+                "type": "ExpressionStatement",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 47
+                        "column": 47,
+                        "index": 47
                     },
                     "end": {
                         "line": 1,
-                        "column": 78
+                        "column": 78,
+                        "index": 78
                     }
                 },
-                "type": "ExpressionStatement",
+                "leadingComments": [],
+                "trailingComments": [],
                 "expression": {
-                    "range": [
-                        47,
-                        77
-                    ],
-                    "loc": {
+                    "type": "CallExpression",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 47
+                            "column": 47,
+                            "index": 47
                         },
                         "end": {
                             "line": 1,
-                            "column": 77
+                            "column": 77,
+                            "index": 77
                         }
                     },
-                    "type": "CallExpression",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "callee": {
-                        "range": [
-                            47,
-                            61
-                        ],
-                        "loc": {
+                        "type": "MemberExpression",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 47
+                                "column": 47,
+                                "index": 47
                             },
                             "end": {
                                 "line": 1,
-                                "column": 61
+                                "column": 61,
+                                "index": 61
                             }
                         },
-                        "type": "MemberExpression",
-                        "computed": false,
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "object": {
-                            "range": [
-                                47,
-                                56
-                            ],
-                            "loc": {
+                            "type": "Identifier",
+                            "location": {
                                 "start": {
                                     "line": 1,
-                                    "column": 47
+                                    "column": 47,
+                                    "index": 47
                                 },
                                 "end": {
                                     "line": 1,
-                                    "column": 56
+                                    "column": 56,
+                                    "index": 56
                                 }
                             },
-                            "type": "Identifier",
+                            "leadingComments": [],
+                            "trailingComments": [],
                             "name": "instances"
                         },
                         "property": {
-                            "range": [
-                                57,
-                                61
-                            ],
-                            "loc": {
+                            "type": "Identifier",
+                            "location": {
                                 "start": {
                                     "line": 1,
-                                    "column": 57
+                                    "column": 57,
+                                    "index": 57
                                 },
                                 "end": {
                                     "line": 1,
-                                    "column": 61
+                                    "column": 61,
+                                    "index": 61
                                 }
                             },
-                            "type": "Identifier",
+                            "leadingComments": [],
+                            "trailingComments": [],
                             "name": "push"
-                        }
+                        },
+                        "computed": false
                     },
                     "arguments": [
                         {
-                            "range": [
-                                62,
-                                76
-                            ],
-                            "loc": {
+                            "type": "NewExpression",
+                            "location": {
                                 "start": {
                                     "line": 1,
-                                    "column": 62
+                                    "column": 62,
+                                    "index": 62
                                 },
                                 "end": {
                                     "line": 1,
-                                    "column": 76
+                                    "column": 76,
+                                    "index": 76
                                 }
                             },
-                            "type": "NewExpression",
+                            "leadingComments": [],
+                            "trailingComments": [],
                             "callee": {
-                                "range": [
-                                    66,
-                                    69
-                                ],
-                                "loc": {
+                                "type": "Identifier",
+                                "location": {
                                     "start": {
                                         "line": 1,
-                                        "column": 66
+                                        "column": 66,
+                                        "index": 66
                                     },
                                     "end": {
                                         "line": 1,
-                                        "column": 69
+                                        "column": 69,
+                                        "index": 69
                                     }
                                 },
-                                "type": "Identifier",
+                                "leadingComments": [],
+                                "trailingComments": [],
                                 "name": "Row"
                             },
                             "arguments": [
                                 {
-                                    "range": [
-                                        70,
-                                        75
-                                    ],
-                                    "loc": {
+                                    "type": "Identifier",
+                                    "location": {
                                         "start": {
                                             "line": 1,
-                                            "column": 70
+                                            "column": 70,
+                                            "index": 70
                                         },
                                         "end": {
                                             "line": 1,
-                                            "column": 75
+                                            "column": 75,
+                                            "index": 75
                                         }
                                     },
-                                    "type": "Identifier",
+                                    "leadingComments": [],
+                                    "trailingComments": [],
                                     "name": "index"
                                 }
                             ]

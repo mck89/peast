@@ -1,92 +1,93 @@
 {
     "type": "Program",
+    "location": {
+        "start": {
+            "line": 1,
+            "column": 0,
+            "index": 0
+        },
+        "end": {
+            "line": 1,
+            "column": 4,
+            "index": 4
+        }
+    },
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
             "type": "ExpressionStatement",
-            "expression": {
-                "type": "BinaryExpression",
-                "operator": "**",
-                "left": {
-                    "type": "Identifier",
-                    "name": "a",
-                    "range": [
-                        0,
-                        1
-                    ],
-                    "loc": {
-                        "start": {
-                            "line": 1,
-                            "column": 0
-                        },
-                        "end": {
-                            "line": 1,
-                            "column": 1
-                        }
-                    }
-                },
-                "right": {
-                    "type": "Literal",
-                    "value": 2,
-                    "raw": "2",
-                    "range": [
-                        3,
-                        4
-                    ],
-                    "loc": {
-                        "start": {
-                            "line": 1,
-                            "column": 3
-                        },
-                        "end": {
-                            "line": 1,
-                            "column": 4
-                        }
-                    }
-                },
-                "range": [
-                    0,
-                    4
-                ],
-                "loc": {
-                    "start": {
-                        "line": 1,
-                        "column": 0
-                    },
-                    "end": {
-                        "line": 1,
-                        "column": 4
-                    }
-                }
-            },
-            "range": [
-                0,
-                4
-            ],
-            "loc": {
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 1,
-                    "column": 4
+                    "column": 4,
+                    "index": 4
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "expression": {
+                "type": "BinaryExpression",
+                "location": {
+                    "start": {
+                        "line": 1,
+                        "column": 0,
+                        "index": 0
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 4,
+                        "index": 4
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "left": {
+                    "type": "Identifier",
+                    "location": {
+                        "start": {
+                            "line": 1,
+                            "column": 0,
+                            "index": 0
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 1,
+                            "index": 1
+                        }
+                    },
+                    "leadingComments": [],
+                    "trailingComments": [],
+                    "name": "a"
+                },
+                "operator": "**",
+                "right": {
+                    "type": "Literal",
+                    "location": {
+                        "start": {
+                            "line": 1,
+                            "column": 3,
+                            "index": 3
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 4,
+                            "index": 4
+                        }
+                    },
+                    "leadingComments": [],
+                    "trailingComments": [],
+                    "value": 2,
+                    "raw": "2",
+                    "format": "decimal"
                 }
             }
         }
     ],
-    "sourceType": "script",
-    "range": [
-        0,
-        4
-    ],
-    "loc": {
-        "start": {
-            "line": 1,
-            "column": 0
-        },
-        "end": {
-            "line": 1,
-            "column": 4
-        }
-    }
+    "sourceType": "script"
 }

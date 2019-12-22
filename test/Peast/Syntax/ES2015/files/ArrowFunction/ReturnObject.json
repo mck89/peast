@@ -1,155 +1,173 @@
 {
-	"type": "Program",
-	"body": [
-	    {
-	        "type": "ExpressionStatement",
-	        "expression": {
-	            "type": "ArrowFunctionExpression",
-	            "id": null,
-	            "params": [
-	                {
-	                    "type": "Identifier",
-	                    "name": "a",
-	                    "range": [
-	                        0,
-	                        1
-	                    ],
-	                    "loc": {
-	                        "start": {
-	                            "line": 1,
-	                            "column": 0
-	                        },
-	                        "end": {
-	                            "line": 1,
-	                            "column": 1
-	                        }
-	                    }
-	                }
-	            ],
-	            "body": {
-	                "type": "ObjectExpression",
-	                "properties": [
-	                    {
-	                        "type": "Property",
-	                        "key": {
-	                            "type": "Identifier",
-	                            "name": "b",
-	                            "range": [
-	                                7,
-	                                8
-	                            ],
-	                            "loc": {
-	                                "start": {
-	                                    "line": 1,
-	                                    "column": 7
-	                                },
-	                                "end": {
-	                                    "line": 1,
-	                                    "column": 8
-	                                }
-	                            }
-	                        },
-	                        "computed": false,
-	                        "value": {
-	                            "type": "Literal",
-	                            "value": 1,
-	                            "raw": "1",
-	                            "range": [
-	                                10,
-	                                11
-	                            ],
-	                            "loc": {
-	                                "start": {
-	                                    "line": 1,
-	                                    "column": 10
-	                                },
-	                                "end": {
-	                                    "line": 1,
-	                                    "column": 11
-	                                }
-	                            }
-	                        },
-	                        "kind": "init",
-	                        "method": false,
-	                        "shorthand": false,
-	                        "range": [
-	                            7,
-	                            11
-	                        ],
-	                        "loc": {
-	                            "start": {
-	                                "line": 1,
-	                                "column": 7
-	                            },
-	                            "end": {
-	                                "line": 1,
-	                                "column": 11
-	                            }
-	                        }
-	                    }
-	                ],
-	                "range": [
-	                    6,
-	                    12
-	                ],
-	                "loc": {
-	                    "start": {
-	                        "line": 1,
-	                        "column": 6
-	                    },
-	                    "end": {
-	                        "line": 1,
-	                        "column": 12
-	                    }
-	                }
-	            },
-	            "generator": false,
-	            "expression": true,
-	            "async": false,
-	            "range": [
-	                0,
-	                13
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 1,
-	                    "column": 0
-	                },
-	                "end": {
-	                    "line": 1,
-	                    "column": 13
-	                }
-	            }
-	        },
-	        "range": [
-	            0,
-	            14
-	        ],
-	        "loc": {
-	            "start": {
-	                "line": 1,
-	                "column": 0
-	            },
-	            "end": {
-	                "line": 1,
-	                "column": 14
-	            }
-	        }
-	    }
-	],
-	"sourceType": "script",
-	"range": [
-	    0,
-	    14
-	],
-	"loc": {
-	    "start": {
-	        "line": 1,
-	        "column": 0
-	    },
-	    "end": {
-	        "line": 1,
-	        "column": 14
-	    }
-	}
+    "type": "Program",
+    "location": {
+        "start": {
+            "line": 1,
+            "column": 0,
+            "index": 0
+        },
+        "end": {
+            "line": 1,
+            "column": 14,
+            "index": 14
+        }
+    },
+    "leadingComments": [],
+    "trailingComments": [],
+    "body": [
+        {
+            "type": "ExpressionStatement",
+            "location": {
+                "start": {
+                    "line": 1,
+                    "column": 0,
+                    "index": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 14,
+                    "index": 14
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "expression": {
+                "type": "ArrowFunctionExpression",
+                "location": {
+                    "start": {
+                        "line": 1,
+                        "column": 0,
+                        "index": 0
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 13,
+                        "index": 13
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "id": null,
+                "params": [
+                    {
+                        "type": "Identifier",
+                        "location": {
+                            "start": {
+                                "line": 1,
+                                "column": 0,
+                                "index": 0
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 1,
+                                "index": 1
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "name": "a"
+                    }
+                ],
+                "body": {
+                    "type": "ParenthesizedExpression",
+                    "location": {
+                        "start": {
+                            "line": 1,
+                            "column": 5,
+                            "index": 5
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 13,
+                            "index": 13
+                        }
+                    },
+                    "leadingComments": [],
+                    "trailingComments": [],
+                    "expression": {
+                        "type": "ObjectExpression",
+                        "location": {
+                            "start": {
+                                "line": 1,
+                                "column": 6,
+                                "index": 6
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 12,
+                                "index": 12
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "properties": [
+                            {
+                                "type": "Property",
+                                "location": {
+                                    "start": {
+                                        "line": 1,
+                                        "column": 7,
+                                        "index": 7
+                                    },
+                                    "end": {
+                                        "line": 1,
+                                        "column": 11,
+                                        "index": 11
+                                    }
+                                },
+                                "leadingComments": [],
+                                "trailingComments": [],
+                                "key": {
+                                    "type": "Identifier",
+                                    "location": {
+                                        "start": {
+                                            "line": 1,
+                                            "column": 7,
+                                            "index": 7
+                                        },
+                                        "end": {
+                                            "line": 1,
+                                            "column": 8,
+                                            "index": 8
+                                        }
+                                    },
+                                    "leadingComments": [],
+                                    "trailingComments": [],
+                                    "name": "b"
+                                },
+                                "value": {
+                                    "type": "Literal",
+                                    "location": {
+                                        "start": {
+                                            "line": 1,
+                                            "column": 10,
+                                            "index": 10
+                                        },
+                                        "end": {
+                                            "line": 1,
+                                            "column": 11,
+                                            "index": 11
+                                        }
+                                    },
+                                    "leadingComments": [],
+                                    "trailingComments": [],
+                                    "value": 1,
+                                    "raw": "1",
+                                    "format": "decimal"
+                                },
+                                "kind": "init",
+                                "method": false,
+                                "shorthand": false,
+                                "computed": false
+                            }
+                        ]
+                    }
+                },
+                "generator": false,
+                "async": false,
+                "expression": true
+            }
+        }
+    ],
+    "sourceType": "script"
 }

@@ -1,133 +1,131 @@
 {
-    "range": [
-        0,
-        43
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 2,
-            "column": 23
+            "column": 23,
+            "index": 43
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                19
-            ],
-            "loc": {
+            "type": "FunctionDeclaration",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 1,
-                    "column": 19
+                    "column": 19,
+                    "index": 19
                 }
             },
-            "type": "FunctionDeclaration",
+            "leadingComments": [],
+            "trailingComments": [],
             "id": {
-                "range": [
-                    9,
-                    15
-                ],
-                "loc": {
+                "type": "Identifier",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 9
+                        "column": 9,
+                        "index": 9
                     },
                     "end": {
                         "line": 1,
-                        "column": 15
+                        "column": 15,
+                        "index": 15
                     }
                 },
-                "type": "Identifier",
+                "leadingComments": [],
+                "trailingComments": [],
                 "name": "simple"
             },
             "params": [],
-            "defaults": [],
             "body": {
-                "range": [
-                    17,
-                    19
-                ],
-                "loc": {
+                "type": "BlockStatement",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 17
+                        "column": 17,
+                        "index": 17
                     },
                     "end": {
                         "line": 1,
-                        "column": 19
+                        "column": 19,
+                        "index": 19
                     }
                 },
-                "type": "BlockStatement",
+                "leadingComments": [],
+                "trailingComments": [],
                 "body": []
             },
             "generator": false,
-            "expression": false
+            "async": false
         },
         {
-            "range": [
-                20,
-                43
-            ],
-            "loc": {
+            "type": "FunctionDeclaration",
+            "location": {
                 "start": {
                     "line": 2,
-                    "column": 0
+                    "column": 0,
+                    "index": 20
                 },
                 "end": {
                     "line": 2,
-                    "column": 23
+                    "column": 23,
+                    "index": 43
                 }
             },
-            "type": "FunctionDeclaration",
+            "leadingComments": [],
+            "trailingComments": [],
             "id": {
-                "range": [
-                    30,
-                    39
-                ],
-                "loc": {
+                "type": "Identifier",
+                "location": {
                     "start": {
                         "line": 2,
-                        "column": 10
+                        "column": 10,
+                        "index": 30
                     },
                     "end": {
                         "line": 2,
-                        "column": 19
+                        "column": 19,
+                        "index": 39
                     }
                 },
-                "type": "Identifier",
+                "leadingComments": [],
+                "trailingComments": [],
                 "name": "generator"
             },
             "params": [],
-            "defaults": [],
             "body": {
-                "range": [
-                    41,
-                    43
-                ],
-                "loc": {
+                "type": "BlockStatement",
+                "location": {
                     "start": {
                         "line": 2,
-                        "column": 21
+                        "column": 21,
+                        "index": 41
                     },
                     "end": {
                         "line": 2,
-                        "column": 23
+                        "column": 23,
+                        "index": 43
                     }
                 },
-                "type": "BlockStatement",
+                "leadingComments": [],
+                "trailingComments": [],
                 "body": []
             },
             "generator": true,
-            "expression": false
+            "async": false
         }
     ],
     "sourceType": "script"

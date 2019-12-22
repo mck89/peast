@@ -1,91 +1,107 @@
 {
-    "range": [
-        0,
-        16
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 1,
-            "column": 16
+            "column": 16,
+            "index": 16
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                16
-            ],
-            "loc": {
+            "type": "ExpressionStatement",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 1,
-                    "column": 16
+                    "column": 16,
+                    "index": 16
                 }
             },
-            "type": "ExpressionStatement",
+            "leadingComments": [],
+            "trailingComments": [],
             "expression": {
-                "range": [
-                    0,
-                    16
-                ],
-                "loc": {
+                "type": "CallExpression",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 0
+                        "column": 0,
+                        "index": 0
                     },
                     "end": {
                         "line": 1,
-                        "column": 16
+                        "column": 16,
+                        "index": 16
                     }
                 },
-                "type": "CallExpression",
+                "leadingComments": [],
+                "trailingComments": [],
                 "callee": {
-                    "range": [
-                        1,
-                        13
-                    ],
-                    "loc": {
+                    "type": "ParenthesizedExpression",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 1
+                            "column": 0,
+                            "index": 0
                         },
                         "end": {
                             "line": 1,
-                            "column": 13
+                            "column": 14,
+                            "index": 14
                         }
                     },
-                    "type": "FunctionExpression",
-                    "id": null,
-                    "params": [],
-                    "defaults": [],
-                    "body": {
-                        "range": [
-                            11,
-                            13
-                        ],
-                        "loc": {
+                    "leadingComments": [],
+                    "trailingComments": [],
+                    "expression": {
+                        "type": "FunctionExpression",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 11
+                                "column": 1,
+                                "index": 1
                             },
                             "end": {
                                 "line": 1,
-                                "column": 13
+                                "column": 13,
+                                "index": 13
                             }
                         },
-                        "type": "BlockStatement",
-                        "body": []
-                    },
-                    "generator": false,
-                    "expression": false
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "id": null,
+                        "params": [],
+                        "body": {
+                            "type": "BlockStatement",
+                            "location": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 11,
+                                    "index": 11
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 13,
+                                    "index": 13
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "body": []
+                        },
+                        "generator": false,
+                        "async": false
+                    }
                 },
                 "arguments": []
             }

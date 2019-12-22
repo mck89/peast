@@ -3,13 +3,6 @@ namespace Peast\test;
 
 abstract class TestParser extends TestBase
 { 
-    protected $tokensTestProps = array("type", "value", "location");
-    
-    protected $tokensIdentifiersAsKeywords = array(
-        "implements", "interface", "package", "private", "protected", "public",
-        "static"
-    );
-    
     protected function compareJSFile($tree, $compareFile, $tokens = false)
     {
         $compareTree = json_decode(file_get_contents($compareFile));
@@ -24,16 +17,8 @@ abstract class TestParser extends TestBase
         switch ($objType)
         {
             case "object":
-                if (isset($compare->type)) {
-                    $this->fixComparison($compare, $tokens);
-                }
                 foreach ($compare as $k => $v) {
-                    if ($tokens && isset($compare->type) && !in_array($k, $this->tokensTestProps)) {
-                        continue;
-                    }
-                    $objValue = $obj->$k;
-                    $objValue = $this->fixParenthesizedExpression($objValue);
-                    $this->objectTestRecursive($v, $objValue, $tokens, "$message" . "->$k");
+                    $this->objectTestRecursive($v, $obj->$k, $tokens, "$message" . "->$k");
                 }
             break;
             case "array":
@@ -47,80 +32,7 @@ abstract class TestParser extends TestBase
             break;
         }
     }
-    
-    protected function fixParenthesizedExpression($val)
-    {
-        if (is_object($val) && isset($val->type) &&
-            $val->type === "ParenthesizedExpression") {
-            return $this->fixParenthesizedExpression($val->expression);
-        }
-        return $val;
-    }
-    
-    protected function fixComparison($compare, $tokens)
-    {
-        //Fix location
-        if (isset($compare->loc)) {
-            $compare->location = $compare->loc;
-            $compare->location->start->index = $compare->range[0];
-            $compare->location->end->index = $compare->range[1];
-            unset($compare->loc);
-            unset($compare->range);
-        }
-        
-        //Fix properties
-        switch ($compare->type) {
-            case "TryStatement":
-                unset($compare->guardedHandlers);
-                unset($compare->handlers);
-            break;
-            case "FunctionDeclaration":
-            case "FunctionExpression":
-            case "ArrowFunctionExpression":
-                for ($i = 0; $i < count($compare->params); $i++) {
-                    if (!isset($compare->defaults[$i]) ||
-                        $compare->defaults[$i] === null) {
-                        continue;
-                    }
-                    $compare->params[$i] = (object) array(
-                        "type" => "AssignmentPattern",
-                        "left" => $compare->params[$i],
-                        "right" => $compare->defaults[$i]
-                    );
-                }
-                unset($compare->defaults);
-                if ($compare->type !== "ArrowFunctionExpression") {
-                    unset($compare->expression);
-                }
-            break;
-            case "TemplateElement":
-                $compare->rawValue = $compare->value->raw;
-                $compare->value = $compare->value->cooked;
-            break;
-            case "Literal":
-                if (isset($compare->regex)) {
-                    $compare->type = "RegExpLiteral";
-                    $compare->pattern = $compare->regex->pattern;
-                    $compare->flags = $compare->regex->flags;
-                    unset($compare->regex);
-                    $compare->value = $compare->raw;
-                }
-            break;
-            case "ForInStatement":
-                unset($compare->each);
-            break;
-            case "AssignmentPattern":
-                unset($compare->operator);
-            break;
-            case "Identifier":
-                if ($tokens &&
-                    in_array($compare->value, $this->tokensIdentifiersAsKeywords)) {
-                    $compare->type = "Keyword";
-                }
-            break;
-        }
-    }
-    
+
     public function instanceParser($sourceFile)
     {
         $module = strpos($sourceFile, "modules") !== false;

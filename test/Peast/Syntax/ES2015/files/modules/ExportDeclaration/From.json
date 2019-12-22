@@ -1,54 +1,55 @@
 {
-    "range": [
-        0,
-        26
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 1,
-            "column": 26
+            "column": 26,
+            "index": 26
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                26
-            ],
-            "loc": {
+            "type": "ExportAllDeclaration",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 1,
-                    "column": 26
+                    "column": 26,
+                    "index": 26
                 }
             },
-            "type": "ExportAllDeclaration",
+            "leadingComments": [],
+            "trailingComments": [],
             "source": {
-                "range": [
-                    14,
-                    25
-                ],
-                "loc": {
+                "type": "Literal",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 14
+                        "column": 14,
+                        "index": 14
                     },
                     "end": {
                         "line": 1,
-                        "column": 25
+                        "column": 25,
+                        "index": 25
                     }
                 },
-                "type": "Literal",
+                "leadingComments": [],
+                "trailingComments": [],
                 "value": "my-module",
-                "raw": "\"my-module\""
+                "raw": "\"my-module\"",
+                "format": "double"
             }
         }
     ],

@@ -2,18 +2,16 @@
     {
         "type": "String",
         "value": "\"this is a \\\"test\\\"\\r\\n\\t\\\\\\\n\\uC15E\\u{1234}\\xC0\\765\\052\"",
-        "range": [
-            0,
-            56
-        ],
-        "loc": {
+        "location": {
             "start": {
                 "line": 1,
-                "column": 0
+                "column": 0,
+                "index": 0
             },
             "end": {
                 "line": 2,
-                "column": 27
+                "column": 27,
+                "index": 56
             }
         }
     }

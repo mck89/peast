@@ -1,68 +1,68 @@
 {
-    "range": [
-        10,
-        20
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 10
+            "column": 10,
+            "index": 10
         },
         "end": {
             "line": 1,
-            "column": 20
+            "column": 20,
+            "index": 20
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                10,
-                20
-            ],
-            "loc": {
+            "type": "ExpressionStatement",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 10
+                    "column": 10,
+                    "index": 10
                 },
                 "end": {
                     "line": 1,
-                    "column": 20
+                    "column": 20,
+                    "index": 20
                 }
             },
-            "type": "ExpressionStatement",
+            "leadingComments": [],
+            "trailingComments": [],
             "expression": {
-                "range": [
-                    10,
-                    20
-                ],
-                "loc": {
+                "type": "CallExpression",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 10
+                        "column": 10,
+                        "index": 10
                     },
                     "end": {
                         "line": 1,
-                        "column": 20
+                        "column": 20,
+                        "index": 20
                     }
                 },
-                "type": "CallExpression",
+                "leadingComments": [],
+                "trailingComments": [],
                 "callee": {
-                    "range": [
-                        10,
-                        14
-                    ],
-                    "loc": {
+                    "type": "Identifier",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 10
+                            "column": 10,
+                            "index": 10
                         },
                         "end": {
                             "line": 1,
-                            "column": 14
+                            "column": 14,
+                            "index": 14
                         }
                     },
-                    "type": "Identifier",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "name": "test"
                 },
                 "arguments": []

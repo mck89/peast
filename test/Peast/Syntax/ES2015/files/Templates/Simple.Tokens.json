@@ -2,18 +2,16 @@
     {
         "type": "Template",
         "value": "`test\ntest`",
-        "range": [
-            0,
-            11
-        ],
-        "loc": {
+        "location": {
             "start": {
                 "line": 1,
-                "column": 0
+                "column": 0,
+                "index": 0
             },
             "end": {
                 "line": 2,
-                "column": 5
+                "column": 5,
+                "index": 11
             }
         }
     }

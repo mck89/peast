@@ -1,150 +1,149 @@
 {
-	"type": "Program",
-	"body": [
-	    {
-	        "type": "FunctionDeclaration",
-	        "id": {
-	            "type": "Identifier",
-	            "name": "test",
-	            "range": [
-	                15,
-	                19
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 1,
-	                    "column": 15
-	                },
-	                "end": {
-	                    "line": 1,
-	                    "column": 19
-	                }
-	            }
-	        },
-	        "params": [],
-	        "body": {
-	            "type": "BlockStatement",
-	            "body": [
-	                {
-	                    "type": "ForOfStatement",
-	                    "await": true,
-	                    "left": {
-	                        "type": "Identifier",
-	                        "name": "a",
-	                        "range": [
-	                            39,
-	                            40
-	                        ],
-	                        "loc": {
-	                            "start": {
-	                                "line": 2,
-	                                "column": 15
-	                            },
-	                            "end": {
-	                                "line": 2,
-	                                "column": 16
-	                            }
-	                        }
-	                    },
-	                    "right": {
-	                        "type": "Identifier",
-	                        "name": "b",
-	                        "range": [
-	                            44,
-	                            45
-	                        ],
-	                        "loc": {
-	                            "start": {
-	                                "line": 2,
-	                                "column": 20
-	                            },
-	                            "end": {
-	                                "line": 2,
-	                                "column": 21
-	                            }
-	                        }
-	                    },
-	                    "body": {
-	                        "type": "BlockStatement",
-	                        "body": [],
-	                        "range": [
-	                            47,
-	                            49
-	                        ],
-	                        "loc": {
-	                            "start": {
-	                                "line": 2,
-	                                "column": 23
-	                            },
-	                            "end": {
-	                                "line": 2,
-	                                "column": 25
-	                            }
-	                        }
-	                    },
-	                    "range": [
-	                        28,
-	                        49
-	                    ],
-	                    "loc": {
-	                        "start": {
-	                            "line": 2,
-	                            "column": 4
-	                        },
-	                        "end": {
-	                            "line": 2,
-	                            "column": 25
-	                        }
-	                    }
-	                }
-	            ],
-	            "range": [
-	                22,
-	                51
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 1,
-	                    "column": 22
-	                },
-	                "end": {
-	                    "line": 3,
-	                    "column": 1
-	                }
-	            }
-	        },
-	        "generator": false,
-	        "expression": false,
-	        "async": true,
-	        "range": [
-	            0,
-	            51
-	        ],
-	        "loc": {
-	            "start": {
-	                "line": 1,
-	                "column": 0
-	            },
-	            "end": {
-	                "line": 3,
-	                "column": 1
-	            }
-	        }
-	    }
-	],
-	"sourceType": "script",
-	"range": [
-	    0,
-	    51
-	],
-	"loc": {
-	    "start": {
-	        "line": 1,
-	        "column": 0
-	    },
-	    "end": {
-	        "line": 3,
-	        "column": 1
-	    }
-	}
+    "type": "Program",
+    "location": {
+        "start": {
+            "line": 1,
+            "column": 0,
+            "index": 0
+        },
+        "end": {
+            "line": 3,
+            "column": 1,
+            "index": 51
+        }
+    },
+    "leadingComments": [],
+    "trailingComments": [],
+    "body": [
+        {
+            "type": "FunctionDeclaration",
+            "location": {
+                "start": {
+                    "line": 1,
+                    "column": 0,
+                    "index": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 1,
+                    "index": 51
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "id": {
+                "type": "Identifier",
+                "location": {
+                    "start": {
+                        "line": 1,
+                        "column": 15,
+                        "index": 15
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 19,
+                        "index": 19
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "name": "test"
+            },
+            "params": [],
+            "body": {
+                "type": "BlockStatement",
+                "location": {
+                    "start": {
+                        "line": 1,
+                        "column": 22,
+                        "index": 22
+                    },
+                    "end": {
+                        "line": 3,
+                        "column": 1,
+                        "index": 51
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "body": [
+                    {
+                        "type": "ForOfStatement",
+                        "location": {
+                            "start": {
+                                "line": 2,
+                                "column": 4,
+                                "index": 28
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 25,
+                                "index": 49
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "left": {
+                            "type": "Identifier",
+                            "location": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 15,
+                                    "index": 39
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 16,
+                                    "index": 40
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "name": "a"
+                        },
+                        "right": {
+                            "type": "Identifier",
+                            "location": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 20,
+                                    "index": 44
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 21,
+                                    "index": 45
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "name": "b"
+                        },
+                        "body": {
+                            "type": "BlockStatement",
+                            "location": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 23,
+                                    "index": 47
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 25,
+                                    "index": 49
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "body": []
+                        },
+                        "await": true
+                    }
+                ]
+            },
+            "generator": false,
+            "async": true
+        }
+    ],
+    "sourceType": "script"
 }

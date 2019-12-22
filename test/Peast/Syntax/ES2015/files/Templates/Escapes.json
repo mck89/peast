@@ -1,74 +1,72 @@
 {
-    "range": [
-        0,
-        36
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 1,
-            "column": 36
+            "column": 36,
+            "index": 36
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                36
-            ],
-            "loc": {
+            "type": "ExpressionStatement",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 1,
-                    "column": 36
+                    "column": 36,
+                    "index": 36
                 }
             },
-            "type": "ExpressionStatement",
+            "leadingComments": [],
+            "trailingComments": [],
             "expression": {
-                "range": [
-                    0,
-                    36
-                ],
-                "loc": {
+                "type": "TemplateLiteral",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 0
+                        "column": 0,
+                        "index": 0
                     },
                     "end": {
                         "line": 1,
-                        "column": 36
+                        "column": 36,
+                        "index": 36
                     }
                 },
-                "type": "TemplateLiteral",
+                "leadingComments": [],
+                "trailingComments": [],
                 "quasis": [
                     {
-                        "range": [
-                            0,
-                            36
-                        ],
-                        "loc": {
+                        "type": "TemplateElement",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 0
+                                "column": 0,
+                                "index": 0
                             },
                             "end": {
                                 "line": 1,
-                                "column": 36
+                                "column": 36,
+                                "index": 36
                             }
                         },
-                        "type": "TemplateElement",
-                        "value": {
-                            "raw": "test\\${fn()}\\n\\ttest\\`\\u0042\\u{FF}",
-                            "cooked": "test${fn()}\n\ttest`Bÿ"
-                        },
-                        "tail": true
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "value": "test${fn()}\n\ttest`B\u00ff",
+                        "tail": true,
+                        "rawValue": "test\\${fn()}\\n\\ttest\\`\\u0042\\u{FF}"
                     }
                 ],
                 "expressions": []

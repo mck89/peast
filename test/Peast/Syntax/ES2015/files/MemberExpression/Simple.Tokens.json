@@ -2,54 +2,48 @@
     {
         "type": "Identifier",
         "value": "foo",
-        "range": [
-            0,
-            3
-        ],
-        "loc": {
+        "location": {
             "start": {
                 "line": 1,
-                "column": 0
+                "column": 0,
+                "index": 0
             },
             "end": {
                 "line": 1,
-                "column": 3
+                "column": 3,
+                "index": 3
             }
         }
     },
     {
         "type": "Punctuator",
         "value": ".",
-        "range": [
-            3,
-            4
-        ],
-        "loc": {
+        "location": {
             "start": {
                 "line": 1,
-                "column": 3
+                "column": 3,
+                "index": 3
             },
             "end": {
                 "line": 1,
-                "column": 4
+                "column": 4,
+                "index": 4
             }
         }
     },
     {
         "type": "Identifier",
         "value": "bar",
-        "range": [
-            4,
-            7
-        ],
-        "loc": {
+        "location": {
             "start": {
                 "line": 1,
-                "column": 4
+                "column": 4,
+                "index": 4
             },
             "end": {
                 "line": 1,
-                "column": 7
+                "column": 7,
+                "index": 7
             }
         }
     }

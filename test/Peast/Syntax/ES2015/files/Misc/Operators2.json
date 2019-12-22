@@ -1,1531 +1,1572 @@
 {
-    "range": [
-        0,
-        209
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 1,
-            "column": 209
+            "column": 209,
+            "index": 209
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                209
-            ],
-            "loc": {
+            "type": "ExpressionStatement",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 1,
-                    "column": 209
+                    "column": 209,
+                    "index": 209
                 }
             },
-            "type": "ExpressionStatement",
+            "leadingComments": [],
+            "trailingComments": [],
             "expression": {
-                "range": [
-                    0,
-                    209
-                ],
-                "loc": {
+                "type": "LogicalExpression",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 0
+                        "column": 0,
+                        "index": 0
                     },
                     "end": {
                         "line": 1,
-                        "column": 209
+                        "column": 209,
+                        "index": 209
                     }
                 },
-                "type": "LogicalExpression",
-                "operator": "||",
+                "leadingComments": [],
+                "trailingComments": [],
                 "left": {
-                    "range": [
-                        0,
-                        152
-                    ],
-                    "loc": {
+                    "type": "BinaryExpression",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 0
+                            "column": 0,
+                            "index": 0
                         },
                         "end": {
                             "line": 1,
-                            "column": 152
+                            "column": 152,
+                            "index": 152
                         }
                     },
-                    "type": "BinaryExpression",
-                    "operator": "|",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "left": {
-                        "range": [
-                            0,
-                            103
-                        ],
-                        "loc": {
+                        "type": "BinaryExpression",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 0
+                                "column": 0,
+                                "index": 0
                             },
                             "end": {
                                 "line": 1,
-                                "column": 103
+                                "column": 103,
+                                "index": 103
                             }
                         },
-                        "type": "BinaryExpression",
-                        "operator": "|",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "left": {
-                            "range": [
-                                0,
-                                37
-                            ],
-                            "loc": {
+                            "type": "BinaryExpression",
+                            "location": {
                                 "start": {
                                     "line": 1,
-                                    "column": 0
+                                    "column": 0,
+                                    "index": 0
                                 },
                                 "end": {
                                     "line": 1,
-                                    "column": 37
+                                    "column": 37,
+                                    "index": 37
                                 }
                             },
-                            "type": "BinaryExpression",
-                            "operator": "&",
+                            "leadingComments": [],
+                            "trailingComments": [],
                             "left": {
-                                "range": [
-                                    0,
-                                    29
-                                ],
-                                "loc": {
+                                "type": "BinaryExpression",
+                                "location": {
                                     "start": {
                                         "line": 1,
-                                        "column": 0
+                                        "column": 0,
+                                        "index": 0
                                     },
                                     "end": {
                                         "line": 1,
-                                        "column": 29
+                                        "column": 29,
+                                        "index": 29
                                     }
                                 },
-                                "type": "BinaryExpression",
-                                "operator": ">>>",
+                                "leadingComments": [],
+                                "trailingComments": [],
                                 "left": {
-                                    "range": [
-                                        0,
-                                        19
-                                    ],
-                                    "loc": {
+                                    "type": "BinaryExpression",
+                                    "location": {
                                         "start": {
                                             "line": 1,
-                                            "column": 0
+                                            "column": 0,
+                                            "index": 0
                                         },
                                         "end": {
                                             "line": 1,
-                                            "column": 19
+                                            "column": 19,
+                                            "index": 19
                                         }
                                     },
-                                    "type": "BinaryExpression",
-                                    "operator": ">>",
+                                    "leadingComments": [],
+                                    "trailingComments": [],
                                     "left": {
-                                        "range": [
-                                            0,
-                                            10
-                                        ],
-                                        "loc": {
+                                        "type": "BinaryExpression",
+                                        "location": {
                                             "start": {
                                                 "line": 1,
-                                                "column": 0
+                                                "column": 0,
+                                                "index": 0
                                             },
                                             "end": {
                                                 "line": 1,
-                                                "column": 10
+                                                "column": 10,
+                                                "index": 10
                                             }
                                         },
-                                        "type": "BinaryExpression",
-                                        "operator": "<<",
+                                        "leadingComments": [],
+                                        "trailingComments": [],
                                         "left": {
-                                            "range": [
-                                                0,
-                                                1
-                                            ],
-                                            "loc": {
-                                                "start": {
-                                                    "line": 1,
-                                                    "column": 0
-                                                },
-                                                "end": {
-                                                    "line": 1,
-                                                    "column": 1
-                                                }
-                                            },
                                             "type": "Literal",
-                                            "value": 1,
-                                            "raw": "1"
-                                        },
-                                        "right": {
-                                            "range": [
-                                                5,
-                                                10
-                                            ],
-                                            "loc": {
+                                            "location": {
                                                 "start": {
                                                     "line": 1,
-                                                    "column": 5
+                                                    "column": 0,
+                                                    "index": 0
                                                 },
                                                 "end": {
                                                     "line": 1,
-                                                    "column": 10
+                                                    "column": 1,
+                                                    "index": 1
                                                 }
                                             },
+                                            "leadingComments": [],
+                                            "trailingComments": [],
+                                            "value": 1,
+                                            "raw": "1",
+                                            "format": "decimal"
+                                        },
+                                        "operator": "<<",
+                                        "right": {
                                             "type": "BinaryExpression",
-                                            "operator": "+",
-                                            "left": {
-                                                "range": [
-                                                    5,
-                                                    6
-                                                ],
-                                                "loc": {
-                                                    "start": {
-                                                        "line": 1,
-                                                        "column": 5
-                                                    },
-                                                    "end": {
-                                                        "line": 1,
-                                                        "column": 6
-                                                    }
+                                            "location": {
+                                                "start": {
+                                                    "line": 1,
+                                                    "column": 5,
+                                                    "index": 5
                                                 },
-                                                "type": "Literal",
-                                                "value": 2,
-                                                "raw": "2"
+                                                "end": {
+                                                    "line": 1,
+                                                    "column": 10,
+                                                    "index": 10
+                                                }
                                             },
-                                            "right": {
-                                                "range": [
-                                                    9,
-                                                    10
-                                                ],
-                                                "loc": {
+                                            "leadingComments": [],
+                                            "trailingComments": [],
+                                            "left": {
+                                                "type": "Literal",
+                                                "location": {
                                                     "start": {
                                                         "line": 1,
-                                                        "column": 9
+                                                        "column": 5,
+                                                        "index": 5
                                                     },
                                                     "end": {
                                                         "line": 1,
-                                                        "column": 10
+                                                        "column": 6,
+                                                        "index": 6
                                                     }
                                                 },
+                                                "leadingComments": [],
+                                                "trailingComments": [],
+                                                "value": 2,
+                                                "raw": "2",
+                                                "format": "decimal"
+                                            },
+                                            "operator": "+",
+                                            "right": {
                                                 "type": "Literal",
+                                                "location": {
+                                                    "start": {
+                                                        "line": 1,
+                                                        "column": 9,
+                                                        "index": 9
+                                                    },
+                                                    "end": {
+                                                        "line": 1,
+                                                        "column": 10,
+                                                        "index": 10
+                                                    }
+                                                },
+                                                "leadingComments": [],
+                                                "trailingComments": [],
                                                 "value": 3,
-                                                "raw": "3"
+                                                "raw": "3",
+                                                "format": "decimal"
                                             }
                                         }
                                     },
+                                    "operator": ">>",
                                     "right": {
-                                        "range": [
-                                            14,
-                                            19
-                                        ],
-                                        "loc": {
+                                        "type": "BinaryExpression",
+                                        "location": {
                                             "start": {
                                                 "line": 1,
-                                                "column": 14
+                                                "column": 14,
+                                                "index": 14
                                             },
                                             "end": {
                                                 "line": 1,
-                                                "column": 19
+                                                "column": 19,
+                                                "index": 19
                                             }
                                         },
-                                        "type": "BinaryExpression",
-                                        "operator": "-",
+                                        "leadingComments": [],
+                                        "trailingComments": [],
                                         "left": {
-                                            "range": [
-                                                14,
-                                                15
-                                            ],
-                                            "loc": {
+                                            "type": "Literal",
+                                            "location": {
                                                 "start": {
                                                     "line": 1,
-                                                    "column": 14
+                                                    "column": 14,
+                                                    "index": 14
                                                 },
                                                 "end": {
                                                     "line": 1,
-                                                    "column": 15
+                                                    "column": 15,
+                                                    "index": 15
                                                 }
                                             },
-                                            "type": "Literal",
+                                            "leadingComments": [],
+                                            "trailingComments": [],
                                             "value": 4,
-                                            "raw": "4"
+                                            "raw": "4",
+                                            "format": "decimal"
                                         },
+                                        "operator": "-",
                                         "right": {
-                                            "range": [
-                                                18,
-                                                19
-                                            ],
-                                            "loc": {
+                                            "type": "Literal",
+                                            "location": {
                                                 "start": {
                                                     "line": 1,
-                                                    "column": 18
+                                                    "column": 18,
+                                                    "index": 18
                                                 },
                                                 "end": {
                                                     "line": 1,
-                                                    "column": 19
+                                                    "column": 19,
+                                                    "index": 19
                                                 }
                                             },
-                                            "type": "Literal",
+                                            "leadingComments": [],
+                                            "trailingComments": [],
                                             "value": 5,
-                                            "raw": "5"
+                                            "raw": "5",
+                                            "format": "decimal"
                                         }
                                     }
                                 },
+                                "operator": ">>>",
                                 "right": {
-                                    "range": [
-                                        24,
-                                        29
-                                    ],
-                                    "loc": {
+                                    "type": "BinaryExpression",
+                                    "location": {
                                         "start": {
                                             "line": 1,
-                                            "column": 24
+                                            "column": 24,
+                                            "index": 24
                                         },
                                         "end": {
                                             "line": 1,
-                                            "column": 29
+                                            "column": 29,
+                                            "index": 29
                                         }
                                     },
-                                    "type": "BinaryExpression",
-                                    "operator": "*",
+                                    "leadingComments": [],
+                                    "trailingComments": [],
                                     "left": {
-                                        "range": [
-                                            24,
-                                            25
-                                        ],
-                                        "loc": {
+                                        "type": "Literal",
+                                        "location": {
                                             "start": {
                                                 "line": 1,
-                                                "column": 24
+                                                "column": 24,
+                                                "index": 24
                                             },
                                             "end": {
                                                 "line": 1,
-                                                "column": 25
+                                                "column": 25,
+                                                "index": 25
                                             }
                                         },
-                                        "type": "Literal",
+                                        "leadingComments": [],
+                                        "trailingComments": [],
                                         "value": 6,
-                                        "raw": "6"
+                                        "raw": "6",
+                                        "format": "decimal"
                                     },
+                                    "operator": "*",
                                     "right": {
-                                        "range": [
-                                            28,
-                                            29
-                                        ],
-                                        "loc": {
+                                        "type": "Literal",
+                                        "location": {
                                             "start": {
                                                 "line": 1,
-                                                "column": 28
+                                                "column": 28,
+                                                "index": 28
                                             },
                                             "end": {
                                                 "line": 1,
-                                                "column": 29
+                                                "column": 29,
+                                                "index": 29
                                             }
                                         },
-                                        "type": "Literal",
+                                        "leadingComments": [],
+                                        "trailingComments": [],
                                         "value": 7,
-                                        "raw": "7"
+                                        "raw": "7",
+                                        "format": "decimal"
                                     }
                                 }
                             },
+                            "operator": "&",
                             "right": {
-                                "range": [
-                                    32,
-                                    37
-                                ],
-                                "loc": {
+                                "type": "BinaryExpression",
+                                "location": {
                                     "start": {
                                         "line": 1,
-                                        "column": 32
+                                        "column": 32,
+                                        "index": 32
                                     },
                                     "end": {
                                         "line": 1,
-                                        "column": 37
+                                        "column": 37,
+                                        "index": 37
                                     }
                                 },
-                                "type": "BinaryExpression",
-                                "operator": "/",
+                                "leadingComments": [],
+                                "trailingComments": [],
                                 "left": {
-                                    "range": [
-                                        32,
-                                        33
-                                    ],
-                                    "loc": {
+                                    "type": "Literal",
+                                    "location": {
                                         "start": {
                                             "line": 1,
-                                            "column": 32
+                                            "column": 32,
+                                            "index": 32
                                         },
                                         "end": {
                                             "line": 1,
-                                            "column": 33
+                                            "column": 33,
+                                            "index": 33
                                         }
                                     },
-                                    "type": "Literal",
+                                    "leadingComments": [],
+                                    "trailingComments": [],
                                     "value": 8,
-                                    "raw": "8"
+                                    "raw": "8",
+                                    "format": "decimal"
                                 },
+                                "operator": "\/",
                                 "right": {
-                                    "range": [
-                                        36,
-                                        37
-                                    ],
-                                    "loc": {
+                                    "type": "Literal",
+                                    "location": {
                                         "start": {
                                             "line": 1,
-                                            "column": 36
+                                            "column": 36,
+                                            "index": 36
                                         },
                                         "end": {
                                             "line": 1,
-                                            "column": 37
+                                            "column": 37,
+                                            "index": 37
                                         }
                                     },
-                                    "type": "Literal",
+                                    "leadingComments": [],
+                                    "trailingComments": [],
                                     "value": 9,
-                                    "raw": "9"
+                                    "raw": "9",
+                                    "format": "decimal"
                                 }
                             }
                         },
+                        "operator": "|",
                         "right": {
-                            "range": [
-                                40,
-                                103
-                            ],
-                            "loc": {
+                            "type": "BinaryExpression",
+                            "location": {
                                 "start": {
                                     "line": 1,
-                                    "column": 40
+                                    "column": 40,
+                                    "index": 40
                                 },
                                 "end": {
                                     "line": 1,
-                                    "column": 103
+                                    "column": 103,
+                                    "index": 103
                                 }
                             },
-                            "type": "BinaryExpression",
-                            "operator": "^",
+                            "leadingComments": [],
+                            "trailingComments": [],
                             "left": {
-                                "range": [
-                                    40,
-                                    76
-                                ],
-                                "loc": {
+                                "type": "BinaryExpression",
+                                "location": {
                                     "start": {
                                         "line": 1,
-                                        "column": 40
+                                        "column": 40,
+                                        "index": 40
                                     },
                                     "end": {
                                         "line": 1,
-                                        "column": 76
+                                        "column": 76,
+                                        "index": 76
                                     }
                                 },
-                                "type": "BinaryExpression",
-                                "operator": "^",
+                                "leadingComments": [],
+                                "trailingComments": [],
                                 "left": {
-                                    "range": [
-                                        40,
-                                        42
-                                    ],
-                                    "loc": {
-                                        "start": {
-                                            "line": 1,
-                                            "column": 40
-                                        },
-                                        "end": {
-                                            "line": 1,
-                                            "column": 42
-                                        }
-                                    },
                                     "type": "Literal",
-                                    "value": 10,
-                                    "raw": "10"
-                                },
-                                "right": {
-                                    "range": [
-                                        46,
-                                        76
-                                    ],
-                                    "loc": {
+                                    "location": {
                                         "start": {
                                             "line": 1,
-                                            "column": 46
+                                            "column": 40,
+                                            "index": 40
                                         },
                                         "end": {
                                             "line": 1,
-                                            "column": 76
+                                            "column": 42,
+                                            "index": 42
                                         }
                                     },
+                                    "leadingComments": [],
+                                    "trailingComments": [],
+                                    "value": 10,
+                                    "raw": "10",
+                                    "format": "decimal"
+                                },
+                                "operator": "^",
+                                "right": {
                                     "type": "BinaryExpression",
-                                    "operator": "&",
+                                    "location": {
+                                        "start": {
+                                            "line": 1,
+                                            "column": 46,
+                                            "index": 46
+                                        },
+                                        "end": {
+                                            "line": 1,
+                                            "column": 76,
+                                            "index": 76
+                                        }
+                                    },
+                                    "leadingComments": [],
+                                    "trailingComments": [],
                                     "left": {
-                                        "range": [
-                                            46,
-                                            65
-                                        ],
-                                        "loc": {
+                                        "type": "BinaryExpression",
+                                        "location": {
                                             "start": {
                                                 "line": 1,
-                                                "column": 46
+                                                "column": 46,
+                                                "index": 46
                                             },
                                             "end": {
                                                 "line": 1,
-                                                "column": 65
+                                                "column": 65,
+                                                "index": 65
                                             }
                                         },
-                                        "type": "BinaryExpression",
-                                        "operator": ">=",
+                                        "leadingComments": [],
+                                        "trailingComments": [],
                                         "left": {
-                                            "range": [
-                                                46,
-                                                48
-                                            ],
-                                            "loc": {
-                                                "start": {
-                                                    "line": 1,
-                                                    "column": 46
-                                                },
-                                                "end": {
-                                                    "line": 1,
-                                                    "column": 48
-                                                }
-                                            },
                                             "type": "Literal",
-                                            "value": 11,
-                                            "raw": "11"
-                                        },
-                                        "right": {
-                                            "range": [
-                                                52,
-                                                65
-                                            ],
-                                            "loc": {
+                                            "location": {
                                                 "start": {
                                                     "line": 1,
-                                                    "column": 52
+                                                    "column": 46,
+                                                    "index": 46
                                                 },
                                                 "end": {
                                                     "line": 1,
-                                                    "column": 65
+                                                    "column": 48,
+                                                    "index": 48
                                                 }
                                             },
+                                            "leadingComments": [],
+                                            "trailingComments": [],
+                                            "value": 11,
+                                            "raw": "11",
+                                            "format": "decimal"
+                                        },
+                                        "operator": ">=",
+                                        "right": {
                                             "type": "BinaryExpression",
-                                            "operator": ">>",
-                                            "left": {
-                                                "range": [
-                                                    52,
-                                                    59
-                                                ],
-                                                "loc": {
-                                                    "start": {
-                                                        "line": 1,
-                                                        "column": 52
-                                                    },
-                                                    "end": {
-                                                        "line": 1,
-                                                        "column": 59
-                                                    }
+                                            "location": {
+                                                "start": {
+                                                    "line": 1,
+                                                    "column": 52,
+                                                    "index": 52
                                                 },
-                                                "type": "BinaryExpression",
-                                                "operator": "+",
-                                                "left": {
-                                                    "range": [
-                                                        52,
-                                                        54
-                                                    ],
-                                                    "loc": {
-                                                        "start": {
-                                                            "line": 1,
-                                                            "column": 52
-                                                        },
-                                                        "end": {
-                                                            "line": 1,
-                                                            "column": 54
-                                                        }
-                                                    },
-                                                    "type": "Literal",
-                                                    "value": 12,
-                                                    "raw": "12"
-                                                },
-                                                "right": {
-                                                    "range": [
-                                                        57,
-                                                        59
-                                                    ],
-                                                    "loc": {
-                                                        "start": {
-                                                            "line": 1,
-                                                            "column": 57
-                                                        },
-                                                        "end": {
-                                                            "line": 1,
-                                                            "column": 59
-                                                        }
-                                                    },
-                                                    "type": "Literal",
-                                                    "value": 13,
-                                                    "raw": "13"
+                                                "end": {
+                                                    "line": 1,
+                                                    "column": 65,
+                                                    "index": 65
                                                 }
                                             },
-                                            "right": {
-                                                "range": [
-                                                    63,
-                                                    65
-                                                ],
-                                                "loc": {
+                                            "leadingComments": [],
+                                            "trailingComments": [],
+                                            "left": {
+                                                "type": "BinaryExpression",
+                                                "location": {
                                                     "start": {
                                                         "line": 1,
-                                                        "column": 63
+                                                        "column": 52,
+                                                        "index": 52
                                                     },
                                                     "end": {
                                                         "line": 1,
-                                                        "column": 65
+                                                        "column": 59,
+                                                        "index": 59
                                                     }
                                                 },
+                                                "leadingComments": [],
+                                                "trailingComments": [],
+                                                "left": {
+                                                    "type": "Literal",
+                                                    "location": {
+                                                        "start": {
+                                                            "line": 1,
+                                                            "column": 52,
+                                                            "index": 52
+                                                        },
+                                                        "end": {
+                                                            "line": 1,
+                                                            "column": 54,
+                                                            "index": 54
+                                                        }
+                                                    },
+                                                    "leadingComments": [],
+                                                    "trailingComments": [],
+                                                    "value": 12,
+                                                    "raw": "12",
+                                                    "format": "decimal"
+                                                },
+                                                "operator": "+",
+                                                "right": {
+                                                    "type": "Literal",
+                                                    "location": {
+                                                        "start": {
+                                                            "line": 1,
+                                                            "column": 57,
+                                                            "index": 57
+                                                        },
+                                                        "end": {
+                                                            "line": 1,
+                                                            "column": 59,
+                                                            "index": 59
+                                                        }
+                                                    },
+                                                    "leadingComments": [],
+                                                    "trailingComments": [],
+                                                    "value": 13,
+                                                    "raw": "13",
+                                                    "format": "decimal"
+                                                }
+                                            },
+                                            "operator": ">>",
+                                            "right": {
                                                 "type": "Literal",
+                                                "location": {
+                                                    "start": {
+                                                        "line": 1,
+                                                        "column": 63,
+                                                        "index": 63
+                                                    },
+                                                    "end": {
+                                                        "line": 1,
+                                                        "column": 65,
+                                                        "index": 65
+                                                    }
+                                                },
+                                                "leadingComments": [],
+                                                "trailingComments": [],
                                                 "value": 14,
-                                                "raw": "14"
+                                                "raw": "14",
+                                                "format": "decimal"
                                             }
                                         }
                                     },
+                                    "operator": "&",
                                     "right": {
-                                        "range": [
-                                            68,
-                                            76
-                                        ],
-                                        "loc": {
+                                        "type": "BinaryExpression",
+                                        "location": {
                                             "start": {
                                                 "line": 1,
-                                                "column": 68
+                                                "column": 68,
+                                                "index": 68
                                             },
                                             "end": {
                                                 "line": 1,
-                                                "column": 76
+                                                "column": 76,
+                                                "index": 76
                                             }
                                         },
-                                        "type": "BinaryExpression",
-                                        "operator": "<<",
+                                        "leadingComments": [],
+                                        "trailingComments": [],
                                         "left": {
-                                            "range": [
-                                                68,
-                                                70
-                                            ],
-                                            "loc": {
+                                            "type": "Literal",
+                                            "location": {
                                                 "start": {
                                                     "line": 1,
-                                                    "column": 68
+                                                    "column": 68,
+                                                    "index": 68
                                                 },
                                                 "end": {
                                                     "line": 1,
-                                                    "column": 70
+                                                    "column": 70,
+                                                    "index": 70
                                                 }
                                             },
-                                            "type": "Literal",
+                                            "leadingComments": [],
+                                            "trailingComments": [],
                                             "value": 15,
-                                            "raw": "15"
+                                            "raw": "15",
+                                            "format": "decimal"
                                         },
+                                        "operator": "<<",
                                         "right": {
-                                            "range": [
-                                                74,
-                                                76
-                                            ],
-                                            "loc": {
+                                            "type": "Literal",
+                                            "location": {
                                                 "start": {
                                                     "line": 1,
-                                                    "column": 74
+                                                    "column": 74,
+                                                    "index": 74
                                                 },
                                                 "end": {
                                                     "line": 1,
-                                                    "column": 76
+                                                    "column": 76,
+                                                    "index": 76
                                                 }
                                             },
-                                            "type": "Literal",
+                                            "leadingComments": [],
+                                            "trailingComments": [],
                                             "value": 16,
-                                            "raw": "16"
+                                            "raw": "16",
+                                            "format": "decimal"
                                         }
                                     }
                                 }
                             },
+                            "operator": "^",
                             "right": {
-                                "range": [
-                                    79,
-                                    103
-                                ],
-                                "loc": {
+                                "type": "BinaryExpression",
+                                "location": {
                                     "start": {
                                         "line": 1,
-                                        "column": 79
+                                        "column": 79,
+                                        "index": 79
                                     },
                                     "end": {
                                         "line": 1,
-                                        "column": 103
+                                        "column": 103,
+                                        "index": 103
                                     }
                                 },
-                                "type": "BinaryExpression",
-                                "operator": ">>>",
+                                "leadingComments": [],
+                                "trailingComments": [],
                                 "left": {
-                                    "range": [
-                                        79,
-                                        81
-                                    ],
-                                    "loc": {
-                                        "start": {
-                                            "line": 1,
-                                            "column": 79
-                                        },
-                                        "end": {
-                                            "line": 1,
-                                            "column": 81
-                                        }
-                                    },
                                     "type": "Literal",
-                                    "value": 15,
-                                    "raw": "15"
-                                },
-                                "right": {
-                                    "range": [
-                                        86,
-                                        103
-                                    ],
-                                    "loc": {
+                                    "location": {
                                         "start": {
                                             "line": 1,
-                                            "column": 86
+                                            "column": 79,
+                                            "index": 79
                                         },
                                         "end": {
                                             "line": 1,
-                                            "column": 103
+                                            "column": 81,
+                                            "index": 81
                                         }
                                     },
+                                    "leadingComments": [],
+                                    "trailingComments": [],
+                                    "value": 15,
+                                    "raw": "15",
+                                    "format": "decimal"
+                                },
+                                "operator": ">>>",
+                                "right": {
                                     "type": "BinaryExpression",
-                                    "operator": "+",
-                                    "left": {
-                                        "range": [
-                                            86,
-                                            93
-                                        ],
-                                        "loc": {
-                                            "start": {
-                                                "line": 1,
-                                                "column": 86
-                                            },
-                                            "end": {
-                                                "line": 1,
-                                                "column": 93
-                                            }
+                                    "location": {
+                                        "start": {
+                                            "line": 1,
+                                            "column": 86,
+                                            "index": 86
                                         },
-                                        "type": "BinaryExpression",
-                                        "operator": "/",
-                                        "left": {
-                                            "range": [
-                                                86,
-                                                88
-                                            ],
-                                            "loc": {
-                                                "start": {
-                                                    "line": 1,
-                                                    "column": 86
-                                                },
-                                                "end": {
-                                                    "line": 1,
-                                                    "column": 88
-                                                }
-                                            },
-                                            "type": "Literal",
-                                            "value": 17,
-                                            "raw": "17"
-                                        },
-                                        "right": {
-                                            "range": [
-                                                91,
-                                                93
-                                            ],
-                                            "loc": {
-                                                "start": {
-                                                    "line": 1,
-                                                    "column": 91
-                                                },
-                                                "end": {
-                                                    "line": 1,
-                                                    "column": 93
-                                                }
-                                            },
-                                            "type": "Literal",
-                                            "value": 18,
-                                            "raw": "18"
+                                        "end": {
+                                            "line": 1,
+                                            "column": 103,
+                                            "index": 103
                                         }
                                     },
-                                    "right": {
-                                        "range": [
-                                            96,
-                                            103
-                                        ],
-                                        "loc": {
+                                    "leadingComments": [],
+                                    "trailingComments": [],
+                                    "left": {
+                                        "type": "BinaryExpression",
+                                        "location": {
                                             "start": {
                                                 "line": 1,
-                                                "column": 96
+                                                "column": 86,
+                                                "index": 86
                                             },
                                             "end": {
                                                 "line": 1,
-                                                "column": 103
+                                                "column": 93,
+                                                "index": 93
                                             }
                                         },
-                                        "type": "BinaryExpression",
-                                        "operator": "*",
+                                        "leadingComments": [],
+                                        "trailingComments": [],
                                         "left": {
-                                            "range": [
-                                                96,
-                                                98
-                                            ],
-                                            "loc": {
+                                            "type": "Literal",
+                                            "location": {
                                                 "start": {
                                                     "line": 1,
-                                                    "column": 96
+                                                    "column": 86,
+                                                    "index": 86
                                                 },
                                                 "end": {
                                                     "line": 1,
-                                                    "column": 98
+                                                    "column": 88,
+                                                    "index": 88
                                                 }
                                             },
-                                            "type": "Literal",
-                                            "value": 19,
-                                            "raw": "19"
+                                            "leadingComments": [],
+                                            "trailingComments": [],
+                                            "value": 17,
+                                            "raw": "17",
+                                            "format": "decimal"
                                         },
+                                        "operator": "\/",
                                         "right": {
-                                            "range": [
-                                                101,
-                                                103
-                                            ],
-                                            "loc": {
+                                            "type": "Literal",
+                                            "location": {
                                                 "start": {
                                                     "line": 1,
-                                                    "column": 101
+                                                    "column": 91,
+                                                    "index": 91
                                                 },
                                                 "end": {
                                                     "line": 1,
-                                                    "column": 103
+                                                    "column": 93,
+                                                    "index": 93
                                                 }
                                             },
+                                            "leadingComments": [],
+                                            "trailingComments": [],
+                                            "value": 18,
+                                            "raw": "18",
+                                            "format": "decimal"
+                                        }
+                                    },
+                                    "operator": "+",
+                                    "right": {
+                                        "type": "BinaryExpression",
+                                        "location": {
+                                            "start": {
+                                                "line": 1,
+                                                "column": 96,
+                                                "index": 96
+                                            },
+                                            "end": {
+                                                "line": 1,
+                                                "column": 103,
+                                                "index": 103
+                                            }
+                                        },
+                                        "leadingComments": [],
+                                        "trailingComments": [],
+                                        "left": {
                                             "type": "Literal",
+                                            "location": {
+                                                "start": {
+                                                    "line": 1,
+                                                    "column": 96,
+                                                    "index": 96
+                                                },
+                                                "end": {
+                                                    "line": 1,
+                                                    "column": 98,
+                                                    "index": 98
+                                                }
+                                            },
+                                            "leadingComments": [],
+                                            "trailingComments": [],
+                                            "value": 19,
+                                            "raw": "19",
+                                            "format": "decimal"
+                                        },
+                                        "operator": "*",
+                                        "right": {
+                                            "type": "Literal",
+                                            "location": {
+                                                "start": {
+                                                    "line": 1,
+                                                    "column": 101,
+                                                    "index": 101
+                                                },
+                                                "end": {
+                                                    "line": 1,
+                                                    "column": 103,
+                                                    "index": 103
+                                                }
+                                            },
+                                            "leadingComments": [],
+                                            "trailingComments": [],
                                             "value": 20,
-                                            "raw": "20"
+                                            "raw": "20",
+                                            "format": "decimal"
                                         }
                                     }
                                 }
                             }
                         }
                     },
+                    "operator": "|",
                     "right": {
-                        "range": [
-                            106,
-                            152
-                        ],
-                        "loc": {
+                        "type": "BinaryExpression",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 106
+                                "column": 106,
+                                "index": 106
                             },
                             "end": {
                                 "line": 1,
-                                "column": 152
+                                "column": 152,
+                                "index": 152
                             }
                         },
-                        "type": "BinaryExpression",
-                        "operator": "&",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "left": {
-                            "range": [
-                                106,
-                                142
-                            ],
-                            "loc": {
+                            "type": "BinaryExpression",
+                            "location": {
                                 "start": {
                                     "line": 1,
-                                    "column": 106
+                                    "column": 106,
+                                    "index": 106
                                 },
                                 "end": {
                                     "line": 1,
-                                    "column": 142
+                                    "column": 142,
+                                    "index": 142
                                 }
                             },
-                            "type": "BinaryExpression",
-                            "operator": ">>",
+                            "leadingComments": [],
+                            "trailingComments": [],
                             "left": {
-                                "range": [
-                                    106,
-                                    131
-                                ],
-                                "loc": {
+                                "type": "BinaryExpression",
+                                "location": {
                                     "start": {
                                         "line": 1,
-                                        "column": 106
+                                        "column": 106,
+                                        "index": 106
                                     },
                                     "end": {
                                         "line": 1,
-                                        "column": 131
+                                        "column": 131,
+                                        "index": 131
                                     }
                                 },
-                                "type": "BinaryExpression",
-                                "operator": "<<",
+                                "leadingComments": [],
+                                "trailingComments": [],
                                 "left": {
-                                    "range": [
-                                        106,
-                                        115
-                                    ],
-                                    "loc": {
+                                    "type": "BinaryExpression",
+                                    "location": {
                                         "start": {
                                             "line": 1,
-                                            "column": 106
+                                            "column": 106,
+                                            "index": 106
                                         },
                                         "end": {
                                             "line": 1,
-                                            "column": 115
+                                            "column": 115,
+                                            "index": 115
                                         }
                                     },
-                                    "type": "BinaryExpression",
-                                    "operator": ">>>",
+                                    "leadingComments": [],
+                                    "trailingComments": [],
                                     "left": {
-                                        "range": [
-                                            106,
-                                            108
-                                        ],
-                                        "loc": {
+                                        "type": "Literal",
+                                        "location": {
                                             "start": {
                                                 "line": 1,
-                                                "column": 106
+                                                "column": 106,
+                                                "index": 106
                                             },
                                             "end": {
                                                 "line": 1,
-                                                "column": 108
+                                                "column": 108,
+                                                "index": 108
                                             }
                                         },
-                                        "type": "Literal",
+                                        "leadingComments": [],
+                                        "trailingComments": [],
                                         "value": 21,
-                                        "raw": "21"
+                                        "raw": "21",
+                                        "format": "decimal"
                                     },
+                                    "operator": ">>>",
                                     "right": {
-                                        "range": [
-                                            113,
-                                            115
-                                        ],
-                                        "loc": {
+                                        "type": "Literal",
+                                        "location": {
                                             "start": {
                                                 "line": 1,
-                                                "column": 113
+                                                "column": 113,
+                                                "index": 113
                                             },
                                             "end": {
                                                 "line": 1,
-                                                "column": 115
+                                                "column": 115,
+                                                "index": 115
                                             }
                                         },
-                                        "type": "Literal",
+                                        "leadingComments": [],
+                                        "trailingComments": [],
                                         "value": 22,
-                                        "raw": "22"
+                                        "raw": "22",
+                                        "format": "decimal"
                                     }
                                 },
+                                "operator": "<<",
                                 "right": {
-                                    "range": [
-                                        119,
-                                        131
-                                    ],
-                                    "loc": {
+                                    "type": "BinaryExpression",
+                                    "location": {
                                         "start": {
                                             "line": 1,
-                                            "column": 119
+                                            "column": 119,
+                                            "index": 119
                                         },
                                         "end": {
                                             "line": 1,
-                                            "column": 131
+                                            "column": 131,
+                                            "index": 131
                                         }
                                     },
-                                    "type": "BinaryExpression",
-                                    "operator": "+",
+                                    "leadingComments": [],
+                                    "trailingComments": [],
                                     "left": {
-                                        "range": [
-                                            119,
-                                            121
-                                        ],
-                                        "loc": {
-                                            "start": {
-                                                "line": 1,
-                                                "column": 119
-                                            },
-                                            "end": {
-                                                "line": 1,
-                                                "column": 121
-                                            }
-                                        },
                                         "type": "Literal",
-                                        "value": 23,
-                                        "raw": "23"
-                                    },
-                                    "right": {
-                                        "range": [
-                                            124,
-                                            131
-                                        ],
-                                        "loc": {
+                                        "location": {
                                             "start": {
                                                 "line": 1,
-                                                "column": 124
+                                                "column": 119,
+                                                "index": 119
                                             },
                                             "end": {
                                                 "line": 1,
-                                                "column": 131
+                                                "column": 121,
+                                                "index": 121
                                             }
                                         },
+                                        "leadingComments": [],
+                                        "trailingComments": [],
+                                        "value": 23,
+                                        "raw": "23",
+                                        "format": "decimal"
+                                    },
+                                    "operator": "+",
+                                    "right": {
                                         "type": "BinaryExpression",
-                                        "operator": "*",
-                                        "left": {
-                                            "range": [
-                                                124,
-                                                126
-                                            ],
-                                            "loc": {
-                                                "start": {
-                                                    "line": 1,
-                                                    "column": 124
-                                                },
-                                                "end": {
-                                                    "line": 1,
-                                                    "column": 126
-                                                }
+                                        "location": {
+                                            "start": {
+                                                "line": 1,
+                                                "column": 124,
+                                                "index": 124
                                             },
-                                            "type": "Literal",
-                                            "value": 24,
-                                            "raw": "24"
+                                            "end": {
+                                                "line": 1,
+                                                "column": 131,
+                                                "index": 131
+                                            }
                                         },
-                                        "right": {
-                                            "range": [
-                                                129,
-                                                131
-                                            ],
-                                            "loc": {
+                                        "leadingComments": [],
+                                        "trailingComments": [],
+                                        "left": {
+                                            "type": "Literal",
+                                            "location": {
                                                 "start": {
                                                     "line": 1,
-                                                    "column": 129
+                                                    "column": 124,
+                                                    "index": 124
                                                 },
                                                 "end": {
                                                     "line": 1,
-                                                    "column": 131
+                                                    "column": 126,
+                                                    "index": 126
                                                 }
                                             },
+                                            "leadingComments": [],
+                                            "trailingComments": [],
+                                            "value": 24,
+                                            "raw": "24",
+                                            "format": "decimal"
+                                        },
+                                        "operator": "*",
+                                        "right": {
                                             "type": "Literal",
+                                            "location": {
+                                                "start": {
+                                                    "line": 1,
+                                                    "column": 129,
+                                                    "index": 129
+                                                },
+                                                "end": {
+                                                    "line": 1,
+                                                    "column": 131,
+                                                    "index": 131
+                                                }
+                                            },
+                                            "leadingComments": [],
+                                            "trailingComments": [],
                                             "value": 25,
-                                            "raw": "25"
+                                            "raw": "25",
+                                            "format": "decimal"
                                         }
                                     }
                                 }
                             },
+                            "operator": ">>",
                             "right": {
-                                "range": [
-                                    135,
-                                    142
-                                ],
-                                "loc": {
+                                "type": "BinaryExpression",
+                                "location": {
                                     "start": {
                                         "line": 1,
-                                        "column": 135
+                                        "column": 135,
+                                        "index": 135
                                     },
                                     "end": {
                                         "line": 1,
-                                        "column": 142
+                                        "column": 142,
+                                        "index": 142
                                     }
                                 },
-                                "type": "BinaryExpression",
-                                "operator": "/",
+                                "leadingComments": [],
+                                "trailingComments": [],
                                 "left": {
-                                    "range": [
-                                        135,
-                                        137
-                                    ],
-                                    "loc": {
+                                    "type": "Literal",
+                                    "location": {
                                         "start": {
                                             "line": 1,
-                                            "column": 135
+                                            "column": 135,
+                                            "index": 135
                                         },
                                         "end": {
                                             "line": 1,
-                                            "column": 137
+                                            "column": 137,
+                                            "index": 137
                                         }
                                     },
-                                    "type": "Literal",
+                                    "leadingComments": [],
+                                    "trailingComments": [],
                                     "value": 26,
-                                    "raw": "26"
+                                    "raw": "26",
+                                    "format": "decimal"
                                 },
+                                "operator": "\/",
                                 "right": {
-                                    "range": [
-                                        140,
-                                        142
-                                    ],
-                                    "loc": {
+                                    "type": "Literal",
+                                    "location": {
                                         "start": {
                                             "line": 1,
-                                            "column": 140
+                                            "column": 140,
+                                            "index": 140
                                         },
                                         "end": {
                                             "line": 1,
-                                            "column": 142
+                                            "column": 142,
+                                            "index": 142
                                         }
                                     },
-                                    "type": "Literal",
+                                    "leadingComments": [],
+                                    "trailingComments": [],
                                     "value": 27,
-                                    "raw": "27"
+                                    "raw": "27",
+                                    "format": "decimal"
                                 }
                             }
                         },
+                        "operator": "&",
                         "right": {
-                            "range": [
-                                145,
-                                152
-                            ],
-                            "loc": {
+                            "type": "BinaryExpression",
+                            "location": {
                                 "start": {
                                     "line": 1,
-                                    "column": 145
+                                    "column": 145,
+                                    "index": 145
                                 },
                                 "end": {
                                     "line": 1,
-                                    "column": 152
+                                    "column": 152,
+                                    "index": 152
                                 }
                             },
-                            "type": "BinaryExpression",
-                            "operator": "+",
+                            "leadingComments": [],
+                            "trailingComments": [],
                             "left": {
-                                "range": [
-                                    145,
-                                    147
-                                ],
-                                "loc": {
+                                "type": "Literal",
+                                "location": {
                                     "start": {
                                         "line": 1,
-                                        "column": 145
+                                        "column": 145,
+                                        "index": 145
                                     },
                                     "end": {
                                         "line": 1,
-                                        "column": 147
+                                        "column": 147,
+                                        "index": 147
                                     }
                                 },
-                                "type": "Literal",
+                                "leadingComments": [],
+                                "trailingComments": [],
                                 "value": 28,
-                                "raw": "28"
+                                "raw": "28",
+                                "format": "decimal"
                             },
+                            "operator": "+",
                             "right": {
-                                "range": [
-                                    150,
-                                    152
-                                ],
-                                "loc": {
+                                "type": "Literal",
+                                "location": {
                                     "start": {
                                         "line": 1,
-                                        "column": 150
+                                        "column": 150,
+                                        "index": 150
                                     },
                                     "end": {
                                         "line": 1,
-                                        "column": 152
+                                        "column": 152,
+                                        "index": 152
                                     }
                                 },
-                                "type": "Literal",
+                                "leadingComments": [],
+                                "trailingComments": [],
                                 "value": 29,
-                                "raw": "29"
+                                "raw": "29",
+                                "format": "decimal"
                             }
                         }
                     }
                 },
+                "operator": "||",
                 "right": {
-                    "range": [
-                        156,
-                        209
-                    ],
-                    "loc": {
+                    "type": "LogicalExpression",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 156
+                            "column": 156,
+                            "index": 156
                         },
                         "end": {
                             "line": 1,
-                            "column": 209
+                            "column": 209,
+                            "index": 209
                         }
                     },
-                    "type": "LogicalExpression",
-                    "operator": "&&",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "left": {
-                        "range": [
-                            156,
-                            158
-                        ],
-                        "loc": {
-                            "start": {
-                                "line": 1,
-                                "column": 156
-                            },
-                            "end": {
-                                "line": 1,
-                                "column": 158
-                            }
-                        },
                         "type": "Literal",
-                        "value": 30,
-                        "raw": "30"
-                    },
-                    "right": {
-                        "range": [
-                            162,
-                            209
-                        ],
-                        "loc": {
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 162
+                                "column": 156,
+                                "index": 156
                             },
                             "end": {
                                 "line": 1,
-                                "column": 209
+                                "column": 158,
+                                "index": 158
                             }
                         },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "value": 30,
+                        "raw": "30",
+                        "format": "decimal"
+                    },
+                    "operator": "&&",
+                    "right": {
                         "type": "BinaryExpression",
-                        "operator": "|",
+                        "location": {
+                            "start": {
+                                "line": 1,
+                                "column": 162,
+                                "index": 162
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 209,
+                                "index": 209
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "left": {
-                            "range": [
-                                162,
-                                204
-                            ],
-                            "loc": {
+                            "type": "BinaryExpression",
+                            "location": {
                                 "start": {
                                     "line": 1,
-                                    "column": 162
+                                    "column": 162,
+                                    "index": 162
                                 },
                                 "end": {
                                     "line": 1,
-                                    "column": 204
+                                    "column": 204,
+                                    "index": 204
                                 }
                             },
-                            "type": "BinaryExpression",
-                            "operator": "|",
+                            "leadingComments": [],
+                            "trailingComments": [],
                             "left": {
-                                "range": [
-                                    162,
-                                    179
-                                ],
-                                "loc": {
+                                "type": "BinaryExpression",
+                                "location": {
                                     "start": {
                                         "line": 1,
-                                        "column": 162
+                                        "column": 162,
+                                        "index": 162
                                     },
                                     "end": {
                                         "line": 1,
-                                        "column": 179
+                                        "column": 179,
+                                        "index": 179
                                     }
                                 },
-                                "type": "BinaryExpression",
-                                "operator": "^",
+                                "leadingComments": [],
+                                "trailingComments": [],
                                 "left": {
-                                    "range": [
-                                        162,
-                                        169
-                                    ],
-                                    "loc": {
+                                    "type": "BinaryExpression",
+                                    "location": {
                                         "start": {
                                             "line": 1,
-                                            "column": 162
+                                            "column": 162,
+                                            "index": 162
                                         },
                                         "end": {
                                             "line": 1,
-                                            "column": 169
+                                            "column": 169,
+                                            "index": 169
                                         }
                                     },
-                                    "type": "BinaryExpression",
-                                    "operator": "%",
+                                    "leadingComments": [],
+                                    "trailingComments": [],
                                     "left": {
-                                        "range": [
-                                            162,
-                                            164
-                                        ],
-                                        "loc": {
+                                        "type": "Literal",
+                                        "location": {
                                             "start": {
                                                 "line": 1,
-                                                "column": 162
+                                                "column": 162,
+                                                "index": 162
                                             },
                                             "end": {
                                                 "line": 1,
-                                                "column": 164
+                                                "column": 164,
+                                                "index": 164
                                             }
                                         },
-                                        "type": "Literal",
+                                        "leadingComments": [],
+                                        "trailingComments": [],
                                         "value": 31,
-                                        "raw": "31"
+                                        "raw": "31",
+                                        "format": "decimal"
                                     },
+                                    "operator": "%",
                                     "right": {
-                                        "range": [
-                                            167,
-                                            169
-                                        ],
-                                        "loc": {
+                                        "type": "Literal",
+                                        "location": {
                                             "start": {
                                                 "line": 1,
-                                                "column": 167
+                                                "column": 167,
+                                                "index": 167
                                             },
                                             "end": {
                                                 "line": 1,
-                                                "column": 169
+                                                "column": 169,
+                                                "index": 169
                                             }
                                         },
-                                        "type": "Literal",
+                                        "leadingComments": [],
+                                        "trailingComments": [],
                                         "value": 32,
-                                        "raw": "32"
+                                        "raw": "32",
+                                        "format": "decimal"
                                     }
                                 },
+                                "operator": "^",
                                 "right": {
-                                    "range": [
-                                        172,
-                                        179
-                                    ],
-                                    "loc": {
+                                    "type": "BinaryExpression",
+                                    "location": {
                                         "start": {
                                             "line": 1,
-                                            "column": 172
+                                            "column": 172,
+                                            "index": 172
                                         },
                                         "end": {
                                             "line": 1,
-                                            "column": 179
+                                            "column": 179,
+                                            "index": 179
                                         }
                                     },
-                                    "type": "BinaryExpression",
-                                    "operator": "+",
+                                    "leadingComments": [],
+                                    "trailingComments": [],
                                     "left": {
-                                        "range": [
-                                            172,
-                                            174
-                                        ],
-                                        "loc": {
+                                        "type": "Literal",
+                                        "location": {
                                             "start": {
                                                 "line": 1,
-                                                "column": 172
+                                                "column": 172,
+                                                "index": 172
                                             },
                                             "end": {
                                                 "line": 1,
-                                                "column": 174
+                                                "column": 174,
+                                                "index": 174
                                             }
                                         },
-                                        "type": "Literal",
+                                        "leadingComments": [],
+                                        "trailingComments": [],
                                         "value": 33,
-                                        "raw": "33"
+                                        "raw": "33",
+                                        "format": "decimal"
                                     },
+                                    "operator": "+",
                                     "right": {
-                                        "range": [
-                                            177,
-                                            179
-                                        ],
-                                        "loc": {
+                                        "type": "Literal",
+                                        "location": {
                                             "start": {
                                                 "line": 1,
-                                                "column": 177
+                                                "column": 177,
+                                                "index": 177
                                             },
                                             "end": {
                                                 "line": 1,
-                                                "column": 179
+                                                "column": 179,
+                                                "index": 179
                                             }
                                         },
-                                        "type": "Literal",
+                                        "leadingComments": [],
+                                        "trailingComments": [],
                                         "value": 34,
-                                        "raw": "34"
+                                        "raw": "34",
+                                        "format": "decimal"
                                     }
                                 }
                             },
+                            "operator": "|",
                             "right": {
-                                "range": [
-                                    182,
-                                    204
-                                ],
-                                "loc": {
+                                "type": "BinaryExpression",
+                                "location": {
                                     "start": {
                                         "line": 1,
-                                        "column": 182
+                                        "column": 182,
+                                        "index": 182
                                     },
                                     "end": {
                                         "line": 1,
-                                        "column": 204
+                                        "column": 204,
+                                        "index": 204
                                     }
                                 },
-                                "type": "BinaryExpression",
-                                "operator": "&",
+                                "leadingComments": [],
+                                "trailingComments": [],
                                 "left": {
-                                    "range": [
-                                        182,
-                                        199
-                                    ],
-                                    "loc": {
+                                    "type": "BinaryExpression",
+                                    "location": {
                                         "start": {
                                             "line": 1,
-                                            "column": 182
+                                            "column": 182,
+                                            "index": 182
                                         },
                                         "end": {
                                             "line": 1,
-                                            "column": 199
+                                            "column": 199,
+                                            "index": 199
                                         }
                                     },
-                                    "type": "BinaryExpression",
-                                    "operator": "-",
+                                    "leadingComments": [],
+                                    "trailingComments": [],
                                     "left": {
-                                        "range": [
-                                            182,
-                                            189
-                                        ],
-                                        "loc": {
+                                        "type": "BinaryExpression",
+                                        "location": {
                                             "start": {
                                                 "line": 1,
-                                                "column": 182
+                                                "column": 182,
+                                                "index": 182
                                             },
                                             "end": {
                                                 "line": 1,
-                                                "column": 189
+                                                "column": 189,
+                                                "index": 189
                                             }
                                         },
-                                        "type": "BinaryExpression",
-                                        "operator": "/",
+                                        "leadingComments": [],
+                                        "trailingComments": [],
                                         "left": {
-                                            "range": [
-                                                182,
-                                                184
-                                            ],
-                                            "loc": {
+                                            "type": "Literal",
+                                            "location": {
                                                 "start": {
                                                     "line": 1,
-                                                    "column": 182
+                                                    "column": 182,
+                                                    "index": 182
                                                 },
                                                 "end": {
                                                     "line": 1,
-                                                    "column": 184
+                                                    "column": 184,
+                                                    "index": 184
                                                 }
                                             },
-                                            "type": "Literal",
+                                            "leadingComments": [],
+                                            "trailingComments": [],
                                             "value": 35,
-                                            "raw": "35"
+                                            "raw": "35",
+                                            "format": "decimal"
                                         },
+                                        "operator": "\/",
                                         "right": {
-                                            "range": [
-                                                187,
-                                                189
-                                            ],
-                                            "loc": {
+                                            "type": "Literal",
+                                            "location": {
                                                 "start": {
                                                     "line": 1,
-                                                    "column": 187
+                                                    "column": 187,
+                                                    "index": 187
                                                 },
                                                 "end": {
                                                     "line": 1,
-                                                    "column": 189
+                                                    "column": 189,
+                                                    "index": 189
                                                 }
                                             },
-                                            "type": "Literal",
+                                            "leadingComments": [],
+                                            "trailingComments": [],
                                             "value": 36,
-                                            "raw": "36"
+                                            "raw": "36",
+                                            "format": "decimal"
                                         }
                                     },
+                                    "operator": "-",
                                     "right": {
-                                        "range": [
-                                            192,
-                                            199
-                                        ],
-                                        "loc": {
+                                        "type": "BinaryExpression",
+                                        "location": {
                                             "start": {
                                                 "line": 1,
-                                                "column": 192
+                                                "column": 192,
+                                                "index": 192
                                             },
                                             "end": {
                                                 "line": 1,
-                                                "column": 199
+                                                "column": 199,
+                                                "index": 199
                                             }
                                         },
-                                        "type": "BinaryExpression",
-                                        "operator": "%",
+                                        "leadingComments": [],
+                                        "trailingComments": [],
                                         "left": {
-                                            "range": [
-                                                192,
-                                                194
-                                            ],
-                                            "loc": {
+                                            "type": "Literal",
+                                            "location": {
                                                 "start": {
                                                     "line": 1,
-                                                    "column": 192
+                                                    "column": 192,
+                                                    "index": 192
                                                 },
                                                 "end": {
                                                     "line": 1,
-                                                    "column": 194
+                                                    "column": 194,
+                                                    "index": 194
                                                 }
                                             },
-                                            "type": "Literal",
+                                            "leadingComments": [],
+                                            "trailingComments": [],
                                             "value": 37,
-                                            "raw": "37"
+                                            "raw": "37",
+                                            "format": "decimal"
                                         },
+                                        "operator": "%",
                                         "right": {
-                                            "range": [
-                                                197,
-                                                199
-                                            ],
-                                            "loc": {
+                                            "type": "Literal",
+                                            "location": {
                                                 "start": {
                                                     "line": 1,
-                                                    "column": 197
+                                                    "column": 197,
+                                                    "index": 197
                                                 },
                                                 "end": {
                                                     "line": 1,
-                                                    "column": 199
+                                                    "column": 199,
+                                                    "index": 199
                                                 }
                                             },
-                                            "type": "Literal",
+                                            "leadingComments": [],
+                                            "trailingComments": [],
                                             "value": 38,
-                                            "raw": "38"
+                                            "raw": "38",
+                                            "format": "decimal"
                                         }
                                     }
                                 },
+                                "operator": "&",
                                 "right": {
-                                    "range": [
-                                        202,
-                                        204
-                                    ],
-                                    "loc": {
+                                    "type": "Literal",
+                                    "location": {
                                         "start": {
                                             "line": 1,
-                                            "column": 202
+                                            "column": 202,
+                                            "index": 202
                                         },
                                         "end": {
                                             "line": 1,
-                                            "column": 204
+                                            "column": 204,
+                                            "index": 204
                                         }
                                     },
-                                    "type": "Literal",
+                                    "leadingComments": [],
+                                    "trailingComments": [],
                                     "value": 39,
-                                    "raw": "39"
+                                    "raw": "39",
+                                    "format": "decimal"
                                 }
                             }
                         },
+                        "operator": "|",
                         "right": {
-                            "range": [
-                                207,
-                                209
-                            ],
-                            "loc": {
+                            "type": "Literal",
+                            "location": {
                                 "start": {
                                     "line": 1,
-                                    "column": 207
+                                    "column": 207,
+                                    "index": 207
                                 },
                                 "end": {
                                     "line": 1,
-                                    "column": 209
+                                    "column": 209,
+                                    "index": 209
                                 }
                             },
-                            "type": "Literal",
+                            "leadingComments": [],
+                            "trailingComments": [],
                             "value": 40,
-                            "raw": "40"
+                            "raw": "40",
+                            "format": "decimal"
                         }
                     }
                 }

@@ -1,554 +1,551 @@
 {
-    "range": [
-        0,
-        153
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 8,
-            "column": 1
+            "column": 1,
+            "index": 153
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                153
-            ],
-            "loc": {
+            "type": "ExportDefaultDeclaration",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 8,
-                    "column": 1
+                    "column": 1,
+                    "index": 153
                 }
             },
-            "type": "ExportDefaultDeclaration",
+            "leadingComments": [],
+            "trailingComments": [],
             "declaration": {
-                "range": [
-                    15,
-                    153
-                ],
-                "loc": {
+                "type": "ClassDeclaration",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 15
+                        "column": 15,
+                        "index": 15
                     },
                     "end": {
                         "line": 8,
-                        "column": 1
+                        "column": 1,
+                        "index": 153
                     }
                 },
-                "type": "ClassDeclaration",
+                "leadingComments": [],
+                "trailingComments": [],
                 "id": null,
                 "superClass": null,
                 "body": {
-                    "range": [
-                        21,
-                        153
-                    ],
-                    "loc": {
+                    "type": "ClassBody",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 21
+                            "column": 21,
+                            "index": 21
                         },
                         "end": {
                             "line": 8,
-                            "column": 1
+                            "column": 1,
+                            "index": 153
                         }
                     },
-                    "type": "ClassBody",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "body": [
                         {
-                            "range": [
-                                27,
-                                85
-                            ],
-                            "loc": {
+                            "type": "MethodDefinition",
+                            "location": {
                                 "start": {
                                     "line": 2,
-                                    "column": 4
+                                    "column": 4,
+                                    "index": 27
                                 },
                                 "end": {
                                     "line": 4,
-                                    "column": 5
+                                    "column": 5,
+                                    "index": 85
                                 }
                             },
-                            "type": "MethodDefinition",
+                            "leadingComments": [],
+                            "trailingComments": [],
                             "key": {
-                                "range": [
-                                    31,
-                                    35
-                                ],
-                                "loc": {
+                                "type": "Identifier",
+                                "location": {
                                     "start": {
                                         "line": 2,
-                                        "column": 8
+                                        "column": 8,
+                                        "index": 31
                                     },
                                     "end": {
                                         "line": 2,
-                                        "column": 12
+                                        "column": 12,
+                                        "index": 35
                                     }
                                 },
-                                "type": "Identifier",
+                                "leadingComments": [],
+                                "trailingComments": [],
                                 "name": "item"
                             },
-                            "computed": false,
                             "value": {
-                                "range": [
-                                    35,
-                                    85
-                                ],
-                                "loc": {
+                                "type": "FunctionExpression",
+                                "location": {
                                     "start": {
                                         "line": 2,
-                                        "column": 12
+                                        "column": 12,
+                                        "index": 35
                                     },
                                     "end": {
                                         "line": 4,
-                                        "column": 5
+                                        "column": 5,
+                                        "index": 85
                                     }
                                 },
-                                "type": "FunctionExpression",
+                                "leadingComments": [],
+                                "trailingComments": [],
                                 "id": null,
                                 "params": [],
-                                "defaults": [],
                                 "body": {
-                                    "range": [
-                                        37,
-                                        85
-                                    ],
-                                    "loc": {
+                                    "type": "BlockStatement",
+                                    "location": {
                                         "start": {
                                             "line": 2,
-                                            "column": 14
+                                            "column": 14,
+                                            "index": 37
                                         },
                                         "end": {
                                             "line": 4,
-                                            "column": 5
+                                            "column": 5,
+                                            "index": 85
                                         }
                                     },
-                                    "type": "BlockStatement",
+                                    "leadingComments": [],
+                                    "trailingComments": [],
                                     "body": [
                                         {
-                                            "range": [
-                                                47,
-                                                79
-                                            ],
-                                            "loc": {
+                                            "type": "ReturnStatement",
+                                            "location": {
                                                 "start": {
                                                     "line": 3,
-                                                    "column": 8
+                                                    "column": 8,
+                                                    "index": 47
                                                 },
                                                 "end": {
                                                     "line": 3,
-                                                    "column": 40
+                                                    "column": 40,
+                                                    "index": 79
                                                 }
                                             },
-                                            "type": "ReturnStatement",
+                                            "leadingComments": [],
+                                            "trailingComments": [],
                                             "argument": {
-                                                "range": [
-                                                    54,
-                                                    78
-                                                ],
-                                                "loc": {
+                                                "type": "MemberExpression",
+                                                "location": {
                                                     "start": {
                                                         "line": 3,
-                                                        "column": 15
+                                                        "column": 15,
+                                                        "index": 54
                                                     },
                                                     "end": {
                                                         "line": 3,
-                                                        "column": 39
+                                                        "column": 39,
+                                                        "index": 78
                                                     }
                                                 },
-                                                "type": "MemberExpression",
-                                                "computed": true,
+                                                "leadingComments": [],
+                                                "trailingComments": [],
                                                 "object": {
-                                                    "range": [
-                                                        54,
-                                                        64
-                                                    ],
-                                                    "loc": {
+                                                    "type": "MemberExpression",
+                                                    "location": {
                                                         "start": {
                                                             "line": 3,
-                                                            "column": 15
+                                                            "column": 15,
+                                                            "index": 54
                                                         },
                                                         "end": {
                                                             "line": 3,
-                                                            "column": 25
+                                                            "column": 25,
+                                                            "index": 64
                                                         }
                                                     },
-                                                    "type": "MemberExpression",
-                                                    "computed": false,
+                                                    "leadingComments": [],
+                                                    "trailingComments": [],
                                                     "object": {
-                                                        "range": [
-                                                            54,
-                                                            58
-                                                        ],
-                                                        "loc": {
+                                                        "type": "ThisExpression",
+                                                        "location": {
                                                             "start": {
                                                                 "line": 3,
-                                                                "column": 15
+                                                                "column": 15,
+                                                                "index": 54
                                                             },
                                                             "end": {
                                                                 "line": 3,
-                                                                "column": 19
+                                                                "column": 19,
+                                                                "index": 58
                                                             }
                                                         },
-                                                        "type": "ThisExpression"
+                                                        "leadingComments": [],
+                                                        "trailingComments": []
                                                     },
                                                     "property": {
-                                                        "range": [
-                                                            59,
-                                                            64
-                                                        ],
-                                                        "loc": {
+                                                        "type": "Identifier",
+                                                        "location": {
                                                             "start": {
                                                                 "line": 3,
-                                                                "column": 20
+                                                                "column": 20,
+                                                                "index": 59
                                                             },
                                                             "end": {
                                                                 "line": 3,
-                                                                "column": 25
+                                                                "column": 25,
+                                                                "index": 64
                                                             }
                                                         },
-                                                        "type": "Identifier",
+                                                        "leadingComments": [],
+                                                        "trailingComments": [],
                                                         "name": "items"
-                                                    }
+                                                    },
+                                                    "computed": false
                                                 },
                                                 "property": {
-                                                    "range": [
-                                                        65,
-                                                        77
-                                                    ],
-                                                    "loc": {
+                                                    "type": "MemberExpression",
+                                                    "location": {
                                                         "start": {
                                                             "line": 3,
-                                                            "column": 26
+                                                            "column": 26,
+                                                            "index": 65
                                                         },
                                                         "end": {
                                                             "line": 3,
-                                                            "column": 38
+                                                            "column": 38,
+                                                            "index": 77
                                                         }
                                                     },
-                                                    "type": "MemberExpression",
-                                                    "computed": false,
+                                                    "leadingComments": [],
+                                                    "trailingComments": [],
                                                     "object": {
-                                                        "range": [
-                                                            65,
-                                                            69
-                                                        ],
-                                                        "loc": {
+                                                        "type": "ThisExpression",
+                                                        "location": {
                                                             "start": {
                                                                 "line": 3,
-                                                                "column": 26
+                                                                "column": 26,
+                                                                "index": 65
                                                             },
                                                             "end": {
                                                                 "line": 3,
-                                                                "column": 30
+                                                                "column": 30,
+                                                                "index": 69
                                                             }
                                                         },
-                                                        "type": "ThisExpression"
+                                                        "leadingComments": [],
+                                                        "trailingComments": []
                                                     },
                                                     "property": {
-                                                        "range": [
-                                                            70,
-                                                            77
-                                                        ],
-                                                        "loc": {
+                                                        "type": "Identifier",
+                                                        "location": {
                                                             "start": {
                                                                 "line": 3,
-                                                                "column": 31
+                                                                "column": 31,
+                                                                "index": 70
                                                             },
                                                             "end": {
                                                                 "line": 3,
-                                                                "column": 38
+                                                                "column": 38,
+                                                                "index": 77
                                                             }
                                                         },
-                                                        "type": "Identifier",
+                                                        "leadingComments": [],
+                                                        "trailingComments": [],
                                                         "name": "current"
-                                                    }
-                                                }
+                                                    },
+                                                    "computed": false
+                                                },
+                                                "computed": true
                                             }
                                         }
                                     ]
                                 },
                                 "generator": false,
-                                "expression": false
+                                "async": false
                             },
                             "kind": "get",
+                            "computed": false,
                             "static": false
                         },
                         {
-                            "range": [
-                                90,
-                                151
-                            ],
-                            "loc": {
+                            "type": "MethodDefinition",
+                            "location": {
                                 "start": {
                                     "line": 5,
-                                    "column": 4
+                                    "column": 4,
+                                    "index": 90
                                 },
                                 "end": {
                                     "line": 7,
-                                    "column": 5
+                                    "column": 5,
+                                    "index": 151
                                 }
                             },
-                            "type": "MethodDefinition",
+                            "leadingComments": [],
+                            "trailingComments": [],
                             "key": {
-                                "range": [
-                                    94,
-                                    98
-                                ],
-                                "loc": {
+                                "type": "Identifier",
+                                "location": {
                                     "start": {
                                         "line": 5,
-                                        "column": 8
+                                        "column": 8,
+                                        "index": 94
                                     },
                                     "end": {
                                         "line": 5,
-                                        "column": 12
+                                        "column": 12,
+                                        "index": 98
                                     }
                                 },
-                                "type": "Identifier",
+                                "leadingComments": [],
+                                "trailingComments": [],
                                 "name": "item"
                             },
-                            "computed": false,
                             "value": {
-                                "range": [
-                                    98,
-                                    151
-                                ],
-                                "loc": {
+                                "type": "FunctionExpression",
+                                "location": {
                                     "start": {
                                         "line": 5,
-                                        "column": 12
+                                        "column": 12,
+                                        "index": 98
                                     },
                                     "end": {
                                         "line": 7,
-                                        "column": 5
+                                        "column": 5,
+                                        "index": 151
                                     }
                                 },
-                                "type": "FunctionExpression",
+                                "leadingComments": [],
+                                "trailingComments": [],
                                 "id": null,
                                 "params": [
                                     {
-                                        "range": [
-                                            99,
-                                            102
-                                        ],
-                                        "loc": {
+                                        "type": "Identifier",
+                                        "location": {
                                             "start": {
                                                 "line": 5,
-                                                "column": 13
+                                                "column": 13,
+                                                "index": 99
                                             },
                                             "end": {
                                                 "line": 5,
-                                                "column": 16
+                                                "column": 16,
+                                                "index": 102
                                             }
                                         },
-                                        "type": "Identifier",
+                                        "leadingComments": [],
+                                        "trailingComments": [],
                                         "name": "val"
                                     }
                                 ],
-                                "defaults": [],
                                 "body": {
-                                    "range": [
-                                        104,
-                                        151
-                                    ],
-                                    "loc": {
+                                    "type": "BlockStatement",
+                                    "location": {
                                         "start": {
                                             "line": 5,
-                                            "column": 18
+                                            "column": 18,
+                                            "index": 104
                                         },
                                         "end": {
                                             "line": 7,
-                                            "column": 5
+                                            "column": 5,
+                                            "index": 151
                                         }
                                     },
-                                    "type": "BlockStatement",
+                                    "leadingComments": [],
+                                    "trailingComments": [],
                                     "body": [
                                         {
-                                            "range": [
-                                                114,
-                                                145
-                                            ],
-                                            "loc": {
+                                            "type": "ExpressionStatement",
+                                            "location": {
                                                 "start": {
                                                     "line": 6,
-                                                    "column": 8
+                                                    "column": 8,
+                                                    "index": 114
                                                 },
                                                 "end": {
                                                     "line": 6,
-                                                    "column": 39
+                                                    "column": 39,
+                                                    "index": 145
                                                 }
                                             },
-                                            "type": "ExpressionStatement",
+                                            "leadingComments": [],
+                                            "trailingComments": [],
                                             "expression": {
-                                                "range": [
-                                                    114,
-                                                    144
-                                                ],
-                                                "loc": {
+                                                "type": "AssignmentExpression",
+                                                "location": {
                                                     "start": {
                                                         "line": 6,
-                                                        "column": 8
+                                                        "column": 8,
+                                                        "index": 114
                                                     },
                                                     "end": {
                                                         "line": 6,
-                                                        "column": 38
+                                                        "column": 38,
+                                                        "index": 144
                                                     }
                                                 },
-                                                "type": "AssignmentExpression",
-                                                "operator": "=",
+                                                "leadingComments": [],
+                                                "trailingComments": [],
                                                 "left": {
-                                                    "range": [
-                                                        114,
-                                                        138
-                                                    ],
-                                                    "loc": {
+                                                    "type": "MemberExpression",
+                                                    "location": {
                                                         "start": {
                                                             "line": 6,
-                                                            "column": 8
+                                                            "column": 8,
+                                                            "index": 114
                                                         },
                                                         "end": {
                                                             "line": 6,
-                                                            "column": 32
+                                                            "column": 32,
+                                                            "index": 138
                                                         }
                                                     },
-                                                    "type": "MemberExpression",
-                                                    "computed": true,
+                                                    "leadingComments": [],
+                                                    "trailingComments": [],
                                                     "object": {
-                                                        "range": [
-                                                            114,
-                                                            124
-                                                        ],
-                                                        "loc": {
+                                                        "type": "MemberExpression",
+                                                        "location": {
                                                             "start": {
                                                                 "line": 6,
-                                                                "column": 8
+                                                                "column": 8,
+                                                                "index": 114
                                                             },
                                                             "end": {
                                                                 "line": 6,
-                                                                "column": 18
+                                                                "column": 18,
+                                                                "index": 124
                                                             }
                                                         },
-                                                        "type": "MemberExpression",
-                                                        "computed": false,
+                                                        "leadingComments": [],
+                                                        "trailingComments": [],
                                                         "object": {
-                                                            "range": [
-                                                                114,
-                                                                118
-                                                            ],
-                                                            "loc": {
+                                                            "type": "ThisExpression",
+                                                            "location": {
                                                                 "start": {
                                                                     "line": 6,
-                                                                    "column": 8
+                                                                    "column": 8,
+                                                                    "index": 114
                                                                 },
                                                                 "end": {
                                                                     "line": 6,
-                                                                    "column": 12
+                                                                    "column": 12,
+                                                                    "index": 118
                                                                 }
                                                             },
-                                                            "type": "ThisExpression"
+                                                            "leadingComments": [],
+                                                            "trailingComments": []
                                                         },
                                                         "property": {
-                                                            "range": [
-                                                                119,
-                                                                124
-                                                            ],
-                                                            "loc": {
+                                                            "type": "Identifier",
+                                                            "location": {
                                                                 "start": {
                                                                     "line": 6,
-                                                                    "column": 13
+                                                                    "column": 13,
+                                                                    "index": 119
                                                                 },
                                                                 "end": {
                                                                     "line": 6,
-                                                                    "column": 18
+                                                                    "column": 18,
+                                                                    "index": 124
                                                                 }
                                                             },
-                                                            "type": "Identifier",
+                                                            "leadingComments": [],
+                                                            "trailingComments": [],
                                                             "name": "items"
-                                                        }
+                                                        },
+                                                        "computed": false
                                                     },
                                                     "property": {
-                                                        "range": [
-                                                            125,
-                                                            137
-                                                        ],
-                                                        "loc": {
+                                                        "type": "MemberExpression",
+                                                        "location": {
                                                             "start": {
                                                                 "line": 6,
-                                                                "column": 19
+                                                                "column": 19,
+                                                                "index": 125
                                                             },
                                                             "end": {
                                                                 "line": 6,
-                                                                "column": 31
+                                                                "column": 31,
+                                                                "index": 137
                                                             }
                                                         },
-                                                        "type": "MemberExpression",
-                                                        "computed": false,
+                                                        "leadingComments": [],
+                                                        "trailingComments": [],
                                                         "object": {
-                                                            "range": [
-                                                                125,
-                                                                129
-                                                            ],
-                                                            "loc": {
+                                                            "type": "ThisExpression",
+                                                            "location": {
                                                                 "start": {
                                                                     "line": 6,
-                                                                    "column": 19
+                                                                    "column": 19,
+                                                                    "index": 125
                                                                 },
                                                                 "end": {
                                                                     "line": 6,
-                                                                    "column": 23
+                                                                    "column": 23,
+                                                                    "index": 129
                                                                 }
                                                             },
-                                                            "type": "ThisExpression"
+                                                            "leadingComments": [],
+                                                            "trailingComments": []
                                                         },
                                                         "property": {
-                                                            "range": [
-                                                                130,
-                                                                137
-                                                            ],
-                                                            "loc": {
+                                                            "type": "Identifier",
+                                                            "location": {
                                                                 "start": {
                                                                     "line": 6,
-                                                                    "column": 24
+                                                                    "column": 24,
+                                                                    "index": 130
                                                                 },
                                                                 "end": {
                                                                     "line": 6,
-                                                                    "column": 31
+                                                                    "column": 31,
+                                                                    "index": 137
                                                                 }
                                                             },
-                                                            "type": "Identifier",
+                                                            "leadingComments": [],
+                                                            "trailingComments": [],
                                                             "name": "current"
-                                                        }
-                                                    }
+                                                        },
+                                                        "computed": false
+                                                    },
+                                                    "computed": true
                                                 },
+                                                "operator": "=",
                                                 "right": {
-                                                    "range": [
-                                                        141,
-                                                        144
-                                                    ],
-                                                    "loc": {
+                                                    "type": "Identifier",
+                                                    "location": {
                                                         "start": {
                                                             "line": 6,
-                                                            "column": 35
+                                                            "column": 35,
+                                                            "index": 141
                                                         },
                                                         "end": {
                                                             "line": 6,
-                                                            "column": 38
+                                                            "column": 38,
+                                                            "index": 144
                                                         }
                                                     },
-                                                    "type": "Identifier",
+                                                    "leadingComments": [],
+                                                    "trailingComments": [],
                                                     "name": "val"
                                                 }
                                             }
@@ -556,9 +553,10 @@
                                     ]
                                 },
                                 "generator": false,
-                                "expression": false
+                                "async": false
                             },
                             "kind": "set",
+                            "computed": false,
                             "static": false
                         }
                     ]

@@ -1,155 +1,155 @@
 {
-    "range": [
-        0,
-        41
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 3,
-            "column": 9
+            "column": 9,
+            "index": 41
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                31
-            ],
-            "loc": {
+            "type": "IfStatement",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 2,
-                    "column": 10
+                    "column": 10,
+                    "index": 31
                 }
             },
-            "type": "IfStatement",
+            "leadingComments": [],
+            "trailingComments": [],
             "test": {
-                "range": [
-                    4,
-                    10
-                ],
-                "loc": {
+                "type": "Identifier",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 4
+                        "column": 4,
+                        "index": 4
                     },
                     "end": {
                         "line": 1,
-                        "column": 10
+                        "column": 10,
+                        "index": 10
                     }
                 },
-                "type": "Identifier",
+                "leadingComments": [],
+                "trailingComments": [],
                 "name": "failed"
             },
             "consequent": {
-                "range": [
-                    12,
-                    20
-                ],
-                "loc": {
+                "type": "ExpressionStatement",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 12
+                        "column": 12,
+                        "index": 12
                     },
                     "end": {
                         "line": 1,
-                        "column": 20
+                        "column": 20,
+                        "index": 20
                     }
                 },
-                "type": "ExpressionStatement",
+                "leadingComments": [],
+                "trailingComments": [],
                 "expression": {
-                    "range": [
-                        12,
-                        19
-                    ],
-                    "loc": {
+                    "type": "CallExpression",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 12
+                            "column": 12,
+                            "index": 12
                         },
                         "end": {
                             "line": 1,
-                            "column": 19
+                            "column": 19,
+                            "index": 19
                         }
                     },
-                    "type": "CallExpression",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "callee": {
-                        "range": [
-                            12,
-                            17
-                        ],
-                        "loc": {
+                        "type": "Identifier",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 12
+                                "column": 12,
+                                "index": 12
                             },
                             "end": {
                                 "line": 1,
-                                "column": 17
+                                "column": 17,
+                                "index": 17
                             }
                         },
-                        "type": "Identifier",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "name": "error"
                     },
                     "arguments": []
                 }
             },
             "alternate": {
-                "range": [
-                    26,
-                    31
-                ],
-                "loc": {
+                "type": "ExpressionStatement",
+                "location": {
                     "start": {
                         "line": 2,
-                        "column": 5
+                        "column": 5,
+                        "index": 26
                     },
                     "end": {
                         "line": 2,
-                        "column": 10
+                        "column": 10,
+                        "index": 31
                     }
                 },
-                "type": "ExpressionStatement",
+                "leadingComments": [],
+                "trailingComments": [],
                 "expression": {
-                    "range": [
-                        26,
-                        30
-                    ],
-                    "loc": {
+                    "type": "CallExpression",
+                    "location": {
                         "start": {
                             "line": 2,
-                            "column": 5
+                            "column": 5,
+                            "index": 26
                         },
                         "end": {
                             "line": 2,
-                            "column": 9
+                            "column": 9,
+                            "index": 30
                         }
                     },
-                    "type": "CallExpression",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "callee": {
-                        "range": [
-                            26,
-                            28
-                        ],
-                        "loc": {
+                        "type": "Identifier",
+                        "location": {
                             "start": {
                                 "line": 2,
-                                "column": 5
+                                "column": 5,
+                                "index": 26
                             },
                             "end": {
                                 "line": 2,
-                                "column": 7
+                                "column": 7,
+                                "index": 28
                             }
                         },
-                        "type": "Identifier",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "name": "ok"
                     },
                     "arguments": []
@@ -157,53 +157,53 @@
             }
         },
         {
-            "range": [
-                32,
-                41
-            ],
-            "loc": {
+            "type": "ExpressionStatement",
+            "location": {
                 "start": {
                     "line": 3,
-                    "column": 0
+                    "column": 0,
+                    "index": 32
                 },
                 "end": {
                     "line": 3,
-                    "column": 9
+                    "column": 9,
+                    "index": 41
                 }
             },
-            "type": "ExpressionStatement",
+            "leadingComments": [],
+            "trailingComments": [],
             "expression": {
-                "range": [
-                    32,
-                    40
-                ],
-                "loc": {
+                "type": "CallExpression",
+                "location": {
                     "start": {
                         "line": 3,
-                        "column": 0
+                        "column": 0,
+                        "index": 32
                     },
                     "end": {
                         "line": 3,
-                        "column": 8
+                        "column": 8,
+                        "index": 40
                     }
                 },
-                "type": "CallExpression",
+                "leadingComments": [],
+                "trailingComments": [],
                 "callee": {
-                    "range": [
-                        32,
-                        38
-                    ],
-                    "loc": {
+                    "type": "Identifier",
+                    "location": {
                         "start": {
                             "line": 3,
-                            "column": 0
+                            "column": 0,
+                            "index": 32
                         },
                         "end": {
                             "line": 3,
-                            "column": 6
+                            "column": 6,
+                            "index": 38
                         }
                     },
-                    "type": "Identifier",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "name": "finish"
                 },
                 "arguments": []

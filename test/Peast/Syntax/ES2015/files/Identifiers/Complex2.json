@@ -1,53 +1,53 @@
 {
-    "range": [
-        0,
-        21
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 1,
-            "column": 21
+            "column": 21,
+            "index": 21
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                21
-            ],
-            "loc": {
+            "type": "ExpressionStatement",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 1,
-                    "column": 21
+                    "column": 21,
+                    "index": 21
                 }
             },
-            "type": "ExpressionStatement",
+            "leadingComments": [],
+            "trailingComments": [],
             "expression": {
-                "range": [
-                    0,
-                    21
-                ],
-                "loc": {
+                "type": "Identifier",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 0
+                        "column": 0,
+                        "index": 0
                     },
                     "end": {
                         "line": 1,
-                        "column": 21
+                        "column": 21,
+                        "index": 21
                     }
                 },
-                "type": "Identifier",
-                "name": "aチ$_ぎäȵℬ兩ΩنامهایÇxൃ23"
+                "leadingComments": [],
+                "trailingComments": [],
+                "name": "a\u30c1$_\u304e\u00e4\u0235\u212c\u5169\u2126\u0646\u0627\u0645\u0647\u0627\u06cc\u00c7x\u0d4323"
             }
         }
     ],

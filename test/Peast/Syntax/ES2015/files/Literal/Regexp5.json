@@ -1,60 +1,58 @@
 {
-	"type": "Program",
-	"body": [
-	    {
-	        "type": "ExpressionStatement",
-	        "expression": {
-	            "type": "Literal",
-	            "value": {},
-	            "raw": "/\\u0037\\u0037/",
-	            "regex": {
-	                "pattern": "\\u0037\\u0037",
-	                "flags": ""
-	            },
-	            "range": [
-	                0,
-	                14
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 1,
-	                    "column": 0
-	                },
-	                "end": {
-	                    "line": 1,
-	                    "column": 14
-	                }
-	            }
-	        },
-	        "range": [
-	            0,
-	            14
-	        ],
-	        "loc": {
-	            "start": {
-	                "line": 1,
-	                "column": 0
-	            },
-	            "end": {
-	                "line": 1,
-	                "column": 14
-	            }
-	        }
-	    }
-	],
-	"sourceType": "script",
-	"range": [
-	    0,
-	    14
-	],
-	"loc": {
-	    "start": {
-	        "line": 1,
-	        "column": 0
-	    },
-	    "end": {
-	        "line": 1,
-	        "column": 14
-	    }
-	}
+    "type": "Program",
+    "location": {
+        "start": {
+            "line": 1,
+            "column": 0,
+            "index": 0
+        },
+        "end": {
+            "line": 1,
+            "column": 14,
+            "index": 14
+        }
+    },
+    "leadingComments": [],
+    "trailingComments": [],
+    "body": [
+        {
+            "type": "ExpressionStatement",
+            "location": {
+                "start": {
+                    "line": 1,
+                    "column": 0,
+                    "index": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 14,
+                    "index": 14
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "expression": {
+                "type": "RegExpLiteral",
+                "location": {
+                    "start": {
+                        "line": 1,
+                        "column": 0,
+                        "index": 0
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 14,
+                        "index": 14
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "value": "\/\\u0037\\u0037\/",
+                "raw": "\/\\u0037\\u0037\/",
+                "flags": "",
+                "pattern": "\\u0037\\u0037"
+            }
+        }
+    ],
+    "sourceType": "script"
 }

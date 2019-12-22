@@ -1,251 +1,251 @@
 {
-	"type": "Program",
-	"body": [
-	    {
-	        "type": "IfStatement",
-	        "test": {
-	            "type": "Identifier",
-	            "name": "a",
-	            "range": [
-	                4,
-	                5
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 1,
-	                    "column": 4
-	                },
-	                "end": {
-	                    "line": 1,
-	                    "column": 5
-	                }
-	            }
-	        },
-	        "consequent": {
-	            "type": "BlockStatement",
-	            "body": [
-	                {
-	                    "type": "WhileStatement",
-	                    "test": {
-	                        "type": "Identifier",
-	                        "name": "b",
-	                        "range": [
-	                            18,
-	                            19
-	                        ],
-	                        "loc": {
-	                            "start": {
-	                                "line": 2,
-	                                "column": 9
-	                            },
-	                            "end": {
-	                                "line": 2,
-	                                "column": 10
-	                            }
-	                        }
-	                    },
-	                    "body": {
-	                        "type": "IfStatement",
-	                        "test": {
-	                            "type": "Identifier",
-	                            "name": "c",
-	                            "range": [
-	                                29,
-	                                30
-	                            ],
-	                            "loc": {
-	                                "start": {
-	                                    "line": 3,
-	                                    "column": 8
-	                                },
-	                                "end": {
-	                                    "line": 3,
-	                                    "column": 9
-	                                }
-	                            }
-	                        },
-	                        "consequent": {
-	                            "type": "ExpressionStatement",
-	                            "expression": {
-	                                "type": "CallExpression",
-	                                "callee": {
-	                                    "type": "Identifier",
-	                                    "name": "ok",
-	                                    "range": [
-	                                        38,
-	                                        40
-	                                    ],
-	                                    "loc": {
-	                                        "start": {
-	                                            "line": 4,
-	                                            "column": 6
-	                                        },
-	                                        "end": {
-	                                            "line": 4,
-	                                            "column": 8
-	                                        }
-	                                    }
-	                                },
-	                                "arguments": [],
-	                                "range": [
-	                                    38,
-	                                    42
-	                                ],
-	                                "loc": {
-	                                    "start": {
-	                                        "line": 4,
-	                                        "column": 6
-	                                    },
-	                                    "end": {
-	                                        "line": 4,
-	                                        "column": 10
-	                                    }
-	                                }
-	                            },
-	                            "range": [
-	                                38,
-	                                43
-	                            ],
-	                            "loc": {
-	                                "start": {
-	                                    "line": 4,
-	                                    "column": 6
-	                                },
-	                                "end": {
-	                                    "line": 4,
-	                                    "column": 11
-	                                }
-	                            }
-	                        },
-	                        "alternate": null,
-	                        "range": [
-	                            25,
-	                            43
-	                        ],
-	                        "loc": {
-	                            "start": {
-	                                "line": 3,
-	                                "column": 4
-	                            },
-	                            "end": {
-	                                "line": 4,
-	                                "column": 11
-	                            }
-	                        }
-	                    },
-	                    "range": [
-	                        11,
-	                        43
-	                    ],
-	                    "loc": {
-	                        "start": {
-	                            "line": 2,
-	                            "column": 2
-	                        },
-	                        "end": {
-	                            "line": 4,
-	                            "column": 11
-	                        }
-	                    }
-	                }
-	            ],
-	            "range": [
-	                7,
-	                45
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 1,
-	                    "column": 7
-	                },
-	                "end": {
-	                    "line": 5,
-	                    "column": 1
-	                }
-	            }
-	        },
-	        "alternate": {
-	            "type": "ExpressionStatement",
-	            "expression": {
-	                "type": "CallExpression",
-	                "callee": {
-	                    "type": "Identifier",
-	                    "name": "fail",
-	                    "range": [
-	                        51,
-	                        55
-	                    ],
-	                    "loc": {
-	                        "start": {
-	                            "line": 6,
-	                            "column": 5
-	                        },
-	                        "end": {
-	                            "line": 6,
-	                            "column": 9
-	                        }
-	                    }
-	                },
-	                "arguments": [],
-	                "range": [
-	                    51,
-	                    57
-	                ],
-	                "loc": {
-	                    "start": {
-	                        "line": 6,
-	                        "column": 5
-	                    },
-	                    "end": {
-	                        "line": 6,
-	                        "column": 11
-	                    }
-	                }
-	            },
-	            "range": [
-	                51,
-	                58
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 6,
-	                    "column": 5
-	                },
-	                "end": {
-	                    "line": 6,
-	                    "column": 12
-	                }
-	            }
-	        },
-	        "range": [
-	            0,
-	            58
-	        ],
-	        "loc": {
-	            "start": {
-	                "line": 1,
-	                "column": 0
-	            },
-	            "end": {
-	                "line": 6,
-	                "column": 12
-	            }
-	        }
-	    }
-	],
-	"sourceType": "script",
-	"range": [
-	    0,
-	    58
-	],
-	"loc": {
-	    "start": {
-	        "line": 1,
-	        "column": 0
-	    },
-	    "end": {
-	        "line": 6,
-	        "column": 12
-	    }
-	}
+    "type": "Program",
+    "location": {
+        "start": {
+            "line": 1,
+            "column": 0,
+            "index": 0
+        },
+        "end": {
+            "line": 6,
+            "column": 12,
+            "index": 58
+        }
+    },
+    "leadingComments": [],
+    "trailingComments": [],
+    "body": [
+        {
+            "type": "IfStatement",
+            "location": {
+                "start": {
+                    "line": 1,
+                    "column": 0,
+                    "index": 0
+                },
+                "end": {
+                    "line": 6,
+                    "column": 12,
+                    "index": 58
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "test": {
+                "type": "Identifier",
+                "location": {
+                    "start": {
+                        "line": 1,
+                        "column": 4,
+                        "index": 4
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 5,
+                        "index": 5
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "name": "a"
+            },
+            "consequent": {
+                "type": "BlockStatement",
+                "location": {
+                    "start": {
+                        "line": 1,
+                        "column": 7,
+                        "index": 7
+                    },
+                    "end": {
+                        "line": 5,
+                        "column": 1,
+                        "index": 45
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "body": [
+                    {
+                        "type": "WhileStatement",
+                        "location": {
+                            "start": {
+                                "line": 2,
+                                "column": 2,
+                                "index": 11
+                            },
+                            "end": {
+                                "line": 4,
+                                "column": 11,
+                                "index": 43
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "test": {
+                            "type": "Identifier",
+                            "location": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 9,
+                                    "index": 18
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 10,
+                                    "index": 19
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "name": "b"
+                        },
+                        "body": {
+                            "type": "IfStatement",
+                            "location": {
+                                "start": {
+                                    "line": 3,
+                                    "column": 4,
+                                    "index": 25
+                                },
+                                "end": {
+                                    "line": 4,
+                                    "column": 11,
+                                    "index": 43
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "test": {
+                                "type": "Identifier",
+                                "location": {
+                                    "start": {
+                                        "line": 3,
+                                        "column": 8,
+                                        "index": 29
+                                    },
+                                    "end": {
+                                        "line": 3,
+                                        "column": 9,
+                                        "index": 30
+                                    }
+                                },
+                                "leadingComments": [],
+                                "trailingComments": [],
+                                "name": "c"
+                            },
+                            "consequent": {
+                                "type": "ExpressionStatement",
+                                "location": {
+                                    "start": {
+                                        "line": 4,
+                                        "column": 6,
+                                        "index": 38
+                                    },
+                                    "end": {
+                                        "line": 4,
+                                        "column": 11,
+                                        "index": 43
+                                    }
+                                },
+                                "leadingComments": [],
+                                "trailingComments": [],
+                                "expression": {
+                                    "type": "CallExpression",
+                                    "location": {
+                                        "start": {
+                                            "line": 4,
+                                            "column": 6,
+                                            "index": 38
+                                        },
+                                        "end": {
+                                            "line": 4,
+                                            "column": 10,
+                                            "index": 42
+                                        }
+                                    },
+                                    "leadingComments": [],
+                                    "trailingComments": [],
+                                    "callee": {
+                                        "type": "Identifier",
+                                        "location": {
+                                            "start": {
+                                                "line": 4,
+                                                "column": 6,
+                                                "index": 38
+                                            },
+                                            "end": {
+                                                "line": 4,
+                                                "column": 8,
+                                                "index": 40
+                                            }
+                                        },
+                                        "leadingComments": [],
+                                        "trailingComments": [],
+                                        "name": "ok"
+                                    },
+                                    "arguments": []
+                                }
+                            },
+                            "alternate": null
+                        }
+                    }
+                ]
+            },
+            "alternate": {
+                "type": "ExpressionStatement",
+                "location": {
+                    "start": {
+                        "line": 6,
+                        "column": 5,
+                        "index": 51
+                    },
+                    "end": {
+                        "line": 6,
+                        "column": 12,
+                        "index": 58
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "expression": {
+                    "type": "CallExpression",
+                    "location": {
+                        "start": {
+                            "line": 6,
+                            "column": 5,
+                            "index": 51
+                        },
+                        "end": {
+                            "line": 6,
+                            "column": 11,
+                            "index": 57
+                        }
+                    },
+                    "leadingComments": [],
+                    "trailingComments": [],
+                    "callee": {
+                        "type": "Identifier",
+                        "location": {
+                            "start": {
+                                "line": 6,
+                                "column": 5,
+                                "index": 51
+                            },
+                            "end": {
+                                "line": 6,
+                                "column": 9,
+                                "index": 55
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "name": "fail"
+                    },
+                    "arguments": []
+                }
+            }
+        }
+    ],
+    "sourceType": "script"
 }

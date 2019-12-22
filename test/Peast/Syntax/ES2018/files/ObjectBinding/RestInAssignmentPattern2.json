@@ -1,427 +1,444 @@
 {
-	"type": "Program",
-	"body": [
-	    {
-	        "type": "ExpressionStatement",
-	        "expression": {
-	            "type": "AssignmentExpression",
-	            "operator": "=",
-	            "left": {
-	                "type": "ObjectPattern",
-	                "properties": [
-	                    {
-	                        "type": "Property",
-	                        "key": {
-	                            "type": "Identifier",
-	                            "name": "a",
-	                            "range": [
-	                                2,
-	                                3
-	                            ],
-	                            "loc": {
-	                                "start": {
-	                                    "line": 1,
-	                                    "column": 2
-	                                },
-	                                "end": {
-	                                    "line": 1,
-	                                    "column": 3
-	                                }
-	                            }
-	                        },
-	                        "computed": false,
-	                        "value": {
-	                            "type": "Identifier",
-	                            "name": "a",
-	                            "range": [
-	                                2,
-	                                3
-	                            ],
-	                            "loc": {
-	                                "start": {
-	                                    "line": 1,
-	                                    "column": 2
-	                                },
-	                                "end": {
-	                                    "line": 1,
-	                                    "column": 3
-	                                }
-	                            }
-	                        },
-	                        "kind": "init",
-	                        "method": false,
-	                        "shorthand": true,
-	                        "range": [
-	                            2,
-	                            3
-	                        ],
-	                        "loc": {
-	                            "start": {
-	                                "line": 1,
-	                                "column": 2
-	                            },
-	                            "end": {
-	                                "line": 1,
-	                                "column": 3
-	                            }
-	                        }
-	                    },
-	                    {
-	                        "type": "Property",
-	                        "key": {
-	                            "type": "Identifier",
-	                            "name": "b",
-	                            "range": [
-	                                5,
-	                                6
-	                            ],
-	                            "loc": {
-	                                "start": {
-	                                    "line": 1,
-	                                    "column": 5
-	                                },
-	                                "end": {
-	                                    "line": 1,
-	                                    "column": 6
-	                                }
-	                            }
-	                        },
-	                        "computed": false,
-	                        "value": {
-	                            "type": "Identifier",
-	                            "name": "b",
-	                            "range": [
-	                                5,
-	                                6
-	                            ],
-	                            "loc": {
-	                                "start": {
-	                                    "line": 1,
-	                                    "column": 5
-	                                },
-	                                "end": {
-	                                    "line": 1,
-	                                    "column": 6
-	                                }
-	                            }
-	                        },
-	                        "kind": "init",
-	                        "method": false,
-	                        "shorthand": true,
-	                        "range": [
-	                            5,
-	                            6
-	                        ],
-	                        "loc": {
-	                            "start": {
-	                                "line": 1,
-	                                "column": 5
-	                            },
-	                            "end": {
-	                                "line": 1,
-	                                "column": 6
-	                            }
-	                        }
-	                    },
-	                    {
-	                        "type": "RestElement",
-	                        "argument": {
-	                            "type": "Identifier",
-	                            "name": "rest",
-	                            "range": [
-	                                10,
-	                                14
-	                            ],
-	                            "loc": {
-	                                "start": {
-	                                    "line": 1,
-	                                    "column": 10
-	                                },
-	                                "end": {
-	                                    "line": 1,
-	                                    "column": 14
-	                                }
-	                            }
-	                        },
-	                        "range": [
-	                            7,
-	                            14
-	                        ],
-	                        "loc": {
-	                            "start": {
-	                                "line": 1,
-	                                "column": 7
-	                            },
-	                            "end": {
-	                                "line": 1,
-	                                "column": 14
-	                            }
-	                        }
-	                    }
-	                ],
-	                "range": [
-	                    1,
-	                    15
-	                ],
-	                "loc": {
-	                    "start": {
-	                        "line": 1,
-	                        "column": 1
-	                    },
-	                    "end": {
-	                        "line": 1,
-	                        "column": 15
-	                    }
-	                }
-	            },
-	            "right": {
-	                "type": "AssignmentExpression",
-	                "operator": "=",
-	                "left": {
-	                    "type": "ObjectPattern",
-	                    "properties": [
-	                        {
-	                            "type": "Property",
-	                            "key": {
-	                                "type": "Identifier",
-	                                "name": "a",
-	                                "range": [
-	                                    19,
-	                                    20
-	                                ],
-	                                "loc": {
-	                                    "start": {
-	                                        "line": 1,
-	                                        "column": 19
-	                                    },
-	                                    "end": {
-	                                        "line": 1,
-	                                        "column": 20
-	                                    }
-	                                }
-	                            },
-	                            "computed": false,
-	                            "value": {
-	                                "type": "Identifier",
-	                                "name": "a",
-	                                "range": [
-	                                    19,
-	                                    20
-	                                ],
-	                                "loc": {
-	                                    "start": {
-	                                        "line": 1,
-	                                        "column": 19
-	                                    },
-	                                    "end": {
-	                                        "line": 1,
-	                                        "column": 20
-	                                    }
-	                                }
-	                            },
-	                            "kind": "init",
-	                            "method": false,
-	                            "shorthand": true,
-	                            "range": [
-	                                19,
-	                                20
-	                            ],
-	                            "loc": {
-	                                "start": {
-	                                    "line": 1,
-	                                    "column": 19
-	                                },
-	                                "end": {
-	                                    "line": 1,
-	                                    "column": 20
-	                                }
-	                            }
-	                        },
-	                        {
-	                            "type": "Property",
-	                            "key": {
-	                                "type": "Identifier",
-	                                "name": "b",
-	                                "range": [
-	                                    22,
-	                                    23
-	                                ],
-	                                "loc": {
-	                                    "start": {
-	                                        "line": 1,
-	                                        "column": 22
-	                                    },
-	                                    "end": {
-	                                        "line": 1,
-	                                        "column": 23
-	                                    }
-	                                }
-	                            },
-	                            "computed": false,
-	                            "value": {
-	                                "type": "Identifier",
-	                                "name": "b",
-	                                "range": [
-	                                    22,
-	                                    23
-	                                ],
-	                                "loc": {
-	                                    "start": {
-	                                        "line": 1,
-	                                        "column": 22
-	                                    },
-	                                    "end": {
-	                                        "line": 1,
-	                                        "column": 23
-	                                    }
-	                                }
-	                            },
-	                            "kind": "init",
-	                            "method": false,
-	                            "shorthand": true,
-	                            "range": [
-	                                22,
-	                                23
-	                            ],
-	                            "loc": {
-	                                "start": {
-	                                    "line": 1,
-	                                    "column": 22
-	                                },
-	                                "end": {
-	                                    "line": 1,
-	                                    "column": 23
-	                                }
-	                            }
-	                        },
-	                        {
-	                            "type": "RestElement",
-	                            "argument": {
-	                                "type": "Identifier",
-	                                "name": "rest",
-	                                "range": [
-	                                    27,
-	                                    31
-	                                ],
-	                                "loc": {
-	                                    "start": {
-	                                        "line": 1,
-	                                        "column": 27
-	                                    },
-	                                    "end": {
-	                                        "line": 1,
-	                                        "column": 31
-	                                    }
-	                                }
-	                            },
-	                            "range": [
-	                                24,
-	                                31
-	                            ],
-	                            "loc": {
-	                                "start": {
-	                                    "line": 1,
-	                                    "column": 24
-	                                },
-	                                "end": {
-	                                    "line": 1,
-	                                    "column": 31
-	                                }
-	                            }
-	                        }
-	                    ],
-	                    "range": [
-	                        18,
-	                        32
-	                    ],
-	                    "loc": {
-	                        "start": {
-	                            "line": 1,
-	                            "column": 18
-	                        },
-	                        "end": {
-	                            "line": 1,
-	                            "column": 32
-	                        }
-	                    }
-	                },
-	                "right": {
-	                    "type": "Identifier",
-	                    "name": "obj",
-	                    "range": [
-	                        35,
-	                        38
-	                    ],
-	                    "loc": {
-	                        "start": {
-	                            "line": 1,
-	                            "column": 35
-	                        },
-	                        "end": {
-	                            "line": 1,
-	                            "column": 38
-	                        }
-	                    }
-	                },
-	                "range": [
-	                    18,
-	                    38
-	                ],
-	                "loc": {
-	                    "start": {
-	                        "line": 1,
-	                        "column": 18
-	                    },
-	                    "end": {
-	                        "line": 1,
-	                        "column": 38
-	                    }
-	                }
-	            },
-	            "range": [
-	                1,
-	                38
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 1,
-	                    "column": 1
-	                },
-	                "end": {
-	                    "line": 1,
-	                    "column": 38
-	                }
-	            }
-	        },
-	        "range": [
-	            0,
-	            39
-	        ],
-	        "loc": {
-	            "start": {
-	                "line": 1,
-	                "column": 0
-	            },
-	            "end": {
-	                "line": 1,
-	                "column": 39
-	            }
-	        }
-	    }
-	],
-	"sourceType": "script",
-	"range": [
-	    0,
-	    39
-	],
-	"loc": {
-	    "start": {
-	        "line": 1,
-	        "column": 0
-	    },
-	    "end": {
-	        "line": 1,
-	        "column": 39
-	    }
-	}
+    "type": "Program",
+    "location": {
+        "start": {
+            "line": 1,
+            "column": 0,
+            "index": 0
+        },
+        "end": {
+            "line": 1,
+            "column": 39,
+            "index": 39
+        }
+    },
+    "leadingComments": [],
+    "trailingComments": [],
+    "body": [
+        {
+            "type": "ExpressionStatement",
+            "location": {
+                "start": {
+                    "line": 1,
+                    "column": 0,
+                    "index": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 39,
+                    "index": 39
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "expression": {
+                "type": "ParenthesizedExpression",
+                "location": {
+                    "start": {
+                        "line": 1,
+                        "column": 0,
+                        "index": 0
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 39,
+                        "index": 39
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "expression": {
+                    "type": "AssignmentExpression",
+                    "location": {
+                        "start": {
+                            "line": 1,
+                            "column": 1,
+                            "index": 1
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 38,
+                            "index": 38
+                        }
+                    },
+                    "leadingComments": [],
+                    "trailingComments": [],
+                    "left": {
+                        "type": "ObjectPattern",
+                        "location": {
+                            "start": {
+                                "line": 1,
+                                "column": 1,
+                                "index": 1
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 15,
+                                "index": 15
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "properties": [
+                            {
+                                "type": "Property",
+                                "location": {
+                                    "start": {
+                                        "line": 1,
+                                        "column": 2,
+                                        "index": 2
+                                    },
+                                    "end": {
+                                        "line": 1,
+                                        "column": 3,
+                                        "index": 3
+                                    }
+                                },
+                                "leadingComments": [],
+                                "trailingComments": [],
+                                "key": {
+                                    "type": "Identifier",
+                                    "location": {
+                                        "start": {
+                                            "line": 1,
+                                            "column": 2,
+                                            "index": 2
+                                        },
+                                        "end": {
+                                            "line": 1,
+                                            "column": 3,
+                                            "index": 3
+                                        }
+                                    },
+                                    "leadingComments": [],
+                                    "trailingComments": [],
+                                    "name": "a"
+                                },
+                                "value": {
+                                    "type": "Identifier",
+                                    "location": {
+                                        "start": {
+                                            "line": 1,
+                                            "column": 2,
+                                            "index": 2
+                                        },
+                                        "end": {
+                                            "line": 1,
+                                            "column": 3,
+                                            "index": 3
+                                        }
+                                    },
+                                    "leadingComments": [],
+                                    "trailingComments": [],
+                                    "name": "a"
+                                },
+                                "kind": "init",
+                                "method": false,
+                                "shorthand": true,
+                                "computed": false
+                            },
+                            {
+                                "type": "Property",
+                                "location": {
+                                    "start": {
+                                        "line": 1,
+                                        "column": 5,
+                                        "index": 5
+                                    },
+                                    "end": {
+                                        "line": 1,
+                                        "column": 6,
+                                        "index": 6
+                                    }
+                                },
+                                "leadingComments": [],
+                                "trailingComments": [],
+                                "key": {
+                                    "type": "Identifier",
+                                    "location": {
+                                        "start": {
+                                            "line": 1,
+                                            "column": 5,
+                                            "index": 5
+                                        },
+                                        "end": {
+                                            "line": 1,
+                                            "column": 6,
+                                            "index": 6
+                                        }
+                                    },
+                                    "leadingComments": [],
+                                    "trailingComments": [],
+                                    "name": "b"
+                                },
+                                "value": {
+                                    "type": "Identifier",
+                                    "location": {
+                                        "start": {
+                                            "line": 1,
+                                            "column": 5,
+                                            "index": 5
+                                        },
+                                        "end": {
+                                            "line": 1,
+                                            "column": 6,
+                                            "index": 6
+                                        }
+                                    },
+                                    "leadingComments": [],
+                                    "trailingComments": [],
+                                    "name": "b"
+                                },
+                                "kind": "init",
+                                "method": false,
+                                "shorthand": true,
+                                "computed": false
+                            },
+                            {
+                                "type": "RestElement",
+                                "location": {
+                                    "start": {
+                                        "line": 1,
+                                        "column": 7,
+                                        "index": 7
+                                    },
+                                    "end": {
+                                        "line": 1,
+                                        "column": 14,
+                                        "index": 14
+                                    }
+                                },
+                                "leadingComments": [],
+                                "trailingComments": [],
+                                "argument": {
+                                    "type": "Identifier",
+                                    "location": {
+                                        "start": {
+                                            "line": 1,
+                                            "column": 10,
+                                            "index": 10
+                                        },
+                                        "end": {
+                                            "line": 1,
+                                            "column": 14,
+                                            "index": 14
+                                        }
+                                    },
+                                    "leadingComments": [],
+                                    "trailingComments": [],
+                                    "name": "rest"
+                                }
+                            }
+                        ]
+                    },
+                    "operator": "=",
+                    "right": {
+                        "type": "AssignmentExpression",
+                        "location": {
+                            "start": {
+                                "line": 1,
+                                "column": 18,
+                                "index": 18
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 38,
+                                "index": 38
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "left": {
+                            "type": "ObjectPattern",
+                            "location": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 18,
+                                    "index": 18
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 32,
+                                    "index": 32
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "properties": [
+                                {
+                                    "type": "Property",
+                                    "location": {
+                                        "start": {
+                                            "line": 1,
+                                            "column": 19,
+                                            "index": 19
+                                        },
+                                        "end": {
+                                            "line": 1,
+                                            "column": 20,
+                                            "index": 20
+                                        }
+                                    },
+                                    "leadingComments": [],
+                                    "trailingComments": [],
+                                    "key": {
+                                        "type": "Identifier",
+                                        "location": {
+                                            "start": {
+                                                "line": 1,
+                                                "column": 19,
+                                                "index": 19
+                                            },
+                                            "end": {
+                                                "line": 1,
+                                                "column": 20,
+                                                "index": 20
+                                            }
+                                        },
+                                        "leadingComments": [],
+                                        "trailingComments": [],
+                                        "name": "a"
+                                    },
+                                    "value": {
+                                        "type": "Identifier",
+                                        "location": {
+                                            "start": {
+                                                "line": 1,
+                                                "column": 19,
+                                                "index": 19
+                                            },
+                                            "end": {
+                                                "line": 1,
+                                                "column": 20,
+                                                "index": 20
+                                            }
+                                        },
+                                        "leadingComments": [],
+                                        "trailingComments": [],
+                                        "name": "a"
+                                    },
+                                    "kind": "init",
+                                    "method": false,
+                                    "shorthand": true,
+                                    "computed": false
+                                },
+                                {
+                                    "type": "Property",
+                                    "location": {
+                                        "start": {
+                                            "line": 1,
+                                            "column": 22,
+                                            "index": 22
+                                        },
+                                        "end": {
+                                            "line": 1,
+                                            "column": 23,
+                                            "index": 23
+                                        }
+                                    },
+                                    "leadingComments": [],
+                                    "trailingComments": [],
+                                    "key": {
+                                        "type": "Identifier",
+                                        "location": {
+                                            "start": {
+                                                "line": 1,
+                                                "column": 22,
+                                                "index": 22
+                                            },
+                                            "end": {
+                                                "line": 1,
+                                                "column": 23,
+                                                "index": 23
+                                            }
+                                        },
+                                        "leadingComments": [],
+                                        "trailingComments": [],
+                                        "name": "b"
+                                    },
+                                    "value": {
+                                        "type": "Identifier",
+                                        "location": {
+                                            "start": {
+                                                "line": 1,
+                                                "column": 22,
+                                                "index": 22
+                                            },
+                                            "end": {
+                                                "line": 1,
+                                                "column": 23,
+                                                "index": 23
+                                            }
+                                        },
+                                        "leadingComments": [],
+                                        "trailingComments": [],
+                                        "name": "b"
+                                    },
+                                    "kind": "init",
+                                    "method": false,
+                                    "shorthand": true,
+                                    "computed": false
+                                },
+                                {
+                                    "type": "RestElement",
+                                    "location": {
+                                        "start": {
+                                            "line": 1,
+                                            "column": 24,
+                                            "index": 24
+                                        },
+                                        "end": {
+                                            "line": 1,
+                                            "column": 31,
+                                            "index": 31
+                                        }
+                                    },
+                                    "leadingComments": [],
+                                    "trailingComments": [],
+                                    "argument": {
+                                        "type": "Identifier",
+                                        "location": {
+                                            "start": {
+                                                "line": 1,
+                                                "column": 27,
+                                                "index": 27
+                                            },
+                                            "end": {
+                                                "line": 1,
+                                                "column": 31,
+                                                "index": 31
+                                            }
+                                        },
+                                        "leadingComments": [],
+                                        "trailingComments": [],
+                                        "name": "rest"
+                                    }
+                                }
+                            ]
+                        },
+                        "operator": "=",
+                        "right": {
+                            "type": "Identifier",
+                            "location": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 35,
+                                    "index": 35
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 38,
+                                    "index": 38
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "name": "obj"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "sourceType": "script"
 }

@@ -1,321 +1,319 @@
 {
-	"type": "Program",
-	"body": [
-	    {
-	        "type": "ClassDeclaration",
-	        "id": {
-	            "type": "Identifier",
-	            "name": "test",
-	            "range": [
-	                6,
-	                10
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 1,
-	                    "column": 6
-	                },
-	                "end": {
-	                    "line": 1,
-	                    "column": 10
-	                }
-	            }
-	        },
-	        "superClass": null,
-	        "body": {
-	            "type": "ClassBody",
-	            "body": [
-	                {
-	                    "type": "MethodDefinition",
-	                    "key": {
-	                        "type": "Identifier",
-	                        "name": "method",
-	                        "range": [
-	                            22,
-	                            28
-	                        ],
-	                        "loc": {
-	                            "start": {
-	                                "line": 2,
-	                                "column": 10
-	                            },
-	                            "end": {
-	                                "line": 2,
-	                                "column": 16
-	                            }
-	                        }
-	                    },
-	                    "computed": false,
-	                    "value": {
-	                        "type": "FunctionExpression",
-	                        "id": null,
-	                        "params": [
-	                            {
-	                                "type": "Identifier",
-	                                "name": "param",
-	                                "range": [
-	                                    30,
-	                                    35
-	                                ],
-	                                "loc": {
-	                                    "start": {
-	                                        "line": 2,
-	                                        "column": 18
-	                                    },
-	                                    "end": {
-	                                        "line": 2,
-	                                        "column": 23
-	                                    }
-	                                }
-	                            }
-	                        ],
-	                        "body": {
-	                            "type": "BlockStatement",
-	                            "body": [
-	                                {
-	                                    "type": "ExpressionStatement",
-	                                    "expression": {
-	                                        "type": "AwaitExpression",
-	                                        "argument": {
-	                                            "type": "CallExpression",
-	                                            "callee": {
-	                                                "type": "Identifier",
-	                                                "name": "foo",
-	                                                "range": [
-	                                                    52,
-	                                                    55
-	                                                ],
-	                                                "loc": {
-	                                                    "start": {
-	                                                        "line": 3,
-	                                                        "column": 14
-	                                                    },
-	                                                    "end": {
-	                                                        "line": 3,
-	                                                        "column": 17
-	                                                    }
-	                                                }
-	                                            },
-	                                            "arguments": [],
-	                                            "range": [
-	                                                52,
-	                                                57
-	                                            ],
-	                                            "loc": {
-	                                                "start": {
-	                                                    "line": 3,
-	                                                    "column": 14
-	                                                },
-	                                                "end": {
-	                                                    "line": 3,
-	                                                    "column": 19
-	                                                }
-	                                            }
-	                                        },
-	                                        "range": [
-	                                            46,
-	                                            57
-	                                        ],
-	                                        "loc": {
-	                                            "start": {
-	                                                "line": 3,
-	                                                "column": 8
-	                                            },
-	                                            "end": {
-	                                                "line": 3,
-	                                                "column": 19
-	                                            }
-	                                        }
-	                                    },
-	                                    "range": [
-	                                        46,
-	                                        58
-	                                    ],
-	                                    "loc": {
-	                                        "start": {
-	                                            "line": 3,
-	                                            "column": 8
-	                                        },
-	                                        "end": {
-	                                            "line": 3,
-	                                            "column": 20
-	                                        }
-	                                    }
-	                                }
-	                            ],
-	                            "range": [
-	                                36,
-	                                64
-	                            ],
-	                            "loc": {
-	                                "start": {
-	                                    "line": 2,
-	                                    "column": 24
-	                                },
-	                                "end": {
-	                                    "line": 4,
-	                                    "column": 5
-	                                }
-	                            }
-	                        },
-	                        "generator": false,
-	                        "expression": false,
-	                        "async": true,
-	                        "range": [
-	                            29,
-	                            64
-	                        ],
-	                        "loc": {
-	                            "start": {
-	                                "line": 2,
-	                                "column": 17
-	                            },
-	                            "end": {
-	                                "line": 4,
-	                                "column": 5
-	                            }
-	                        }
-	                    },
-	                    "kind": "method",
-	                    "static": false,
-	                    "range": [
-	                        16,
-	                        64
-	                    ],
-	                    "loc": {
-	                        "start": {
-	                            "line": 2,
-	                            "column": 4
-	                        },
-	                        "end": {
-	                            "line": 4,
-	                            "column": 5
-	                        }
-	                    }
-	                },
-	                {
-	                    "type": "MethodDefinition",
-	                    "key": {
-	                        "type": "Identifier",
-	                        "name": "method2",
-	                        "range": [
-	                            69,
-	                            76
-	                        ],
-	                        "loc": {
-	                            "start": {
-	                                "line": 5,
-	                                "column": 4
-	                            },
-	                            "end": {
-	                                "line": 5,
-	                                "column": 11
-	                            }
-	                        }
-	                    },
-	                    "computed": false,
-	                    "value": {
-	                        "type": "FunctionExpression",
-	                        "id": null,
-	                        "params": [],
-	                        "body": {
-	                            "type": "BlockStatement",
-	                            "body": [],
-	                            "range": [
-	                                78,
-	                                80
-	                            ],
-	                            "loc": {
-	                                "start": {
-	                                    "line": 5,
-	                                    "column": 13
-	                                },
-	                                "end": {
-	                                    "line": 5,
-	                                    "column": 15
-	                                }
-	                            }
-	                        },
-	                        "generator": false,
-	                        "expression": false,
-	                        "async": false,
-	                        "range": [
-	                            76,
-	                            80
-	                        ],
-	                        "loc": {
-	                            "start": {
-	                                "line": 5,
-	                                "column": 11
-	                            },
-	                            "end": {
-	                                "line": 5,
-	                                "column": 15
-	                            }
-	                        }
-	                    },
-	                    "kind": "method",
-	                    "static": false,
-	                    "range": [
-	                        69,
-	                        80
-	                    ],
-	                    "loc": {
-	                        "start": {
-	                            "line": 5,
-	                            "column": 4
-	                        },
-	                        "end": {
-	                            "line": 5,
-	                            "column": 15
-	                        }
-	                    }
-	                }
-	            ],
-	            "range": [
-	                10,
-	                82
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 1,
-	                    "column": 10
-	                },
-	                "end": {
-	                    "line": 6,
-	                    "column": 1
-	                }
-	            }
-	        },
-	        "range": [
-	            0,
-	            82
-	        ],
-	        "loc": {
-	            "start": {
-	                "line": 1,
-	                "column": 0
-	            },
-	            "end": {
-	                "line": 6,
-	                "column": 1
-	            }
-	        }
-	    }
-	],
-	"sourceType": "script",
-	"range": [
-	    0,
-	    82
-	],
-	"loc": {
-	    "start": {
-	        "line": 1,
-	        "column": 0
-	    },
-	    "end": {
-	        "line": 6,
-	        "column": 1
-	    }
-	}
+    "type": "Program",
+    "location": {
+        "start": {
+            "line": 1,
+            "column": 0,
+            "index": 0
+        },
+        "end": {
+            "line": 6,
+            "column": 1,
+            "index": 82
+        }
+    },
+    "leadingComments": [],
+    "trailingComments": [],
+    "body": [
+        {
+            "type": "ClassDeclaration",
+            "location": {
+                "start": {
+                    "line": 1,
+                    "column": 0,
+                    "index": 0
+                },
+                "end": {
+                    "line": 6,
+                    "column": 1,
+                    "index": 82
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "id": {
+                "type": "Identifier",
+                "location": {
+                    "start": {
+                        "line": 1,
+                        "column": 6,
+                        "index": 6
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 10,
+                        "index": 10
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "name": "test"
+            },
+            "superClass": null,
+            "body": {
+                "type": "ClassBody",
+                "location": {
+                    "start": {
+                        "line": 1,
+                        "column": 10,
+                        "index": 10
+                    },
+                    "end": {
+                        "line": 6,
+                        "column": 1,
+                        "index": 82
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "body": [
+                    {
+                        "type": "MethodDefinition",
+                        "location": {
+                            "start": {
+                                "line": 2,
+                                "column": 4,
+                                "index": 16
+                            },
+                            "end": {
+                                "line": 4,
+                                "column": 5,
+                                "index": 64
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "key": {
+                            "type": "Identifier",
+                            "location": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 10,
+                                    "index": 22
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 16,
+                                    "index": 28
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "name": "method"
+                        },
+                        "value": {
+                            "type": "FunctionExpression",
+                            "location": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 17,
+                                    "index": 29
+                                },
+                                "end": {
+                                    "line": 4,
+                                    "column": 5,
+                                    "index": 64
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "id": null,
+                            "params": [
+                                {
+                                    "type": "Identifier",
+                                    "location": {
+                                        "start": {
+                                            "line": 2,
+                                            "column": 18,
+                                            "index": 30
+                                        },
+                                        "end": {
+                                            "line": 2,
+                                            "column": 23,
+                                            "index": 35
+                                        }
+                                    },
+                                    "leadingComments": [],
+                                    "trailingComments": [],
+                                    "name": "param"
+                                }
+                            ],
+                            "body": {
+                                "type": "BlockStatement",
+                                "location": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 24,
+                                        "index": 36
+                                    },
+                                    "end": {
+                                        "line": 4,
+                                        "column": 5,
+                                        "index": 64
+                                    }
+                                },
+                                "leadingComments": [],
+                                "trailingComments": [],
+                                "body": [
+                                    {
+                                        "type": "ExpressionStatement",
+                                        "location": {
+                                            "start": {
+                                                "line": 3,
+                                                "column": 8,
+                                                "index": 46
+                                            },
+                                            "end": {
+                                                "line": 3,
+                                                "column": 20,
+                                                "index": 58
+                                            }
+                                        },
+                                        "leadingComments": [],
+                                        "trailingComments": [],
+                                        "expression": {
+                                            "type": "AwaitExpression",
+                                            "location": {
+                                                "start": {
+                                                    "line": 3,
+                                                    "column": 8,
+                                                    "index": 46
+                                                },
+                                                "end": {
+                                                    "line": 3,
+                                                    "column": 19,
+                                                    "index": 57
+                                                }
+                                            },
+                                            "leadingComments": [],
+                                            "trailingComments": [],
+                                            "argument": {
+                                                "type": "CallExpression",
+                                                "location": {
+                                                    "start": {
+                                                        "line": 3,
+                                                        "column": 14,
+                                                        "index": 52
+                                                    },
+                                                    "end": {
+                                                        "line": 3,
+                                                        "column": 19,
+                                                        "index": 57
+                                                    }
+                                                },
+                                                "leadingComments": [],
+                                                "trailingComments": [],
+                                                "callee": {
+                                                    "type": "Identifier",
+                                                    "location": {
+                                                        "start": {
+                                                            "line": 3,
+                                                            "column": 14,
+                                                            "index": 52
+                                                        },
+                                                        "end": {
+                                                            "line": 3,
+                                                            "column": 17,
+                                                            "index": 55
+                                                        }
+                                                    },
+                                                    "leadingComments": [],
+                                                    "trailingComments": [],
+                                                    "name": "foo"
+                                                },
+                                                "arguments": []
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            "generator": false,
+                            "async": true
+                        },
+                        "kind": "method",
+                        "computed": false,
+                        "static": false
+                    },
+                    {
+                        "type": "MethodDefinition",
+                        "location": {
+                            "start": {
+                                "line": 5,
+                                "column": 4,
+                                "index": 69
+                            },
+                            "end": {
+                                "line": 5,
+                                "column": 15,
+                                "index": 80
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "key": {
+                            "type": "Identifier",
+                            "location": {
+                                "start": {
+                                    "line": 5,
+                                    "column": 4,
+                                    "index": 69
+                                },
+                                "end": {
+                                    "line": 5,
+                                    "column": 11,
+                                    "index": 76
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "name": "method2"
+                        },
+                        "value": {
+                            "type": "FunctionExpression",
+                            "location": {
+                                "start": {
+                                    "line": 5,
+                                    "column": 11,
+                                    "index": 76
+                                },
+                                "end": {
+                                    "line": 5,
+                                    "column": 15,
+                                    "index": 80
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "id": null,
+                            "params": [],
+                            "body": {
+                                "type": "BlockStatement",
+                                "location": {
+                                    "start": {
+                                        "line": 5,
+                                        "column": 13,
+                                        "index": 78
+                                    },
+                                    "end": {
+                                        "line": 5,
+                                        "column": 15,
+                                        "index": 80
+                                    }
+                                },
+                                "leadingComments": [],
+                                "trailingComments": [],
+                                "body": []
+                            },
+                            "generator": false,
+                            "async": false
+                        },
+                        "kind": "method",
+                        "computed": false,
+                        "static": false
+                    }
+                ]
+            }
+        }
+    ],
+    "sourceType": "script"
 }

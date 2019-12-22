@@ -1,93 +1,91 @@
 {
-    "range": [
-        0,
-        20
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 1,
-            "column": 20
+            "column": 20,
+            "index": 20
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                20
-            ],
-            "loc": {
+            "type": "VariableDeclaration",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 1,
-                    "column": 20
+                    "column": 20,
+                    "index": 20
                 }
             },
-            "type": "VariableDeclaration",
+            "leadingComments": [],
+            "trailingComments": [],
             "declarations": [
                 {
-                    "range": [
-                        4,
-                        19
-                    ],
-                    "loc": {
+                    "type": "VariableDeclarator",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 4
+                            "column": 4,
+                            "index": 4
                         },
                         "end": {
                             "line": 1,
-                            "column": 19
+                            "column": 19,
+                            "index": 19
                         }
                     },
-                    "type": "VariableDeclarator",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "id": {
-                        "range": [
-                            4,
-                            5
-                        ],
-                        "loc": {
+                        "type": "Identifier",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 4
+                                "column": 4,
+                                "index": 4
                             },
                             "end": {
                                 "line": 1,
-                                "column": 5
+                                "column": 5,
+                                "index": 5
                             }
                         },
-                        "type": "Identifier",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "name": "a"
                     },
                     "init": {
-                        "range": [
-                            8,
-                            19
-                        ],
-                        "loc": {
+                        "type": "RegExpLiteral",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 8
+                                "column": 8,
+                                "index": 8
                             },
                             "end": {
                                 "line": 1,
-                                "column": 19
+                                "column": 19,
+                                "index": 19
                             }
                         },
-                        "type": "Literal",
-                        "value": "/abc(def)/i",
-                        "raw": "/abc(def)/i",
-                        "regex": {
-                            "pattern": "abc(def)",
-                            "flags": "i"
-                        }
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "value": "\/abc(def)\/i",
+                        "raw": "\/abc(def)\/i",
+                        "flags": "i",
+                        "pattern": "abc(def)"
                     }
                 }
             ],

@@ -1,163 +1,163 @@
 {
-	"type": "Program",
-	"body": [
-	    {
-	        "type": "ExpressionStatement",
-	        "expression": {
-	            "type": "AssignmentExpression",
-	            "operator": "=",
-	            "left": {
-	                "type": "Identifier",
-	                "name": "a",
-	                "range": [
-	                    0,
-	                    1
-	                ],
-	                "loc": {
-	                    "start": {
-	                        "line": 1,
-	                        "column": 0
-	                    },
-	                    "end": {
-	                        "line": 1,
-	                        "column": 1
-	                    }
-	                }
-	            },
-	            "right": {
-	                "type": "JSXElement",
-	                "openingElement": {
-	                    "type": "JSXOpeningElement",
-	                    "name": {
-	                        "type": "JSXIdentifier",
-	                        "name": "a",
-	                        "range": [
-	                            5,
-	                            6
-	                        ],
-	                        "loc": {
-	                            "start": {
-	                                "line": 1,
-	                                "column": 5
-	                            },
-	                            "end": {
-	                                "line": 1,
-	                                "column": 6
-	                            }
-	                        }
-	                    },
-	                    "selfClosing": false,
-	                    "attributes": [],
-	                    "range": [
-	                        4,
-	                        7
-	                    ],
-	                    "loc": {
-	                        "start": {
-	                            "line": 1,
-	                            "column": 4
-	                        },
-	                        "end": {
-	                            "line": 1,
-	                            "column": 7
-	                        }
-	                    }
-	                },
-	                "children": [],
-	                "closingElement": {
-	                    "type": "JSXClosingElement",
-	                    "name": {
-	                        "type": "JSXIdentifier",
-	                        "name": "a",
-	                        "range": [
-	                            9,
-	                            10
-	                        ],
-	                        "loc": {
-	                            "start": {
-	                                "line": 1,
-	                                "column": 9
-	                            },
-	                            "end": {
-	                                "line": 1,
-	                                "column": 10
-	                            }
-	                        }
-	                    },
-	                    "range": [
-	                        7,
-	                        11
-	                    ],
-	                    "loc": {
-	                        "start": {
-	                            "line": 1,
-	                            "column": 7
-	                        },
-	                        "end": {
-	                            "line": 1,
-	                            "column": 11
-	                        }
-	                    }
-	                },
-	                "range": [
-	                    4,
-	                    11
-	                ],
-	                "loc": {
-	                    "start": {
-	                        "line": 1,
-	                        "column": 4
-	                    },
-	                    "end": {
-	                        "line": 1,
-	                        "column": 11
-	                    }
-	                }
-	            },
-	            "range": [
-	                0,
-	                11
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 1,
-	                    "column": 0
-	                },
-	                "end": {
-	                    "line": 1,
-	                    "column": 11
-	                }
-	            }
-	        },
-	        "range": [
-	            0,
-	            12
-	        ],
-	        "loc": {
-	            "start": {
-	                "line": 1,
-	                "column": 0
-	            },
-	            "end": {
-	                "line": 1,
-	                "column": 12
-	            }
-	        }
-	    }
-	],
-	"sourceType": "script",
-	"range": [
-	    0,
-	    12
-	],
-	"loc": {
-	    "start": {
-	        "line": 1,
-	        "column": 0
-	    },
-	    "end": {
-	        "line": 1,
-	        "column": 12
-	    }
-	}
+    "type": "Program",
+    "location": {
+        "start": {
+            "line": 1,
+            "column": 0,
+            "index": 0
+        },
+        "end": {
+            "line": 1,
+            "column": 12,
+            "index": 12
+        }
+    },
+    "leadingComments": [],
+    "trailingComments": [],
+    "body": [
+        {
+            "type": "ExpressionStatement",
+            "location": {
+                "start": {
+                    "line": 1,
+                    "column": 0,
+                    "index": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 12,
+                    "index": 12
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "expression": {
+                "type": "AssignmentExpression",
+                "location": {
+                    "start": {
+                        "line": 1,
+                        "column": 0,
+                        "index": 0
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 11,
+                        "index": 11
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "left": {
+                    "type": "Identifier",
+                    "location": {
+                        "start": {
+                            "line": 1,
+                            "column": 0,
+                            "index": 0
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 1,
+                            "index": 1
+                        }
+                    },
+                    "leadingComments": [],
+                    "trailingComments": [],
+                    "name": "a"
+                },
+                "operator": "=",
+                "right": {
+                    "type": "JSXElement",
+                    "location": {
+                        "start": {
+                            "line": 1,
+                            "column": 4,
+                            "index": 4
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 11,
+                            "index": 11
+                        }
+                    },
+                    "leadingComments": [],
+                    "trailingComments": [],
+                    "openingElement": {
+                        "type": "JSXOpeningElement",
+                        "location": {
+                            "start": {
+                                "line": 1,
+                                "column": 4,
+                                "index": 4
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 7,
+                                "index": 7
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "name": {
+                            "type": "JSXIdentifier",
+                            "location": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 5,
+                                    "index": 5
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 6,
+                                    "index": 6
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "name": "a"
+                        },
+                        "attributes": [],
+                        "selfClosing": false
+                    },
+                    "children": [],
+                    "closingElement": {
+                        "type": "JSXClosingElement",
+                        "location": {
+                            "start": {
+                                "line": 1,
+                                "column": 7,
+                                "index": 7
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 11,
+                                "index": 11
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "name": {
+                            "type": "JSXIdentifier",
+                            "location": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 9,
+                                    "index": 9
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 10,
+                                    "index": 10
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "name": "a"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "sourceType": "script"
 }

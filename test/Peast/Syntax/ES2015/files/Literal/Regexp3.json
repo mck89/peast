@@ -1,58 +1,56 @@
 {
-    "range": [
-        0,
-        4
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 1,
-            "column": 4
+            "column": 4,
+            "index": 4
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                4
-            ],
-            "loc": {
+            "type": "ExpressionStatement",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 1,
-                    "column": 4
+                    "column": 4,
+                    "index": 4
                 }
             },
-            "type": "ExpressionStatement",
+            "leadingComments": [],
+            "trailingComments": [],
             "expression": {
-                "range": [
-                    0,
-                    4
-                ],
-                "loc": {
+                "type": "RegExpLiteral",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 0
+                        "column": 0,
+                        "index": 0
                     },
                     "end": {
                         "line": 1,
-                        "column": 4
+                        "column": 4,
+                        "index": 4
                     }
                 },
-                "type": "Literal",
-                "value": "/\\S/",
-                "raw": "/\\S/",
-                "regex": {
-                    "pattern": "\\S",
-                    "flags": ""
-                }
+                "leadingComments": [],
+                "trailingComments": [],
+                "value": "\/\\S\/",
+                "raw": "\/\\S\/",
+                "flags": "",
+                "pattern": "\\S"
             }
         }
     ],

@@ -1,87 +1,87 @@
 {
-    "range": [
-        0,
-        16
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 1,
-            "column": 16
+            "column": 16,
+            "index": 16
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                16
-            ],
-            "loc": {
+            "type": "VariableDeclaration",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 1,
-                    "column": 16
+                    "column": 16,
+                    "index": 16
                 }
             },
-            "type": "VariableDeclaration",
+            "leadingComments": [],
+            "trailingComments": [],
             "declarations": [
                 {
-                    "range": [
-                        4,
-                        15
-                    ],
-                    "loc": {
+                    "type": "VariableDeclarator",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 4
+                            "column": 4,
+                            "index": 4
                         },
                         "end": {
                             "line": 1,
-                            "column": 15
+                            "column": 15,
+                            "index": 15
                         }
                     },
-                    "type": "VariableDeclarator",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "id": {
-                        "range": [
-                            4,
-                            7
-                        ],
-                        "loc": {
+                        "type": "Identifier",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 4
+                                "column": 4,
+                                "index": 4
                             },
                             "end": {
                                 "line": 1,
-                                "column": 7
+                                "column": 7,
+                                "index": 7
                             }
                         },
-                        "type": "Identifier",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "name": "arr"
                     },
                     "init": {
-                        "range": [
-                            10,
-                            15
-                        ],
-                        "loc": {
+                        "type": "ArrayExpression",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 10
+                                "column": 10,
+                                "index": 10
                             },
                             "end": {
                                 "line": 1,
-                                "column": 15
+                                "column": 15,
+                                "index": 15
                             }
                         },
-                        "type": "ArrayExpression",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "elements": [
                             null,
                             null,

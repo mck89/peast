@@ -1,194 +1,194 @@
 {
-    "range": [
-        0,
-        17
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 1,
-            "column": 17
+            "column": 17,
+            "index": 17
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                17
-            ],
-            "loc": {
+            "type": "ExportNamedDeclaration",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 1,
-                    "column": 17
+                    "column": 17,
+                    "index": 17
                 }
             },
-            "type": "ExportNamedDeclaration",
+            "leadingComments": [],
+            "trailingComments": [],
             "declaration": null,
             "specifiers": [
                 {
-                    "range": [
-                        8,
-                        9
-                    ],
-                    "loc": {
+                    "type": "ExportSpecifier",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 8
+                            "column": 8,
+                            "index": 8
                         },
                         "end": {
                             "line": 1,
-                            "column": 9
+                            "column": 9,
+                            "index": 9
                         }
                     },
-                    "type": "ExportSpecifier",
-                    "exported": {
-                        "range": [
-                            8,
-                            9
-                        ],
-                        "loc": {
+                    "leadingComments": [],
+                    "trailingComments": [],
+                    "local": {
+                        "type": "Identifier",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 8
+                                "column": 8,
+                                "index": 8
                             },
                             "end": {
                                 "line": 1,
-                                "column": 9
+                                "column": 9,
+                                "index": 9
                             }
                         },
-                        "type": "Identifier",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "name": "a"
                     },
-                    "local": {
-                        "range": [
-                            8,
-                            9
-                        ],
-                        "loc": {
+                    "exported": {
+                        "type": "Identifier",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 8
+                                "column": 8,
+                                "index": 8
                             },
                             "end": {
                                 "line": 1,
-                                "column": 9
+                                "column": 9,
+                                "index": 9
                             }
                         },
-                        "type": "Identifier",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "name": "a"
                     }
                 },
                 {
-                    "range": [
-                        11,
-                        12
-                    ],
-                    "loc": {
+                    "type": "ExportSpecifier",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 11
+                            "column": 11,
+                            "index": 11
                         },
                         "end": {
                             "line": 1,
-                            "column": 12
+                            "column": 12,
+                            "index": 12
                         }
                     },
-                    "type": "ExportSpecifier",
-                    "exported": {
-                        "range": [
-                            11,
-                            12
-                        ],
-                        "loc": {
+                    "leadingComments": [],
+                    "trailingComments": [],
+                    "local": {
+                        "type": "Identifier",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 11
+                                "column": 11,
+                                "index": 11
                             },
                             "end": {
                                 "line": 1,
-                                "column": 12
+                                "column": 12,
+                                "index": 12
                             }
                         },
-                        "type": "Identifier",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "name": "b"
                     },
-                    "local": {
-                        "range": [
-                            11,
-                            12
-                        ],
-                        "loc": {
+                    "exported": {
+                        "type": "Identifier",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 11
+                                "column": 11,
+                                "index": 11
                             },
                             "end": {
                                 "line": 1,
-                                "column": 12
+                                "column": 12,
+                                "index": 12
                             }
                         },
-                        "type": "Identifier",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "name": "b"
                     }
                 },
                 {
-                    "range": [
-                        14,
-                        15
-                    ],
-                    "loc": {
+                    "type": "ExportSpecifier",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 14
+                            "column": 14,
+                            "index": 14
                         },
                         "end": {
                             "line": 1,
-                            "column": 15
+                            "column": 15,
+                            "index": 15
                         }
                     },
-                    "type": "ExportSpecifier",
-                    "exported": {
-                        "range": [
-                            14,
-                            15
-                        ],
-                        "loc": {
+                    "leadingComments": [],
+                    "trailingComments": [],
+                    "local": {
+                        "type": "Identifier",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 14
+                                "column": 14,
+                                "index": 14
                             },
                             "end": {
                                 "line": 1,
-                                "column": 15
+                                "column": 15,
+                                "index": 15
                             }
                         },
-                        "type": "Identifier",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "name": "c"
                     },
-                    "local": {
-                        "range": [
-                            14,
-                            15
-                        ],
-                        "loc": {
+                    "exported": {
+                        "type": "Identifier",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 14
+                                "column": 14,
+                                "index": 14
                             },
                             "end": {
                                 "line": 1,
-                                "column": 15
+                                "column": 15,
+                                "index": 15
                             }
                         },
-                        "type": "Identifier",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "name": "c"
                     }
                 }

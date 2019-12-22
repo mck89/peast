@@ -1,60 +1,58 @@
 {
-	"type": "Program",
-	"body": [
-	    {
-	        "type": "ExpressionStatement",
-	        "expression": {
-	            "type": "Literal",
-	            "value": {},
-	            "raw": "/\\udf06/",
-	            "regex": {
-	                "pattern": "\\udf06",
-	                "flags": ""
-	            },
-	            "range": [
-	                0,
-	                8
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 1,
-	                    "column": 0
-	                },
-	                "end": {
-	                    "line": 1,
-	                    "column": 8
-	                }
-	            }
-	        },
-	        "range": [
-	            0,
-	            9
-	        ],
-	        "loc": {
-	            "start": {
-	                "line": 1,
-	                "column": 0
-	            },
-	            "end": {
-	                "line": 1,
-	                "column": 9
-	            }
-	        }
-	    }
-	],
-	"sourceType": "script",
-	"range": [
-	    0,
-	    9
-	],
-	"loc": {
-	    "start": {
-	        "line": 1,
-	        "column": 0
-	    },
-	    "end": {
-	        "line": 1,
-	        "column": 9
-	    }
-	}
+    "type": "Program",
+    "location": {
+        "start": {
+            "line": 1,
+            "column": 0,
+            "index": 0
+        },
+        "end": {
+            "line": 1,
+            "column": 9,
+            "index": 9
+        }
+    },
+    "leadingComments": [],
+    "trailingComments": [],
+    "body": [
+        {
+            "type": "ExpressionStatement",
+            "location": {
+                "start": {
+                    "line": 1,
+                    "column": 0,
+                    "index": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 9,
+                    "index": 9
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "expression": {
+                "type": "RegExpLiteral",
+                "location": {
+                    "start": {
+                        "line": 1,
+                        "column": 0,
+                        "index": 0
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 8,
+                        "index": 8
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "value": "\/\\udf06\/",
+                "raw": "\/\\udf06\/",
+                "flags": "",
+                "pattern": "\\udf06"
+            }
+        }
+    ],
+    "sourceType": "script"
 }

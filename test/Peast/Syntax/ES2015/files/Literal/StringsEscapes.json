@@ -1,54 +1,55 @@
 {
-    "range": [
-        0,
-        56
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 2,
-            "column": 27
+            "column": 27,
+            "index": 56
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                56
-            ],
-            "loc": {
+            "type": "ExpressionStatement",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 2,
-                    "column": 27
+                    "column": 27,
+                    "index": 56
                 }
             },
-            "type": "ExpressionStatement",
+            "leadingComments": [],
+            "trailingComments": [],
             "expression": {
-                "range": [
-                    0,
-                    56
-                ],
-                "loc": {
+                "type": "Literal",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 0
+                        "column": 0,
+                        "index": 0
                     },
                     "end": {
                         "line": 2,
-                        "column": 27
+                        "column": 27,
+                        "index": 56
                     }
                 },
-                "type": "Literal",
-                "value": "this is a \"test\"\r\n\t\\셞ሴÀ>5*",
-                "raw": "\"this is a \\\"test\\\"\\r\\n\\t\\\\\\\n\\uC15E\\u{1234}\\xC0\\765\\052\""
+                "leadingComments": [],
+                "trailingComments": [],
+                "value": "this is a \"test\"\r\n\t\\\uc15e\u1234\u00c0>5*",
+                "raw": "\"this is a \\\"test\\\"\\r\\n\\t\\\\\\\n\\uC15E\\u{1234}\\xC0\\765\\052\"",
+                "format": "double"
             }
         }
     ],

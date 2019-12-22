@@ -1,155 +1,154 @@
 {
-    "range": [
-        0,
-        48
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 3,
-            "column": 2
+            "column": 2,
+            "index": 48
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                47
-            ],
-            "loc": {
+            "type": "ExportDefaultDeclaration",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 3,
-                    "column": 1
+                    "column": 1,
+                    "index": 47
                 }
             },
-            "type": "ExportDefaultDeclaration",
+            "leadingComments": [],
+            "trailingComments": [],
             "declaration": {
-                "range": [
-                    15,
-                    47
-                ],
-                "loc": {
+                "type": "FunctionDeclaration",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 15
+                        "column": 15,
+                        "index": 15
                     },
                     "end": {
                         "line": 3,
-                        "column": 1
+                        "column": 1,
+                        "index": 47
                     }
                 },
-                "type": "FunctionDeclaration",
+                "leadingComments": [],
+                "trailingComments": [],
                 "id": null,
                 "params": [],
-                "defaults": [],
                 "body": {
-                    "range": [
-                        27,
-                        47
-                    ],
-                    "loc": {
+                    "type": "BlockStatement",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 27
+                            "column": 27,
+                            "index": 27
                         },
                         "end": {
                             "line": 3,
-                            "column": 1
+                            "column": 1,
+                            "index": 47
                         }
                     },
-                    "type": "BlockStatement",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "body": [
                         {
-                            "range": [
-                                33,
-                                45
-                            ],
-                            "loc": {
+                            "type": "ExpressionStatement",
+                            "location": {
                                 "start": {
                                     "line": 2,
-                                    "column": 4
+                                    "column": 4,
+                                    "index": 33
                                 },
                                 "end": {
                                     "line": 2,
-                                    "column": 16
+                                    "column": 16,
+                                    "index": 45
                                 }
                             },
-                            "type": "ExpressionStatement",
+                            "leadingComments": [],
+                            "trailingComments": [],
                             "expression": {
-                                "range": [
-                                    33,
-                                    44
-                                ],
-                                "loc": {
+                                "type": "YieldExpression",
+                                "location": {
                                     "start": {
                                         "line": 2,
-                                        "column": 4
+                                        "column": 4,
+                                        "index": 33
                                     },
                                     "end": {
                                         "line": 2,
-                                        "column": 15
+                                        "column": 15,
+                                        "index": 44
                                     }
                                 },
-                                "type": "YieldExpression",
+                                "leadingComments": [],
+                                "trailingComments": [],
                                 "argument": {
-                                    "range": [
-                                        39,
-                                        44
-                                    ],
-                                    "loc": {
+                                    "type": "BinaryExpression",
+                                    "location": {
                                         "start": {
                                             "line": 2,
-                                            "column": 10
+                                            "column": 10,
+                                            "index": 39
                                         },
                                         "end": {
                                             "line": 2,
-                                            "column": 15
+                                            "column": 15,
+                                            "index": 44
                                         }
                                     },
-                                    "type": "BinaryExpression",
-                                    "operator": "+",
+                                    "leadingComments": [],
+                                    "trailingComments": [],
                                     "left": {
-                                        "range": [
-                                            39,
-                                            40
-                                        ],
-                                        "loc": {
+                                        "type": "Identifier",
+                                        "location": {
                                             "start": {
                                                 "line": 2,
-                                                "column": 10
+                                                "column": 10,
+                                                "index": 39
                                             },
                                             "end": {
                                                 "line": 2,
-                                                "column": 11
+                                                "column": 11,
+                                                "index": 40
                                             }
                                         },
-                                        "type": "Identifier",
+                                        "leadingComments": [],
+                                        "trailingComments": [],
                                         "name": "a"
                                     },
+                                    "operator": "+",
                                     "right": {
-                                        "range": [
-                                            43,
-                                            44
-                                        ],
-                                        "loc": {
+                                        "type": "Identifier",
+                                        "location": {
                                             "start": {
                                                 "line": 2,
-                                                "column": 14
+                                                "column": 14,
+                                                "index": 43
                                             },
                                             "end": {
                                                 "line": 2,
-                                                "column": 15
+                                                "column": 15,
+                                                "index": 44
                                             }
                                         },
-                                        "type": "Identifier",
+                                        "leadingComments": [],
+                                        "trailingComments": [],
                                         "name": "b"
                                     }
                                 },
@@ -159,25 +158,25 @@
                     ]
                 },
                 "generator": true,
-                "expression": false
+                "async": false
             }
         },
         {
-            "range": [
-                47,
-                48
-            ],
-            "loc": {
+            "type": "EmptyStatement",
+            "location": {
                 "start": {
                     "line": 3,
-                    "column": 1
+                    "column": 1,
+                    "index": 47
                 },
                 "end": {
                     "line": 3,
-                    "column": 2
+                    "column": 2,
+                    "index": 48
                 }
             },
-            "type": "EmptyStatement"
+            "leadingComments": [],
+            "trailingComments": []
         }
     ],
     "sourceType": "module"

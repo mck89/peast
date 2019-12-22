@@ -1,130 +1,132 @@
 {
-	"type": "Program",
-	"body": [
-	    {
-	        "type": "ImportDeclaration",
-	        "specifiers": [],
-	        "source": {
-	            "type": "Literal",
-	            "value": "source",
-	            "raw": "\"source\"",
-	            "range": [
-	                15,
-	                23
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 1,
-	                    "column": 15
-	                },
-	                "end": {
-	                    "line": 1,
-	                    "column": 23
-	                }
-	            }
-	        },
-	        "range": [
-	            0,
-	            24
-	        ],
-	        "loc": {
-	            "start": {
-	                "line": 1,
-	                "column": 0
-	            },
-	            "end": {
-	                "line": 1,
-	                "column": 24
-	            }
-	        }
-	    },
-	    {
-	        "type": "ImportDeclaration",
-	        "specifiers": [
-	            {
-	                "type": "ImportDefaultSpecifier",
-	                "local": {
-	                    "type": "Identifier",
-	                    "name": "d",
-	                    "range": [
-	                        32,
-	                        33
-	                    ],
-	                    "loc": {
-	                        "start": {
-	                            "line": 2,
-	                            "column": 7
-	                        },
-	                        "end": {
-	                            "line": 2,
-	                            "column": 8
-	                        }
-	                    }
-	                },
-	                "range": [
-	                    32,
-	                    33
-	                ],
-	                "loc": {
-	                    "start": {
-	                        "line": 2,
-	                        "column": 7
-	                    },
-	                    "end": {
-	                        "line": 2,
-	                        "column": 8
-	                    }
-	                }
-	            }
-	        ],
-	        "source": {
-	            "type": "Literal",
-	            "value": "source",
-	            "raw": "\"source\"",
-	            "range": [
-	                43,
-	                51
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 2,
-	                    "column": 18
-	                },
-	                "end": {
-	                    "line": 2,
-	                    "column": 26
-	                }
-	            }
-	        },
-	        "range": [
-	            25,
-	            52
-	        ],
-	        "loc": {
-	            "start": {
-	                "line": 2,
-	                "column": 0
-	            },
-	            "end": {
-	                "line": 2,
-	                "column": 27
-	            }
-	        }
-	    }
-	],
-	"sourceType": "module",
-	"range": [
-	    0,
-	    52
-	],
-	"loc": {
-	    "start": {
-	        "line": 1,
-	        "column": 0
-	    },
-	    "end": {
-	        "line": 2,
-	        "column": 27
-	    }
-	}
+    "type": "Program",
+    "location": {
+        "start": {
+            "line": 1,
+            "column": 0,
+            "index": 0
+        },
+        "end": {
+            "line": 2,
+            "column": 27,
+            "index": 52
+        }
+    },
+    "leadingComments": [],
+    "trailingComments": [],
+    "body": [
+        {
+            "type": "ImportDeclaration",
+            "location": {
+                "start": {
+                    "line": 1,
+                    "column": 0,
+                    "index": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 24,
+                    "index": 24
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "specifiers": [],
+            "source": {
+                "type": "Literal",
+                "location": {
+                    "start": {
+                        "line": 1,
+                        "column": 15,
+                        "index": 15
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 23,
+                        "index": 23
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "value": "source",
+                "raw": "\"source\"",
+                "format": "double"
+            }
+        },
+        {
+            "type": "ImportDeclaration",
+            "location": {
+                "start": {
+                    "line": 2,
+                    "column": 0,
+                    "index": 25
+                },
+                "end": {
+                    "line": 2,
+                    "column": 27,
+                    "index": 52
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "specifiers": [
+                {
+                    "type": "ImportDefaultSpecifier",
+                    "location": {
+                        "start": {
+                            "line": 2,
+                            "column": 7,
+                            "index": 32
+                        },
+                        "end": {
+                            "line": 2,
+                            "column": 8,
+                            "index": 33
+                        }
+                    },
+                    "leadingComments": [],
+                    "trailingComments": [],
+                    "local": {
+                        "type": "Identifier",
+                        "location": {
+                            "start": {
+                                "line": 2,
+                                "column": 7,
+                                "index": 32
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 8,
+                                "index": 33
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "name": "d"
+                    }
+                }
+            ],
+            "source": {
+                "type": "Literal",
+                "location": {
+                    "start": {
+                        "line": 2,
+                        "column": 18,
+                        "index": 43
+                    },
+                    "end": {
+                        "line": 2,
+                        "column": 26,
+                        "index": 51
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "value": "source",
+                "raw": "\"source\"",
+                "format": "double"
+            }
+        }
+    ],
+    "sourceType": "module"
 }

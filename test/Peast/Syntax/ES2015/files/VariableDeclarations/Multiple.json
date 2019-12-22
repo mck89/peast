@@ -1,321 +1,341 @@
 {
-    "range": [
-        0,
-        82
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 4,
-            "column": 16
+            "column": 16,
+            "index": 82
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                82
-            ],
-            "loc": {
+            "type": "VariableDeclaration",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 4,
-                    "column": 16
+                    "column": 16,
+                    "index": 82
                 }
             },
-            "type": "VariableDeclaration",
+            "leadingComments": [],
+            "trailingComments": [],
             "declarations": [
                 {
-                    "range": [
-                        4,
-                        9
-                    ],
-                    "loc": {
+                    "type": "VariableDeclarator",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 4
+                            "column": 4,
+                            "index": 4
                         },
                         "end": {
                             "line": 1,
-                            "column": 9
+                            "column": 9,
+                            "index": 9
                         }
                     },
-                    "type": "VariableDeclarator",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "id": {
-                        "range": [
-                            4,
-                            5
-                        ],
-                        "loc": {
+                        "type": "Identifier",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 4
+                                "column": 4,
+                                "index": 4
                             },
                             "end": {
                                 "line": 1,
-                                "column": 5
+                                "column": 5,
+                                "index": 5
                             }
                         },
-                        "type": "Identifier",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "name": "a"
                     },
                     "init": {
-                        "range": [
-                            8,
-                            9
-                        ],
-                        "loc": {
+                        "type": "Literal",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 8
+                                "column": 8,
+                                "index": 8
                             },
                             "end": {
                                 "line": 1,
-                                "column": 9
+                                "column": 9,
+                                "index": 9
                             }
                         },
-                        "type": "Literal",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "value": 1,
-                        "raw": "1"
+                        "raw": "1",
+                        "format": "decimal"
                     }
                 },
                 {
-                    "range": [
-                        29,
-                        39
-                    ],
-                    "loc": {
+                    "type": "VariableDeclarator",
+                    "location": {
                         "start": {
                             "line": 2,
-                            "column": 4
+                            "column": 4,
+                            "index": 29
                         },
                         "end": {
                             "line": 2,
-                            "column": 14
+                            "column": 14,
+                            "index": 39
                         }
                     },
-                    "type": "VariableDeclarator",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "id": {
-                        "range": [
-                            29,
-                            30
-                        ],
-                        "loc": {
+                        "type": "Identifier",
+                        "location": {
                             "start": {
                                 "line": 2,
-                                "column": 4
+                                "column": 4,
+                                "index": 29
                             },
                             "end": {
                                 "line": 2,
-                                "column": 5
+                                "column": 5,
+                                "index": 30
                             }
                         },
-                        "type": "Identifier",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "name": "b"
                     },
                     "init": {
-                        "range": [
-                            33,
-                            39
-                        ],
-                        "loc": {
+                        "type": "Literal",
+                        "location": {
                             "start": {
                                 "line": 2,
-                                "column": 8
+                                "column": 8,
+                                "index": 33
                             },
                             "end": {
                                 "line": 2,
-                                "column": 14
+                                "column": 14,
+                                "index": 39
                             }
                         },
-                        "type": "Literal",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "value": "test",
-                        "raw": "\"test\""
+                        "raw": "\"test\"",
+                        "format": "double"
                     }
                 },
                 {
-                    "range": [
-                        55,
-                        64
-                    ],
-                    "loc": {
+                    "type": "VariableDeclarator",
+                    "location": {
                         "start": {
                             "line": 3,
-                            "column": 4
+                            "column": 4,
+                            "index": 55
                         },
                         "end": {
                             "line": 3,
-                            "column": 13
+                            "column": 13,
+                            "index": 64
                         }
                     },
-                    "type": "VariableDeclarator",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "id": {
-                        "range": [
-                            55,
-                            56
-                        ],
-                        "loc": {
+                        "type": "Identifier",
+                        "location": {
                             "start": {
                                 "line": 3,
-                                "column": 4
+                                "column": 4,
+                                "index": 55
                             },
                             "end": {
                                 "line": 3,
-                                "column": 5
+                                "column": 5,
+                                "index": 56
                             }
                         },
-                        "type": "Identifier",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "name": "c"
                     },
                     "init": {
-                        "range": [
-                            59,
-                            64
-                        ],
-                        "loc": {
+                        "type": "BinaryExpression",
+                        "location": {
                             "start": {
                                 "line": 3,
-                                "column": 8
+                                "column": 8,
+                                "index": 59
                             },
                             "end": {
                                 "line": 3,
-                                "column": 13
+                                "column": 13,
+                                "index": 64
                             }
                         },
-                        "type": "BinaryExpression",
-                        "operator": "+",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "left": {
-                            "range": [
-                                59,
-                                60
-                            ],
-                            "loc": {
+                            "type": "Identifier",
+                            "location": {
                                 "start": {
                                     "line": 3,
-                                    "column": 8
+                                    "column": 8,
+                                    "index": 59
                                 },
                                 "end": {
                                     "line": 3,
-                                    "column": 9
+                                    "column": 9,
+                                    "index": 60
                                 }
                             },
-                            "type": "Identifier",
+                            "leadingComments": [],
+                            "trailingComments": [],
                             "name": "b"
                         },
+                        "operator": "+",
                         "right": {
-                            "range": [
-                                63,
-                                64
-                            ],
-                            "loc": {
+                            "type": "Identifier",
+                            "location": {
                                 "start": {
                                     "line": 3,
-                                    "column": 12
+                                    "column": 12,
+                                    "index": 63
                                 },
                                 "end": {
                                     "line": 3,
-                                    "column": 13
+                                    "column": 13,
+                                    "index": 64
                                 }
                             },
-                            "type": "Identifier",
+                            "leadingComments": [],
+                            "trailingComments": [],
                             "name": "a"
                         }
                     }
                 },
                 {
-                    "range": [
-                        70,
-                        81
-                    ],
-                    "loc": {
+                    "type": "VariableDeclarator",
+                    "location": {
                         "start": {
                             "line": 4,
-                            "column": 4
+                            "column": 4,
+                            "index": 70
                         },
                         "end": {
                             "line": 4,
-                            "column": 15
+                            "column": 15,
+                            "index": 81
                         }
                     },
-                    "type": "VariableDeclarator",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "id": {
-                        "range": [
-                            70,
-                            71
-                        ],
-                        "loc": {
+                        "type": "Identifier",
+                        "location": {
                             "start": {
                                 "line": 4,
-                                "column": 4
+                                "column": 4,
+                                "index": 70
                             },
                             "end": {
                                 "line": 4,
-                                "column": 5
+                                "column": 5,
+                                "index": 71
                             }
                         },
-                        "type": "Identifier",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "name": "d"
                     },
                     "init": {
-                        "range": [
-                            75,
-                            80
-                        ],
-                        "loc": {
+                        "type": "ParenthesizedExpression",
+                        "location": {
                             "start": {
                                 "line": 4,
-                                "column": 9
+                                "column": 8,
+                                "index": 74
                             },
                             "end": {
                                 "line": 4,
-                                "column": 14
+                                "column": 15,
+                                "index": 81
                             }
                         },
-                        "type": "BinaryExpression",
-                        "operator": "+",
-                        "left": {
-                            "range": [
-                                75,
-                                76
-                            ],
-                            "loc": {
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "expression": {
+                            "type": "BinaryExpression",
+                            "location": {
                                 "start": {
                                     "line": 4,
-                                    "column": 9
+                                    "column": 9,
+                                    "index": 75
                                 },
                                 "end": {
                                     "line": 4,
-                                    "column": 10
+                                    "column": 14,
+                                    "index": 80
                                 }
                             },
-                            "type": "Identifier",
-                            "name": "c"
-                        },
-                        "right": {
-                            "range": [
-                                79,
-                                80
-                            ],
-                            "loc": {
-                                "start": {
-                                    "line": 4,
-                                    "column": 13
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "left": {
+                                "type": "Identifier",
+                                "location": {
+                                    "start": {
+                                        "line": 4,
+                                        "column": 9,
+                                        "index": 75
+                                    },
+                                    "end": {
+                                        "line": 4,
+                                        "column": 10,
+                                        "index": 76
+                                    }
                                 },
-                                "end": {
-                                    "line": 4,
-                                    "column": 14
-                                }
+                                "leadingComments": [],
+                                "trailingComments": [],
+                                "name": "c"
                             },
-                            "type": "Literal",
-                            "value": 1,
-                            "raw": "1"
+                            "operator": "+",
+                            "right": {
+                                "type": "Literal",
+                                "location": {
+                                    "start": {
+                                        "line": 4,
+                                        "column": 13,
+                                        "index": 79
+                                    },
+                                    "end": {
+                                        "line": 4,
+                                        "column": 14,
+                                        "index": 80
+                                    }
+                                },
+                                "leadingComments": [],
+                                "trailingComments": [],
+                                "value": 1,
+                                "raw": "1",
+                                "format": "decimal"
+                            }
                         }
                     }
                 }

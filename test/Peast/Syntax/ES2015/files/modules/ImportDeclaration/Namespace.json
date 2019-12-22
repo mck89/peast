@@ -1,91 +1,92 @@
 {
-    "range": [
-        0,
-        33
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 1,
-            "column": 33
+            "column": 33,
+            "index": 33
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                33
-            ],
-            "loc": {
+            "type": "ImportDeclaration",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 1,
-                    "column": 33
+                    "column": 33,
+                    "index": 33
                 }
             },
-            "type": "ImportDeclaration",
+            "leadingComments": [],
+            "trailingComments": [],
             "specifiers": [
                 {
-                    "range": [
-                        7,
-                        15
-                    ],
-                    "loc": {
+                    "type": "ImportNamespaceSpecifier",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 7
+                            "column": 7,
+                            "index": 7
                         },
                         "end": {
                             "line": 1,
-                            "column": 15
+                            "column": 15,
+                            "index": 15
                         }
                     },
-                    "type": "ImportNamespaceSpecifier",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "local": {
-                        "range": [
-                            12,
-                            15
-                        ],
-                        "loc": {
+                        "type": "Identifier",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 12
+                                "column": 12,
+                                "index": 12
                             },
                             "end": {
                                 "line": 1,
-                                "column": 15
+                                "column": 15,
+                                "index": 15
                             }
                         },
-                        "type": "Identifier",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "name": "mod"
                     }
                 }
             ],
             "source": {
-                "range": [
-                    21,
-                    32
-                ],
-                "loc": {
+                "type": "Literal",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 21
+                        "column": 21,
+                        "index": 21
                     },
                     "end": {
                         "line": 1,
-                        "column": 32
+                        "column": 32,
+                        "index": 32
                     }
                 },
-                "type": "Literal",
+                "leadingComments": [],
+                "trailingComments": [],
                 "value": "my-module",
-                "raw": "\"my-module\""
+                "raw": "\"my-module\"",
+                "format": "double"
             }
         }
     ],

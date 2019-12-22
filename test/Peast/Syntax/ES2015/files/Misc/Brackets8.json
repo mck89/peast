@@ -1,88 +1,122 @@
 {
-    "range": [
-        0,
-        24
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 1,
-            "column": 24
+            "column": 24,
+            "index": 24
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                24
-            ],
-            "loc": {
+            "type": "ClassDeclaration",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 1,
-                    "column": 24
+                    "column": 24,
+                    "index": 24
                 }
             },
-            "type": "ClassDeclaration",
+            "leadingComments": [],
+            "trailingComments": [],
             "id": {
-                "range": [
-                    6,
-                    7
-                ],
-                "loc": {
+                "type": "Identifier",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 6
+                        "column": 6,
+                        "index": 6
                     },
                     "end": {
                         "line": 1,
-                        "column": 7
+                        "column": 7,
+                        "index": 7
                     }
                 },
-                "type": "Identifier",
+                "leadingComments": [],
+                "trailingComments": [],
                 "name": "a"
             },
             "superClass": {
-                "range": [
-                    18,
-                    19
-                ],
-                "loc": {
+                "type": "ParenthesizedExpression",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 18
+                        "column": 16,
+                        "index": 16
                     },
                     "end": {
                         "line": 1,
-                        "column": 19
+                        "column": 21,
+                        "index": 21
                     }
                 },
-                "type": "Identifier",
-                "name": "b"
+                "leadingComments": [],
+                "trailingComments": [],
+                "expression": {
+                    "type": "ParenthesizedExpression",
+                    "location": {
+                        "start": {
+                            "line": 1,
+                            "column": 17,
+                            "index": 17
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 20,
+                            "index": 20
+                        }
+                    },
+                    "leadingComments": [],
+                    "trailingComments": [],
+                    "expression": {
+                        "type": "Identifier",
+                        "location": {
+                            "start": {
+                                "line": 1,
+                                "column": 18,
+                                "index": 18
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 19,
+                                "index": 19
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "name": "b"
+                    }
+                }
             },
             "body": {
-                "range": [
-                    22,
-                    24
-                ],
-                "loc": {
+                "type": "ClassBody",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 22
+                        "column": 22,
+                        "index": 22
                     },
                     "end": {
                         "line": 1,
-                        "column": 24
+                        "column": 24,
+                        "index": 24
                     }
                 },
-                "type": "ClassBody",
+                "leadingComments": [],
+                "trailingComments": [],
                 "body": []
             }
         }

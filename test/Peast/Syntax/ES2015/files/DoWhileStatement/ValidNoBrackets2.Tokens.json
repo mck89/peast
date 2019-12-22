@@ -2,162 +2,144 @@
     {
         "type": "Keyword",
         "value": "do",
-        "range": [
-            0,
-            2
-        ],
-        "loc": {
+        "location": {
             "start": {
                 "line": 1,
-                "column": 0
+                "column": 0,
+                "index": 0
             },
             "end": {
                 "line": 1,
-                "column": 2
+                "column": 2,
+                "index": 2
             }
         }
     },
     {
         "type": "Identifier",
         "value": "something",
-        "range": [
-            3,
-            12
-        ],
-        "loc": {
+        "location": {
             "start": {
                 "line": 1,
-                "column": 3
+                "column": 3,
+                "index": 3
             },
             "end": {
                 "line": 1,
-                "column": 12
+                "column": 12,
+                "index": 12
             }
         }
     },
     {
         "type": "Punctuator",
         "value": "(",
-        "range": [
-            12,
-            13
-        ],
-        "loc": {
+        "location": {
             "start": {
                 "line": 1,
-                "column": 12
+                "column": 12,
+                "index": 12
             },
             "end": {
                 "line": 1,
-                "column": 13
+                "column": 13,
+                "index": 13
             }
         }
     },
     {
         "type": "Punctuator",
         "value": ")",
-        "range": [
-            13,
-            14
-        ],
-        "loc": {
+        "location": {
             "start": {
                 "line": 1,
-                "column": 13
+                "column": 13,
+                "index": 13
             },
             "end": {
                 "line": 1,
-                "column": 14
+                "column": 14,
+                "index": 14
             }
         }
     },
     {
         "type": "Punctuator",
         "value": ";",
-        "range": [
-            14,
-            15
-        ],
-        "loc": {
+        "location": {
             "start": {
                 "line": 1,
-                "column": 14
+                "column": 14,
+                "index": 14
             },
             "end": {
                 "line": 1,
-                "column": 15
+                "column": 15,
+                "index": 15
             }
         }
     },
     {
         "type": "Keyword",
         "value": "while",
-        "range": [
-            16,
-            21
-        ],
-        "loc": {
+        "location": {
             "start": {
                 "line": 2,
-                "column": 0
+                "column": 0,
+                "index": 16
             },
             "end": {
                 "line": 2,
-                "column": 5
+                "column": 5,
+                "index": 21
             }
         }
     },
     {
         "type": "Punctuator",
         "value": "(",
-        "range": [
-            22,
-            23
-        ],
-        "loc": {
+        "location": {
             "start": {
                 "line": 2,
-                "column": 6
+                "column": 6,
+                "index": 22
             },
             "end": {
                 "line": 2,
-                "column": 7
+                "column": 7,
+                "index": 23
             }
         }
     },
     {
         "type": "Boolean",
         "value": "true",
-        "range": [
-            23,
-            27
-        ],
-        "loc": {
+        "location": {
             "start": {
                 "line": 2,
-                "column": 7
+                "column": 7,
+                "index": 23
             },
             "end": {
                 "line": 2,
-                "column": 11
+                "column": 11,
+                "index": 27
             }
         }
     },
     {
         "type": "Punctuator",
         "value": ")",
-        "range": [
-            27,
-            28
-        ],
-        "loc": {
+        "location": {
             "start": {
                 "line": 2,
-                "column": 11
+                "column": 11,
+                "index": 27
             },
             "end": {
                 "line": 2,
-                "column": 12
+                "column": 12,
+                "index": 28
             }
         }
     }

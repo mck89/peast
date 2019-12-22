@@ -1,380 +1,362 @@
 {
-	"type": "Program",
-	"body": [
-	    {
-	        "type": "ExpressionStatement",
-	        "expression": {
-	            "type": "Literal",
-	            "value": {},
-	            "raw": "/\"/",
-	            "regex": {
-	                "pattern": "\"",
-	                "flags": ""
-	            },
-	            "range": [
-	                0,
-	                3
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 1,
-	                    "column": 0
-	                },
-	                "end": {
-	                    "line": 1,
-	                    "column": 3
-	                }
-	            }
-	        },
-	        "range": [
-	            0,
-	            4
-	        ],
-	        "loc": {
-	            "start": {
-	                "line": 1,
-	                "column": 0
-	            },
-	            "end": {
-	                "line": 1,
-	                "column": 4
-	            }
-	        }
-	    },
-	    {
-	        "type": "ExpressionStatement",
-	        "expression": {
-	            "type": "Literal",
-	            "value": {},
-	            "raw": "/'/",
-	            "regex": {
-	                "pattern": "'",
-	                "flags": ""
-	            },
-	            "range": [
-	                5,
-	                8
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 2,
-	                    "column": 0
-	                },
-	                "end": {
-	                    "line": 2,
-	                    "column": 3
-	                }
-	            }
-	        },
-	        "range": [
-	            5,
-	            9
-	        ],
-	        "loc": {
-	            "start": {
-	                "line": 2,
-	                "column": 0
-	            },
-	            "end": {
-	                "line": 2,
-	                "column": 4
-	            }
-	        }
-	    },
-	    {
-	        "type": "ExpressionStatement",
-	        "expression": {
-	            "type": "Literal",
-	            "value": {},
-	            "raw": "/\"'/",
-	            "regex": {
-	                "pattern": "\"'",
-	                "flags": ""
-	            },
-	            "range": [
-	                10,
-	                14
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 3,
-	                    "column": 0
-	                },
-	                "end": {
-	                    "line": 3,
-	                    "column": 4
-	                }
-	            }
-	        },
-	        "range": [
-	            10,
-	            15
-	        ],
-	        "loc": {
-	            "start": {
-	                "line": 3,
-	                "column": 0
-	            },
-	            "end": {
-	                "line": 3,
-	                "column": 5
-	            }
-	        }
-	    },
-	    {
-	        "type": "ExpressionStatement",
-	        "expression": {
-	            "type": "Literal",
-	            "value": {},
-	            "raw": "/'\"/",
-	            "regex": {
-	                "pattern": "'\"",
-	                "flags": ""
-	            },
-	            "range": [
-	                16,
-	                20
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 4,
-	                    "column": 0
-	                },
-	                "end": {
-	                    "line": 4,
-	                    "column": 4
-	                }
-	            }
-	        },
-	        "range": [
-	            16,
-	            21
-	        ],
-	        "loc": {
-	            "start": {
-	                "line": 4,
-	                "column": 0
-	            },
-	            "end": {
-	                "line": 4,
-	                "column": 5
-	            }
-	        }
-	    },
-	    {
-	        "type": "ExpressionStatement",
-	        "expression": {
-	            "type": "Literal",
-	            "value": {},
-	            "raw": "/\"\"/",
-	            "regex": {
-	                "pattern": "\"\"",
-	                "flags": ""
-	            },
-	            "range": [
-	                22,
-	                26
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 5,
-	                    "column": 0
-	                },
-	                "end": {
-	                    "line": 5,
-	                    "column": 4
-	                }
-	            }
-	        },
-	        "range": [
-	            22,
-	            27
-	        ],
-	        "loc": {
-	            "start": {
-	                "line": 5,
-	                "column": 0
-	            },
-	            "end": {
-	                "line": 5,
-	                "column": 5
-	            }
-	        }
-	    },
-	    {
-	        "type": "ExpressionStatement",
-	        "expression": {
-	            "type": "Literal",
-	            "value": {},
-	            "raw": "/''/",
-	            "regex": {
-	                "pattern": "''",
-	                "flags": ""
-	            },
-	            "range": [
-	                28,
-	                32
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 6,
-	                    "column": 0
-	                },
-	                "end": {
-	                    "line": 6,
-	                    "column": 4
-	                }
-	            }
-	        },
-	        "range": [
-	            28,
-	            33
-	        ],
-	        "loc": {
-	            "start": {
-	                "line": 6,
-	                "column": 0
-	            },
-	            "end": {
-	                "line": 6,
-	                "column": 5
-	            }
-	        }
-	    },
-	    {
-	        "type": "ExpressionStatement",
-	        "expression": {
-	            "type": "Literal",
-	            "value": {},
-	            "raw": "/`/",
-	            "regex": {
-	                "pattern": "`",
-	                "flags": ""
-	            },
-	            "range": [
-	                34,
-	                37
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 7,
-	                    "column": 0
-	                },
-	                "end": {
-	                    "line": 7,
-	                    "column": 3
-	                }
-	            }
-	        },
-	        "range": [
-	            34,
-	            38
-	        ],
-	        "loc": {
-	            "start": {
-	                "line": 7,
-	                "column": 0
-	            },
-	            "end": {
-	                "line": 7,
-	                "column": 4
-	            }
-	        }
-	    },
-	    {
-	        "type": "ExpressionStatement",
-	        "expression": {
-	            "type": "Literal",
-	            "value": {},
-	            "raw": "/0x/",
-	            "regex": {
-	                "pattern": "0x",
-	                "flags": ""
-	            },
-	            "range": [
-	                39,
-	                43
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 8,
-	                    "column": 0
-	                },
-	                "end": {
-	                    "line": 8,
-	                    "column": 4
-	                }
-	            }
-	        },
-	        "range": [
-	            39,
-	            44
-	        ],
-	        "loc": {
-	            "start": {
-	                "line": 8,
-	                "column": 0
-	            },
-	            "end": {
-	                "line": 8,
-	                "column": 5
-	            }
-	        }
-	    },
-	    {
-	        "type": "ExpressionStatement",
-	        "expression": {
-	            "type": "Literal",
-	            "value": {},
-	            "raw": "/1ea/",
-	            "regex": {
-	                "pattern": "1ea",
-	                "flags": ""
-	            },
-	            "range": [
-	                45,
-	                50
-	            ],
-	            "loc": {
-	                "start": {
-	                    "line": 9,
-	                    "column": 0
-	                },
-	                "end": {
-	                    "line": 9,
-	                    "column": 5
-	                }
-	            }
-	        },
-	        "range": [
-	            45,
-	            51
-	        ],
-	        "loc": {
-	            "start": {
-	                "line": 9,
-	                "column": 0
-	            },
-	            "end": {
-	                "line": 9,
-	                "column": 6
-	            }
-	        }
-	    }
-	],
-	"sourceType": "script",
-	"range": [
-	    0,
-	    51
-	],
-	"loc": {
-	    "start": {
-	        "line": 1,
-	        "column": 0
-	    },
-	    "end": {
-	        "line": 9,
-	        "column": 6
-	    }
-	}
+    "type": "Program",
+    "location": {
+        "start": {
+            "line": 1,
+            "column": 0,
+            "index": 0
+        },
+        "end": {
+            "line": 9,
+            "column": 6,
+            "index": 51
+        }
+    },
+    "leadingComments": [],
+    "trailingComments": [],
+    "body": [
+        {
+            "type": "ExpressionStatement",
+            "location": {
+                "start": {
+                    "line": 1,
+                    "column": 0,
+                    "index": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 4,
+                    "index": 4
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "expression": {
+                "type": "RegExpLiteral",
+                "location": {
+                    "start": {
+                        "line": 1,
+                        "column": 0,
+                        "index": 0
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 3,
+                        "index": 3
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "value": "\/\"\/",
+                "raw": "\/\"\/",
+                "flags": "",
+                "pattern": "\""
+            }
+        },
+        {
+            "type": "ExpressionStatement",
+            "location": {
+                "start": {
+                    "line": 2,
+                    "column": 0,
+                    "index": 5
+                },
+                "end": {
+                    "line": 2,
+                    "column": 4,
+                    "index": 9
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "expression": {
+                "type": "RegExpLiteral",
+                "location": {
+                    "start": {
+                        "line": 2,
+                        "column": 0,
+                        "index": 5
+                    },
+                    "end": {
+                        "line": 2,
+                        "column": 3,
+                        "index": 8
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "value": "\/'\/",
+                "raw": "\/'\/",
+                "flags": "",
+                "pattern": "'"
+            }
+        },
+        {
+            "type": "ExpressionStatement",
+            "location": {
+                "start": {
+                    "line": 3,
+                    "column": 0,
+                    "index": 10
+                },
+                "end": {
+                    "line": 3,
+                    "column": 5,
+                    "index": 15
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "expression": {
+                "type": "RegExpLiteral",
+                "location": {
+                    "start": {
+                        "line": 3,
+                        "column": 0,
+                        "index": 10
+                    },
+                    "end": {
+                        "line": 3,
+                        "column": 4,
+                        "index": 14
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "value": "\/\"'\/",
+                "raw": "\/\"'\/",
+                "flags": "",
+                "pattern": "\"'"
+            }
+        },
+        {
+            "type": "ExpressionStatement",
+            "location": {
+                "start": {
+                    "line": 4,
+                    "column": 0,
+                    "index": 16
+                },
+                "end": {
+                    "line": 4,
+                    "column": 5,
+                    "index": 21
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "expression": {
+                "type": "RegExpLiteral",
+                "location": {
+                    "start": {
+                        "line": 4,
+                        "column": 0,
+                        "index": 16
+                    },
+                    "end": {
+                        "line": 4,
+                        "column": 4,
+                        "index": 20
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "value": "\/'\"\/",
+                "raw": "\/'\"\/",
+                "flags": "",
+                "pattern": "'\""
+            }
+        },
+        {
+            "type": "ExpressionStatement",
+            "location": {
+                "start": {
+                    "line": 5,
+                    "column": 0,
+                    "index": 22
+                },
+                "end": {
+                    "line": 5,
+                    "column": 5,
+                    "index": 27
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "expression": {
+                "type": "RegExpLiteral",
+                "location": {
+                    "start": {
+                        "line": 5,
+                        "column": 0,
+                        "index": 22
+                    },
+                    "end": {
+                        "line": 5,
+                        "column": 4,
+                        "index": 26
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "value": "\/\"\"\/",
+                "raw": "\/\"\"\/",
+                "flags": "",
+                "pattern": "\"\""
+            }
+        },
+        {
+            "type": "ExpressionStatement",
+            "location": {
+                "start": {
+                    "line": 6,
+                    "column": 0,
+                    "index": 28
+                },
+                "end": {
+                    "line": 6,
+                    "column": 5,
+                    "index": 33
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "expression": {
+                "type": "RegExpLiteral",
+                "location": {
+                    "start": {
+                        "line": 6,
+                        "column": 0,
+                        "index": 28
+                    },
+                    "end": {
+                        "line": 6,
+                        "column": 4,
+                        "index": 32
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "value": "\/''\/",
+                "raw": "\/''\/",
+                "flags": "",
+                "pattern": "''"
+            }
+        },
+        {
+            "type": "ExpressionStatement",
+            "location": {
+                "start": {
+                    "line": 7,
+                    "column": 0,
+                    "index": 34
+                },
+                "end": {
+                    "line": 7,
+                    "column": 4,
+                    "index": 38
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "expression": {
+                "type": "RegExpLiteral",
+                "location": {
+                    "start": {
+                        "line": 7,
+                        "column": 0,
+                        "index": 34
+                    },
+                    "end": {
+                        "line": 7,
+                        "column": 3,
+                        "index": 37
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "value": "\/`\/",
+                "raw": "\/`\/",
+                "flags": "",
+                "pattern": "`"
+            }
+        },
+        {
+            "type": "ExpressionStatement",
+            "location": {
+                "start": {
+                    "line": 8,
+                    "column": 0,
+                    "index": 39
+                },
+                "end": {
+                    "line": 8,
+                    "column": 5,
+                    "index": 44
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "expression": {
+                "type": "RegExpLiteral",
+                "location": {
+                    "start": {
+                        "line": 8,
+                        "column": 0,
+                        "index": 39
+                    },
+                    "end": {
+                        "line": 8,
+                        "column": 4,
+                        "index": 43
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "value": "\/0x\/",
+                "raw": "\/0x\/",
+                "flags": "",
+                "pattern": "0x"
+            }
+        },
+        {
+            "type": "ExpressionStatement",
+            "location": {
+                "start": {
+                    "line": 9,
+                    "column": 0,
+                    "index": 45
+                },
+                "end": {
+                    "line": 9,
+                    "column": 6,
+                    "index": 51
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "expression": {
+                "type": "RegExpLiteral",
+                "location": {
+                    "start": {
+                        "line": 9,
+                        "column": 0,
+                        "index": 45
+                    },
+                    "end": {
+                        "line": 9,
+                        "column": 5,
+                        "index": 50
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "value": "\/1ea\/",
+                "raw": "\/1ea\/",
+                "flags": "",
+                "pattern": "1ea"
+            }
+        }
+    ],
+    "sourceType": "script"
 }

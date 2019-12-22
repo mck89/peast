@@ -1,102 +1,102 @@
 {
-    "range": [
-        0,
-        30
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 2,
-            "column": 9
+            "column": 9,
+            "index": 30
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                20
-            ],
-            "loc": {
+            "type": "IfStatement",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 1,
-                    "column": 20
+                    "column": 20,
+                    "index": 20
                 }
             },
-            "type": "IfStatement",
+            "leadingComments": [],
+            "trailingComments": [],
             "test": {
-                "range": [
-                    4,
-                    10
-                ],
-                "loc": {
+                "type": "Identifier",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 4
+                        "column": 4,
+                        "index": 4
                     },
                     "end": {
                         "line": 1,
-                        "column": 10
+                        "column": 10,
+                        "index": 10
                     }
                 },
-                "type": "Identifier",
+                "leadingComments": [],
+                "trailingComments": [],
                 "name": "failed"
             },
             "consequent": {
-                "range": [
-                    12,
-                    20
-                ],
-                "loc": {
+                "type": "ExpressionStatement",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 12
+                        "column": 12,
+                        "index": 12
                     },
                     "end": {
                         "line": 1,
-                        "column": 20
+                        "column": 20,
+                        "index": 20
                     }
                 },
-                "type": "ExpressionStatement",
+                "leadingComments": [],
+                "trailingComments": [],
                 "expression": {
-                    "range": [
-                        12,
-                        19
-                    ],
-                    "loc": {
+                    "type": "CallExpression",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 12
+                            "column": 12,
+                            "index": 12
                         },
                         "end": {
                             "line": 1,
-                            "column": 19
+                            "column": 19,
+                            "index": 19
                         }
                     },
-                    "type": "CallExpression",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "callee": {
-                        "range": [
-                            12,
-                            17
-                        ],
-                        "loc": {
+                        "type": "Identifier",
+                        "location": {
                             "start": {
                                 "line": 1,
-                                "column": 12
+                                "column": 12,
+                                "index": 12
                             },
                             "end": {
                                 "line": 1,
-                                "column": 17
+                                "column": 17,
+                                "index": 17
                             }
                         },
-                        "type": "Identifier",
+                        "leadingComments": [],
+                        "trailingComments": [],
                         "name": "error"
                     },
                     "arguments": []
@@ -105,53 +105,53 @@
             "alternate": null
         },
         {
-            "range": [
-                21,
-                30
-            ],
-            "loc": {
+            "type": "ExpressionStatement",
+            "location": {
                 "start": {
                     "line": 2,
-                    "column": 0
+                    "column": 0,
+                    "index": 21
                 },
                 "end": {
                     "line": 2,
-                    "column": 9
+                    "column": 9,
+                    "index": 30
                 }
             },
-            "type": "ExpressionStatement",
+            "leadingComments": [],
+            "trailingComments": [],
             "expression": {
-                "range": [
-                    21,
-                    29
-                ],
-                "loc": {
+                "type": "CallExpression",
+                "location": {
                     "start": {
                         "line": 2,
-                        "column": 0
+                        "column": 0,
+                        "index": 21
                     },
                     "end": {
                         "line": 2,
-                        "column": 8
+                        "column": 8,
+                        "index": 29
                     }
                 },
-                "type": "CallExpression",
+                "leadingComments": [],
+                "trailingComments": [],
                 "callee": {
-                    "range": [
-                        21,
-                        27
-                    ],
-                    "loc": {
+                    "type": "Identifier",
+                    "location": {
                         "start": {
                             "line": 2,
-                            "column": 0
+                            "column": 0,
+                            "index": 21
                         },
                         "end": {
                             "line": 2,
-                            "column": 6
+                            "column": 6,
+                            "index": 27
                         }
                     },
-                    "type": "Identifier",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "name": "finish"
                 },
                 "arguments": []

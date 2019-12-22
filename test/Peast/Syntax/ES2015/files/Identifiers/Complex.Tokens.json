@@ -1,19 +1,17 @@
 [
     {
         "type": "Identifier",
-        "value": "トÿꃅ噴234",
-        "range": [
-            0,
-            29
-        ],
-        "loc": {
+        "value": "\u30c8\u00ff\ua0c5\u5674234",
+        "location": {
             "start": {
                 "line": 1,
-                "column": 0
+                "column": 0,
+                "index": 0
             },
             "end": {
                 "line": 1,
-                "column": 29
+                "column": 29,
+                "index": 29
             }
         }
     }

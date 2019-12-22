@@ -79,11 +79,10 @@ In the examples above you may have noticed the `$options` parameter. This parame
 * "sourceEncoding": to specify the encoding of the code to parse, if not spcified the parser will assume UTF-8.
 * "strictEncoding": if false the parser will handle invalid UTF8 characters in the source code by replacing them with the character defined in the "mbstring.substitute_character" ini setting, otherwise it will throw an exception. (available from version 1.9.4)
 
-Differences from Esprima and ESTree
+Differences from ESTree
 -------------
-Peast is not a porting of [Esprima](https://github.com/jquery/esprima) to PHP, but since they both respect the ESTree standard the output is almost identical and Peast tests are created using Esprima results.
 
-There is only one big difference from ESTree and Esprima: parenthesized expressions. This type of expressions have been introduced to let the user know if when an expression is wrapped in round brackets. For example `(a + b)` is a parenthesized expression and generates a ParenthesizedExpression node.
+There is only one big difference from ESTree: parenthesized expressions. This type of expressions have been introduced to let the user know if when an expression is wrapped in round brackets. For example `(a + b)` is a parenthesized expression and generates a ParenthesizedExpression node.
 
 From version 1.3, literals have their own classes: `StringLiteral`, `NumericLiteral`, `BooleanLiteral` and `NullLiteral`.
 

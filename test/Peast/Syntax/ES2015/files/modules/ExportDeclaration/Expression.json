@@ -1,89 +1,90 @@
 {
-    "range": [
-        0,
-        21
-    ],
-    "loc": {
+    "type": "Program",
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 1,
-            "column": 21
+            "column": 21,
+            "index": 21
         }
     },
-    "type": "Program",
+    "leadingComments": [],
+    "trailingComments": [],
     "body": [
         {
-            "range": [
-                0,
-                21
-            ],
-            "loc": {
+            "type": "ExportDefaultDeclaration",
+            "location": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 0,
+                    "index": 0
                 },
                 "end": {
                     "line": 1,
-                    "column": 21
+                    "column": 21,
+                    "index": 21
                 }
             },
-            "type": "ExportDefaultDeclaration",
+            "leadingComments": [],
+            "trailingComments": [],
             "declaration": {
-                "range": [
-                    15,
-                    20
-                ],
-                "loc": {
+                "type": "BinaryExpression",
+                "location": {
                     "start": {
                         "line": 1,
-                        "column": 15
+                        "column": 15,
+                        "index": 15
                     },
                     "end": {
                         "line": 1,
-                        "column": 20
+                        "column": 20,
+                        "index": 20
                     }
                 },
-                "type": "BinaryExpression",
-                "operator": "+",
+                "leadingComments": [],
+                "trailingComments": [],
                 "left": {
-                    "range": [
-                        15,
-                        16
-                    ],
-                    "loc": {
+                    "type": "Identifier",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 15
+                            "column": 15,
+                            "index": 15
                         },
                         "end": {
                             "line": 1,
-                            "column": 16
+                            "column": 16,
+                            "index": 16
                         }
                     },
-                    "type": "Identifier",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "name": "a"
                 },
+                "operator": "+",
                 "right": {
-                    "range": [
-                        19,
-                        20
-                    ],
-                    "loc": {
+                    "type": "Literal",
+                    "location": {
                         "start": {
                             "line": 1,
-                            "column": 19
+                            "column": 19,
+                            "index": 19
                         },
                         "end": {
                             "line": 1,
-                            "column": 20
+                            "column": 20,
+                            "index": 20
                         }
                     },
-                    "type": "Literal",
+                    "leadingComments": [],
+                    "trailingComments": [],
                     "value": 1,
-                    "raw": "1"
+                    "raw": "1",
+                    "format": "decimal"
                 }
             }
         }

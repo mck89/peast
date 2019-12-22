@@ -1,79 +1,77 @@
 {
     "type": "Program",
-    "body": [
-        {
-            "type": "ExpressionStatement",
-            "expression": {
-                "type": "TemplateLiteral",
-                "quasis": [
-                    {
-                        "type": "TemplateElement",
-                        "value": {
-                            "raw": "no$expression",
-                            "cooked": "no$expression"
-                        },
-                        "tail": true,
-                        "range": [
-                            0,
-                            15
-                        ],
-                        "loc": {
-                            "start": {
-                                "line": 1,
-                                "column": 0
-                            },
-                            "end": {
-                                "line": 1,
-                                "column": 15
-                            }
-                        }
-                    }
-                ],
-                "expressions": [],
-                "range": [
-                    0,
-                    15
-                ],
-                "loc": {
-                    "start": {
-                        "line": 1,
-                        "column": 0
-                    },
-                    "end": {
-                        "line": 1,
-                        "column": 15
-                    }
-                }
-            },
-            "range": [
-                0,
-                15
-            ],
-            "loc": {
-                "start": {
-                    "line": 1,
-                    "column": 0
-                },
-                "end": {
-                    "line": 1,
-                    "column": 15
-                }
-            }
-        }
-    ],
-    "sourceType": "script",
-    "range": [
-        0,
-        15
-    ],
-    "loc": {
+    "location": {
         "start": {
             "line": 1,
-            "column": 0
+            "column": 0,
+            "index": 0
         },
         "end": {
             "line": 1,
-            "column": 15
+            "column": 15,
+            "index": 15
         }
-    }
+    },
+    "leadingComments": [],
+    "trailingComments": [],
+    "body": [
+        {
+            "type": "ExpressionStatement",
+            "location": {
+                "start": {
+                    "line": 1,
+                    "column": 0,
+                    "index": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 15,
+                    "index": 15
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "expression": {
+                "type": "TemplateLiteral",
+                "location": {
+                    "start": {
+                        "line": 1,
+                        "column": 0,
+                        "index": 0
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 15,
+                        "index": 15
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "quasis": [
+                    {
+                        "type": "TemplateElement",
+                        "location": {
+                            "start": {
+                                "line": 1,
+                                "column": 0,
+                                "index": 0
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 15,
+                                "index": 15
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "value": "no$expression",
+                        "tail": true,
+                        "rawValue": "no$expression"
+                    }
+                ],
+                "expressions": []
+            }
+        }
+    ],
+    "sourceType": "script"
 }
