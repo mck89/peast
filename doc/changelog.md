@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.10.1
+* Fixed parsing of semicolon after do-while statement
+
 #### 1.10.0
 * Implemented ES2020 parser with dynamic import and BigInt
 * Implemented handling of UTF-8 and UTF-16 BOM when parsing the source
