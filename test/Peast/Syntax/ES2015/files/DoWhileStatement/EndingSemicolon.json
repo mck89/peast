@@ -1,0 +1,215 @@
+{
+	"type": "Program",
+	"location": {
+	    "start": {
+	        "line": 1,
+	        "column": 0,
+	        "index": 0
+	    },
+	    "end": {
+	        "line": 5,
+	        "column": 9,
+	        "index": 41
+	    }
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+	    {
+	        "type": "IfStatement",
+	        "location": {
+	            "start": {
+	                "line": 1,
+	                "column": 0,
+	                "index": 0
+	            },
+	            "end": {
+	                "line": 5,
+	                "column": 9,
+	                "index": 41
+	            }
+	        },
+	        "leadingComments": [],
+	        "trailingComments": [],
+	        "test": {
+	            "type": "Identifier",
+	            "location": {
+	                "start": {
+	                    "line": 1,
+	                    "column": 4,
+	                    "index": 4
+	                },
+	                "end": {
+	                    "line": 1,
+	                    "column": 5,
+	                    "index": 5
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "name": "a"
+	        },
+	        "consequent": {
+	            "type": "DoWhileStatement",
+	            "location": {
+	                "start": {
+	                    "line": 2,
+	                    "column": 1,
+	                    "index": 8
+	                },
+	                "end": {
+	                    "line": 4,
+	                    "column": 11,
+	                    "index": 30
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "body": {
+	                "type": "BlockStatement",
+	                "location": {
+	                    "start": {
+	                        "line": 2,
+	                        "column": 3,
+	                        "index": 10
+	                    },
+	                    "end": {
+	                        "line": 4,
+	                        "column": 2,
+	                        "index": 21
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "body": [
+	                    {
+	                        "type": "ExpressionStatement",
+	                        "location": {
+	                            "start": {
+	                                "line": 3,
+	                                "column": 2,
+	                                "index": 14
+	                            },
+	                            "end": {
+	                                "line": 3,
+	                                "column": 6,
+	                                "index": 18
+	                            }
+	                        },
+	                        "leadingComments": [],
+	                        "trailingComments": [],
+	                        "expression": {
+	                            "type": "CallExpression",
+	                            "location": {
+	                                "start": {
+	                                    "line": 3,
+	                                    "column": 2,
+	                                    "index": 14
+	                                },
+	                                "end": {
+	                                    "line": 3,
+	                                    "column": 5,
+	                                    "index": 17
+	                                }
+	                            },
+	                            "leadingComments": [],
+	                            "trailingComments": [],
+	                            "callee": {
+	                                "type": "Identifier",
+	                                "location": {
+	                                    "start": {
+	                                        "line": 3,
+	                                        "column": 2,
+	                                        "index": 14
+	                                    },
+	                                    "end": {
+	                                        "line": 3,
+	                                        "column": 3,
+	                                        "index": 15
+	                                    }
+	                                },
+	                                "leadingComments": [],
+	                                "trailingComments": [],
+	                                "name": "b"
+	                            },
+	                            "arguments": []
+	                        }
+	                    }
+	                ]
+	            },
+	            "test": {
+	                "type": "Identifier",
+	                "location": {
+	                    "start": {
+	                        "line": 4,
+	                        "column": 9,
+	                        "index": 28
+	                    },
+	                    "end": {
+	                        "line": 4,
+	                        "column": 10,
+	                        "index": 29
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "name": "c"
+	            }
+	        },
+	        "alternate": {
+	            "type": "ExpressionStatement",
+	            "location": {
+	                "start": {
+	                    "line": 5,
+	                    "column": 5,
+	                    "index": 37
+	                },
+	                "end": {
+	                    "line": 5,
+	                    "column": 9,
+	                    "index": 41
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "expression": {
+	                "type": "CallExpression",
+	                "location": {
+	                    "start": {
+	                        "line": 5,
+	                        "column": 5,
+	                        "index": 37
+	                    },
+	                    "end": {
+	                        "line": 5,
+	                        "column": 8,
+	                        "index": 40
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "callee": {
+	                    "type": "Identifier",
+	                    "location": {
+	                        "start": {
+	                            "line": 5,
+	                            "column": 5,
+	                            "index": 37
+	                        },
+	                        "end": {
+	                            "line": 5,
+	                            "column": 6,
+	                            "index": 38
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "name": "d"
+	                },
+	                "arguments": []
+	            }
+	        }
+	    }
+	],
+	"sourceType": "script"
+}

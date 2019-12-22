@@ -978,7 +978,9 @@ class Parser extends \Peast\Syntax\ParserAbstract
                 $node = $this->createNode("DoWhileStatement", $token);
                 $node->setBody($body);
                 $node->setTest($test);
-                return $this->completeNode($node);
+                $node = $this->completeNode($node);
+                $this->scanner->consume(";");
+                return $node;
             }
             
             return $this->error();
