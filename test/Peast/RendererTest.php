@@ -1,7 +1,7 @@
 <?php
-namespace Peast\test\Traverser;
+namespace Peast\test;
 
-class RendererTest extends \Peast\test\TestBase
+class RendererTest extends TestBase
 {
     protected function getTestVersions()
     {
