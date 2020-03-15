@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.10.2
+* Fixed Renderer so that it won't trust computed flag in MemberExpression if property is not an Identifier
+
 #### 1.10.1
 * Fixed parsing of semicolon after do-while statement
 

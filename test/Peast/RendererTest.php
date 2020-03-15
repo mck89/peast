@@ -61,4 +61,25 @@ class RendererTest extends \Peast\test\TestBase
         $res = $tree->render(new \Peast\Formatter\Compact);
         $this->assertEquals($source, $res);
     }
+
+    public function dontTrustComputedOnMemberExpressionsProvider()
+    {
+        return array(
+            array("a[b]", "a.b"),
+            array("a[1]", "a[1]"),
+            array("a['b']", "a['b']"),
+            array("a[b+c]", "a[b+c]")
+        );
+    }
+
+    /**
+     * @dataProvider dontTrustComputedOnMemberExpressionsProvider
+     */
+    public function testDontTrustComputedOnMemberExpressions($source, $result)
+    {
+        $tree = \Peast\Peast::latest($source)->parse();
+        $tree->getBody()[0]->getExpression()->setComputed(false);
+        $res = $tree->render(new \Peast\Formatter\Compact);
+        $this->assertEquals($result . ";", $res);
+    }
 }

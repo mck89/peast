@@ -545,12 +545,14 @@ class Renderer
             break;
             case "JSXMemberExpression":
             case "MemberExpression":
-                $property = $this->renderNode($node->getProperty());
+                $property = $node->getProperty();
+                $compiledProperty = $this->renderNode($property);
                 $code .= $this->renderNode($node->getObject());
-                if ($type === "MemberExpression" && $node->getComputed()) {
-                    $code .= "[" . $property . "]";
+                if ($type === "MemberExpression" &&
+                    ($node->getComputed() || $property->getType() !== "Identifier")) {
+                    $code .= "[" . $compiledProperty . "]";
                 } else {
-                    $code .= "." . $property;
+                    $code .= "." . $compiledProperty;
                 }
             break;
             case "MetaProperty":
