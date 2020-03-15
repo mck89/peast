@@ -127,6 +127,9 @@ abstract class TestParser extends TestBase
         ),
         "bigInt"=> array(
             array("ES2020", "files", "BigIntLiteral", "BigIntLiteral.js")
+        ),
+        "exportedNameInExportAll"=> array(
+            array("ES2020", "files", "modules", "ExportDeclaration", "ExportAllNamespace.js")
         )
     );
     

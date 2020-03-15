@@ -94,4 +94,11 @@ class Features
      * @var bool
      */
     public $bigInt = false;
+
+    /**
+     * Exported name for export all declarations
+     *
+     * @var bool
+     */
+    public $exportedNameInExportAll = false;
 }

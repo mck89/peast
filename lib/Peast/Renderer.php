@@ -274,8 +274,12 @@ class Renderer
             case "EmptyStatement":
             break;
             case "ExportAllDeclaration":
-                $code .= "export * from " .
-                         $this->renderNode($node->getSource());
+                $code .= "export *";
+                $exported = $node->getExported();
+                if ($exported) {
+                    $code .= " as " . $this->renderNode($exported);
+                }
+                $code .= " from " . $this->renderNode($node->getSource());
             break;
             case "ExportDefaultDeclaration":
                 $declaration = $node->getDeclaration();

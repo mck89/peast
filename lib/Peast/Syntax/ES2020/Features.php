@@ -31,4 +31,11 @@ class Features extends \Peast\Syntax\ES2019\Features
      * @var bool
      */
     public $bigInt = true;
+
+    /**
+     * Exported name for export all declarations
+     *
+     * @var bool
+     */
+    public $exportedNameInExportAll = true;
 }

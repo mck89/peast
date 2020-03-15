@@ -23,36 +23,68 @@ class ExportAllDeclaration extends Node implements ModuleDeclaration
      * @var array 
      */
     protected $propertiesMap = array(
-        "source" => true
+        "source" => true,
+        "exported" => true
     );
-    
+
     /**
      * The export source
-     * 
-     * @var Literal 
+     *
+     * @var Literal
      */
     protected $source;
-    
+
+    /**
+     * The exported name
+     *
+     * @var Identifier
+     */
+    protected $exported;
+
     /**
      * Returns the export source
-     * 
+     *
      * @return Literal
      */
     public function getSource()
     {
         return $this->source;
     }
-    
+
     /**
      * Sets the export source
-     * 
+     *
      * @param Literal $source Export source
-     * 
+     *
      * @return $this
      */
     public function setSource(Literal $source)
     {
         $this->source = $source;
+        return $this;
+    }
+
+    /**
+     * Returns the exported name
+     *
+     * @return Identifier
+     */
+    public function getExported()
+    {
+        return $this->exported;
+    }
+
+    /**
+     * Sets the exported name
+     *W
+     * @param Identifier $exported Exported name
+     *
+     * @return $this
+     */
+    public function setExported($exported)
+    {
+        $this->assertType($exported, "Identifier", true);
+        $this->exported = $exported;
         return $this;
     }
 }

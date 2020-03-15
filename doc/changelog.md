@@ -2,6 +2,7 @@ Changelog
 ==========
 
 #### 1.10.2
+* Implemented parsing of `export * as ns from "source"` syntax
 * Fixed Renderer so that it won't trust computed flag in MemberExpression if property is not an Identifier
 
 #### 1.10.1

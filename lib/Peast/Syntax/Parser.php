@@ -1947,11 +1947,21 @@ class Parser extends \Peast\Syntax\ParserAbstract
         if ($token = $this->scanner->consume("export")) {
             
             if ($this->scanner->consume("*")) {
+
+                $exported = null;
+                if ($this->features->exportedNameInExportAll &&
+                    $this->scanner->consume("as")) {
+                    $exported = $this->parseIdentifier(static::$identifierName);
+                    if (!$exported) {
+                        return $this->error();
+                    }
+                }
                 
                 if ($source = $this->parseFromClause()) {
                     $this->assertEndOfStatement();
                     $node = $this->createNode("ExportAllDeclaration", $token);
                     $node->setSource($source);
+                    $node->setExported($exported);
                     return $this->completeNode($node);
                 }
                 
