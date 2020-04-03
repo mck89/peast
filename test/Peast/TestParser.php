@@ -130,6 +130,9 @@ abstract class TestParser extends TestBase
         ),
         "exportedNameInExportAll"=> array(
             array("ES2020", "files", "modules", "ExportDeclaration", "ExportAllNamespace.js")
+        ),
+        "importMeta"=> array(
+            array("ES2020", "files", "modules", "ImportMeta", "ImportMeta.js")
         )
     );
     

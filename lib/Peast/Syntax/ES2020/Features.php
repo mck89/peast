@@ -38,4 +38,11 @@ class Features extends \Peast\Syntax\ES2019\Features
      * @var bool
      */
     public $exportedNameInExportAll = true;
+
+    /**
+     * Import.meta
+     *
+     * @var bool
+     */
+    public $importMeta = true;
 }

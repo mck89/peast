@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.10.3
+* Implemented parsing of `import.meta` syntax
+
 #### 1.10.2
 * Implemented parsing of `export * as ns from "source"` syntax
 * Fixed Renderer so that it won't trust computed flag in MemberExpression if property is not an Identifier

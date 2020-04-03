@@ -2100,6 +2100,12 @@ class Parser extends \Peast\Syntax\ParserAbstract
             $this->scanner->isBefore(array(array("import", "(")), true)) {
             return null;
         }
+        //Delay parsing of import.meta so that it is handled
+        //by the relative method
+        if ($this->features->importMeta &&
+            $this->scanner->isBefore(array(array("import", ".")), true)) {
+            return null;
+        }
         if ($token = $this->scanner->consume("import")) {
             
             if ($source = $this->parseStringLiteral()) {
@@ -3080,25 +3086,36 @@ class Parser extends \Peast\Syntax\ParserAbstract
         $object = null;
         $newTokens = array();
         
-        //Parse all occurences of "new"
+        //Parse all occurrences of "new"
         if ($newToken = $this->scanner->isBefore(array("new"))) {
             while ($newToken = $this->scanner->consume("new")) {
                 if ($this->scanner->consume(".")) {
                     //new.target
-                    if ($this->scanner->consume("target")) {
-                    
-                        $node = $this->createNode("MetaProperty", $newToken);
-                        $node->setMeta("new");
-                        $node->setProperty("target");
-                        $object = $this->completeNode($node);
-                        break;
-                    
-                    } else {
+                    if (!$this->scanner->consume("target")) {
                         return $this->error();
                     }
+                    $node = $this->createNode("MetaProperty", $newToken);
+                    $node->setMeta("new");
+                    $node->setProperty("target");
+                    $object = $this->completeNode($node);
+                    break;
                 }
                 $newTokens[] = $newToken;
             }
+        } elseif ($this->features->importMeta &&
+            $this->sourceType === \Peast\Peast::SOURCE_TYPE_MODULE &&
+            $this->scanner->isBefore(array(array("import", ".")), true)
+        ) {
+            //import.meta
+            $importToken = $this->scanner->consume("import");
+            $this->scanner->consume(".");
+            if (!$this->scanner->consume("meta")) {
+                return $this->error();
+            }
+            $node = $this->createNode("MetaProperty", $importToken);
+            $node->setMeta("import");
+            $node->setProperty("meta");
+            $object = $this->completeNode($node);
         }
         
         $newTokensCount = count($newTokens);

@@ -101,4 +101,11 @@ class Features
      * @var bool
      */
     public $exportedNameInExportAll = false;
+
+    /**
+     * Import.meta
+     *
+     * @var bool
+     */
+    public $importMeta = false;
 }

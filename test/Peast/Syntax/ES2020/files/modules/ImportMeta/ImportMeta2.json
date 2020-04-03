@@ -1,0 +1,130 @@
+{
+    "type": "Program",
+    "location": {
+        "start": {
+            "line": 1,
+            "column": 0,
+            "index": 0
+        },
+        "end": {
+            "line": 1,
+            "column": 26,
+            "index": 26
+        }
+    },
+    "leadingComments": [],
+    "trailingComments": [],
+    "body": [
+        {
+            "type": "VariableDeclaration",
+            "location": {
+                "start": {
+                    "line": 1,
+                    "column": 0,
+                    "index": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 26,
+                    "index": 26
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "declarations": [
+                {
+                    "type": "VariableDeclarator",
+                    "location": {
+                        "start": {
+                            "line": 1,
+                            "column": 4,
+                            "index": 4
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 25,
+                            "index": 25
+                        }
+                    },
+                    "leadingComments": [],
+                    "trailingComments": [],
+                    "id": {
+                        "type": "Identifier",
+                        "location": {
+                            "start": {
+                                "line": 1,
+                                "column": 4,
+                                "index": 4
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 7,
+                                "index": 7
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "name": "url"
+                    },
+                    "init": {
+                        "type": "MemberExpression",
+                        "location": {
+                            "start": {
+                                "line": 1,
+                                "column": 10,
+                                "index": 10
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 25,
+                                "index": 25
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "object": {
+                            "type": "MetaProperty",
+                            "location": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 10,
+                                    "index": 10
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 21,
+                                    "index": 21
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "meta": "import",
+                            "property": "meta"
+                        },
+                        "property": {
+                            "type": "Identifier",
+                            "location": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 22,
+                                    "index": 22
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 25,
+                                    "index": 25
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "name": "url"
+                        },
+                        "computed": false
+                    }
+                }
+            ],
+            "kind": "var"
+        }
+    ],
+    "sourceType": "module"
+}
