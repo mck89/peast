@@ -1,0 +1,155 @@
+{
+	"type": "Program",
+	"location": {
+		"start": {
+			"line": 1,
+			"column": 0,
+			"index": 0
+		},
+		"end": {
+			"line": 1,
+			"column": 38,
+			"index": 38
+		}
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+		{
+			"type": "VariableDeclaration",
+			"location": {
+				"start": {
+					"line": 1,
+					"column": 0,
+					"index": 0
+				},
+				"end": {
+					"line": 1,
+					"column": 38,
+					"index": 38
+				}
+			},
+			"leadingComments": [],
+			"trailingComments": [],
+			"declarations": [
+				{
+					"type": "VariableDeclarator",
+					"location": {
+						"start": {
+							"line": 1,
+							"column": 4,
+							"index": 4
+						},
+						"end": {
+							"line": 1,
+							"column": 37,
+							"index": 37
+						}
+					},
+					"leadingComments": [],
+					"trailingComments": [],
+					"id": {
+						"type": "Identifier",
+						"location": {
+							"start": {
+								"line": 1,
+								"column": 4,
+								"index": 4
+							},
+							"end": {
+								"line": 1,
+								"column": 5,
+								"index": 5
+							}
+						},
+						"leadingComments": [],
+						"trailingComments": [],
+						"name": "a"
+					},
+					"init": {
+						"type": "ObjectExpression",
+						"location": {
+							"start": {
+								"line": 1,
+								"column": 8,
+								"index": 8
+							},
+							"end": {
+								"line": 1,
+								"column": 37,
+								"index": 37
+							}
+						},
+						"leadingComments": [],
+						"trailingComments": [],
+						"properties": [
+							{
+								"type": "Property",
+								"location": {
+									"start": {
+										"line": 1,
+										"column": 9,
+										"index": 9
+									},
+									"end": {
+										"line": 1,
+										"column": 36,
+										"index": 36
+									}
+								},
+								"leadingComments": [],
+								"trailingComments": [],
+								"key": {
+									"type": "Literal",
+									"location": {
+										"start": {
+											"line": 1,
+											"column": 9,
+											"index": 9
+										},
+										"end": {
+											"line": 1,
+											"column": 28,
+											"index": 28
+										}
+									},
+									"leadingComments": [],
+									"trailingComments": [],
+									"value": "100000000000000000n",
+									"raw": "100000000000000000n",
+									"bigint": "100000000000000000n"
+								},
+								"value": {
+									"type": "Literal",
+									"location": {
+										"start": {
+											"line": 1,
+											"column": 30,
+											"index": 30
+										},
+										"end": {
+											"line": 1,
+											"column": 36,
+											"index": 36
+										}
+									},
+									"leadingComments": [],
+									"trailingComments": [],
+									"value": "test",
+									"raw": "\"test\"",
+									"format": "double"
+								},
+								"kind": "init",
+								"method": false,
+								"shorthand": false,
+								"computed": false
+							}
+						]
+					}
+				}
+			],
+			"kind": "var"
+		}
+	],
+	"sourceType": "script"
+}

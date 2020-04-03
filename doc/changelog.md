@@ -3,6 +3,7 @@ Changelog
 
 #### 1.10.3
 * Implemented parsing of `import.meta` syntax
+* Implemented parsing of BigIntLiteral as objects keys
 
 #### 1.10.2
 * Implemented parsing of `export * as ns from "source"` syntax
