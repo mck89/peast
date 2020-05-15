@@ -30,7 +30,7 @@ class TryStatement extends Node implements Statement
     /**
      * Wrapped block
      * 
-     * @var BlockStatements 
+     * @var BlockStatement
      */
     protected $block;
     
@@ -51,7 +51,7 @@ class TryStatement extends Node implements Statement
     /**
      * Returns the wrapped block
      * 
-     * @return BlockStatements
+     * @return BlockStatement
      */
     public function getBlock()
     {
