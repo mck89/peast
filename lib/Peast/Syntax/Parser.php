@@ -87,6 +87,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
      * @var array 
      */
     protected $logicalBinaryOperators = array(
+        "??" => 0,
         "||" => 0,
         "&&" => 1,
         "|" => 2,
@@ -164,6 +165,12 @@ class Parser extends \Peast\Syntax\ParserAbstract
                 "**="
             );
             unset($this->logicalBinaryOperators["**"]);
+        }
+
+        //Remove coalescing operator if the feature
+        //is not enabled
+        if (!$this->features->coalescingOperator) {
+            unset($this->logicalBinaryOperators["??"]);
         }
     }
     
@@ -2972,11 +2979,25 @@ class Parser extends \Peast\Syntax\ParserAbstract
         }
         
         $list = array($exp);
+        $coalescingFound = $andOrFound = false;
         while ($token = $this->scanner->consumeOneOf(array_keys($operators))) {
+            $op = $token->getValue();
+            // Coalescing and logical expressions can't be used together
+            if ($op === "??") {
+                $coalescingFound = true;
+            } elseif ($op === "&&" || $op === "||") {
+                $andOrFound = true;
+            }
+            if ($coalescingFound && $andOrFound) {
+                return $this->error(
+                    "Logical expressions must be wrapped in parentheses when " .
+                    "inside coalesce expressions"
+                );
+            }
             if (!($exp = $this->parseUnaryExpression())) {
                 return $this->error();
             }
-            $list[] = $token->getValue();
+            $list[] = $op;
             $list[] = $exp;
         }
         

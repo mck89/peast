@@ -133,6 +133,9 @@ abstract class TestParser extends TestBase
         ),
         "importMeta"=> array(
             array("ES2020", "files", "modules", "ImportMeta", "ImportMeta.js")
+        ),
+        "coalescingOperator"=> array(
+            array("ES2020", "files", "CoalescingOperator", "CoalescingOperator.js")
         )
     );
     

@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.10.4
+* Implemented parsing of coalescing operator
+
 #### 1.10.3
 * Implemented parsing of `import.meta` syntax
 * Implemented parsing of BigIntLiteral as objects keys

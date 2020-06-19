@@ -108,4 +108,11 @@ class Features
      * @var bool
      */
     public $importMeta = false;
+
+    /**
+     * Coalescing operator
+     *
+     * @var bool
+     */
+    public $coalescingOperator = false;
 }

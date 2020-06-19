@@ -1,0 +1,216 @@
+{
+	"type": "Program",
+	"location": {
+		"start": {
+			"line": 1,
+			"column": 0,
+			"index": 0
+		},
+		"end": {
+			"line": 1,
+			"column": 24,
+			"index": 24
+		}
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+		{
+			"type": "ExpressionStatement",
+			"location": {
+				"start": {
+					"line": 1,
+					"column": 0,
+					"index": 0
+				},
+				"end": {
+					"line": 1,
+					"column": 24,
+					"index": 24
+				}
+			},
+			"leadingComments": [],
+			"trailingComments": [],
+			"expression": {
+				"type": "ConditionalExpression",
+				"location": {
+					"start": {
+						"line": 1,
+						"column": 0,
+						"index": 0
+					},
+					"end": {
+						"line": 1,
+						"column": 24,
+						"index": 24
+					}
+				},
+				"leadingComments": [],
+				"trailingComments": [],
+				"test": {
+					"type": "LogicalExpression",
+					"location": {
+						"start": {
+							"line": 1,
+							"column": 0,
+							"index": 0
+						},
+						"end": {
+							"line": 1,
+							"column": 6,
+							"index": 6
+						}
+					},
+					"leadingComments": [],
+					"trailingComments": [],
+					"left": {
+						"type": "Identifier",
+						"location": {
+							"start": {
+								"line": 1,
+								"column": 0,
+								"index": 0
+							},
+							"end": {
+								"line": 1,
+								"column": 1,
+								"index": 1
+							}
+						},
+						"leadingComments": [],
+						"trailingComments": [],
+						"name": "a"
+					},
+					"operator": "??",
+					"right": {
+						"type": "Identifier",
+						"location": {
+							"start": {
+								"line": 1,
+								"column": 5,
+								"index": 5
+							},
+							"end": {
+								"line": 1,
+								"column": 6,
+								"index": 6
+							}
+						},
+						"leadingComments": [],
+						"trailingComments": [],
+						"name": "b"
+					}
+				},
+				"consequent": {
+					"type": "LogicalExpression",
+					"location": {
+						"start": {
+							"line": 1,
+							"column": 9,
+							"index": 9
+						},
+						"end": {
+							"line": 1,
+							"column": 15,
+							"index": 15
+						}
+					},
+					"leadingComments": [],
+					"trailingComments": [],
+					"left": {
+						"type": "Identifier",
+						"location": {
+							"start": {
+								"line": 1,
+								"column": 9,
+								"index": 9
+							},
+							"end": {
+								"line": 1,
+								"column": 10,
+								"index": 10
+							}
+						},
+						"leadingComments": [],
+						"trailingComments": [],
+						"name": "b"
+					},
+					"operator": "??",
+					"right": {
+						"type": "Identifier",
+						"location": {
+							"start": {
+								"line": 1,
+								"column": 14,
+								"index": 14
+							},
+							"end": {
+								"line": 1,
+								"column": 15,
+								"index": 15
+							}
+						},
+						"leadingComments": [],
+						"trailingComments": [],
+						"name": "c"
+					}
+				},
+				"alternate": {
+					"type": "LogicalExpression",
+					"location": {
+						"start": {
+							"line": 1,
+							"column": 18,
+							"index": 18
+						},
+						"end": {
+							"line": 1,
+							"column": 24,
+							"index": 24
+						}
+					},
+					"leadingComments": [],
+					"trailingComments": [],
+					"left": {
+						"type": "Identifier",
+						"location": {
+							"start": {
+								"line": 1,
+								"column": 18,
+								"index": 18
+							},
+							"end": {
+								"line": 1,
+								"column": 19,
+								"index": 19
+							}
+						},
+						"leadingComments": [],
+						"trailingComments": [],
+						"name": "c"
+					},
+					"operator": "??",
+					"right": {
+						"type": "Identifier",
+						"location": {
+							"start": {
+								"line": 1,
+								"column": 23,
+								"index": 23
+							},
+							"end": {
+								"line": 1,
+								"column": 24,
+								"index": 24
+							}
+						},
+						"leadingComments": [],
+						"trailingComments": [],
+						"name": "b"
+					}
+				}
+			}
+		}
+	],
+	"sourceType": "script"
+}
