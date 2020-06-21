@@ -1,6 +1,6 @@
-for (;;) {
-    if (true) break
-        ; else {}
-    if (true) continue
-        ; else {}
+for (;;) {    
+	if (true) break    
+	; else {}    
+	if (false) continue    
+	; else {}    
 }
