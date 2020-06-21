@@ -4,6 +4,7 @@ Changelog
 #### 1.10.4
 * Implemented parsing of coalescing operator
 * Implemented parsing of optional chaining
+* Fixed bug when parsing a semicolon on a new line after break and continue statements
 
 #### 1.10.3
 * Implemented parsing of `import.meta` syntax

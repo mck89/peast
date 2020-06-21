@@ -1,0 +1,203 @@
+{
+    "type": "Program",
+    "location": {
+        "start": {
+            "line": 1,
+            "column": 0,
+            "index": 0
+        },
+        "end": {
+            "line": 6,
+            "column": 1,
+            "index": 82
+        }
+    },
+    "leadingComments": [],
+    "trailingComments": [],
+    "body": [
+        {
+            "type": "ForStatement",
+            "location": {
+                "start": {
+                    "line": 1,
+                    "column": 0,
+                    "index": 0
+                },
+                "end": {
+                    "line": 6,
+                    "column": 1,
+                    "index": 82
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "init": null,
+            "test": null,
+            "update": null,
+            "body": {
+                "type": "BlockStatement",
+                "location": {
+                    "start": {
+                        "line": 1,
+                        "column": 9,
+                        "index": 9
+                    },
+                    "end": {
+                        "line": 6,
+                        "column": 1,
+                        "index": 82
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "body": [
+                    {
+                        "type": "IfStatement",
+                        "location": {
+                            "start": {
+                                "line": 2,
+                                "column": 4,
+                                "index": 15
+                            },
+                            "end": {
+                                "line": 3,
+                                "column": 13,
+                                "index": 44
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "test": {
+                            "type": "Literal",
+                            "location": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 8,
+                                    "index": 19
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 12,
+                                    "index": 23
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "value": true,
+                            "raw": "true"
+                        },
+                        "consequent": {
+                            "type": "BreakStatement",
+                            "location": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 14,
+                                    "index": 25
+                                },
+                                "end": {
+                                    "line": 3,
+                                    "column": 5,
+                                    "index": 36
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "label": null
+                        },
+                        "alternate": {
+                            "type": "BlockStatement",
+                            "location": {
+                                "start": {
+                                    "line": 3,
+                                    "column": 11,
+                                    "index": 42
+                                },
+                                "end": {
+                                    "line": 3,
+                                    "column": 13,
+                                    "index": 44
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "body": []
+                        }
+                    },
+                    {
+                        "type": "IfStatement",
+                        "location": {
+                            "start": {
+                                "line": 4,
+                                "column": 3,
+                                "index": 48
+                            },
+                            "end": {
+                                "line": 5,
+                                "column": 13,
+                                "index": 80
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "test": {
+                            "type": "Literal",
+                            "location": {
+                                "start": {
+                                    "line": 4,
+                                    "column": 7,
+                                    "index": 52
+                                },
+                                "end": {
+                                    "line": 4,
+                                    "column": 11,
+                                    "index": 56
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "value": true,
+                            "raw": "true"
+                        },
+                        "consequent": {
+                            "type": "ContinueStatement",
+                            "location": {
+                                "start": {
+                                    "line": 4,
+                                    "column": 13,
+                                    "index": 58
+                                },
+                                "end": {
+                                    "line": 5,
+                                    "column": 5,
+                                    "index": 72
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "label": null
+                        },
+                        "alternate": {
+                            "type": "BlockStatement",
+                            "location": {
+                                "start": {
+                                    "line": 5,
+                                    "column": 11,
+                                    "index": 78
+                                },
+                                "end": {
+                                    "line": 5,
+                                    "column": 13,
+                                    "index": 80
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "body": []
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "sourceType": "script"
+}

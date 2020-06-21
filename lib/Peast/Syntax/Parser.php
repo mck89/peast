@@ -646,13 +646,14 @@ class Parser extends \Peast\Syntax\ParserAbstract
             
             $node = $this->createNode("ContinueStatement", $token);
             
-            if ($this->scanner->noLineTerminators()) {
-                if ($label = $this->parseIdentifier(static::$labelledIdentifier)) {
-                    $node->setLabel($label);
-                }
+            if ($this->scanner->noLineTerminators() &&
+                ($label = $this->parseIdentifier(static::$labelledIdentifier))
+            ) {
+                $node->setLabel($label);
+                $this->assertEndOfStatement();
+            } else {
+                $this->scanner->consume(";");
             }
-            
-            $this->assertEndOfStatement();
             
             return $this->completeNode($node);
         }
@@ -670,13 +671,13 @@ class Parser extends \Peast\Syntax\ParserAbstract
             
             $node = $this->createNode("BreakStatement", $token);
             
-            if ($this->scanner->noLineTerminators()) {
-                if ($label = $this->parseIdentifier(static::$labelledIdentifier)) {
-                    $node->setLabel($label);
-                }
+            if ($this->scanner->noLineTerminators() &&
+                ($label = $this->parseIdentifier(static::$labelledIdentifier))) {
+                $node->setLabel($label);
+                $this->assertEndOfStatement();
+            } else {
+                $this->scanner->consume(";");
             }
-            
-            $this->assertEndOfStatement();
             
             return $this->completeNode($node);
         }
