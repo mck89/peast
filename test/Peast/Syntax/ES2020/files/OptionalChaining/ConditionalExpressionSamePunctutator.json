@@ -1,0 +1,110 @@
+{
+	"type": "Program",
+	"location": {
+		"start": {
+			"line": 1,
+			"column": 0,
+			"index": 0
+		},
+		"end": {
+			"line": 1,
+			"column": 6,
+			"index": 6
+		}
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+		{
+			"type": "ExpressionStatement",
+			"location": {
+				"start": {
+					"line": 1,
+					"column": 0,
+					"index": 0
+				},
+				"end": {
+					"line": 1,
+					"column": 6,
+					"index": 6
+				}
+			},
+			"leadingComments": [],
+			"trailingComments": [],
+			"expression": {
+				"type": "ConditionalExpression",
+				"location": {
+					"start": {
+						"line": 1,
+						"column": 0,
+						"index": 0
+					},
+					"end": {
+						"line": 1,
+						"column": 6,
+						"index": 6
+					}
+				},
+				"leadingComments": [],
+				"trailingComments": [],
+				"test": {
+					"type": "Identifier",
+					"location": {
+						"start": {
+							"line": 1,
+							"column": 0,
+							"index": 0
+						},
+						"end": {
+							"line": 1,
+							"column": 1,
+							"index": 1
+						}
+					},
+					"leadingComments": [],
+					"trailingComments": [],
+					"name": "a"
+				},
+				"consequent": {
+					"type": "Literal",
+					"location": {
+						"start": {
+							"line": 1,
+							"column": 2,
+							"index": 2
+						},
+						"end": {
+							"line": 1,
+							"column": 4,
+							"index": 4
+						}
+					},
+					"leadingComments": [],
+					"trailingComments": [],
+					"value": 0.5,
+					"raw": ".5",
+					"format": "decimal"
+				},
+				"alternate": {
+					"type": "Identifier",
+					"location": {
+						"start": {
+							"line": 1,
+							"column": 5,
+							"index": 5
+						},
+						"end": {
+							"line": 1,
+							"column": 6,
+							"index": 6
+						}
+					},
+					"leadingComments": [],
+					"trailingComments": [],
+					"name": "b"
+				}
+			}
+		}
+	],
+	"sourceType": "script"
+}

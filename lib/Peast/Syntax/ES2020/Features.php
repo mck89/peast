@@ -52,4 +52,11 @@ class Features extends \Peast\Syntax\ES2019\Features
      * @var bool
      */
     public $coalescingOperator = true;
+
+    /**
+     * Optional chaining
+     *
+     * @var bool
+     */
+    public $optionalChaining = true;
 }

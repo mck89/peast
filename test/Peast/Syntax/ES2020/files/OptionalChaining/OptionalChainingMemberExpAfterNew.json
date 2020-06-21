@@ -1,0 +1,128 @@
+{
+	"type": "Program",
+	"location": {
+		"start": {
+			"line": 1,
+			"column": 0,
+			"index": 0
+		},
+		"end": {
+			"line": 1,
+			"column": 11,
+			"index": 11
+		}
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+		{
+			"type": "ExpressionStatement",
+			"location": {
+				"start": {
+					"line": 1,
+					"column": 0,
+					"index": 0
+				},
+				"end": {
+					"line": 1,
+					"column": 11,
+					"index": 11
+				}
+			},
+			"leadingComments": [],
+			"trailingComments": [],
+			"expression": {
+				"type": "ChainExpression",
+				"location": {
+					"start": {
+						"line": 1,
+						"column": 0,
+						"index": 0
+					},
+					"end": {
+						"line": 1,
+						"column": 10,
+						"index": 10
+					}
+				},
+				"leadingComments": [],
+				"trailingComments": [],
+				"expression": {
+					"type": "MemberExpression",
+					"location": {
+						"start": {
+							"line": 1,
+							"column": 0,
+							"index": 0
+						},
+						"end": {
+							"line": 1,
+							"column": 10,
+							"index": 10
+						}
+					},
+					"leadingComments": [],
+					"trailingComments": [],
+					"optional": true,
+					"object": {
+						"type": "NewExpression",
+						"location": {
+							"start": {
+								"line": 1,
+								"column": 0,
+								"index": 0
+							},
+							"end": {
+								"line": 1,
+								"column": 7,
+								"index": 7
+							}
+						},
+						"leadingComments": [],
+						"trailingComments": [],
+						"optional": false,
+						"callee": {
+							"type": "Identifier",
+							"location": {
+								"start": {
+									"line": 1,
+									"column": 4,
+									"index": 4
+								},
+								"end": {
+									"line": 1,
+									"column": 5,
+									"index": 5
+								}
+							},
+							"leadingComments": [],
+							"trailingComments": [],
+							"name": "a"
+						},
+						"arguments": []
+					},
+					"property": {
+						"type": "Identifier",
+						"location": {
+							"start": {
+								"line": 1,
+								"column": 9,
+								"index": 9
+							},
+							"end": {
+								"line": 1,
+								"column": 10,
+								"index": 10
+							}
+						},
+						"leadingComments": [],
+						"trailingComments": [],
+						"name": "b"
+					},
+					"computed": false
+				}
+			}
+		}
+	],
+	"sourceType": "script"
+}

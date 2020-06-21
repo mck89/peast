@@ -126,7 +126,7 @@ class LSM
         $bestMatch = null;
         if (isset($this->map[$char])) {
             //If the character is present in the map and it has a max length of
-            //1, match immediatelly
+            //1, match immediately
             if ($this->map[$char]["maxLen"] === 1) {
                 $bestMatch = array($consumed, $char);
             } else {

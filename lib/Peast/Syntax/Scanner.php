@@ -183,7 +183,7 @@ class Scanner
         ".", ";", ",", "<", ">", "<=", ">=", "==", "!=", "===", "!==", "+",
         "-", "*", "%", "++", "--", "<<", ">>", ">>>", "&", "|", "^", "!", "~",
         "&&", "||", "?", ":", "=", "+=", "-=", "*=", "%=", "<<=", ">>=", ">>>=",
-        "&=", "|=", "^=", "=>", "...", "/", "/=", "**", "**=", "??"
+        "&=", "|=", "^=", "=>", "...", "/", "/=", "**", "**=", "??", "?."
     );
     
     /**
@@ -353,6 +353,17 @@ class Scanner
                 }
             }
         }
+
+        //Remove exponentation operator if the feature
+        //is not enabled
+        if (!$this->features->exponentiationOperator) {
+            Utils::removeArrayValue($this->punctutators, "**");
+            Utils::removeArrayValue($this->punctutators, "**=");
+        }
+
+        if (!$this->features->optionalChaining) {
+            Utils::removeArrayValue($this->punctutators, "?.");
+        }
         
         //Create a LSM for punctutators array
         $this->punctutatorsLSM = new LSM($this->punctutators);
@@ -364,13 +375,6 @@ class Scanner
         if ($this->features->paragraphLineSepInStrings) {
             $this->stringsStopsLSM->remove(Utils::unicodeToUtf8(0x2028));
             $this->stringsStopsLSM->remove(Utils::unicodeToUtf8(0x2029));
-        }
-
-        //Remove exponentation operator if the feature
-        //is not enabled
-        if (!$this->features->exponentiationOperator) {
-            Utils::removeArrayValue($this->punctutators, "**");
-            Utils::removeArrayValue($this->punctutators, "**=");
         }
 
         //Remove await as keyword if async/await is enabled
@@ -1563,6 +1567,14 @@ class Scanner
             //Try to match the longest puncutator
             $match = $this->punctutatorsLSM->match($this, $this->index, $char)
         ) {
+            //Optional chaining punctutator cannot appear before a number, in this
+            //case only the question mark must be consumed
+            if ($match[1] === "?." &&
+                ($nextChar = $this->charAt($this->index + $match[0])) &&
+                $nextChar >= "0" && $nextChar <= "9"
+            ) {
+                $match = array(1, "?");
+            }
             $this->index += $match[0];
             $this->column += $match[0];
             $token = new Token(Token::TYPE_PUNCTUTATOR, $match[1]);

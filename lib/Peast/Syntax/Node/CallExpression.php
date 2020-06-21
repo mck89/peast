@@ -15,7 +15,7 @@ namespace Peast\Syntax\Node;
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
-class CallExpression extends Node implements Expression
+class CallExpression extends ChainElement
 {
     /**
      * Map of node properties

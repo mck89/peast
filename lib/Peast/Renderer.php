@@ -206,8 +206,12 @@ class Renderer
             case "NewExpression":
                 if ($type === "NewExpression") {
                     $code .= "new ";
+                    $optional = false;
+                } else {
+                    $optional = $node->getOptional();
                 }
                 $code .= $this->renderNode($node->getCallee()) .
+                         ($optional ? "?." : "") .
                          "(" .
                          $this->renderOpts->sirb .
                          $this->joinNodes(
@@ -228,6 +232,10 @@ class Renderer
                              ")";
                 }
                 $code .= $this->renderStatementBlock($node->getBody(), true);
+            break;
+            case "ChainExpression":
+            case "ExpressionStatement":
+                $code .= $this->renderNode($node->getExpression());
             break;
             case "ClassExpression":
             case "ClassDeclaration":
@@ -315,9 +323,6 @@ class Renderer
                 $code .= $local === $ref ?
                          $local :
                          $local . " as " . $ref;
-            break;
-            case "ExpressionStatement":
-                $code .= $this->renderNode($node->getExpression());
             break;
             case "ForInStatement":
             case "ForOfStatement":
@@ -552,11 +557,15 @@ class Renderer
                 $property = $node->getProperty();
                 $compiledProperty = $this->renderNode($property);
                 $code .= $this->renderNode($node->getObject());
+                $optional = false;
+                if ($type === "MemberExpression") {
+                    $optional = $node->getOptional();
+                }
                 if ($type === "MemberExpression" &&
                     ($node->getComputed() || $property->getType() !== "Identifier")) {
-                    $code .= "[" . $compiledProperty . "]";
+                    $code .= ($optional ? "?." : "") . "[" . $compiledProperty . "]";
                 } else {
-                    $code .= "." . $compiledProperty;
+                    $code .= ($optional ? "?." : ".") . $compiledProperty;
                 }
             break;
             case "MetaProperty":

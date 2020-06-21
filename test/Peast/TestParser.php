@@ -136,6 +136,9 @@ abstract class TestParser extends TestBase
         ),
         "coalescingOperator"=> array(
             array("ES2020", "files", "CoalescingOperator", "CoalescingOperator.js")
+        ),
+        "optionalChaining"=> array(
+            array("ES2020", "files", "OptionalChaining", "OptionalChainingMemberExp.js")
         )
     );
     

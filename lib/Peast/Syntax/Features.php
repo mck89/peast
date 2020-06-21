@@ -115,4 +115,11 @@ class Features
      * @var bool
      */
     public $coalescingOperator = false;
+
+    /**
+     * Optional chaining
+     *
+     * @var bool
+     */
+    public $optionalChaining = false;
 }

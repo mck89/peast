@@ -15,7 +15,7 @@ namespace Peast\Syntax\Node;
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
-class MemberExpression extends Node implements Expression, Pattern
+class MemberExpression extends ChainElement implements Pattern
 {
     /**
      * Map of node properties

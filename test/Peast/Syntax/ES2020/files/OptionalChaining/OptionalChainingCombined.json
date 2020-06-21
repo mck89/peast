@@ -1,0 +1,297 @@
+{
+	"type": "Program",
+	"location": {
+		"start": {
+			"line": 1,
+			"column": 0,
+			"index": 0
+		},
+		"end": {
+			"line": 1,
+			"column": 27,
+			"index": 27
+		}
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+		{
+			"type": "ExpressionStatement",
+			"location": {
+				"start": {
+					"line": 1,
+					"column": 0,
+					"index": 0
+				},
+				"end": {
+					"line": 1,
+					"column": 27,
+					"index": 27
+				}
+			},
+			"leadingComments": [],
+			"trailingComments": [],
+			"expression": {
+				"type": "ChainExpression",
+				"location": {
+					"start": {
+						"line": 1,
+						"column": 0,
+						"index": 0
+					},
+					"end": {
+						"line": 1,
+						"column": 27,
+						"index": 27
+					}
+				},
+				"leadingComments": [],
+				"trailingComments": [],
+				"expression": {
+					"type": "MemberExpression",
+					"location": {
+						"start": {
+							"line": 1,
+							"column": 0,
+							"index": 0
+						},
+						"end": {
+							"line": 1,
+							"column": 27,
+							"index": 27
+						}
+					},
+					"leadingComments": [],
+					"trailingComments": [],
+					"optional": true,
+					"object": {
+						"type": "CallExpression",
+						"location": {
+							"start": {
+								"line": 1,
+								"column": 0,
+								"index": 0
+							},
+							"end": {
+								"line": 1,
+								"column": 24,
+								"index": 24
+							}
+						},
+						"leadingComments": [],
+						"trailingComments": [],
+						"optional": true,
+						"callee": {
+							"type": "CallExpression",
+							"location": {
+								"start": {
+									"line": 1,
+									"column": 0,
+									"index": 0
+								},
+								"end": {
+									"line": 1,
+									"column": 19,
+									"index": 19
+								}
+							},
+							"leadingComments": [],
+							"trailingComments": [],
+							"optional": true,
+							"callee": {
+								"type": "MemberExpression",
+								"location": {
+									"start": {
+										"line": 1,
+										"column": 0,
+										"index": 0
+									},
+									"end": {
+										"line": 1,
+										"column": 14,
+										"index": 14
+									}
+								},
+								"leadingComments": [],
+								"trailingComments": [],
+								"optional": true,
+								"object": {
+									"type": "CallExpression",
+									"location": {
+										"start": {
+											"line": 1,
+											"column": 0,
+											"index": 0
+										},
+										"end": {
+											"line": 1,
+											"column": 9,
+											"index": 9
+										}
+									},
+									"leadingComments": [],
+									"trailingComments": [],
+									"optional": true,
+									"callee": {
+										"type": "MemberExpression",
+										"location": {
+											"start": {
+												"line": 1,
+												"column": 0,
+												"index": 0
+											},
+											"end": {
+												"line": 1,
+												"column": 4,
+												"index": 4
+											}
+										},
+										"leadingComments": [],
+										"trailingComments": [],
+										"optional": true,
+										"object": {
+											"type": "Identifier",
+											"location": {
+												"start": {
+													"line": 1,
+													"column": 0,
+													"index": 0
+												},
+												"end": {
+													"line": 1,
+													"column": 1,
+													"index": 1
+												}
+											},
+											"leadingComments": [],
+											"trailingComments": [],
+											"name": "a"
+										},
+										"property": {
+											"type": "Identifier",
+											"location": {
+												"start": {
+													"line": 1,
+													"column": 3,
+													"index": 3
+												},
+												"end": {
+													"line": 1,
+													"column": 4,
+													"index": 4
+												}
+											},
+											"leadingComments": [],
+											"trailingComments": [],
+											"name": "b"
+										},
+										"computed": false
+									},
+									"arguments": [
+										{
+											"type": "Identifier",
+											"location": {
+												"start": {
+													"line": 1,
+													"column": 7,
+													"index": 7
+												},
+												"end": {
+													"line": 1,
+													"column": 8,
+													"index": 8
+												}
+											},
+											"leadingComments": [],
+											"trailingComments": [],
+											"name": "c"
+										}
+									]
+								},
+								"property": {
+									"type": "Identifier",
+									"location": {
+										"start": {
+											"line": 1,
+											"column": 12,
+											"index": 12
+										},
+										"end": {
+											"line": 1,
+											"column": 13,
+											"index": 13
+										}
+									},
+									"leadingComments": [],
+									"trailingComments": [],
+									"name": "d"
+								},
+								"computed": true
+							},
+							"arguments": [
+								{
+									"type": "Identifier",
+									"location": {
+										"start": {
+											"line": 1,
+											"column": 17,
+											"index": 17
+										},
+										"end": {
+											"line": 1,
+											"column": 18,
+											"index": 18
+										}
+									},
+									"leadingComments": [],
+									"trailingComments": [],
+									"name": "e"
+								}
+							]
+						},
+						"arguments": [
+							{
+								"type": "Identifier",
+								"location": {
+									"start": {
+										"line": 1,
+										"column": 22,
+										"index": 22
+									},
+									"end": {
+										"line": 1,
+										"column": 23,
+										"index": 23
+									}
+								},
+								"leadingComments": [],
+								"trailingComments": [],
+								"name": "f"
+							}
+						]
+					},
+					"property": {
+						"type": "Identifier",
+						"location": {
+							"start": {
+								"line": 1,
+								"column": 26,
+								"index": 26
+							},
+							"end": {
+								"line": 1,
+								"column": 27,
+								"index": 27
+							}
+						},
+						"leadingComments": [],
+						"trailingComments": [],
+						"name": "g"
+					},
+					"computed": false
+				}
+			}
+		}
+	],
+	"sourceType": "script"
+}

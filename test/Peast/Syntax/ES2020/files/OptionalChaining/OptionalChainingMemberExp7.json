@@ -1,0 +1,180 @@
+{
+	"type": "Program",
+	"location": {
+		"start": {
+			"line": 1,
+			"column": 0,
+			"index": 0
+		},
+		"end": {
+			"line": 1,
+			"column": 15,
+			"index": 15
+		}
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+		{
+			"type": "ExpressionStatement",
+			"location": {
+				"start": {
+					"line": 1,
+					"column": 0,
+					"index": 0
+				},
+				"end": {
+					"line": 1,
+					"column": 15,
+					"index": 15
+				}
+			},
+			"leadingComments": [],
+			"trailingComments": [],
+			"expression": {
+				"type": "ChainExpression",
+				"location": {
+					"start": {
+						"line": 1,
+						"column": 0,
+						"index": 0
+					},
+					"end": {
+						"line": 1,
+						"column": 15,
+						"index": 15
+					}
+				},
+				"leadingComments": [],
+				"trailingComments": [],
+				"expression": {
+					"type": "MemberExpression",
+					"location": {
+						"start": {
+							"line": 1,
+							"column": 0,
+							"index": 0
+						},
+						"end": {
+							"line": 1,
+							"column": 15,
+							"index": 15
+						}
+					},
+					"leadingComments": [],
+					"trailingComments": [],
+					"optional": true,
+					"object": {
+						"type": "ParenthesizedExpression",
+						"location": {
+							"start": {
+								"line": 1,
+								"column": 0,
+								"index": 0
+							},
+							"end": {
+								"line": 1,
+								"column": 10,
+								"index": 10
+							}
+						},
+						"leadingComments": [],
+						"trailingComments": [],
+						"expression": {
+							"type": "ChainExpression",
+							"location": {
+								"start": {
+									"line": 1,
+									"column": 1,
+									"index": 1
+								},
+								"end": {
+									"line": 1,
+									"column": 9,
+									"index": 9
+								}
+							},
+							"leadingComments": [],
+							"trailingComments": [],
+							"expression": {
+								"type": "MemberExpression",
+								"location": {
+									"start": {
+										"line": 1,
+										"column": 1,
+										"index": 1
+									},
+									"end": {
+										"line": 1,
+										"column": 9,
+										"index": 9
+									}
+								},
+								"leadingComments": [],
+								"trailingComments": [],
+								"optional": true,
+								"object": {
+									"type": "Identifier",
+									"location": {
+										"start": {
+											"line": 1,
+											"column": 1,
+											"index": 1
+										},
+										"end": {
+											"line": 1,
+											"column": 4,
+											"index": 4
+										}
+									},
+									"leadingComments": [],
+									"trailingComments": [],
+									"name": "obj"
+								},
+								"property": {
+									"type": "Identifier",
+									"location": {
+										"start": {
+											"line": 1,
+											"column": 6,
+											"index": 6
+										},
+										"end": {
+											"line": 1,
+											"column": 9,
+											"index": 9
+										}
+									},
+									"leadingComments": [],
+									"trailingComments": [],
+									"name": "aaa"
+								},
+								"computed": false
+							}
+						}
+					},
+					"property": {
+						"type": "Identifier",
+						"location": {
+							"start": {
+								"line": 1,
+								"column": 12,
+								"index": 12
+							},
+							"end": {
+								"line": 1,
+								"column": 15,
+								"index": 15
+							}
+						},
+						"leadingComments": [],
+						"trailingComments": [],
+						"name": "bbb"
+					},
+					"computed": false
+				}
+			}
+		}
+	],
+	"sourceType": "script"
+}

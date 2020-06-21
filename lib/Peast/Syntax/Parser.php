@@ -1267,6 +1267,13 @@ class Parser extends \Peast\Syntax\ParserAbstract
             $this->scanner->setState($state);
             $notBeforeLet = !$this->scanner->isBefore(array("let"));
             $left = $this->parseLeftHandSideExpression();
+
+            if ($left && $left->getType() === "ChainExpression") {
+                return $this->error(
+                    "Optional chain can't appear in left-hand side"
+                );
+            }
+
             $left = $this->expressionToPattern($left);
             
             if ($notBeforeSB && $left && $this->scanner->consume("in")) {
@@ -2909,7 +2916,13 @@ class Parser extends \Peast\Syntax\ParserAbstract
                 
                 $operators = $this->assignmentOperators;
                 if ($operator = $this->scanner->consumeOneOf($operators)) {
-                    
+
+                    if ($expr->getType() === "ChainExpression") {
+                        return $this->error(
+                            "Optional chain can't appear in left-hand side"
+                        );
+                    }
+
                     $right = $this->parseAssignmentExpression();
                     
                     if ($right) {
@@ -3057,6 +3070,11 @@ class Parser extends \Peast\Syntax\ParserAbstract
                     $node = $this->createNode("AwaitExpression", $token);
                 } else {
                     if ($op === "++" || $op === "--") {
+                        if ($argument->getType() === "ChainExpression") {
+                            return $this->error(
+                                "Optional chain can't appear in left-hand side"
+                            );
+                        }
                         $node = $this->createNode("UpdateExpression", $token);
                         $node->setPrefix(true);
                     } else {
@@ -3081,10 +3099,16 @@ class Parser extends \Peast\Syntax\ParserAbstract
     protected function parsePostfixExpression()
     {
         if ($argument = $this->parseLeftHandSideExpression()) {
-            
+
             if ($this->scanner->noLineTerminators() &&
                 $token = $this->scanner->consumeOneOf($this->postfixOperators)
             ) {
+
+                if ($argument->getType() === "ChainExpression") {
+                    return $this->error(
+                        "Optional chain can't appear in left-hand side"
+                    );
+                }
                 
                 $node = $this->createNode("UpdateExpression", $argument);
                 $node->setOperator($token->getValue());
@@ -3156,43 +3180,66 @@ class Parser extends \Peast\Syntax\ParserAbstract
         }
         
         $valid = true;
+        $optionalChain = false;
         $properties = array();
         while (true) {
-            if ($this->scanner->consume(".")) {
+            $optional = false;
+            if ($opToken = $this->scanner->consumeOneOf(array("?.", "."))) {
+                $isOptChain = $opToken->getValue() == "?.";
+                if ($isOptChain) {
+                    $optionalChain = $optional = true;
+                }
                 if ($property = $this->parseIdentifier(static::$identifierName)) {
+                    $valid = true;
                     $properties[] = array(
                         "type"=> "id",
-                        "info" => $property
+                        "info" => $property,
+                        "optional" => $optional
                     );
+                    continue;
                 } else {
                     $valid = false;
-                    break;
+                    if (!$isOptChain) {
+                        break;
+                    }
                 }
-            } elseif ($this->scanner->consume("[")) {
+            }
+            if ($this->scanner->consume("[")) {
                 if (($property = $this->isolateContext(
                         array("allowIn" => true), "parseExpression"
                     )) &&
                     $this->scanner->consume("]")
                 ) {
+                    $valid = true;
                     $properties[] = array(
                         "type" => "computed",
                         "info" => array(
                             $property, $this->scanner->getPosition()
-                        )
+                        ),
+                        "optional" => $optional
                     );
                 } else {
                     $valid = false;
                     break;
                 }
             } elseif ($property = $this->parseTemplateLiteral(true)) {
+                if ($optionalChain) {
+                    return $this->error(
+                        "Optional chain can't appear in tagged template expressions"
+                    );
+                }
+                $valid = true;
                 $properties[] = array(
                     "type"=> "template",
-                    "info" => $property
+                    "info" => $property,
+                    "optional" => $optional
                 );
             } elseif (($args = $this->parseArguments()) !== null) {
+                $valid = true;
                 $properties[] = array(
                     "type"=> "args",
-                    "info" => array($args, $this->scanner->getPosition())
+                    "info" => array($args, $this->scanner->getPosition()),
+                    "optional" => $optional
                 );
             } else {
                 break;
@@ -3209,16 +3256,26 @@ class Parser extends \Peast\Syntax\ParserAbstract
         
         $node = null;
         $endPos = $object->getLocation()->getEnd();
+        $optionalChainStarted = false;
         foreach ($properties as $i => $property) {
             $lastNode = $node ? $node : $object;
+            if ($property["optional"]) {
+                $optionalChainStarted = true;
+            }
             if ($property["type"] === "args") {
                 if ($newTokensCount) {
+                    if ($optionalChainStarted && $newTokensCount) {
+                        return $this->error(
+                            "Optional chain can't appear in new expressions"
+                        );
+                    }
                     $node = $this->createNode(
                         "NewExpression", array_pop($newTokens)
                     );
                     $newTokensCount--;
                 } else {
                     $node = $this->createNode("CallExpression", $lastNode);
+                    $node->setOptional($property["optional"]);
                 }
                 $node->setCallee($lastNode);
                 $node->setArguments($property["info"][0]);
@@ -3226,12 +3283,14 @@ class Parser extends \Peast\Syntax\ParserAbstract
             } elseif ($property["type"] === "id") {
                 $node = $this->createNode("MemberExpression", $lastNode);
                 $node->setObject($lastNode);
+                $node->setOptional($property["optional"]);
                 $node->setProperty($property["info"]);
                 $endPos = $property["info"]->getLocation()->getEnd();
             } elseif ($property["type"] === "computed") {
                 $node = $this->createNode("MemberExpression", $lastNode);
                 $node->setObject($lastNode);
                 $node->setProperty($property["info"][0]);
+                $node->setOptional($property["optional"]);
                 $node->setComputed(true);
                 $endPos = $property["info"][1];
             } elseif ($property["type"] === "template") {
@@ -3251,6 +3310,14 @@ class Parser extends \Peast\Syntax\ParserAbstract
                 $node->setCallee($lastNode);
                 $node = $this->completeNode($node);
             }
+        }
+
+        //Wrap the result in a chain expression if required
+        if ($optionalChain) {
+            $prevNode = $node;
+            $node = $this->createNode("ChainExpression", $prevNode);
+            $node->setExpression($prevNode);
+            $node = $this->completeNode($node);
         }
         
         return $node;

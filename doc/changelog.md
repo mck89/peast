@@ -3,6 +3,7 @@ Changelog
 
 #### 1.10.4
 * Implemented parsing of coalescing operator
+* Implemented parsing of optional chaining
 
 #### 1.10.3
 * Implemented parsing of `import.meta` syntax
