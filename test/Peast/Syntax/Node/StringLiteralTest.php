@@ -44,11 +44,11 @@ class StringLiteralTest extends \Peast\test\TestBase
     
     /**
      * @dataProvider invalidStringsProvider
-     * 
-     * @expectedException \Exception
      */
     public function testInvalidString($string)
     {
+        $this->expectException('Exception');
+
         $node = new Node\StringLiteral;
         $node->setRaw($string);
     }

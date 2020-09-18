@@ -101,11 +101,11 @@ class NumericLiteralTest extends \Peast\test\TestBase
     
     /**
      * @dataProvider invalidNumbersProvider
-     * 
-     * @expectedException \Exception
      */
     public function testInvalidNumbers($num)
     {
+        $this->expectException('Exception');
+
         $node = new Node\NumericLiteral;
         $node->setRaw($num);
     }

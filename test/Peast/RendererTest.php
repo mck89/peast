@@ -42,12 +42,11 @@ class RendererTest extends TestBase
         $this->assertEquals($cmTest, $cm);
         $this->assertEquals($exTest, $ex);
     }
-    
-    /**
-     * @expectedException \Exception
-     */
+
     public function testExceptionOnMissingFormatter()
     {
+        $this->expectException('Exception');
+
         $tree = \Peast\Peast::latest("")->parse();
         $renderer = new \Peast\Renderer;
         $this->assertEquals(null, $renderer->getFormatter());
