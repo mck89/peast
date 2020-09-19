@@ -78,13 +78,14 @@ abstract class TestParser extends TestBase
     {
         return parent::getJsTestFiles(self::JS_INVALID);
     }
-    
+
     /**
-     * @expectedException \Peast\Syntax\Exception
      * @dataProvider invalidJsTestFilesProvider
      */
     public function testParserException($sourceFile)
     {
+        $this->expectException('Peast\Syntax\Exception');
+
         $this->instanceParser($sourceFile)->parse();
     }
     
@@ -161,13 +162,14 @@ abstract class TestParser extends TestBase
         }
         return $ret;
     }
-    
+
     /**
-     * @expectedException \Peast\Syntax\Exception
      * @dataProvider invalidFutureFeaturesProvider
      */
     public function testFutureFeaturesParsingFail($feature, $sourceFile)
     {
+        $this->expectException('Peast\Syntax\Exception');
+
         if ($feature === null) {
             throw new \Peast\Syntax\Exception("Nothing to test", new \Peast\Syntax\Position(0, 0, 0));
         } else {

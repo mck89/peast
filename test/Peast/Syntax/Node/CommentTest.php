@@ -16,12 +16,11 @@ class CommentTest extends \Peast\test\TestBase
         $this->assertEquals(0, count($node->getLeadingComments()));
         $this->assertEquals(0, count($node->getTrailingComments()));
     }
-    
-    /**
-     * @expectedException \Exception
-     */
+
     public function testInvalidRawText()
     {
+        $this->expectException('Exception');
+
         $node = new Node\Comment;
         $node->setRawText("test");
     }

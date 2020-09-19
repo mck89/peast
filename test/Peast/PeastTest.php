@@ -43,12 +43,11 @@ class PeastTest extends TestBase
     {
         $this->assertTrue(\Peast\Peast::latest("")->getFeatures() instanceof \Peast\Syntax\ES2020\Features);
     }
-    
-    /**
-     * @expectedException \Exception
-     */
+
     public function testInvalidVersion()
     {
+        $this->expectException('Exception');
+
         \Peast\Peast::ES("");
     }
 }
