@@ -1,16 +1,34 @@
+os: linux
 language: php
 
-dist: trusty
-
 php:
-    - '5.4'
-    - '5.5'
-    - '5.6'
-    - '7.0'
-    - '7.1'
-    - '7.2'
-    - '7.3'
+    - 5.6
+    - 7.0
+    - 7.1
+    - 7.2
+    - 7.3
+    - 7.4
+    - "nightly"
 
-install: composer install
+jobs:
+    fast_finish: true
+    include:
+        - php: 5.4
+          dist: trusty
+        - php: 5.5
+          dist: trusty
+
+    allow_failures:
+        # Allow failures for unstable builds.
+        - php: "nightly"
+
+install:
+  - |
+    if [[ $TRAVIS_PHP_VERSION == "nightly" ]]; then
+      # Not all PHPUnit dependencies have stable releases yet allowing for PHP 8.0.
+      travis_retry composer install --no-interaction --ignore-platform-reqs
+    else
+      travis_retry composer install --no-interaction
+    fi
 
 script: ./vendor/bin/phpunit -c phpunit.xml
