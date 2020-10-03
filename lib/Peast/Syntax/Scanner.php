@@ -183,7 +183,8 @@ class Scanner
         ".", ";", ",", "<", ">", "<=", ">=", "==", "!=", "===", "!==", "+",
         "-", "*", "%", "++", "--", "<<", ">>", ">>>", "&", "|", "^", "!", "~",
         "&&", "||", "?", ":", "=", "+=", "-=", "*=", "%=", "<<=", ">>=", ">>>=",
-        "&=", "|=", "^=", "=>", "...", "/", "/=", "**", "**=", "??", "?."
+        "&=", "|=", "^=", "=>", "...", "/", "/=", "**", "**=", "??", "?.",
+        "&&=", "||=", "??="
     );
     
     /**
@@ -363,6 +364,14 @@ class Scanner
 
         if (!$this->features->optionalChaining) {
             Utils::removeArrayValue($this->punctutators, "?.");
+        }
+
+        //Remove logical assignment operators if the feature
+        //is not enabled
+        if (!$this->features->logicalAssignmentOperators) {
+            Utils::removeArrayValue($this->punctutators, "&&=");
+            Utils::removeArrayValue($this->punctutators, "||=");
+            Utils::removeArrayValue($this->punctutators, "??=");
         }
         
         //Create a LSM for punctutators array

@@ -75,7 +75,15 @@ namespace Peast;
  * @method static Syntax\Parser ES11(string $source, array $options = array())
  * Returns a parser instance with ES2020 features for the given source. See Peast
  * class documentation to understand function arguments.
- * 
+ *
+ * @method static Syntax\Parser ES2021(string $source, array $options = array())
+ * Returns a parser instance with ES2021 features for the given source. See Peast
+ * class documentation to understand function arguments.
+ *
+ * @method static Syntax\Parser ES12(string $source, array $options = array())
+ * Returns a parser instance with ES2021 features for the given source. See Peast
+ * class documentation to understand function arguments.
+ *
  * @method static Syntax\Parser latest(string $source, array $options = array())
  * Returns an instance of the latest parser version for the given source. See
  * Peast class documentation to understand function arguments.
@@ -108,7 +116,8 @@ class Peast
         "ES8" => "ES2017",
         "ES9" => "ES2018",
         "ES10" => "ES2019",
-        "ES11" => "ES2020"
+        "ES11" => "ES2020",
+        "ES12" => "ES2021"
     );
     
     /**

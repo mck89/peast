@@ -122,4 +122,11 @@ class Features
      * @var bool
      */
     public $optionalChaining = false;
+
+    /**
+     * Logical assignment operators
+     *
+     * @var bool
+     */
+    public $logicalAssignmentOperators = false;
 }

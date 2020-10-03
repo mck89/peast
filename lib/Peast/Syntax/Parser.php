@@ -78,7 +78,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
      */
     protected $assignmentOperators = array(
         "=", "+=", "-=", "*=", "/=", "%=", "<<=", ">>=", ">>>=", "&=", "^=",
-        "|=", "**="
+        "|=", "**=", "&&=", "||=", "??="
     );
     
     /**
@@ -171,6 +171,17 @@ class Parser extends \Peast\Syntax\ParserAbstract
         //is not enabled
         if (!$this->features->coalescingOperator) {
             unset($this->logicalBinaryOperators["??"]);
+        }
+
+        //Remove logical assignment operators if the
+        //feature is not enabled
+        if (!$this->features->logicalAssignmentOperators) {
+            foreach (array("&&=", "||=", "??=") as $op) {
+                Utils::removeArrayValue(
+                    $this->assignmentOperators,
+                    $op
+                );
+            }
         }
     }
     

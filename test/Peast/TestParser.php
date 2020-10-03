@@ -140,6 +140,9 @@ abstract class TestParser extends TestBase
         ),
         "optionalChaining"=> array(
             array("ES2020", "files", "OptionalChaining", "OptionalChainingMemberExp.js")
+        ),
+        "logicalAssignmentOperators"=> array(
+            array("ES2021", "files", "LogicalAssignmentOperators", "LogicalAssignmentOperators.js")
         )
     );
     
