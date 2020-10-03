@@ -16,7 +16,7 @@ namespace Peast\Syntax;
  */
 class Scanner
 {
-    use \Peast\Syntax\JSX\Scanner;
+    use JSX\Scanner;
 
     /**
      * Scanner features
