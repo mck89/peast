@@ -3677,6 +3677,7 @@ class Parser extends \Peast\Syntax\ParserAbstract
             return $this->completeNode($node);
         } elseif ($token && $token->getType() === Token::TYPE_BIGINT_LITERAL) {
             $val = $token->getValue();
+            $this->checkInvalidEscapeSequences($val, true);
             $this->scanner->consumeToken();
             $node = $this->createNode("BigIntLiteral", $token);
             $node->setRaw($val);
@@ -3838,10 +3839,19 @@ class Parser extends \Peast\Syntax\ParserAbstract
         }
         $checkLegacyOctal = $forceLegacyOctalCheck || $this->scanner->getStrictMode();
         if ($number) {
-            if ($checkLegacyOctal && preg_match("#^0[0-7]+$#", $val)) {
-                return $this->error(
-                    "Octal literals are not allowed in strict mode"
-                );
+            if ($val && $val[0] === "0" && preg_match("#^0[0-7_]+$#", $val)) {
+                if ($checkLegacyOctal) {
+                    return $this->error(
+                        "Octal literals are not allowed in strict mode"
+                    );
+                }
+                if ($this->features->numericLiteralSeparator &&
+                    strpos($val, '_') !== false
+                ) {
+                    return $this->error(
+                        "Numeric separators are not allowed in legacy octal numbers"
+                    );
+                }
             }
         } elseif (strpos($val, "\\") !== false) {
             $hex = "0-9a-fA-F";

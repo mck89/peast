@@ -1497,7 +1497,11 @@ class Scanner
         $buffer = "";
         $char = $this->charAt();
         $count = 0;
-        while (in_array($char, $this->{$type . "numbers"})) {
+        $extra = $this->features->numericLiteralSeparator ? "_" : "";
+        while (
+            in_array($char, $this->{$type . "numbers"}) ||
+            ($count && $char === $extra)
+        ) {
             $buffer .= $char;
             $this->index++;
             $this->column++;
@@ -1506,6 +1510,11 @@ class Scanner
                 break;
             }
             $char = $this->charAt();
+        }
+        if ($count && substr($buffer, -1) === "_") {
+            return $this->error(
+                "Numeric separators are not allowed at the end of a number"
+            );
         }
         return $count ? $buffer : null;
     }

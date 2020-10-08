@@ -1,0 +1,162 @@
+[
+	{
+		"type": "Numeric",
+		"value": "123_456.123_456",
+		"location": {
+			"start": {
+				"line": 1,
+				"column": 0,
+				"index": 0
+			},
+			"end": {
+				"line": 1,
+				"column": 15,
+				"index": 15
+			}
+		}
+	},
+	{
+		"type": "Punctuator",
+		"value": ";",
+		"location": {
+			"start": {
+				"line": 1,
+				"column": 15,
+				"index": 15
+			},
+			"end": {
+				"line": 1,
+				"column": 16,
+				"index": 16
+			}
+		}
+	},
+	{
+		"type": "Numeric",
+		"value": ".123_456",
+		"location": {
+			"start": {
+				"line": 2,
+				"column": 0,
+				"index": 17
+			},
+			"end": {
+				"line": 2,
+				"column": 8,
+				"index": 25
+			}
+		}
+	},
+	{
+		"type": "Punctuator",
+		"value": ";",
+		"location": {
+			"start": {
+				"line": 2,
+				"column": 8,
+				"index": 25
+			},
+			"end": {
+				"line": 2,
+				"column": 9,
+				"index": 26
+			}
+		}
+	},
+	{
+		"type": "Numeric",
+		"value": "1_2.1_2e1_2",
+		"location": {
+			"start": {
+				"line": 3,
+				"column": 0,
+				"index": 27
+			},
+			"end": {
+				"line": 3,
+				"column": 11,
+				"index": 38
+			}
+		}
+	},
+	{
+		"type": "Punctuator",
+		"value": ";",
+		"location": {
+			"start": {
+				"line": 3,
+				"column": 11,
+				"index": 38
+			},
+			"end": {
+				"line": 3,
+				"column": 12,
+				"index": 39
+			}
+		}
+	},
+	{
+		"type": "Numeric",
+		"value": "1_2.1_2e+1_2",
+		"location": {
+			"start": {
+				"line": 4,
+				"column": 0,
+				"index": 40
+			},
+			"end": {
+				"line": 4,
+				"column": 12,
+				"index": 52
+			}
+		}
+	},
+	{
+		"type": "Punctuator",
+		"value": ";",
+		"location": {
+			"start": {
+				"line": 4,
+				"column": 12,
+				"index": 52
+			},
+			"end": {
+				"line": 4,
+				"column": 13,
+				"index": 53
+			}
+		}
+	},
+	{
+		"type": "Numeric",
+		"value": "1_2.1_2e-1_2",
+		"location": {
+			"start": {
+				"line": 5,
+				"column": 0,
+				"index": 54
+			},
+			"end": {
+				"line": 5,
+				"column": 12,
+				"index": 66
+			}
+		}
+	},
+	{
+		"type": "Punctuator",
+		"value": ";",
+		"location": {
+			"start": {
+				"line": 5,
+				"column": 12,
+				"index": 66
+			},
+			"end": {
+				"line": 5,
+				"column": 13,
+				"index": 67
+			}
+		}
+	}
+]

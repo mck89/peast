@@ -24,4 +24,11 @@ class Features extends \Peast\Syntax\ES2020\Features
      * @var bool
      */
     public $logicalAssignmentOperators = true;
+
+    /**
+     * Numeric literal separator
+     *
+     * @var bool
+     */
+    public $numericLiteralSeparator = true;
 }

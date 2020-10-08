@@ -129,4 +129,11 @@ class Features
      * @var bool
      */
     public $logicalAssignmentOperators = false;
+
+    /**
+     * Numeric literal separator
+     *
+     * @var bool
+     */
+    public $numericLiteralSeparator = false;
 }

@@ -60,17 +60,17 @@ class NumericLiteral extends Literal
      */
     protected $forms = array(
         "b" => array(
-            "check" => "/^0b[01]+$/i",
+            "check" => "/^0b[01]+[01_]*$/i",
             "conv" => "bindec",
             "format" => self::BINARY
         ),
         "o" => array(
-            "check" => "/^0o[0-7]+$/i",
+            "check" => "/^0o[0-7]+[0-7_]*$/i",
             "conv" => "octdec",
             "format" => self::OCTAL
         ),
         "x" => array(
-            "check" => "/^0x[0-9a-f]+$/i",
+            "check" => "/^0x[0-9a-f]+[0-9a-f_]*$/i",
             "conv" => "hexdec",
             "format" => self::HEXADECIMAL
         ),
@@ -112,20 +112,30 @@ class NumericLiteral extends Literal
             //Hexadecimal, binary or octal
             $startZero = $value[0] === "0";
             $form = $startZero && isset($value[1]) ? strtolower($value[1]) : null;
-            if (isset($this->forms[$form])) {
+            //Numeric separator cannot appear at the beginning or at the end of the number
+            if (preg_match("/^_|_$/", $value)) {
+                throw new \Exception("Invalid numeric value");
+            } elseif (isset($this->forms[$form])) {
                 $formDef = $this->forms[$form];
                 if (!preg_match($formDef["check"], $value)) {
                     throw new \Exception("Invalid " . $formDef["format"]);
                 }
+                $value = str_replace("_", "", $value);
                 $value = $formDef["conv"]($value);
                 $format = $formDef["format"];
-            } elseif ($startZero && preg_match("/^0[0-7]+$/", $value)) {
+            } elseif ($startZero && preg_match("/^0[0-7_]+$/", $value)) {
                 //Legacy octal form
+                $value = str_replace("_", "", $value);
                 $value = octdec($value);
                 $format = self::OCTAL;
-            } elseif (!preg_match("/^(\d*\.?\d*)(?:e[+\-]?\d+)?$/i", $value, $match) ||
-                $match[1] === "" || $match[1] === "."
+            } elseif (
+                preg_match("/^([\d_]*\.?[\d_]*)(?:e[+\-]?[\d_]+)?$/i", $value, $match) &&
+                $match[1] !== "" &&
+                $match[1] !== "." &&
+                !preg_match("/_e|e[+-]?_|_$/", $value)
             ) {
+                $value = str_replace("_", "", $value);
+            } else {
                 throw new \Exception("Invalid numeric value");
             }
         } elseif (!is_int($value) && !is_float($value)) {

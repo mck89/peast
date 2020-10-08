@@ -143,6 +143,9 @@ abstract class TestParser extends TestBase
         ),
         "logicalAssignmentOperators"=> array(
             array("ES2021", "files", "LogicalAssignmentOperators", "LogicalAssignmentOperators.js")
+        ),
+        "numericLiteralSeparator"=> array(
+            array("ES2021", "files", "NumericLiteralSeparator", "NumericLiteralSeparator.js")
         )
     );
     
