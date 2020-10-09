@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.11.0
+* Implemented ES2021 parser with logical assignment operators and numeric separators
+
 #### 1.10.4
 * Implemented parsing of coalescing operator
 * Implemented parsing of optional chaining
