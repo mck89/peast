@@ -9,7 +9,7 @@
  */
 namespace Peast\Syntax\Node\JSX;
 
-use \Peast\Syntax\Node\SpreadElement;
+use Peast\Syntax\Node\SpreadElement;
 
 /**
  * A node that represents a JSX spread attribute.

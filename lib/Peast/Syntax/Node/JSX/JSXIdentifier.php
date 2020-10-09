@@ -9,7 +9,7 @@
  */
 namespace Peast\Syntax\Node\JSX;
 
-use \Peast\Syntax\Node\Identifier;
+use Peast\Syntax\Node\Identifier;
 
 /**
  * A node that represents a JSX identifier.

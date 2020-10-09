@@ -1,7 +1,9 @@
 <?php
 namespace Peast\test\Syntax;
 
-class ScannerTest extends \Peast\test\TestBase
+use Peast\test\TestBase;
+
+class ScannerTest extends TestBase
 {
     public function testSourceEncodingConversion()
     {

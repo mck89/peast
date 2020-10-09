@@ -1,8 +1,8 @@
 <?php
 namespace Peast\test;
 
-use \Peast\Traverser;
-use \Peast\Syntax\Node;
+use Peast\Traverser;
+use Peast\Syntax\Node;
 
 class TraverserTest extends TestBase
 {

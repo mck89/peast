@@ -9,8 +9,8 @@
  */
 namespace Peast\Syntax\Node\JSX;
 
-use \Peast\Syntax\Node\Node;
-use \Peast\Syntax\Node\Expression;
+use Peast\Syntax\Node\Node;
+use Peast\Syntax\Node\Expression;
 
 /**
  * A node that represents a spread child expression in JSX.

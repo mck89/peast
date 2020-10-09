@@ -88,10 +88,10 @@ $traverser->addFunction(function ($node) {
 
 If the function returns any other value or nothing, no action will be executed and you can modify nodes without altering the tree structure:
 ```php
-use \Peast\Syntax\Node\StringLiteral;
+use Peast\Syntax\Node\StringLiteral;
 $traverser->addFunction(function ($node) {
     //Make all the strings uppercase
-    if ($node->getType() === "Literal" && node instanceof StringLiteral) {
+    if ($node->getType() === "Literal" && $node instanceof StringLiteral) {
         $node->setValue(strtoupper($node->getValue()));
     }
 });

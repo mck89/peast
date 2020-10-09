@@ -9,7 +9,7 @@
  */
 namespace Peast\Syntax\Node\JSX;
 
-use \Peast\Syntax\Node\Node;
+use Peast\Syntax\Node\Node;
 
 /**
  * A node that represents a JSX closing fragment tag.

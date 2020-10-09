@@ -14,7 +14,7 @@ namespace Peast\Syntax;
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
-class Parser extends \Peast\Syntax\ParserAbstract
+class Parser extends ParserAbstract
 {
     use JSX\Parser;
     
