@@ -3031,7 +3031,16 @@ class Parser extends ParserAbstract
             $maxGrade = max($operators);
             for ($grade = $maxGrade; $grade >= 0; $grade--) {
                 $class = $grade < 2 ? "LogicalExpression" : "BinaryExpression";
-                for ($i = 1; $i < $len; $i += 2) {
+                $r2l = $grade === 10;
+                //Exponentation operator must be parsed right to left
+                if ($r2l) {
+                    $i = $len - 2;
+                    $step = -2;
+                } else {
+                    $i = 1;
+                    $step = 2;
+                }
+                for (; ($r2l && $i > 0) || (!$r2l && $i < $len); $i += $step) {
                     if ($operators[$list[$i]] === $grade) {
                         $node = $this->createNode($class, $list[$i - 1]);
                         $node->setLeft($list[$i - 1]);
@@ -3041,7 +3050,9 @@ class Parser extends ParserAbstract
                             $node, $list[$i + 1]->getLocation()->getEnd()
                         );
                         array_splice($list, $i - 1, 3, array($node));
-                        $i -= 2;
+                        if (!$r2l) {
+                            $i -= $step;
+                        }
                         $len = count($list);
                     }
                 }
