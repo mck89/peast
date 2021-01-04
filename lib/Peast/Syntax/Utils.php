@@ -227,7 +227,17 @@ class Utils
     static public function getNodeProperties(Node\Node $node, $traversable = false)
     {
         $props = self::getPropertiesMap($node);
-        return array_keys($traversable ? array_filter($props) : $props);
+        return array_map(
+            function ($prop) {
+                $ucProp = ucfirst($prop);
+                return array(
+                    "name" => $prop,
+                    "getter" => "get$ucProp",
+                    "setter" => "set$ucProp"
+                );
+            },
+            array_keys($traversable ? array_filter($props) : $props)
+        );
     }
 
     /**

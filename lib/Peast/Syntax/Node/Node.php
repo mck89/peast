@@ -158,13 +158,15 @@ abstract class Node implements \JSONSerializable
      * Traverses the current node and all its child nodes using the given
      * function
      * 
-     * @param callable $fn Function that will be called on each node
+     * @param callable $fn      Function that will be called on each node
+     * @param array    $options Options array. See Traverser class
+     *                          documentation for available options
      * 
      * @return $this
      */
-    public function traverse(callable $fn)
+    public function traverse(callable $fn, $options = array())
     {
-        $traverser = new \Peast\Traverser();
+        $traverser = new \Peast\Traverser($options);
         $traverser->addFunction($fn)->traverse($this);
         return $this;
     }
@@ -179,7 +181,7 @@ abstract class Node implements \JSONSerializable
         $ret = array();
         $props = \Peast\Syntax\Utils::getNodeProperties($this);
         foreach ($props as $prop) {
-            $ret[$prop] = $this->{"get" . ucfirst($prop)}();
+            $ret[$prop["name"]] = $this->{$prop["getter"]}();
         }
         return $ret;
     }

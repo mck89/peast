@@ -9,6 +9,10 @@
  */
 namespace Peast\Selector\Node;
 
+use Peast\Selector\Matches;
+use Peast\Syntax\Utils;
+use Peast\Traverser;
+
 /**
  * Selector combinator class
  * 
@@ -72,5 +76,93 @@ class Combinator
     public function getParts()
     {
         return $this->parts;
+    }
+
+    /**
+     * Executes the current group on the given matches
+     *
+     * @param Matches $matches Matches
+     *
+     * @return Matches
+     */
+    public function exec(Matches $matches)
+    {
+        $parts = $this->parts;
+        //Sort the parts by priority to execute faster checks first
+        usort($parts, function ($p1, $p2) {
+            $pr1 = $p1->getPriority();
+            $pr2 = $p2->getPriority();
+            if ($pr1 === $pr2) {
+                return 0;
+            } elseif ($pr1 < $pr2) {
+                return -1;
+            } else {
+                return 1;
+            }
+        });
+        $filter = function ($node, $parent) use ($parts) {
+            foreach ($parts as $part) {
+                if (!$part->check($node, $parent)) {
+                    return false;
+                }
+            }
+            return true;
+        };
+        $ret = $matches->createClone();
+        switch ($this->operator) {
+            case " ":
+            case ">":
+                $children = $this->operator === ">";
+                $ret->map(function ($curNode) use ($filter, $children) {
+                    $ret = array();
+                    $traverser = new Traverser(array(
+                        "skipStartingNode" => true,
+                        "passParentNode" => true
+                    ));
+                    $traverser->addFunction(
+                        function ($node, $parent) use ($filter, $children, &$ret) {
+                            if ($filter($node, $parent)) {
+                                $ret[] = array($node, $parent);
+                            }
+                            if ($children) {
+                                return Traverser::DONT_TRAVERSE_CHILD_NODES;
+                            }
+                        }
+                    );
+                    $traverser->traverse($curNode);
+                    return $ret;
+                });
+            break;
+            case "~":
+            case "+":
+                $adjacent = $this->operator === "+";
+                $ret->map(function ($node, $parent) use ($filter, $adjacent) {
+                    if (!$parent) {
+                        return null;
+                    }
+                    $ret = array();
+                    $evaluate = false;
+                    $props = Utils::getNodeProperties($parent, true);
+                    foreach ($props as $prop) {
+                        $propNode = $parent->{$prop["getter"]}();
+                        if ($evaluate) {
+                            if ($filter($node, $parent)) {
+                                $ret[] = array($propNode, $parent);
+                            }
+                            if ($adjacent) {
+                                break;
+                            }
+                        } elseif ($propNode === $node) {
+                            $evaluate = true;
+                        }
+                    }
+                    return $ret;
+                });
+            break;
+            default:
+                $ret = $ret->filter($filter);
+            break;
+        }
+        return $ret;
     }
 }

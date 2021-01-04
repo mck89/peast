@@ -9,6 +9,8 @@
  */
 namespace Peast\Selector\Node;
 
+use Peast\Selector\Matches;
+
 /**
  * Selector class
  * 
@@ -44,5 +46,24 @@ class Selector
     public function getGroups()
     {
         return $this->groups;
+    }
+
+    /**
+     * Executes the current selector on the given matches
+     *
+     * @param Matches $matches Matches
+     *
+     * @return Matches
+     */
+    public function exec(Matches $matches)
+    {
+        $retMatches = array();
+        foreach ($this->groups as $group) {
+            $retMatches[] = $group->exec($matches);
+        }
+        if (count($retMatches) > 1) {
+            $retMatches[0]->merge(array_slice($retMatches, 1));
+        }
+        return $retMatches[0];
     }
 }

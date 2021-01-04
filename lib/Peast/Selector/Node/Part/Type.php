@@ -9,6 +9,8 @@
  */
 namespace Peast\Selector\Node\Part;
 
+use Peast\Syntax\Node\Node;
+
 /**
  * Selector part type class
  * 
@@ -44,5 +46,19 @@ class Type extends Part
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Returns true if the selector part matches the given node,
+     * false otherwise
+     *
+     * @param Node $node    Node
+     * @param Node $parent  Parent node
+     *
+     * @return bool
+     */
+    public function check(Node $node, Node $parent = null)
+    {
+        return $node->getType() === $this->type;
     }
 }

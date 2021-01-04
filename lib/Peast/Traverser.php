@@ -38,6 +38,40 @@ class Traverser
      * @var array
      */
     protected $functions = array();
+
+    /**
+     * Pass parent node flag
+     *
+     * @var bool
+     */
+    protected $passParentNode = false;
+
+    /**
+     * Skip starting node flag
+     *
+     * @var bool
+     */
+    protected $skipStartingNode = false;
+
+    /**
+     * Class constructor. Available options are:
+     * - skipStartingNode: if true the starting node will be skipped
+     * - passParentNode: if true the parent node of each node will be
+     *   passed as second argument when the functions are called. Note
+     *   that the parent node is calculated during traversing, so for
+     *   the starting node it will always be null.
+     *
+     * @param array $options Options array
+     */
+    public function __construct($options = array())
+    {
+        if (isset($options["passParentNode"])) {
+            $this->passParentNode = (bool) $options["passParentNode"];
+        }
+        if (isset($options["skipStartingNode"])) {
+            $this->skipStartingNode = (bool) $options["skipStartingNode"];
+        }
+    }
     
     /**
      * Adds a function that will be called for each node in the tree. The
@@ -73,7 +107,11 @@ class Traverser
      */
     public function traverse(Syntax\Node\Node $node)
     {
-        $this->execFunctions($node);
+        if ($this->skipStartingNode) {
+            $this->traverseChildren($node);
+        } else {
+            $this->execFunctions($node);
+        }
         return $node;
     }
     
@@ -83,17 +121,18 @@ class Traverser
      * value is the node or null if it has been removed and the second value is
      * a boolean indicating if the traverser must continue the traversing or not
      * 
-     * @param Syntax\Node\Node  $node   Node
+     * @param Syntax\Node\Node       $node     Node
+     * @param Syntax\Node\Node|null  $parent   Parent node
      * 
      * @return array
      */
-    protected function execFunctions($node)
+    protected function execFunctions($node, $parent = null)
     {
         $traverseChildren = true;
         $continueTraversing = true;
         
         foreach ($this->functions as $fn) {
-            $ret = $fn($node);
+            $ret = $this->passParentNode ? $fn($node, $parent) : $fn($node);
             if ($ret) {
                 if (is_array($ret) && $ret[0] instanceof Syntax\Node\Node) {
                     $node = $ret[0];
@@ -143,9 +182,8 @@ class Traverser
         $continue = true;
         
         foreach (Syntax\Utils::getNodeProperties($node, true) as $prop) {
-            $ucProp = ucfirst($prop);
-            $getter = "get$ucProp";
-            $setter = "set$ucProp";
+            $getter = $prop["getter"];
+            $setter = $prop["setter"];
             $child = $node->$getter();
             if (!$child) {
                 continue;
@@ -155,7 +193,7 @@ class Traverser
                     if (!$c || !$continue) {
                         $newChildren[] = $c;
                     } else {
-                        list($c, $continue) = $this->execFunctions($c);
+                        list($c, $continue) = $this->execFunctions($c, $node);
                         if ($c) {
                             $newChildren[] = $c;
                         }
@@ -163,7 +201,7 @@ class Traverser
                 }
                 $node->$setter($newChildren);
             } else {
-                list($child, $continue) = $this->execFunctions($child);
+                list($child, $continue) = $this->execFunctions($child, $node);
                 $node->$setter($child);
             }
             

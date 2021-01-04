@@ -136,4 +136,30 @@ class TraverserTest extends TestBase
             $types
         );
     }
+
+    public function testOptions()
+    {
+        $source = '1';
+        $types = array();
+        $hasProgram = false;
+        $options = array(
+            "skipStartingNode" => true,
+            "passParentNode" => true
+        );
+        \Peast\Peast::latest($source)
+            ->parse()
+            ->traverse(function($node, $parent) use (&$types, &$hasProgram) {
+                if ($node->getType() === "Program") {
+                    $hasProgram = true;
+                }
+                $types[] = $parent ? $parent->getType() : null;
+            }, $options);
+        $this->assertFalse($hasProgram);
+        $this->assertEquals(
+            array(
+                "Program", "ExpressionStatement"
+            ),
+            $types
+        );
+    }
 }

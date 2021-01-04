@@ -16,4 +16,10 @@ namespace Peast\Selector\Node\Part;
  */
 class PseudoSimple extends Pseudo
 {
+    /**
+     * Priority
+     *
+     * @var int
+     */
+    protected $priority = 3;
 }

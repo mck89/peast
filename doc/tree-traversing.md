@@ -19,11 +19,20 @@ You can add one or more functions to the Traverser using the `addFunction` metho
 
 The `traverse` method runs the traversing starting from the given node.
 
+Options
+-------------
+
+**_From version 1.12_**
+The Traverser class constructor takes an optional associative array of options.
+Available options are:
+* "skipStartingNode": by default the traversing begins with the starting node passed to the `traverse` method. If this option is set to true the starting node will be ignored.
+* "passParentNode": by default the functions added to the Traverser receive the traversed node as the only argument. if this option is set to true the node's parent node will be passed as second argument to all the functions. Note that the parent node is calculated during traversing, so for the starting node it will always be null.
+
 Tree manipulation
 -------------
 Functions added to the Traverser instance can alter the tree during the traversing by modifying, replacing or removing the node they receive and they can also control the behaviour of the Traverser to make it stop or skip the node's children.
 
-Traverer class provides some constants to perform these operations:
+Traverser class provides some constants to perform these operations:
 * `Traverser::REMOVE_NODE`: removes the node
 * `Traverser::DONT_TRAVERSE_CHILD_NODES`: skips the node's children
 * `Traverser::STOP_TRAVERSING`: stops the traversing
@@ -104,7 +113,7 @@ Every node implements a `traverse` method as a shortcut to initialize a traverse
 ```php
 $traversingFn = function ($node) { /* ... */ };
 //Traverse $ast node
-$ast->traverse($traversingFn);
+$ast->traverse($traversingFn, $options);
 //Equivalent to
 $traverser = new Peast\Traverser;
 $traverser->addFunction($traversingFn)->traverse($ast);

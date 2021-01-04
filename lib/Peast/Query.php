@@ -9,6 +9,8 @@
  */
 namespace Peast;
 
+use Peast\Selector\Matches;
+
 /**
  * Nodes query class
  * 
@@ -17,11 +19,11 @@ namespace Peast;
 class Query
 {
     /**
-     * Root node
+     * Current matches
      *
-     * @var Syntax\Node\Program
+     * @var Selector\Matches
      */
-    protected $root;
+    protected $matches;
 
     /**
      * Class constructor
@@ -30,7 +32,8 @@ class Query
      */
     public function __construct(Syntax\Node\Program $root)
     {
-        $this->root = $root;
+        $this->matches = new Selector\Matches();
+        $this->matches->addMatch($root);
     }
 
     /**
@@ -47,6 +50,7 @@ class Query
     {
         $parser = new Selector\Parser($selector);
         $selector = $parser->parse();
+        $this->matches = $selector->exec($this->matches);
         return $this;
     }
 
@@ -64,6 +68,11 @@ class Query
     {
         $parser = new Selector\Parser($selector);
         $selector = $parser->parse();
+        $this->matches->filter(function ($node, $parent) use ($selector) {
+            $newMatch = new Selector\Matches();
+            $newMatch->addMatch($node, $parent);
+            return $selector->exec($newMatch)->getMatches();
+        });
         return $this;
     }
 }

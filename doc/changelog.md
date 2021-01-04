@@ -1,6 +1,10 @@
 Changelog
 ==========
 
+#### 1.12.0
+* Added options array to Traverser constructor and shortcut method on nodes
+* Added Query class
+
 #### 1.11.0
 * Implemented ES2021 parser with logical assignment operators and numeric separators
 

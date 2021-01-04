@@ -17,6 +17,13 @@ namespace Peast\Selector\Node\Part;
 class PseudoIndex extends Pseudo
 {
     /**
+     * Priority
+     *
+     * @var int
+     */
+    protected $priority = 2;
+
+    /**
      * Step
      *
      * @var int

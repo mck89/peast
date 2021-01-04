@@ -9,6 +9,8 @@
  */
 namespace Peast\Selector\Node;
 
+use Peast\Selector\Matches;
+
 /**
  * Selector group class
  * 
@@ -44,5 +46,20 @@ class Group
     public function getCombinators()
     {
         return $this->combinators;
+    }
+
+    /**
+     * Executes the current group on the given matches
+     *
+     * @param Matches $matches Matches
+     *
+     * @return Matches
+     */
+    public function exec(Matches $matches)
+    {
+        foreach ($this->combinators as $combinator) {
+            $matches = $combinator->exec($matches);
+        }
+        return $matches;
     }
 }

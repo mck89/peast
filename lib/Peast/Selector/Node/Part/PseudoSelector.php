@@ -19,6 +19,13 @@ use Peast\Selector\Node\Selector;
 class PseudoSelector extends Pseudo
 {
     /**
+     * Priority
+     *
+     * @var int
+     */
+    protected $priority = 1;
+
+    /**
      * Selector
      *
      * @var Selector

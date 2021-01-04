@@ -17,6 +17,13 @@ namespace Peast\Selector\Node\Part;
 class Attribute extends Part
 {
     /**
+     * Priority
+     *
+     * @var int
+     */
+    protected $priority = 4;
+
+    /**
      * Attribute names
      *
      * @var array
