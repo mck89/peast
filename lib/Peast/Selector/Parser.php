@@ -423,7 +423,8 @@ class Parser
         if (($reg = $this->consumeUntil($sep, false, true)) === null) {
             throw new Exception("Unterminated regex in attribute value");
         }
-        return $sep . $reg;
+        $modifiers = $this->consumeWord();
+        return $sep . $reg . ($modifiers ? $modifiers : "");
     }
 
     /**
