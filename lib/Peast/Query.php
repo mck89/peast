@@ -9,8 +9,6 @@
  */
 namespace Peast;
 
-use Peast\Selector\Matches;
-
 /**
  * Nodes query class
  * 
@@ -26,14 +24,25 @@ class Query
     protected $matches;
 
     /**
-     * Class constructor
+     * Options array
      *
-     * @param Syntax\Node\Program $root Root node
+     * @var array
      */
-    public function __construct(Syntax\Node\Program $root)
+    protected $options;
+
+    /**
+     * Class constructor. Available options are:
+     * - encoding: selectors encoding. If not specified the
+     *   parser will assume UTF-8.
+     *
+     * @param Syntax\Node\Program $root     Root node
+     * @param array               $options  Options array
+     */
+    public function __construct(Syntax\Node\Program $root, $options = array())
     {
         $this->matches = new Selector\Matches();
         $this->matches->addMatch($root);
+        $this->options = $options;
     }
 
     /**
@@ -48,7 +57,7 @@ class Query
      */
     public function find($selector)
     {
-        $parser = new Selector\Parser($selector);
+        $parser = new Selector\Parser($selector, $this->options);
         $selector = $parser->parse();
         $this->matches = $selector->exec($this->matches);
         return $this;
@@ -66,7 +75,7 @@ class Query
      */
     public function filter($selector)
     {
-        $parser = new Selector\Parser($selector);
+        $parser = new Selector\Parser($selector, $this->options);
         $selector = $parser->parse();
         $this->matches->filter(function ($node, $parent) use ($selector) {
             $newMatch = new Selector\Matches();

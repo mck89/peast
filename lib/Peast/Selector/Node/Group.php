@@ -52,14 +52,11 @@ class Group
      * Executes the current group on the given matches
      *
      * @param Matches $matches Matches
-     *
-     * @return Matches
      */
     public function exec(Matches $matches)
     {
         foreach ($this->combinators as $combinator) {
-            $matches = $combinator->exec($matches);
+            $combinator->exec($matches);
         }
-        return $matches;
     }
 }

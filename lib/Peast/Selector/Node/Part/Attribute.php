@@ -9,6 +9,9 @@
  */
 namespace Peast\Selector\Node\Part;
 
+use Peast\Syntax\Node\Node;
+use Peast\Syntax\Utils;
+
 /**
  * Selector part attribute class
  * 
@@ -171,5 +174,90 @@ class Attribute extends Part
     public function getRegex()
     {
         return $this->regex;
+    }
+
+    /**
+     * Returns true if the selector part matches the given node,
+     * false otherwise
+     *
+     * @param Node $node    Node
+     * @param Node $parent  Parent node
+     *
+     * @return bool
+     */
+    public function check(Node $node, Node $parent = null)
+    {
+        $attr = $node;
+        foreach ($this->names as $name) {
+            $attrFound = false;
+            if ($attr instanceof Node) {
+                $props = Utils::getNodeProperties($attr);
+                foreach ($props as $prop) {
+                    if ($prop["name"] === $name) {
+                        $attrFound = true;
+                        $attr = $attr->{$prop["getter"]}();
+                        break;
+                    }
+                }
+            }
+            if (!$attrFound) {
+                return false;
+            }
+        }
+        $bothStrings = is_string($attr) && is_string($this->value);
+        switch ($this->operator) {
+            case "=":
+                if ($bothStrings) {
+                    if ($this->regex) {
+                        return preg_match($this->value, $attr);
+                    }
+                    return $this->compareStr(
+                        $attr, $this->value, $this->caseInsensitive, true, true
+                    );
+                }
+                return $attr === $this->value;
+            case "<":
+                return $attr < $this->value;
+            case ">":
+                return $attr > $this->value;
+            case "<=":
+                return $attr <= $this->value;
+            case ">=":
+                return $attr >= $this->value;
+            case "^=":
+            case "$=":
+            case "*=":
+                return $this->compareStr(
+                    $attr, $this->value, $this->caseInsensitive,
+                    $this->operator === "^=",
+                    $this->operator === "$="
+                );
+            default:
+                return true;
+        }
+    }
+
+    /**
+     * Compares two strings
+     *
+     * @param string $v1                Search value
+     * @param string $v2                Compare value
+     * @param bool   $caseInsensitive   True if the search must be case insensitive
+     * @param bool   $matchStart        True if the search must be executed from the
+     *                                  beginning of the string
+     * @param bool   $matchEnd          True if the search must be executed from the
+     *                                  end of the string
+     *
+     * @return bool
+     */
+    protected function compareStr($v1, $v2, $caseInsensitive, $matchStart, $matchEnd)
+    {
+        $regex = "#" .
+                 ($matchStart ? "^" : "") .
+                 preg_quote($v1) .
+                 ($matchEnd ? "$" : "") .
+                 "#u" .
+                 ($caseInsensitive ? "i" : "");
+        return (bool) preg_match($regex, $v2);
     }
 }

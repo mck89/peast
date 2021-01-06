@@ -9,6 +9,9 @@
  */
 namespace Peast\Syntax\Node;
 
+use Peast\Query;
+use Peast\Selector;
+
 /**
  * Root node for scripts and modules.
  * 
@@ -87,5 +90,22 @@ class Program extends Node
         $this->assertArrayOf($body, array("Statement", "ModuleDeclaration"));
         $this->body = $body;
         return $this;
+    }
+
+    /**
+     * Finds nodes matching the given selector.
+     *
+     * @param string    $selector   Selector
+     * @param array     $options    Options array. See Query class
+     *                              documentation for available options
+     *
+     * @return Query
+     *
+     * @throws Selector\Exception
+     */
+    public function query($selector, $options = array())
+    {
+        $query = new Query($this, $options);
+        return $query->find($selector);
     }
 }

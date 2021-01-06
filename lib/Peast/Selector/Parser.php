@@ -83,9 +83,15 @@ class Parser
      * Class constructor
      *
      * @param string $selector  Selector string
+     * @param array  $options   Options array. See Query class
+ *                              documentation for available options
      */
-    public function __construct($selector)
+    public function __construct($selector, $options = array())
     {
+        $encoding = isset($options["encoding"]) ? $options["encoding"] : null;
+        if ($encoding && !preg_match("/UTF-?8/i", $encoding)) {
+            $selector = mb_convert_encoding($selector, "UTF-8", $encoding);
+        }
         $this->selector = $selector;
         $this->length = strlen($selector);
     }
@@ -275,11 +281,25 @@ class Parser
             }
             if (!$error) {
                 $this->consumeWhitespaces();
-                if ($indices = $this->consumeRegex("-?\d+n(\+\d+)?")) {
+                if ($indices = $this->consumeRegex("-?\d*n(?:\+\d+)?|\d+")) {
                     $indices = explode("n", $indices);
-                    $part->setStep((int) $indices[0]);
-                    if ($indices[1] !== "") {
+                    if (count($indices) === 1) {
                         $part->setOffset((int) $indices[0]);
+                    } else {
+                        switch ($indices[0]) {
+                            case "":
+                                $part->setStep(1);
+                            break;
+                            case "-":
+                                $part->setStep(-1);
+                            break;
+                            default:
+                                $part->setStep((int) $indices[0]);
+                            break;
+                        }
+                        if ($indices[1] !== "") {
+                            $part->setOffset((int) $indices[1]);
+                        }
                     }
                 } elseif (
                     ($word = $this->consumeWord()) &&

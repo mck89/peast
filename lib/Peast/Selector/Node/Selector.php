@@ -59,7 +59,9 @@ class Selector
     {
         $retMatches = array();
         foreach ($this->groups as $group) {
-            $retMatches[] = $group->exec($matches);
+            $clonedMatches = $matches->createClone();
+            $group->exec($clonedMatches);
+            $retMatches[] = $clonedMatches;
         }
         if (count($retMatches) > 1) {
             $retMatches[0]->merge(array_slice($retMatches, 1));

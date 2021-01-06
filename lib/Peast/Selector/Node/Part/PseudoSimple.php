@@ -9,6 +9,13 @@
  */
 namespace Peast\Selector\Node\Part;
 
+use Peast\Syntax\Node\Node;
+use Peast\Syntax\Node\Pattern;
+use Peast\Syntax\Node\Statement;
+use Peast\Syntax\Node\Expression;
+use Peast\Syntax\Node\Declaration;
+use Peast\Syntax\Utils;
+
 /**
  * Selector part simple pseudo class
  * 
@@ -22,4 +29,36 @@ class PseudoSimple extends Pseudo
      * @var int
      */
     protected $priority = 3;
+
+    /**
+     * Returns true if the selector part matches the given node,
+     * false otherwise
+     *
+     * @param Node $node    Node
+     * @param Node $parent  Parent node
+     *
+     * @return bool
+     */
+    public function check(Node $node, Node $parent = null)
+    {
+        switch ($this->name) {
+            case "pattern":
+                return $node instanceof Pattern;
+            case "statement":
+                return $node instanceof Statement;
+            case "expression":
+                return $node instanceof Expression;
+            case "declaration":
+                return $node instanceof Declaration;
+            case "last-child":
+            case "first-child":
+                $first = $this->name === "first-child";
+                $props = Utils::getNodeProperties($parent);
+                if (!count($props)) {
+                    return false;
+                }
+                $cmp = $first ? $props[0] : array_pop($props);
+                return $cmp->{$props["getter"]}() === $node;
+        }
+    }
 }

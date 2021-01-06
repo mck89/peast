@@ -82,8 +82,6 @@ class Combinator
      * Executes the current group on the given matches
      *
      * @param Matches $matches Matches
-     *
-     * @return Matches
      */
     public function exec(Matches $matches)
     {
@@ -108,12 +106,11 @@ class Combinator
             }
             return true;
         };
-        $ret = $matches->createClone();
         switch ($this->operator) {
             case " ":
             case ">":
                 $children = $this->operator === ">";
-                $ret->map(function ($curNode) use ($filter, $children) {
+                $matches->map(function ($curNode) use ($filter, $children) {
                     $ret = array();
                     $traverser = new Traverser(array(
                         "skipStartingNode" => true,
@@ -136,7 +133,7 @@ class Combinator
             case "~":
             case "+":
                 $adjacent = $this->operator === "+";
-                $ret->map(function ($node, $parent) use ($filter, $adjacent) {
+                $matches->map(function ($node, $parent) use ($filter, $adjacent) {
                     if (!$parent) {
                         return null;
                     }
@@ -160,9 +157,8 @@ class Combinator
                 });
             break;
             default:
-                $ret = $ret->filter($filter);
+                $matches->filter($filter);
             break;
         }
-        return $ret;
     }
 }

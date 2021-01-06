@@ -154,4 +154,14 @@ class Matches
     {
         return new self($this->matches);
     }
+
+    /**
+     * Returns the current number of matches
+     *
+     * @return int
+     */
+    public function length()
+    {
+        return count($this->matches);
+    }
 }

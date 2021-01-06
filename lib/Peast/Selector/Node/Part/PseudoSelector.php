@@ -9,7 +9,9 @@
  */
 namespace Peast\Selector\Node\Part;
 
+use Peast\Selector\Matches;
 use Peast\Selector\Node\Selector;
+use Peast\Syntax\Node\Node;
 
 /**
  * Selector part selector pseudo class
@@ -53,5 +55,21 @@ class PseudoSelector extends Pseudo
     public function getSelector()
     {
         return $this->selector;
+    }
+
+    /**
+     * Returns true if the selector part matches the given node,
+     * false otherwise
+     *
+     * @param Node $node    Node
+     * @param Node $parent  Parent node
+     *
+     * @return bool
+     */
+    public function check(Node $node, Node $parent = null)
+    {
+        $match = new Matches();
+        $match->addMatch($node, $parent);
+        return $this->selector->exec($match)->length() > 0;
     }
 }
