@@ -31,6 +31,9 @@
         <testsuite name="Traverser">
             <file>test/Peast/TraverserTest.php</file>
         </testsuite>
+        <testsuite name="Query">
+            <file>test/Peast/QueryTest.php</file>
+        </testsuite>
         <testsuite name="Renderer">
             <file>test/Peast/RendererTest.php</file>
         </testsuite>
