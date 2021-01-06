@@ -97,7 +97,7 @@ class PseudoIndex extends Pseudo
      */
     public function check(Node $node, Node $parent = null)
     {
-        $props = Utils::getNodeProperties($parent, true);
+        $props = self::getExpandedNodeProperties($parent);
         $count = count($props);
         $reverse = $this->name === "nth-last-child";
         if ($reverse) {
@@ -113,7 +113,7 @@ class PseudoIndex extends Pseudo
             $step = $count;
         }
         for ($i = $start; $i >= 0 && $i < $count; $i += $step) {
-            if ($parent->{$props[$i]["getter"]}() === $node) {
+            if ($props[$i] === $node) {
                 return true;
             }
         }

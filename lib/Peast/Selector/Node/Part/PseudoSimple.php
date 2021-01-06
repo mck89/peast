@@ -14,7 +14,6 @@ use Peast\Syntax\Node\Pattern;
 use Peast\Syntax\Node\Statement;
 use Peast\Syntax\Node\Expression;
 use Peast\Syntax\Node\Declaration;
-use Peast\Syntax\Utils;
 
 /**
  * Selector part simple pseudo class
@@ -53,12 +52,12 @@ class PseudoSimple extends Pseudo
             case "last-child":
             case "first-child":
                 $first = $this->name === "first-child";
-                $props = Utils::getNodeProperties($parent, true);
+                $props = self::getExpandedNodeProperties($parent);
                 if (!count($props)) {
                     return false;
                 }
                 $cmp = $first ? $props[0] : array_pop($props);
-                return $parent->{$cmp["getter"]}() === $node;
+                return $cmp === $node;
         }
     }
 }
