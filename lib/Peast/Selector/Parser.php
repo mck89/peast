@@ -481,19 +481,22 @@ class Parser
         $escaped = false;
         while (($char = $this->getChar()) !== null) {
             $this->index += 1;
-            if ($char === "\\") {
-                $escaped = true;
-                if (!$removeEscapes) {
-                    $buffer .= $char;
+            if (!$escaped) {
+                if ($char === "\\") {
+                    $escaped = true;
+                    if (!$removeEscapes) {
+                        $buffer .= $char;
+                    }
+                    continue;
+                } elseif ($char === $stop) {
+                    if ($includeStop) {
+                        $buffer .= $char;
+                    }
+                    return $buffer;
                 }
-            } elseif ($char === $stop && !$escaped) {
-                if ($includeStop) {
-                    $buffer .= $char;
-                }
-                return $buffer;
-            } else {
-                $buffer .= $char;
             }
+            $buffer .= $char;
+            $escaped = false;
         }
         return null;
     }
