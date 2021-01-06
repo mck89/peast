@@ -112,11 +112,7 @@ class Combinator
                 $children = $this->operator === ">";
                 $matches->map(function ($curNode) use ($filter, $children) {
                     $ret = array();
-                    $traverser = new Traverser(array(
-                        "skipStartingNode" => true,
-                        "passParentNode" => true
-                    ));
-                    $traverser->addFunction(
+                    $curNode->traverse(
                         function ($node, $parent) use ($filter, $children, &$ret) {
                             if ($filter($node, $parent)) {
                                 $ret[] = array($node, $parent);
@@ -124,9 +120,12 @@ class Combinator
                             if ($children) {
                                 return Traverser::DONT_TRAVERSE_CHILD_NODES;
                             }
-                        }
+                        },
+                        array(
+                            "skipStartingNode" => true,
+                            "passParentNode" => true
+                        )
                     );
-                    $traverser->traverse($curNode);
                     return $ret;
                 });
             break;
