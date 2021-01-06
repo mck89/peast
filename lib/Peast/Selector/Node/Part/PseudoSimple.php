@@ -53,12 +53,12 @@ class PseudoSimple extends Pseudo
             case "last-child":
             case "first-child":
                 $first = $this->name === "first-child";
-                $props = Utils::getNodeProperties($parent);
+                $props = Utils::getNodeProperties($parent, true);
                 if (!count($props)) {
                     return false;
                 }
                 $cmp = $first ? $props[0] : array_pop($props);
-                return $cmp->{$props["getter"]}() === $node;
+                return $parent->{$cmp["getter"]}() === $node;
         }
     }
 }
