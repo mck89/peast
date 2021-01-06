@@ -156,12 +156,30 @@ class Matches
     }
 
     /**
-     * Returns the current number of matches
+     * Returns the number of matches
      *
      * @return int
      */
-    public function length()
+    public function count()
     {
         return count($this->matches);
+    }
+
+    /**
+     * Returns the match at the given index
+     *
+     * @param int $index Index
+     *
+     * @return array
+     *
+     * @throws \Exception
+     */
+    public function get($index)
+    {
+        $index = (int) $index;
+        if (!isset($this->matches[$index])) {
+            throw new \Exception("Invalid index $index");
+        }
+        return $this->matches[$index];
     }
 }

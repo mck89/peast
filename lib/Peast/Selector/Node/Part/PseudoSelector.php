@@ -70,6 +70,6 @@ class PseudoSelector extends Pseudo
     {
         $match = new Matches();
         $match->addMatch($node, $parent);
-        return $this->selector->exec($match)->length() > 0;
+        return $this->selector->exec($match)->count() > 0;
     }
 }

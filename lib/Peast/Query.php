@@ -14,7 +14,7 @@ namespace Peast;
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
-class Query
+class Query implements \IteratorAggregate, \Countable
 {
     /**
      * Current matches
@@ -83,5 +83,39 @@ class Query
             return $selector->exec($newMatch)->getMatches();
         });
         return $this;
+    }
+
+    /**
+     * Returns the number of matched nodes
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return $this->matches->count();
+    }
+
+    /**
+     * Returns the node at the given index
+     *
+     * @param int $index Index
+     *
+     * @return array
+     *
+     * @throws \Exception
+     */
+    public function get($index)
+    {
+        return $this->matches->get($index)[0];
+    }
+
+    /**
+     * Returns the nodes iterator
+     *
+     * @return \ArrayIterator
+     */
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->matches->getNodes());
     }
 }
