@@ -212,7 +212,7 @@ class Attribute extends Part
                         return preg_match($this->value, $attr);
                     }
                     return $this->compareStr(
-                        $attr, $this->value, $this->caseInsensitive, true, true
+                        $this->value, $attr, $this->caseInsensitive, true, true
                     );
                 }
                 return $attr === $this->value;
@@ -228,7 +228,7 @@ class Attribute extends Part
             case "$=":
             case "*=":
                 return $this->compareStr(
-                    $attr, $this->value, $this->caseInsensitive,
+                    $this->value, $attr, $this->caseInsensitive,
                     $this->operator === "^=",
                     $this->operator === "$="
                 );
