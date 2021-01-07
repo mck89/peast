@@ -142,7 +142,7 @@ class Combinator
                     foreach ($props as $prop) {
                         $propNode = $parent->{$prop["getter"]}();
                         if ($evaluate) {
-                            if ($filter($node, $parent)) {
+                            if ($filter($propNode, $parent)) {
                                 $ret[] = array($propNode, $parent);
                             }
                             if ($adjacent) {
