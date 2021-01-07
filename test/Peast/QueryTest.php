@@ -4,14 +4,13 @@ namespace Peast\test;
 
 class QueryTest extends TestBase
 {
-    private $tree;
+    static private $tree;
 
-    protected function setUp()
+    static public function setUpBeforeClass()
     {
         $source = "
             var a = 1, b = 2, c = 3;
             var d = 4, e = 5, f = 6;
-            var g = 7, h = 8, i = 9;
             
             if (a) {
                 if (b) {
@@ -27,6 +26,8 @@ class QueryTest extends TestBase
                     }
                 }
             }
+            var g = 7, h = 8, i = 9;
+            
             if (g) {
                 if (h) {
                     if (i) {
@@ -51,12 +52,12 @@ class QueryTest extends TestBase
                 21, 22, 23, 24, 25, 26, 27, 28, 29, 30
             ];
         ";
-        $this->tree = \Peast\Peast::latest($source)->parse();
+        self::$tree = \Peast\Peast::latest($source)->parse();
     }
 
-    protected function tearDown()
+    static public function tearDownAfterClass()
     {
-        $this->tree = null;
+        self::$tree = null;
     }
 
     public function selectorsProvider()
@@ -306,7 +307,22 @@ class QueryTest extends TestBase
                     array("Literal", 29),
                     array("Literal", 30),
                 )
-            )
+            ),
+            array(
+                "VariableDeclaration + VariableDeclaration", 1,
+                "combinator adjacent sibling",
+                array(
+                    array("VariableDeclaration", "d"),
+                )
+            ),
+            array(
+                "VariableDeclaration ~ VariableDeclaration", 2,
+                "combinator general sibling",
+                array(
+                    array("VariableDeclaration", "d"),
+                    array("VariableDeclaration", "g")
+                )
+            ),
         );
     }
 
@@ -315,7 +331,7 @@ class QueryTest extends TestBase
      */
     public function testSelector($selector, $count, $msg, $test, $sort = false)
     {
-        $q = $this->tree->query($selector);
+        $q = self::$tree->query($selector);
         $this->assertEquals($count, count($q), "Count $msg");
         if ($count) {
             $checks = array();
@@ -353,12 +369,12 @@ class QueryTest extends TestBase
     }
 
     //@TODO wrong selectors
-    //@TODO combinators + ~
     //@TODO pseudo
     //@TODO encoding
     //@TODO complex
     //@TODO filter
     //@TODO sub find
+    //@TODO index access
     //@TODO selector begins with combinator
     //@TODO performance
 }
