@@ -39,10 +39,10 @@ class QueryTest extends TestBase
                 return \"That's a string\";
             }
             function call2(y, yy, yyy) {
-                return 2;
+                return [-1.2343e+2, 0xFFEF, 0o7766, 0b111101101];
             }
             function call3(z, zz, zzz) {
-                return 3;
+                return true || (true && null);
             }
             
             arr = [
@@ -225,6 +225,88 @@ class QueryTest extends TestBase
                     array("Literal", "That's a string")
                 )
             ),
+            array(
+                "Literal[value=true]", 2,
+                "selector attr boolean type",
+                array(
+                    array("Literal", true),
+                    array("Literal", true)
+                )
+            ),
+            array(
+                "Literal[value=null]", 1,
+                "selector attr null",
+                array(
+                    array("Literal", null)
+                )
+            ),
+            array(
+                "Literal[value=20]", 1,
+                "selector attr int",
+                array(
+                    array("Literal", 20)
+                )
+            ),
+            array(
+                "UnaryExpression[operator='-'] Literal[value=1.2343e+2]", 1,
+                "selector attr float",
+                array(
+                    array("Literal", 1.2343e+2)
+                )
+            ),
+            array(
+                "Literal[value=0xFFEF]", 1,
+                "selector attr hex",
+                array(
+                    array("Literal", 0xFFEF)
+                )
+            ),
+            array(
+                "Literal[value=0o7766]", 1,
+                "selector attr octal",
+                array(
+                    array("Literal", 07766)
+                )
+            ),
+            array(
+                "Literal[value=0b111101101]", 1,
+                "selector attr binary",
+                array(
+                    array("Literal", bindec("111101101"))
+                )
+            ),
+            array(
+                "Literal[value>10][value<20]", 9,
+                "selector attr greater/lower",
+                array(
+                    array("Literal", 11),
+                    array("Literal", 12),
+                    array("Literal", 13),
+                    array("Literal", 14),
+                    array("Literal", 15),
+                    array("Literal", 16),
+                    array("Literal", 17),
+                    array("Literal", 18),
+                    array("Literal", 19),
+                )
+            ),
+            array(
+                "Literal[value>=20][value<=30]", 11,
+                "selector attr greater equals/lower equals",
+                array(
+                    array("Literal", 20),
+                    array("Literal", 21),
+                    array("Literal", 22),
+                    array("Literal", 23),
+                    array("Literal", 24),
+                    array("Literal", 25),
+                    array("Literal", 26),
+                    array("Literal", 27),
+                    array("Literal", 28),
+                    array("Literal", 29),
+                    array("Literal", 30),
+                )
+            )
         );
     }
 
@@ -271,8 +353,6 @@ class QueryTest extends TestBase
     }
 
     //@TODO wrong selectors
-    //@TODO attr different value types (int, float, bool, null)
-    //@TODO attr "<", ">", "<=", ">="
     //@TODO combinators + ~
     //@TODO pseudo
     //@TODO encoding
@@ -280,4 +360,5 @@ class QueryTest extends TestBase
     //@TODO filter
     //@TODO sub find
     //@TODO selector begins with combinator
+    //@TODO performance
 }
