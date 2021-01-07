@@ -215,14 +215,29 @@ class Attribute extends Part
                         $this->value, $attr, $this->caseInsensitive, true, true
                     );
                 }
+                if (is_int($attr) && is_float($this->value)) {
+                    return (float) $attr === $this->value;
+                }
                 return $attr === $this->value;
             case "<":
+                if (is_float($this->value) && !is_float($attr) && !is_int($attr) && !is_string($attr)) {
+                    return false;
+                }
                 return $attr < $this->value;
             case ">":
+                if (is_float($this->value) && !is_float($attr) && !is_int($attr) && !is_string($attr)) {
+                    return false;
+                }
                 return $attr > $this->value;
             case "<=":
+                if (is_float($this->value) && !is_float($attr) && !is_int($attr) && !is_string($attr)) {
+                    return false;
+                }
                 return $attr <= $this->value;
             case ">=":
+                if (is_float($this->value) && !is_float($attr) && !is_int($attr) && !is_string($attr)) {
+                    return false;
+                }
                 return $attr >= $this->value;
             case "^=":
             case "$=":
