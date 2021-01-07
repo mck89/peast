@@ -59,210 +59,215 @@ class QueryTest extends TestBase
         $this->tree = null;
     }
 
-    public function testSelectorEmptyResult()
+    public function selectorsProvider()
     {
-        $q = $this->tree->query("LabeledStatement");
-        $this->assertEquals(0, count($q));
-    }
-
-    public function testSelectorType()
-    {
-        $q = $this->tree->query("VariableDeclaration");
-        $this->assertEquals(3, count($q));
-        $checks = array();
-        foreach ($q as $node) {
-            $checks[] = $node->getDeclarations()[0]->getId()->getName();
-        }
-        $this->assertEquals(array("a", "d", "g"), $checks);
-    }
-
-    public function testCombinatorDescendant()
-    {
-        $q = $this->tree->query("VariableDeclaration VariableDeclarator");
-        $this->assertEquals(9, count($q));
-        $checks = array();
-        foreach ($q as $node) {
-            $checks[] = $node->getId()->getName();
-        }
-        $this->assertEquals(
-            array("a", "b", "c", "d", "e", "f", "g", "h", "i"),
-            $checks
+        return array(
+            array(
+                "LabeledStatement", 0, "empty result", null
+            ),
+            array(
+                "VariableDeclaration", 3,
+                "selector type",
+                array(
+                    array("VariableDeclaration", "a"),
+                    array("VariableDeclaration", "d"),
+                    array("VariableDeclaration", "g"),
+                )
+            ),
+            array(
+                "VariableDeclaration VariableDeclarator", 9,
+                "combinator descendant",
+                array(
+                    array("VariableDeclarator", "a"),
+                    array("VariableDeclarator", "b"),
+                    array("VariableDeclarator", "c"),
+                    array("VariableDeclarator", "d"),
+                    array("VariableDeclarator", "e"),
+                    array("VariableDeclarator", "f"),
+                    array("VariableDeclarator", "g"),
+                    array("VariableDeclarator", "h"),
+                    array("VariableDeclarator", "i")
+                )
+            ),
+            array(
+                "FunctionDeclaration > Identifier", 12,
+                "combinator children",
+                array(
+                    array("Identifier", "call1"),
+                    array("Identifier", "x"),
+                    array("Identifier", "xx"),
+                    array("Identifier", "xxx"),
+                    array("Identifier", "call2"),
+                    array("Identifier", "y"),
+                    array("Identifier", "yy"),
+                    array("Identifier", "yyy"),
+                    array("Identifier", "call3"),
+                    array("Identifier", "z"),
+                    array("Identifier", "zz"),
+                    array("Identifier", "zzz")
+                )
+            ),
+            array(
+                "FunctionDeclaration, VariableDeclaration, FunctionDeclaration", 6,
+                "groups",
+                array(
+                    array("VariableDeclaration", "a"),
+                    array("FunctionDeclaration", "call1"),
+                    array("FunctionDeclaration", "call2"),
+                    array("FunctionDeclaration", "call3"),
+                    array("VariableDeclaration", "d"),
+                    array("VariableDeclaration", "g"),
+                ),
+                true
+            ),
+            array(
+                "Identifier[name='xxx']", 1,
+                "selector attr equals",
+                array(
+                    array("Identifier", "xxx")
+                )
+            ),
+            array(
+                "[id.name='call1']", 1,
+                "selector multi attr equals",
+                array(
+                    array("FunctionDeclaration", "call1")
+                )
+            ),
+            array(
+                "[id.name='CALL1' i]", 1,
+                "selector multi attr equals case insensitive",
+                array(
+                    array("FunctionDeclaration", "call1")
+                )
+            ),
+            array(
+                "FunctionDeclaration[id.name]", 3,
+                "selector multi attr exists",
+                array(
+                    array("FunctionDeclaration", "call1"),
+                    array("FunctionDeclaration", "call2"),
+                    array("FunctionDeclaration", "call3")
+                )
+            ),
+            array(
+                "FunctionDeclaration[id.name^='call']", 3,
+                "selector multi attr begins with",
+                array(
+                    array("FunctionDeclaration", "call1"),
+                    array("FunctionDeclaration", "call2"),
+                    array("FunctionDeclaration", "call3")
+                )
+            ),
+            array(
+                "FunctionDeclaration[id.name^='CALL' i]", 3,
+                "selector multi attr begins with case insensitive",
+                array(
+                    array("FunctionDeclaration", "call1"),
+                    array("FunctionDeclaration", "call2"),
+                    array("FunctionDeclaration", "call3")
+                )
+            ),
+            array(
+                "FunctionDeclaration[id.name*='all']", 3,
+                "selector multi attr contains",
+                array(
+                    array("FunctionDeclaration", "call1"),
+                    array("FunctionDeclaration", "call2"),
+                    array("FunctionDeclaration", "call3")
+                )
+            ),
+            array(
+                "FunctionDeclaration[id.name*='ALL' i]", 3,
+                "selector multi attr contains case insensitive",
+                array(
+                    array("FunctionDeclaration", "call1"),
+                    array("FunctionDeclaration", "call2"),
+                    array("FunctionDeclaration", "call3")
+                )
+            ),
+            array(
+                "FunctionDeclaration[id.name$='ll3']", 1,
+                "selector multi attr ends with",
+                array(
+                    array("FunctionDeclaration", "call3")
+                )
+            ),
+            array(
+                "FunctionDeclaration[id.name$='LL3' i]", 1,
+                "selector multi attr ends with case insensitive",
+                array(
+                    array("FunctionDeclaration", "call3")
+                )
+            ),
+            array(
+                "FunctionDeclaration[id.name=/call\d+/]", 3,
+                "selector multi attr regex",
+                array(
+                    array("FunctionDeclaration", "call1"),
+                    array("FunctionDeclaration", "call2"),
+                    array("FunctionDeclaration", "call3")
+                )
+            ),
+            array(
+                "FunctionDeclaration[id.name=/CALL\d+/i]", 3,
+                "selector multi attr regex case insensitive",
+                array(
+                    array("FunctionDeclaration", "call1"),
+                    array("FunctionDeclaration", "call2"),
+                    array("FunctionDeclaration", "call3")
+                )
+            ),
+            array(
+                "Literal[value='That\'s a string']", 1,
+                "selector attr equals escaped",
+                array(
+                    array("Literal", "That's a string")
+                )
+            ),
         );
     }
 
-    public function testCombinatorChildren()
+    /**
+     * @dataProvider selectorsProvider
+     */
+    public function testSelector($selector, $count, $msg, $test, $sort = false)
     {
-        $q = $this->tree->query("FunctionDeclaration > Identifier");
-        $this->assertEquals(12, count($q));
-        $checks = array();
-        foreach ($q as $node) {
-            $checks[] = $node->getName();
-        }
-        //This should get function name and arguments
-        $this->assertEquals(
-            array("call1", "x", "xx", "xxx", "call2", "y", "yy", "yyy", "call3", "z", "zz", "zzz"),
-            $checks
-        );
-    }
-
-    public function testGroups()
-    {
-        $q = $this->tree->query("FunctionDeclaration, VariableDeclaration, FunctionDeclaration");
-        $this->assertEquals(6, count($q));
-        $checks = array();
-        foreach ($q as $node) {
-            if ($node->getType() === "VariableDeclaration") {
-                $checks[] = $node->getDeclarations()[0]->getId()->getName();
-            } else {
-                $checks[] = $node->getId()->getName();
+        $q = $this->tree->query($selector);
+        $this->assertEquals($count, count($q), "Count $msg");
+        if ($count) {
+            $checks = array();
+            foreach ($q as $node) {
+                $type = $node->getType();
+                switch ($type) {
+                    case "VariableDeclaration":
+                        $val = $node->getDeclarations()[0]->getId()->getName();
+                        break;
+                    case "FunctionDeclaration":
+                    case "VariableDeclarator":
+                        $val = $node->getId()->getName();
+                    break;
+                    case "Identifier":
+                        $val = $node->getName();
+                    break;
+                    case "Literal":
+                        $val = $node->getValue();
+                    break;
+                    default:
+                        throw new \Exception("Unexpected node $type");
+                }
+                $checks[] = array($type, $val);
             }
+            if ($sort) {
+                usort($checks, function ($c1, $c2) {
+                    if ($c1[1] === $c2[1]) {
+                        return 0;
+                    }
+                    return $c1[1] < $c2[1] ? -1 : 1;
+                });
+            }
+            $this->assertEquals($test, $checks, "Test $msg");
         }
-        sort($checks);
-        $this->assertEquals(
-            array("a", "call1", "call2", "call3", "d", "g"),
-            $checks
-        );
-    }
-
-    public function testSelectorAttrEquals()
-    {
-        $q = $this->tree->query("Identifier[name='xxx']");
-        $this->assertEquals(1, count($q));
-        $this->assertEquals("xxx", $q->get(0)->getName());
-    }
-
-    public function testSelectorMultiAttrEquals()
-    {
-        $q = $this->tree->query("[id.name='call1']");
-        $this->assertEquals(1, count($q));
-        $this->assertEquals("FunctionDeclaration", $q->get(0)->getType());
-    }
-
-    public function testSelectorAttrEqualsCaseInsensitive()
-    {
-        $q = $this->tree->query("[id.name='CALL1' i]");
-        $this->assertEquals(1, count($q));
-        $this->assertEquals("FunctionDeclaration", $q->get(0)->getType());
-        $this->assertEquals("call1", $q->get(0)->getId()->getName());
-    }
-
-    public function testSelectorMultiAttrExists()
-    {
-        $q = $this->tree->query("FunctionDeclaration[id.name]");
-        $this->assertEquals(3, count($q));
-        $checks = array();
-        foreach ($q as $node) {
-            $checks[] = $node->getId()->getName();
-        }
-        $this->assertEquals(
-            array("call1", "call2", "call3"),
-            $checks
-        );
-    }
-
-    public function testSelectorMultiAttrBeginsWith()
-    {
-        $q = $this->tree->query("FunctionDeclaration[id.name^='call']");
-        $this->assertEquals(3, count($q));
-        $checks = array();
-        foreach ($q as $node) {
-            $checks[] = $node->getId()->getName();
-        }
-        $this->assertEquals(
-            array("call1", "call2", "call3"),
-            $checks
-        );
-    }
-
-    public function testSelectorMultiAttrBeginsWithCaseInsensitive()
-    {
-        $q = $this->tree->query("FunctionDeclaration[id.name^='CALL' i]");
-        $this->assertEquals(3, count($q));
-        $checks = array();
-        foreach ($q as $node) {
-            $checks[] = $node->getId()->getName();
-        }
-        $this->assertEquals(
-            array("call1", "call2", "call3"),
-            $checks
-        );
-    }
-
-    public function testSelectorMultiAttrContains()
-    {
-        $q = $this->tree->query("FunctionDeclaration[id.name*='all']");
-        $this->assertEquals(3, count($q));
-        $checks = array();
-        foreach ($q as $node) {
-            $checks[] = $node->getId()->getName();
-        }
-        $this->assertEquals(
-            array("call1", "call2", "call3"),
-            $checks
-        );
-    }
-
-    public function testSelectorMultiAttrContainsCaseInsensitive()
-    {
-        $q = $this->tree->query("FunctionDeclaration[id.name*='ALL' i]");
-        $this->assertEquals(3, count($q));
-        $checks = array();
-        foreach ($q as $node) {
-            $checks[] = $node->getId()->getName();
-        }
-        $this->assertEquals(
-            array("call1", "call2", "call3"),
-            $checks
-        );
-    }
-
-    public function testSelectorMultiAttrEndsWith()
-    {
-        $q = $this->tree->query("FunctionDeclaration[id.name$='ll3']");
-        $this->assertEquals(1, count($q));
-        $this->assertEquals("call3", $q->get(0)->getId()->getName());
-    }
-
-    public function testSelectorMultiAttrEndsWithCaseInsensitive()
-    {
-        $q = $this->tree->query("FunctionDeclaration[id.name$='LL3' i]");
-        $this->assertEquals(1, count($q));
-        $this->assertEquals("call3", $q->get(0)->getId()->getName());
-    }
-
-    public function testSelectorRegex()
-    {
-        $q = $this->tree->query("FunctionDeclaration[id.name=/call\d+/]");
-        $this->assertEquals(3, count($q));
-        $checks = array();
-        foreach ($q as $node) {
-            $checks[] = $node->getId()->getName();
-        }
-        $this->assertEquals(
-            array("call1", "call2", "call3"),
-            $checks
-        );
-    }
-
-    public function testSelectorRegexCaseInsensitive()
-    {
-        $q = $this->tree->query("FunctionDeclaration[id.name=/call\d+/i]");
-        $this->assertEquals(3, count($q));
-        $checks = array();
-        foreach ($q as $node) {
-            $checks[] = $node->getId()->getName();
-        }
-        $this->assertEquals(
-            array("call1", "call2", "call3"),
-            $checks
-        );
-    }
-
-    public function testSelectorAttrEqualsEscaped()
-    {
-        $q = $this->tree->query("Literal[value='That\'s a string']");
-        $this->assertEquals(1, count($q));
-        $this->assertEquals("That's a string", $q->get(0)->getValue());
     }
 
     //@TODO wrong selectors
