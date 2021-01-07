@@ -1,6 +1,10 @@
 <?php
 namespace Peast\test;
 
+use Peast\Syntax\Node\Expression;
+use Peast\Syntax\Node\Declaration;
+use Peast\Syntax\Node\Pattern;
+use Peast\Syntax\Node\Statement;
 
 class QueryTest extends TestBase
 {
@@ -323,6 +327,20 @@ class QueryTest extends TestBase
                     array("VariableDeclaration", "g")
                 )
             ),
+            array(
+                "AssignmentExpression > ArrayExpression > :first-child", 1,
+                "selector pseudo first child",
+                array(
+                    array("Literal", 1)
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :last-child", 1,
+                "selector pseudo last child",
+                array(
+                    array("Literal", 30)
+                )
+            ),
         );
     }
 
@@ -368,8 +386,37 @@ class QueryTest extends TestBase
         }
     }
 
+    public function testPseudoInterface()
+    {
+        $expected = array(
+            "pattern" => 0,
+            "statement" => 0,
+            "expression" => 0,
+            "declaration" => 0
+        );
+        self::$tree->traverse(function ($node) use (&$expected) {
+            if ($node instanceof Pattern) {
+                $expected["pattern"]++;
+            }
+            if ($node instanceof Statement) {
+                $expected["statement"]++;
+            }
+            if ($node instanceof Expression) {
+                $expected["expression"]++;
+            }
+            if ($node instanceof Declaration) {
+                $expected["declaration"]++;
+            }
+        });
+        foreach ($expected as $selector => $count) {
+            $realCount = count(self::$tree->query(":$selector"));
+            $this->assertNotEquals(0, $realCount, "Selector :$selector not 0");
+            $this->assertEquals($count, $realCount, "Selector :$selector");
+        }
+    }
+
     //@TODO wrong selectors
-    //@TODO pseudo
+    //@TODO pseudo (nth-child, nth-last-child, has, in, not)
     //@TODO encoding
     //@TODO complex
     //@TODO filter
@@ -377,4 +424,5 @@ class QueryTest extends TestBase
     //@TODO index access
     //@TODO selector begins with combinator
     //@TODO performance
+    //@TODO coverage
 }
