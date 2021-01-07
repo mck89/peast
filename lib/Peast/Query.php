@@ -76,7 +76,7 @@ class Query implements \IteratorAggregate, \Countable
     public function filter($selector)
     {
         $parser = new Selector\Parser($selector, $this->options);
-        $selector = $parser->parse();
+        $selector = $parser->parse(true);
         $this->matches->filter(function ($node, $parent) use ($selector) {
             $newMatch = new Selector\Matches();
             $newMatch->addMatch($node, $parent);

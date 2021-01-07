@@ -415,14 +415,21 @@ class QueryTest extends TestBase
         }
     }
 
+    public function testQueryObjectMethods()
+    {
+        $q = self::$tree->query("AssignmentExpression");
+        $q->find("> ArrayExpression > Literal");
+        $q->filter("[value>5]");
+        $q->filter("[value<8]");
+        $this->assertEquals(2, count($q));
+        $this->assertEquals(6, $q->get(0)->getValue());
+        $this->assertEquals(7, $q->get(1)->getValue());
+    }
+
     //@TODO wrong selectors
     //@TODO pseudo (nth-child, nth-last-child, has, in, not)
     //@TODO encoding
     //@TODO complex
-    //@TODO filter
-    //@TODO sub find
-    //@TODO index access
-    //@TODO selector begins with combinator
     //@TODO performance
     //@TODO coverage
 }
