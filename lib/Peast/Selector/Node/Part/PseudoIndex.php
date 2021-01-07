@@ -97,7 +97,7 @@ class PseudoIndex extends Pseudo
      */
     public function check(Node $node, Node $parent = null)
     {
-        $props = self::getExpandedNodeProperties($parent);
+        $props = Utils::getExpandedNodeProperties($parent);
         $count = count($props);
         $reverse = $this->name === "nth-last-child";
         if ($reverse) {

@@ -138,11 +138,10 @@ class Combinator
                     }
                     $ret = array();
                     $evaluate = false;
-                    $props = Utils::getNodeProperties($parent, true);
-                    foreach ($props as $prop) {
-                        $propNode = $parent->{$prop["getter"]}();
+                    $props = Utils::getExpandedNodeProperties($parent);
+                    foreach ($props as $propNode) {
                         if ($evaluate) {
-                            if ($filter($propNode, $parent)) {
+                            if ($propNode && $filter($propNode, $parent)) {
                                 $ret[] = array($propNode, $parent);
                             }
                             if ($adjacent) {

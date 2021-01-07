@@ -9,9 +9,6 @@
  */
 namespace Peast\Selector\Node\Part;
 
-use Peast\Syntax\Node\Node;
-use Peast\Syntax\Utils;
-
 /**
  * Selector pseudo part base class
  * 
@@ -49,29 +46,5 @@ abstract class Pseudo extends Part
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Returns an expanded version of the traversable node properties.
-     * The return of the function is an array of node properties
-     * values with arrays flattened
-     *
-     * @param Node $node Node
-     *
-     * @return array
-     */
-    static protected function getExpandedNodeProperties(Node $node)
-    {
-        $ret = array();
-        $props = Utils::getNodeProperties($node, true);
-        foreach ($props as $prop) {
-            $val = $node->{$prop["getter"]}();
-            if (is_array($val)) {
-                $ret = array_merge($ret, $val);
-            } else {
-                $ret[] = $val;
-            }
-        }
-        return $ret;
     }
 }

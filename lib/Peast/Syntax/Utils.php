@@ -241,6 +241,30 @@ class Utils
     }
 
     /**
+     * Returns an expanded version of the traversable node properties.
+     * The return of the function is an array of node properties
+     * values with arrays flattened
+     *
+     * @param Node\Node $node Node
+     *
+     * @return array
+     */
+    static public function getExpandedNodeProperties(Node\Node $node)
+    {
+        $ret = array();
+        $props = self::getNodeProperties($node, true);
+        foreach ($props as $prop) {
+            $val = $node->{$prop["getter"]}();
+            if (is_array($val)) {
+                $ret = array_merge($ret, $val);
+            } else {
+                $ret[] = $val;
+            }
+        }
+        return $ret;
+    }
+
+    /**
      * Delete an array element by value
      * 
      * @param array $array Array
