@@ -312,6 +312,7 @@ class Parser
                 } else {
                     $error = true;
                 }
+                $this->consumeWhitespaces();
                 if (!$error && !$this->consume(")")) {
                     $error = true;
                 }

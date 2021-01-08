@@ -101,19 +101,25 @@ class PseudoIndex extends Pseudo
         $count = count($props);
         $reverse = $this->name === "nth-last-child";
         if ($reverse) {
-            $start = $count - 1 - $this->offset;
+            $start = $count - 1 - ($this->offset - 1);
             $step = $this->step * -1;
+            if ($step > 0) {
+                $reverse = false;
+            }
         } else {
-            $start = $this->offset;
+            $start = $this->offset - 1;
             $step = $this->step;
+            if ($step < 0) {
+                $reverse = true;
+            }
         }
         //Step 0 will cause an infinite loop, so it must be set to the
         //number of props so that it will execute only one iteration
         if (!$step) {
-            $step = $count;
+            $step = $reverse ? -$count : $count;
         }
-        for ($i = $start; $i >= 0 && $i < $count; $i += $step) {
-            if ($props[$i] === $node) {
+        for ($i = $start; ($reverse && $i >= 0)  || (!$reverse && $i < $count); $i += $step) {
+            if (isset($props[$i]) && $props[$i] === $node) {
                 return true;
             }
         }
