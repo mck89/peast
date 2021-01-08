@@ -408,19 +408,18 @@ class Parser
      */
     protected function parseLiteralNumber()
     {
-        if ($this->getChar() === "0") {
-            $reg = "0[xX][a-fA-F]+|0[bB][01]+|0[oO][0-7]+";
-            if ($val = $this->consumeRegex($reg)) {
-                $form = strtolower($val[1]);
-                $val = substr($val, 2);
-                if ($form === "x") {
-                    return hexdec($val);
-                } elseif ($form === "o") {
-                    return octdec($val);
-                } else {
-                    return bindec($val);
-                }
+        if (
+            $this->getChar() === "0" &&
+            ($val = $this->consumeRegex("0[xX][a-fA-F]+|0[bB][01]+|0[oO][0-7]+"))
+        ) {
+            $form = strtolower($val[1]);
+            $val = substr($val, 2);
+            if ($form === "x") {
+                return hexdec($val);
+            } elseif ($form === "o") {
+                return octdec($val);
             }
+            return bindec($val);
         }
         $reg = "-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|-?\.\d+(?:[eE][+-]?\d+)?";
         if (!($val = $this->consumeRegex($reg))) {

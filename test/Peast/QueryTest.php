@@ -47,7 +47,7 @@ class QueryTest extends TestBase
                 return [-1.2343e+2, 0xFFEF, 0o7766, 0b111101101];
             }
             function call3(z, zz, zzz) {
-                return true || (true && null);
+                return true || false || (true && null);
             }
             
             arr = [
@@ -232,10 +232,17 @@ class QueryTest extends TestBase
             ),
             array(
                 "Literal[value=true]", 2,
-                "selector attr boolean type",
+                "selector attr boolean type true",
                 array(
                     array("Literal", true),
                     array("Literal", true)
+                )
+            ),
+            array(
+                "Literal[value=false]", 1,
+                "selector attr boolean type false",
+                array(
+                    array("Literal", false)
                 )
             ),
             array(
@@ -802,6 +809,13 @@ class QueryTest extends TestBase
         }
     }
 
+    public function testInvalidIndex()
+    {
+        $this->expectException('Exception');
+        $q = self::$tree->query("FunctionDeclaration");
+        $q->get(1000);
+    }
+
     public function invalidSelectorsProvider()
     {
         return array(
@@ -811,17 +825,27 @@ class QueryTest extends TestBase
             array("FunctionDeclaration>>Literal"),
             array("&"),
             array("[value"),
+            array("[]"),
             array("[value.]"),
             array("[value=]"),
-            array("[value+=]"),
+            array("[value+=1]"),
+            array("[value^^1]"),
             array("[value='val]"),
+            array("[value=/val]"),
+            array("[value$=/val/]"),
             array("[value=invalid]"),
+            array("[value=1 i]"),
             array(":first-child()"),
+            array(":nth-child"),
             array(":nth-child("),
+            array(":nth-child(even"),
             array(":nth-child()"),
             array(":nth-child(abc)"),
+            array(":not"),
+            array(":not("),
             array(":not()"),
             array(":not(Literal>)"),
+            array(":invalid"),
         );
     }
 
