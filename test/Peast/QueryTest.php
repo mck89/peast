@@ -802,6 +802,35 @@ class QueryTest extends TestBase
         }
     }
 
-    //@TODO wrong selectors
-    //@TODO coverage
+    public function invalidSelectorsProvider()
+    {
+        return array(
+            array(""),
+            array(">"),
+            array("Literal>"),
+            array("FunctionDeclaration>>Literal"),
+            array("&"),
+            array("[value"),
+            array("[value.]"),
+            array("[value=]"),
+            array("[value+=]"),
+            array("[value='val]"),
+            array("[value=invalid]"),
+            array(":first-child()"),
+            array(":nth-child("),
+            array(":nth-child()"),
+            array(":nth-child(abc)"),
+            array(":not()"),
+            array(":not(Literal>)"),
+        );
+    }
+
+    /**
+     * @dataProvider invalidSelectorsProvider
+     */
+    public function testInvalidSelectors($selector)
+    {
+        $this->expectException('Peast\Selector\Exception');
+        $q = self::$tree->query($selector);
+    }
 }
