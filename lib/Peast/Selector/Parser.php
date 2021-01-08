@@ -76,7 +76,7 @@ class Parser
         "pattern" => 0, "statement" => 0, "expression" => 0, "declaration" => 0,
         "first-child" => 0, "last-child" => 0,
         "nth-child" => 1, "nth-last-child" => 1,
-        "has" => 2, "in" => 2, "not" => 2
+        "has" => 2, "is" => 2, "not" => 2
     );
 
     /**
