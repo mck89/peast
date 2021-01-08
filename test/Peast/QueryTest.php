@@ -831,6 +831,6 @@ class QueryTest extends TestBase
     public function testInvalidSelectors($selector)
     {
         $this->expectException('Peast\Selector\Exception');
-        $q = self::$tree->query($selector);
+        self::$tree->query($selector);
     }
 }
