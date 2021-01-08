@@ -791,7 +791,17 @@ class QueryTest extends TestBase
         $this->assertEquals(7, $q->get(1)->getValue());
     }
 
+    public function testEncoding()
+    {
+        if (function_exists("mb_convert_encoding")) {
+            $code = mb_convert_encoding("'à'", "UTF-16", "UTF-8");
+            $sel = mb_convert_encoding("[value='à']", "UTF-16", "UTF-8");
+            $tree = \Peast\Peast::latest($code, array("sourceEncoding" => "UTF-16"))->parse();
+            $q = $tree->query($sel, array("encoding" => "UTF-16"));
+            $this->assertEquals(1, count($q));
+        }
+    }
+
     //@TODO wrong selectors
-    //@TODO encoding
     //@TODO coverage
 }
