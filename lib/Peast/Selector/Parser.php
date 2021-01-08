@@ -536,7 +536,7 @@ class Parser
     {
         //Initial ws can be trimmed if followed by another combinator
         $ws = $this->consumeWhitespaces();
-        if ($combinator = $this->consumeAny($this->combinators)) {
+        if ($combinator = $this->consumeAny($this->combinators, true)) {
             $this->consumeWhitespaces();
         } elseif ($ws) {
             //If there's no other combinators use the space
