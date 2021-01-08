@@ -8,9 +8,7 @@ use Peast\Syntax\Node\Statement;
 
 class QueryTest extends TestBase
 {
-    static private $tree;
-
-    static public function setUpBeforeClass()
+    protected function getTree()
     {
         $source = "
             var a = 1, b = 2, c = 3;
@@ -56,12 +54,7 @@ class QueryTest extends TestBase
                 21, 22, 23, 24, 25, 26, 27, 28, 29, 30
             ];
         ";
-        self::$tree = \Peast\Peast::latest($source)->parse();
-    }
-
-    static public function tearDownAfterClass()
-    {
-        self::$tree = null;
+        return \Peast\Peast::latest($source)->parse();
     }
 
     public function selectorsProvider()
@@ -721,7 +714,7 @@ class QueryTest extends TestBase
      */
     public function testSelector($selector, $count, $msg, $test, $sort = false)
     {
-        $q = self::$tree->query($selector);
+        $q = $this->getTree()->query($selector);
         $this->assertEquals($count, count($q), "Count $msg");
         if ($count) {
             $checks = array();
@@ -766,7 +759,7 @@ class QueryTest extends TestBase
             "expression" => 0,
             "declaration" => 0
         );
-        self::$tree->traverse(function ($node) use (&$expected) {
+        $this->getTree()->traverse(function ($node) use (&$expected) {
             if ($node instanceof Pattern) {
                 $expected["pattern"]++;
             }
@@ -781,7 +774,7 @@ class QueryTest extends TestBase
             }
         });
         foreach ($expected as $selector => $count) {
-            $realCount = count(self::$tree->query(":$selector"));
+            $realCount = count($this->getTree()->query(":$selector"));
             $this->assertNotEquals(0, $realCount, "Selector :$selector not 0");
             $this->assertEquals($count, $realCount, "Selector :$selector");
         }
@@ -789,7 +782,7 @@ class QueryTest extends TestBase
 
     public function testQueryObjectMethods()
     {
-        $q = self::$tree->query("AssignmentExpression");
+        $q = $this->getTree()->query("AssignmentExpression");
         $q->find("> ArrayExpression > Literal");
         $q->filter("[value>5]");
         $q->filter("[value<8]");
@@ -812,7 +805,7 @@ class QueryTest extends TestBase
     public function testInvalidIndex()
     {
         $this->expectException('Exception');
-        $q = self::$tree->query("FunctionDeclaration");
+        $q = $this->getTree()->query("FunctionDeclaration");
         $q->get(1000);
     }
 
@@ -855,6 +848,6 @@ class QueryTest extends TestBase
     public function testInvalidSelectors($selector)
     {
         $this->expectException('Peast\Selector\Exception');
-        self::$tree->query($selector);
+        $this->getTree()->query($selector);
     }
 }
