@@ -699,6 +699,13 @@ class QueryTest extends TestBase
                     array("FunctionDeclaration", 'call1')
                 )
             ),
+            array(
+                ">FunctionDeclaration ReturnStatement>ArrayExpression>:nth-child(2)", 1,
+                "complex selector",
+                array(
+                    array("Literal", 0xFFEF)
+                )
+            ),
         );
     }
 
@@ -786,7 +793,5 @@ class QueryTest extends TestBase
 
     //@TODO wrong selectors
     //@TODO encoding
-    //@TODO complex
-    //@TODO performance
     //@TODO coverage
 }
