@@ -653,6 +653,52 @@ class QueryTest extends TestBase
                 "AssignmentExpression > ArrayExpression > :nth-last-child(-n)", 0,
                 "selector pseudo nth-last-child -n", null
             ),
+            array(
+                "AssignmentExpression > ArrayExpression > :not([value<29])", 2,
+                "selector pseudo not filter",
+                array(
+                    array("Literal", 29),
+                    array("Literal", 30),
+                )
+            ),
+            array(
+                "FunctionDeclaration:not(>[name='call2'],>[name='call3'])", 1,
+                "selector pseudo not combinator",
+                array(
+                    array("FunctionDeclaration", 'call1')
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :is([value>=29])", 2,
+                "selector pseudo is filter",
+                array(
+                    array("Literal", 29),
+                    array("Literal", 30),
+                )
+            ),
+            array(
+                "FunctionDeclaration:is(>[name='call2'],>[name='call3'])", 2,
+                "selector pseudo is combinator",
+                array(
+                    array("FunctionDeclaration", 'call2'),
+                    array("FunctionDeclaration", 'call3')
+                )
+            ),
+            array(
+                "FunctionDeclaration:has([name='call2'], [name='call3'])", 2,
+                "selector pseudo has filter",
+                array(
+                    array("FunctionDeclaration", 'call2'),
+                    array("FunctionDeclaration", 'call3')
+                )
+            ),
+            array(
+                "FunctionDeclaration:has(>[name='call1'])", 1,
+                "selector pseudo has combinator",
+                array(
+                    array("FunctionDeclaration", 'call1')
+                )
+            ),
         );
     }
 
@@ -739,7 +785,6 @@ class QueryTest extends TestBase
     }
 
     //@TODO wrong selectors
-    //@TODO pseudo (nth-child, nth-last-child, has, in, not)
     //@TODO encoding
     //@TODO complex
     //@TODO performance
