@@ -54,11 +54,9 @@ class PseudoSimple extends Pseudo
             case "first-child":
                 $first = $this->name === "first-child";
                 $props = Utils::getExpandedNodeProperties($parent);
-                if (!count($props)) {
-                    return false;
-                }
-                $cmp = $first ? $props[0] : array_pop($props);
-                return $cmp === $node;
+                return count($props) > 0 && (
+                    $first ? $props[0] === $node : array_pop($props) === $node
+                );
         }
     }
 }

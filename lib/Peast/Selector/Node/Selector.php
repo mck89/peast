@@ -39,16 +39,6 @@ class Selector
     }
 
     /**
-     * Returns the groups
-     *
-     * @return Group[]
-     */
-    public function getGroups()
-    {
-        return $this->groups;
-    }
-
-    /**
      * Executes the current selector on the given matches
      *
      * @param Matches $matches Matches

@@ -48,16 +48,6 @@ class PseudoSelector extends Pseudo
     }
 
     /**
-     * Returns the selector
-     *
-     * @return Selector
-     */
-    public function getSelector()
-    {
-        return $this->selector;
-    }
-
-    /**
      * Returns true if the selector part matches the given node,
      * false otherwise
      *

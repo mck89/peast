@@ -54,16 +54,6 @@ class PseudoIndex extends Pseudo
     }
 
     /**
-     * Returns the step
-     *
-     * @return int
-     */
-    public function getStep()
-    {
-        return $this->step;
-    }
-
-    /**
      * Sets the offset
      *
      * @param int $offset Offset
@@ -74,16 +64,6 @@ class PseudoIndex extends Pseudo
     {
         $this->offset = $offset;
         return $this;
-    }
-
-    /**
-     * Returns the offset
-     *
-     * @return int
-     */
-    public function getOffset()
-    {
-        return $this->offset;
     }
 
     /**

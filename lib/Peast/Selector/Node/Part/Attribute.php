@@ -75,16 +75,6 @@ class Attribute extends Part
     }
 
     /**
-     * Returns the name
-     *
-     * @return array
-     */
-    public function getNames()
-    {
-        return $this->names;
-    }
-
-    /**
      * Sets the operator
      *
      * @param string $operator Operator
@@ -95,16 +85,6 @@ class Attribute extends Part
     {
         $this->operator = $operator;
         return $this;
-    }
-
-    /**
-     * Returns the operator
-     *
-     * @return array|null
-     */
-    public function getOperator()
-    {
-        return $this->operator;
     }
 
     /**
@@ -121,16 +101,6 @@ class Attribute extends Part
     }
 
     /**
-     * Returns the value
-     *
-     * @return mixed|null
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
      * Sets the case insensitive flag
      *
      * @param bool $caseInsensitive Case insensitive flag
@@ -144,16 +114,6 @@ class Attribute extends Part
     }
 
     /**
-     * Returns the case insensitive flag
-     *
-     * @return bool
-     */
-    public function getCaseInsensitive()
-    {
-        return $this->caseInsensitive;
-    }
-
-    /**
      * Sets the regex flag
      *
      * @param bool $regex Regex flag
@@ -164,16 +124,6 @@ class Attribute extends Part
     {
         $this->regex = $regex;
         return $this;
-    }
-
-    /**
-     * Returns the regex flag
-     *
-     * @return bool
-     */
-    public function getRegex()
-    {
-        return $this->regex;
     }
 
     /**

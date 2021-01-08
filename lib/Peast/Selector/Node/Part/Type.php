@@ -39,16 +39,6 @@ class Type extends Part
     }
 
     /**
-     * Returns the selector type
-     *
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
      * Returns true if the selector part matches the given node,
      * false otherwise
      *

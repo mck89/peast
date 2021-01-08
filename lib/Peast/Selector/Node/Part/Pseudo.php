@@ -37,14 +37,4 @@ abstract class Pseudo extends Part
         $this->name = $name;
         return $this;
     }
-
-    /**
-     * Returns the name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
 }

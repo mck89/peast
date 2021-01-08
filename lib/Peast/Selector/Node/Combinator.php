@@ -47,16 +47,6 @@ class Combinator
     }
 
     /**
-     * Returns the operator
-     *
-     * @return string|null
-     */
-    public function getOperator()
-    {
-        return $this->operator;
-    }
-
-    /**
      * Adds a new selector part
      *
      * @param Part\Part $part Part
@@ -66,16 +56,6 @@ class Combinator
     {
         $this->parts[] = $part;
         return $this;
-    }
-
-    /**
-     * Returns the selector parts
-     *
-     * @return Part\Part[]
-     */
-    public function getParts()
-    {
-        return $this->parts;
     }
 
     /**
@@ -133,12 +113,9 @@ class Combinator
             case "+":
                 $adjacent = $this->operator === "+";
                 $matches->map(function ($node, $parent) use ($filter, $adjacent) {
-                    if (!$parent) {
-                        return null;
-                    }
                     $ret = array();
                     $evaluate = false;
-                    $props = Utils::getExpandedNodeProperties($parent);
+                    $props = $parent ? Utils::getExpandedNodeProperties($parent) : array();
                     foreach ($props as $propNode) {
                         if ($evaluate) {
                             if ($propNode && $filter($propNode, $parent)) {

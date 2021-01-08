@@ -39,16 +39,6 @@ class Group
     }
 
     /**
-     * Returns the combinators
-     *
-     * @return Combinator[]
-     */
-    public function getCombinators()
-    {
-        return $this->combinators;
-    }
-
-    /**
      * Executes the current group on the given matches
      *
      * @param Matches $matches Matches

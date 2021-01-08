@@ -239,7 +239,7 @@ class QueryTest extends TestBase
                 )
             ),
             array(
-                "Literal[value=false]", 1,
+                "[value=false]Literal", 1,
                 "selector attr boolean type false",
                 array(
                     array("Literal", false)
