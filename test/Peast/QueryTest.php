@@ -341,6 +341,318 @@ class QueryTest extends TestBase
                     array("Literal", 30)
                 )
             ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-child(even)", 15,
+                "selector pseudo nth-child even",
+                array(
+                    array("Literal", 2),
+                    array("Literal", 4),
+                    array("Literal", 6),
+                    array("Literal", 8),
+                    array("Literal", 10),
+                    array("Literal", 12),
+                    array("Literal", 14),
+                    array("Literal", 16),
+                    array("Literal", 18),
+                    array("Literal", 20),
+                    array("Literal", 22),
+                    array("Literal", 24),
+                    array("Literal", 26),
+                    array("Literal", 28),
+                    array("Literal", 30),
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-child(odd)", 15,
+                "selector pseudo nth-child odd",
+                array(
+                    array("Literal", 1),
+                    array("Literal", 3),
+                    array("Literal", 5),
+                    array("Literal", 7),
+                    array("Literal", 9),
+                    array("Literal", 11),
+                    array("Literal", 13),
+                    array("Literal", 15),
+                    array("Literal", 17),
+                    array("Literal", 19),
+                    array("Literal", 21),
+                    array("Literal", 23),
+                    array("Literal", 25),
+                    array("Literal", 27),
+                    array("Literal", 29),
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-child(3n+4)", 9,
+                "selector pseudo nth-child 3n+4",
+                array(
+                    array("Literal", 4),
+                    array("Literal", 7),
+                    array("Literal", 10),
+                    array("Literal", 13),
+                    array("Literal", 16),
+                    array("Literal", 19),
+                    array("Literal", 22),
+                    array("Literal", 25),
+                    array("Literal", 28)
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-child(5n+6)", 5,
+                "selector pseudo nth-child 5n+6",
+                array(
+                    array("Literal", 6),
+                    array("Literal", 11),
+                    array("Literal", 16),
+                    array("Literal", 21),
+                    array("Literal", 26)
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-child(4n)", 7,
+                "selector pseudo nth-child 4n",
+                array(
+                    array("Literal", 4),
+                    array("Literal", 8),
+                    array("Literal", 12),
+                    array("Literal", 16),
+                    array("Literal", 20),
+                    array("Literal", 24),
+                    array("Literal", 28)
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-child(7)", 1,
+                "selector pseudo nth-child 7",
+                array(
+                    array("Literal", 7)
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-child(n)", 30,
+                "selector pseudo nth-child n",
+                array(
+                    array("Literal", 1),
+                    array("Literal", 2),
+                    array("Literal", 3),
+                    array("Literal", 4),
+                    array("Literal", 5),
+                    array("Literal", 6),
+                    array("Literal", 7),
+                    array("Literal", 8),
+                    array("Literal", 9),
+                    array("Literal", 10),
+                    array("Literal", 11),
+                    array("Literal", 12),
+                    array("Literal", 13),
+                    array("Literal", 14),
+                    array("Literal", 15),
+                    array("Literal", 16),
+                    array("Literal", 17),
+                    array("Literal", 18),
+                    array("Literal", 19),
+                    array("Literal", 20),
+                    array("Literal", 21),
+                    array("Literal", 22),
+                    array("Literal", 23),
+                    array("Literal", 24),
+                    array("Literal", 25),
+                    array("Literal", 26),
+                    array("Literal", 27),
+                    array("Literal", 28),
+                    array("Literal", 29),
+                    array("Literal", 30),
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-child(n+20)", 11,
+                "selector pseudo nth-child n+20",
+                array(
+                    array("Literal", 20),
+                    array("Literal", 21),
+                    array("Literal", 22),
+                    array("Literal", 23),
+                    array("Literal", 24),
+                    array("Literal", 25),
+                    array("Literal", 26),
+                    array("Literal", 27),
+                    array("Literal", 28),
+                    array("Literal", 29),
+                    array("Literal", 30),
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-child(-n+5)", 5,
+                "selector pseudo nth-child -n+5",
+                array(
+                    array("Literal", 1),
+                    array("Literal", 2),
+                    array("Literal", 3),
+                    array("Literal", 4),
+                    array("Literal", 5),
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-child(-n)", 0,
+                "selector pseudo nth-child -n", null
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-last-child(even)", 15,
+                "selector pseudo nth-last-child even",
+                array(
+                    array("Literal", 1),
+                    array("Literal", 3),
+                    array("Literal", 5),
+                    array("Literal", 7),
+                    array("Literal", 9),
+                    array("Literal", 11),
+                    array("Literal", 13),
+                    array("Literal", 15),
+                    array("Literal", 17),
+                    array("Literal", 19),
+                    array("Literal", 21),
+                    array("Literal", 23),
+                    array("Literal", 25),
+                    array("Literal", 27),
+                    array("Literal", 29),
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-last-child(odd)", 15,
+                "selector pseudo nth-last-child odd",
+                array(
+                    array("Literal", 2),
+                    array("Literal", 4),
+                    array("Literal", 6),
+                    array("Literal", 8),
+                    array("Literal", 10),
+                    array("Literal", 12),
+                    array("Literal", 14),
+                    array("Literal", 16),
+                    array("Literal", 18),
+                    array("Literal", 20),
+                    array("Literal", 22),
+                    array("Literal", 24),
+                    array("Literal", 26),
+                    array("Literal", 28),
+                    array("Literal", 30),
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-last-child(3n+4)", 9,
+                "selector pseudo nth-last-child 3n+4",
+                array(
+                    array("Literal", 3),
+                    array("Literal", 6),
+                    array("Literal", 9),
+                    array("Literal", 12),
+                    array("Literal", 15),
+                    array("Literal", 18),
+                    array("Literal", 21),
+                    array("Literal", 24),
+                    array("Literal", 27)
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-last-child(5n+6)", 5,
+                "selector pseudo nth-last-child 5n+6",
+                array(
+                    array("Literal", 5),
+                    array("Literal", 10),
+                    array("Literal", 15),
+                    array("Literal", 20),
+                    array("Literal", 25)
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-last-child(4n)", 7,
+                "selector pseudo nth-last-child 4n",
+                array(
+                    array("Literal", 3),
+                    array("Literal", 7),
+                    array("Literal", 11),
+                    array("Literal", 15),
+                    array("Literal", 19),
+                    array("Literal", 23),
+                    array("Literal", 27)
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-last-child(7)", 1,
+                "selector pseudo nth-last-child 7",
+                array(
+                    array("Literal", 24)
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-last-child(n)", 30,
+                "selector pseudo nth-last-child n",
+                array(
+                    array("Literal", 1),
+                    array("Literal", 2),
+                    array("Literal", 3),
+                    array("Literal", 4),
+                    array("Literal", 5),
+                    array("Literal", 6),
+                    array("Literal", 7),
+                    array("Literal", 8),
+                    array("Literal", 9),
+                    array("Literal", 10),
+                    array("Literal", 11),
+                    array("Literal", 12),
+                    array("Literal", 13),
+                    array("Literal", 14),
+                    array("Literal", 15),
+                    array("Literal", 16),
+                    array("Literal", 17),
+                    array("Literal", 18),
+                    array("Literal", 19),
+                    array("Literal", 20),
+                    array("Literal", 21),
+                    array("Literal", 22),
+                    array("Literal", 23),
+                    array("Literal", 24),
+                    array("Literal", 25),
+                    array("Literal", 26),
+                    array("Literal", 27),
+                    array("Literal", 28),
+                    array("Literal", 29),
+                    array("Literal", 30),
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-last-child(n+20)", 11,
+                "selector pseudo nth-last-child n+20",
+                array(
+                    array("Literal", 1),
+                    array("Literal", 2),
+                    array("Literal", 3),
+                    array("Literal", 4),
+                    array("Literal", 5),
+                    array("Literal", 6),
+                    array("Literal", 7),
+                    array("Literal", 8),
+                    array("Literal", 9),
+                    array("Literal", 10),
+                    array("Literal", 11),
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-last-child(-n+5)", 5,
+                "selector pseudo nth-last-child -n+5",
+                array(
+                    array("Literal", 26),
+                    array("Literal", 27),
+                    array("Literal", 28),
+                    array("Literal", 29),
+                    array("Literal", 30),
+                )
+            ),
+            array(
+                "AssignmentExpression > ArrayExpression > :nth-last-child(-n)", 0,
+                "selector pseudo nth-last-child -n", null
+            ),
         );
     }
 
