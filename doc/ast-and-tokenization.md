@@ -77,7 +77,7 @@ In the examples above you may have noticed the `$options` parameter. This parame
     * `Peast\Peast::SOURCE_TYPE_MODULE`: this indicates that the code is a module and it activates the parsing of `import` and `export` keywords
 * "comments" (from version 1.5): enables comments parsing and attaches the comments to the nodes in the tree. You can get comments attached to nodes using `getLeadingComments` and `getTrailingComments` methods.
 * "jsx" (from version 1.8): enables parsing of JSX syntax.
-* "sourceEncoding": to specify the encoding of the code to parse, if not spcified the parser will assume UTF-8.
+* "sourceEncoding": to specify the encoding of the code to parse, if not specified the parser will assume UTF-8.
 * "strictEncoding": if false the parser will handle invalid UTF8 characters in the source code by replacing them with the character defined in the "mbstring.substitute_character" ini setting, otherwise it will throw an exception. (available from version 1.9.4)
 
 Differences from ESTree

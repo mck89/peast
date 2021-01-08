@@ -39,6 +39,7 @@ Read the documentation for more examples and explanations:
 
  1. [AST generation and tokenization](doc/ast-and-tokenization.md)
  2. [Tree Traversing](doc/tree-traversing.md)
- 3. [Rendering](doc/rendering.md)
+ 3. [Querying By Selector](doc/querying-by-selector.md)
+ 4. [Rendering](doc/rendering.md)
 
 [Changelog](doc/changelog.md)
