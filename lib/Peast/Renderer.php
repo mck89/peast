@@ -540,10 +540,14 @@ class Renderer
             case "LabeledStatement":
                 $body = $node->getBody();
                 $code .= $this->renderNode($node->getLabel()) .
-                         ":" .
-                         $this->renderOpts->nl .
-                         $this->getIndentation() .
-                         $this->renderNode($body);
+                         ":";
+                if ($body->getType() === "BlockStatement") {
+                    $code .= $this->renderStatementBlock($body, true);
+                } else {
+                    $code .= $this->renderOpts->nl .
+                             $this->getIndentation() .
+                             $this->renderNode($body);
+                }
                 if ($this->requiresSemicolon($body)) {
                     $code .= ";";
                 }
@@ -999,6 +1003,11 @@ class Renderer
                 if (count($n->getBody()) !== 1) {
                     return Traverser::DONT_TRAVERSE_CHILD_NODES;
                 }
+            } elseif ($type === "LabeledStatement") {
+                if ($n->getBody()->getType() === "BlockStatement") {
+                    $forceBrackets = true;
+                }
+                return Traverser::DONT_TRAVERSE_CHILD_NODES;
             } elseif (!in_array($type, $optBracketNodes)) {
                 return Traverser::DONT_TRAVERSE_CHILD_NODES;
             }
