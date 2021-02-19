@@ -713,6 +713,13 @@ class CommentsRegistryTest extends TestBase
                         "jsx" => true
                     )
                 )
+            ),
+            array(
+                array(
+                    "source" => "(/<!-- a -->/)",
+                    "nodes" => array(),
+                    "tokens" => array()
+                )
             )
         );
     }

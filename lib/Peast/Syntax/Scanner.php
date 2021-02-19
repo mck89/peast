@@ -537,8 +537,14 @@ class Scanner
     public function getState()
     {
         //Consume current and next tokens so that they wont' be parsed again
-        //if the state is restored
-        $this->getNextToken();
+        //if the state is restored. If the current token is a slash the next
+        //token isn't parsed, this prevents some edge cases where a regexp
+        //that contains something that can be interpreted as a comment causes
+        //the content to be parsed as a real comment too
+        $token = $this->getToken();
+        if ($token && $token->getValue() !== "/") {
+            $this->getNextToken();
+        }
         $state = array();
         foreach ($this->stateProps as $prop) {
             $state[$prop] = $this->$prop;
@@ -796,18 +802,21 @@ class Scanner
         if (!$this->nextToken) {
             $token = $this->getToken();
             $this->currentToken = null;
-            $this->nextToken = $this->getToken();
+            $this->nextToken = $this->getToken(true);
             $this->currentToken = $token;
         }
         return $this->nextToken;
     }
     
     /**
-     * Returns the current token 
+     * Returns the current token
+     *
+     * @param bool $skipEOFChecks  True to skip end of file checks
+     *                             even if the end is reached
      * 
      * @return Token|null
      */
-    public function getToken()
+    public function getToken($skipEOFChecks = false)
     {
         //The current token is returned until consumed
         if ($this->currentToken) {
@@ -828,15 +837,17 @@ class Scanner
         if ($this->isEOF()) {
             //When the end of the source is reached
             //Check if there are open brackets
-            foreach ($this->openBrackets as $bracket => $num) {
-                if ($num) {
-                    return $this->error("Unclosed $bracket");
+            if (!$skipEOFChecks) {
+                foreach ($this->openBrackets as $bracket => $num) {
+                    if ($num) {
+                        return $this->error("Unclosed $bracket");
+                    }
                 }
-            }
-            
-            //Check if there are open templates
-            if (count($this->openTemplates)) {
-                return $this->error("Unterminated template");
+
+                //Check if there are open templates
+                if (count($this->openTemplates)) {
+                    return $this->error("Unterminated template");
+                }
             }
             
             //Register comments and consume them
