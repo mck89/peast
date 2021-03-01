@@ -1277,13 +1277,20 @@ class Parser extends ParserAbstract
         } else {
             
             $this->scanner->setState($state);
-            $notBeforeLet = !$this->scanner->isBefore(array("let"));
             $left = $this->parseLeftHandSideExpression();
 
-            if ($left && $left->getType() === "ChainExpression") {
-                return $this->error(
-                    "Optional chain can't appear in left-hand side"
-                );
+            $beforeLetAsyncOf = false;
+            if ($left) {
+                $leftType = $left->getType();
+                if ($leftType === "Identifier" &&
+                    in_array($left->getName(), array("let", "async", "of"))
+                ) {
+                    $beforeLetAsyncOf = true;
+                } elseif ($leftType === "ChainExpression") {
+                    return $this->error(
+                        "Optional chain can't appear in left-hand side"
+                    );
+                }
             }
 
             $left = $this->expressionToPattern($left);
@@ -1303,7 +1310,7 @@ class Parser extends ParserAbstract
                     $node->setBody($body);
                     return $this->completeNode($node);
                 }
-            } elseif ($notBeforeLet && $left && $this->scanner->consume("of")) {
+            } elseif (!$beforeLetAsyncOf && $left && $this->scanner->consume("of")) {
                 
                 if (($right = $this->isolateContext(
                         array("allowIn" => true),
