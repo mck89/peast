@@ -28,6 +28,11 @@ class Token implements \JSONSerializable
     const TYPE_IDENTIFIER = "Identifier";
     
     /**
+     * Private identifier
+     */
+    const TYPE_PRIVATE_IDENTIFIER = "PrivateIdentifier";
+    
+    /**
      * Keyword
      */
     const TYPE_KEYWORD = "Keyword";

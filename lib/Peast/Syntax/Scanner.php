@@ -1618,6 +1618,12 @@ class Scanner
      */
     protected function scanKeywordOrIdentifier()
     {
+        //Check private identifier start character
+        if ($private = $this->features->privateMethodsAndFields && $this->charAt() === "#") {
+            $this->index++;
+            $this->column++;
+        }
+
         //Consume the maximum number of characters that are unicode escape
         //sequences or valid identifier starts (only the first character) or
         //parts
@@ -1643,6 +1649,9 @@ class Scanner
         //Identify token type
         if ($buffer === "") {
             return null;
+        } elseif ($private) {
+            $type = Token::TYPE_PRIVATE_IDENTIFIER;
+            $buffer = "#" . $buffer;
         } elseif ($buffer === "null") {
             $type = Token::TYPE_NULL_LITERAL;
         } elseif ($buffer === "true" || $buffer === "false") {

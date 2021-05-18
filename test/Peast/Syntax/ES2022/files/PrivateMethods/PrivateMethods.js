@@ -1,0 +1,3 @@
+class test {
+	#method(){}
+}

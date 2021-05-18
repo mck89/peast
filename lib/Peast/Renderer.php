@@ -644,6 +644,9 @@ class Renderer
                          $this->renderOpts->sirb .
                          ")";
             break;
+            case "PrivateIdentifier":
+                $code .= "#" . $node->getName();
+            break;
             case "Property":
                 $value = $node->getValue();
                 $key = $node->getKey();

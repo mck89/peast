@@ -136,4 +136,11 @@ class Features
      * @var bool
      */
     public $numericLiteralSeparator = false;
+
+    /**
+     * Private methods and fields
+     *
+     * @var bool
+     */
+    public $privateMethodsAndFields = false;
 }

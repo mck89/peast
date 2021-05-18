@@ -2452,6 +2452,24 @@ class Parser extends ParserAbstract
         }
         return null;
     }
+
+    /**
+     * Parses a property name. The returned value is an array where there first
+     * element is the property name and the second element is a boolean
+     * indicating if it's a computed property
+     * 
+     * @return array|null
+     */
+    protected function parseClassElementName()
+    {
+        if (
+            $this->features->privateMethodsAndFields &&
+            ($name = $this->parsePrivateIdentifier())
+        ) {
+            return array($name, false);
+        }
+        return $this->parsePropertyName();
+    }
     
     /**
      * Parses a method definition
@@ -2498,7 +2516,7 @@ class Parser extends ParserAbstract
             $error = false;
         }
 
-        if ($prop = $this->parsePropertyName()) {
+        if ($prop = $this->parseClassElementName()) {
 
             if (!$position) {
                 $position = isset($prop[2]) ? $prop[2] : $prop[0];
@@ -3570,6 +3588,23 @@ class Parser extends ParserAbstract
             return $this->error();
         }
         return null;
+    }
+
+    /**
+     * Parses a private identifier
+     * 
+     * @return Node\PrivateIdentifier|null
+     */
+    protected function parsePrivateIdentifier()
+    {
+        $token = $this->scanner->getToken();
+        if (!$token || $token->getType() !== Token::TYPE_PRIVATE_IDENTIFIER) {
+            return null;
+        }
+        $this->scanner->consumeToken();
+        $node = $this->createNode("PrivateIdentifier", $token);
+        $node->setName(substr($token->getValue(), 1));
+        return $this->completeNode($node);
     }
     
     /**

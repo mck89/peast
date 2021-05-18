@@ -18,4 +18,10 @@ namespace Peast\Syntax\ES2022;
  */
 class Features extends \Peast\Syntax\ES2021\Features
 {
+    /**
+     * Private methods and fields
+     *
+     * @var bool
+     */
+    public $privateMethodsAndFields = true;
 }

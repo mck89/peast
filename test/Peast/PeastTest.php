@@ -48,7 +48,7 @@ class PeastTest extends TestBase
     public function testES2022()
     {
         $this->assertTrue(\Peast\Peast::ES2022("")->getFeatures() instanceof \Peast\Syntax\ES2022\Features);
-        $this->assertTrue(\Peast\Peast::ES1e("")->getFeatures() instanceof \Peast\Syntax\ES2022\Features);
+        $this->assertTrue(\Peast\Peast::ES13("")->getFeatures() instanceof \Peast\Syntax\ES2022\Features);
     }
     
     public function testLatest()
