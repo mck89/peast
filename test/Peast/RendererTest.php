@@ -5,7 +5,7 @@ class RendererTest extends TestBase
 {
     protected function getTestVersions()
     {
-        return array("ES2015", "ES2016", "ES2017", "ES2018", "ES2019", "ES2020", "ES2021");
+        return array("ES2015", "ES2016", "ES2017", "ES2018", "ES2019", "ES2020", "ES2021", "ES2022");
     }
     
     public function jsParserTestFilesProvider()

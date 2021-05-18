@@ -28,6 +28,9 @@
         <testsuite name="ES2021">
             <directory>test/Peast/Syntax/ES2021</directory>
         </testsuite>
+        <testsuite name="ES2022">
+            <directory>test/Peast/Syntax/ES2022</directory>
+        </testsuite>
         <testsuite name="Traverser">
             <file>test/Peast/TraverserTest.php</file>
         </testsuite>
