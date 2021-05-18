@@ -38,7 +38,7 @@ class MemberExpression extends ChainElement implements Pattern
     /**
      * Expression's property
      * 
-     * @var Expression
+     * @var Expression|PrivateIdentifier
      */
     protected $property;
     
@@ -77,7 +77,7 @@ class MemberExpression extends ChainElement implements Pattern
     /**
      * Returns the expression's property
      * 
-     * @return Expression
+     * @return Expression|PrivateIdentifier
      */
     public function getProperty()
     {
@@ -87,12 +87,13 @@ class MemberExpression extends ChainElement implements Pattern
     /**
      * Sets the expression's property
      * 
-     * @param Expression $property Property
+     * @param Expression|PrivateIdentifier $property Property
      * 
      * @return $this
      */
-    public function setProperty(Expression $property)
+    public function setProperty($property)
     {
+        $this->assertType($property, array("Expression", "PrivateIdentifier"));
         $this->property = $property;
         return $this;
     }

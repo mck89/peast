@@ -26,16 +26,16 @@ class ClassBody extends Node
     );
     
     /**
-     * Class methods
+     * Class methods and properties
      * 
-     * @var MethodDefinition[]
+     * @var MethodDefinition[]|PropertyDefinition[]
      */
     protected $body = array();
     
     /**
-     * Returns class methods
+     * Returns class methods and properties
      * 
-     * @return MethodDefinition[]
+     * @return MethodDefinition[]|PropertyDefinition[]
      */
     public function getBody()
     {
@@ -43,15 +43,15 @@ class ClassBody extends Node
     }
     
     /**
-     * Sets class methods
+     * Sets class methods and properties
      * 
-     * @param MethodDefinition[] $body Class methods array
+     * @param MethodDefinition[]|PropertyDefinition[] $body Class methods array
      * 
      * @return $this
      */
     public function setBody($body)
     {
-        $this->assertArrayOf($body, "MethodDefinition");
+        $this->assertArrayOf($body, array("MethodDefinition", "PropertyDefinition"));
         $this->body = $body;
         return $this;
     }

@@ -53,7 +53,7 @@ class MethodDefinition extends Node
     /**
      * Method's key
      * 
-     * @var Expression 
+     * @var Expression|PrivateIdentifier
      */
     protected $key;
     
@@ -89,7 +89,7 @@ class MethodDefinition extends Node
     /**
      * Returns the method's key
      * 
-     * @return Expression
+     * @return Expression|PrivateIdentifier
      */
     public function getKey()
     {
@@ -99,12 +99,13 @@ class MethodDefinition extends Node
     /**
      * Sets the method's key
      * 
-     * @param Expression $key Method's key
+     * @param Expression|PrivateIdentifier $key Method's key
      * 
      * @return $this
      */
-    public function setKey(Expression $key)
+    public function setKey($key)
     {
+        $this->assertType($key, array("Expression", "PrivateIdentifier"));
         $this->key = $key;
         return $this;
     }
