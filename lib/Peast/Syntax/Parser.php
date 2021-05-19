@@ -3237,7 +3237,10 @@ class Parser extends ParserAbstract
                 if ($isOptChain) {
                     $optionalChain = $optional = true;
                 }
-                if ($property = $this->parseIdentifier(static::$identifierName)) {
+                if (
+                    ($this->features->privateMethodsAndFields && ($property = $this->parsePrivateIdentifier())) ||
+                    ($property = $this->parseIdentifier(static::$identifierName))
+                ) {
                     $valid = true;
                     $properties[] = array(
                         "type"=> "id",

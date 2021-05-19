@@ -148,7 +148,8 @@ abstract class TestParser extends TestBase
             array("ES2021", "files", "NumericLiteralSeparator", "NumericLiteralSeparator.js")
         ),
         "privateMethodsAndFields"=> array(
-            array("ES2022", "files", "PrivateMethods", "PrivateMethods.js")
+            array("ES2022", "files", "PrivateMethods", "PrivateMethods.js"),
+            array("ES2022", "files", "PrivateMethods", "PrivateMemberExpression.js"),
         )
     );
     

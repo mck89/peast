@@ -565,8 +565,10 @@ class Renderer
                 if ($type === "MemberExpression") {
                     $optional = $node->getOptional();
                 }
+                $propertyType = $property->getType();
                 if ($type === "MemberExpression" &&
-                    ($node->getComputed() || $property->getType() !== "Identifier")) {
+                    ($node->getComputed() ||
+                    ($propertyType !== "Identifier" && $propertyType !== "PrivateIdentifier"))) {
                     $code .= ($optional ? "?." : "") . "[" . $compiledProperty . "]";
                 } else {
                     $code .= ($optional ? "?." : ".") . $compiledProperty;
