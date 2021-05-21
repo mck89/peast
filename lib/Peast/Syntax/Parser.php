@@ -1774,6 +1774,7 @@ class Parser extends ParserAbstract
             return true;
         }
         $staticToken = null;
+        $state = $this->scanner->getState();
         //This code handles the case where "static" is the method name
         if (!$this->scanner->isBefore(array(array("static", "(")), true)) {
             $staticToken = $this->scanner->consume("static");
@@ -1784,8 +1785,22 @@ class Parser extends ParserAbstract
                 $def->setStartPosition($staticToken->getLocation()->getStart());
             }
             return $def;
-        } elseif ($staticToken) {
-            return $this->error();
+        } else {
+            if ($this->features->classFields) {
+                if ($field = $this->parseFieldDefinition()) {
+                    if ($staticToken) {
+                        $field->setStatic(true);
+                        $field->setStartPosition($staticToken->getLocation()->getStart());
+                    }
+                } elseif ($staticToken) {
+                    //Handle the case when "static" is the field name
+                    $this->scanner->setState($state);
+                    $field = $this->parseFieldDefinition();
+                }
+                return $field;
+            } elseif ($staticToken) {
+                return $this->error();
+            }
         }
         
         return null;
@@ -2469,6 +2484,26 @@ class Parser extends ParserAbstract
             return array($name, false);
         }
         return $this->parsePropertyName();
+    }
+
+    protected function parseFieldDefinition()
+    {
+        $state = $this->scanner->getState();
+        if ($prop = $this->parseClassElementName()) {
+            $value = $this->isolateContext(
+                array("allowIn" => true), "parseInitializer"
+            );
+            $this->assertEndOfStatement();
+            $node = $this->createNode("PropertyDefinition", $prop);
+            $node->setKey($prop[0]);
+            if ($value) {
+                $node->setValue($value);
+            }
+            $node->setComputed($prop[1]);
+            return $this->completeNode($node);
+        }
+        $this->scanner->setState($state);
+        return null;
     }
     
     /**

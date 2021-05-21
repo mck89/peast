@@ -24,4 +24,11 @@ class Features extends \Peast\Syntax\ES2021\Features
      * @var bool
      */
     public $privateMethodsAndFields = true;
+
+    /**
+     * Class fields
+     *
+     * @var bool
+     */
+    public $classFields = true;
 }

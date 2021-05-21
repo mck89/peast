@@ -48,6 +48,7 @@ class Renderer
         "TryStatement",
         "WhileStatement",
         "WithStatement",
+        "MethodDefinition"
     );
     
     /**
@@ -247,7 +248,7 @@ class Renderer
                     $code .= " extends " . $this->renderNode($superClass);
                 }
                 $code .= $this->renderStatementBlock(
-                    $node->getBody(), true, false, false
+                    $node->getBody(), true, false, true
                 );
             break;
             case "ConditionalExpression":
@@ -686,6 +687,23 @@ class Renderer
                                  $this->renderOpts->sao .
                                  $compiledValue;
                     }
+                }
+            break;
+            case "PropertyDefinition":
+                if ($node->getStatic()) {
+                    $code .= "static ";
+                }
+                $compiledKey = $this->renderNode($node->getKey());
+                if ($node->getComputed()) {
+                    $code .= "[" . $compiledKey . "]";
+                } else {
+                    $code .= $compiledKey;
+                }
+                if ($value = $node->getValue()) {
+                    $code .= $this->renderOpts->sao .
+                             "=" .
+                             $this->renderOpts->sao .
+                             $this->renderNode($value);
                 }
             break;
             case "RegExpLiteral":

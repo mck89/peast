@@ -143,4 +143,11 @@ class Features
      * @var bool
      */
     public $privateMethodsAndFields = false;
+
+    /**
+     * Class fields
+     *
+     * @var bool
+     */
+    public $classFields = false;
 }
