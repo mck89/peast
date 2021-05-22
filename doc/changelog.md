@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.13.0
+* Implemented ES2022 parser with class fields and private class methods
+
 #### 1.12.0
 * Added options array to Traverser constructor and shortcut method on nodes
 * Added Query class
