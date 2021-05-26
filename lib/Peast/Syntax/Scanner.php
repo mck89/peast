@@ -633,21 +633,6 @@ class Scanner
     }
     
     /**
-     * Checks if the given index is at the end of the source code
-     * 
-     * @param int $index Index, if not given it will use the current index
-     * 
-     * @return bool
-     */
-    public function isEOF($index = null)
-    {
-        if ($index === null) {
-            $index = $this->index;
-        }
-        return $index >= $this->length;
-    }
-    
-    /**
      * Throws a syntax error
      * 
      * @param string $message Error message
@@ -833,9 +818,9 @@ class Scanner
                 );
             }
         }
-        
-        if ($this->isEOF()) {
-            //When the end of the source is reached
+
+        //When the end of the source is reached
+        if ($this->index >= $this->length) {
             //Check if there are open brackets
             if (!$skipEOFChecks) {
                 foreach ($this->openBrackets as $bracket => $num) {
