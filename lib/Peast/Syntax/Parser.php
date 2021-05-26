@@ -3590,21 +3590,21 @@ class Parser extends ParserAbstract
         if ($token = $this->scanner->consume("this")) {
             $node = $this->createNode("ThisExpression", $token);
             return $this->completeNode($node);
+        } elseif ($exp = $this->parseFunctionOrGeneratorExpression()) {
+            return $exp;
+        } elseif ($exp = $this->parseClassExpression()) {
+            return $exp;
+        } elseif ($exp = $this->parseIdentifier(static::$identifierReference)) {
+            return $exp;
         } elseif ($exp = $this->parseLiteral()) {
             return $exp;
         } elseif ($exp = $this->parseArrayLiteral()) {
             return $exp;
         } elseif ($exp = $this->parseObjectLiteral()) {
             return $exp;
-        } elseif ($exp = $this->parseFunctionOrGeneratorExpression()) {
-            return $exp;
-        } elseif ($exp = $this->parseClassExpression()) {
-            return $exp;
         } elseif ($exp = $this->parseRegularExpressionLiteral()) {
             return $exp;
         } elseif ($exp = $this->parseTemplateLiteral()) {
-            return $exp;
-        } elseif ($exp = $this->parseIdentifier(static::$identifierReference)) {
             return $exp;
         } elseif ($this->jsx && ($exp = $this->parseJSXFragment())) {
             return $exp;
