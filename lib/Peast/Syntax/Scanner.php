@@ -629,7 +629,7 @@ class Scanner
         if ($index === null) {
             $index = $this->index;
         }
-        return $this->isEOF($index) ? null : $this->source[$index];
+        return $index < $this->length ? $this->source[$index] : null;
     }
     
     /**
