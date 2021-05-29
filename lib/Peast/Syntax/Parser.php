@@ -1388,11 +1388,11 @@ class Parser extends ParserAbstract
     protected function checkAsyncFunctionStart($checkFn = true)
     {
         return ($asyncToken = $this->scanner->getToken()) &&
-        $asyncToken->getValue() === "async" &&
+        $asyncToken->value === "async" &&
         (
             !$checkFn ||
             (($nextToken = $this->scanner->getNextToken()) &&
-                $nextToken->getValue() === "function")
+                $nextToken->value === "function")
         ) &&
         $this->scanner->noLineTerminators(true) ?
             $asyncToken :
@@ -1823,13 +1823,13 @@ class Parser extends ParserAbstract
             if ($declarations) {
                 $this->assertEndOfStatement();
                 $node = $this->createNode("VariableDeclaration", $token);
-                $node->setKind($token->getValue());
+                $node->setKind($token->value);
                 $node->setDeclarations($declarations);
                 return $this->completeNode($node);
             }
             
             // "let" can be used as variable name in non-strict mode
-            if ($this->scanner->getStrictMode() || $token->getValue() !== "let") {
+            if ($this->scanner->getStrictMode() || $token->value !== "let") {
                 return $this->error();
             } else {
                 $this->scanner->setState($state);
@@ -1917,13 +1917,13 @@ class Parser extends ParserAbstract
             if ($declaration = $this->parseForBinding()) {
 
                 $node = $this->createNode("VariableDeclaration", $token);
-                $node->setKind($token->getValue());
+                $node->setKind($token->value);
                 $node->setDeclarations(array($declaration));
                 return $this->completeNode($node);
             }
             
             // "let" can be used as variable name in non-strict mode
-            if ($this->scanner->getStrictMode() || $token->getValue() !== "let") {
+            if ($this->scanner->getStrictMode() || $token->value !== "let") {
                 return $this->error();
             } else {
                 $this->scanner->setState($state);
@@ -3002,7 +3002,7 @@ class Parser extends ParserAbstract
                             "AssignmentExpression", $expr
                         );
                         $node->setLeft($this->expressionToPattern($expr));
-                        $node->setOperator($operator->getValue());
+                        $node->setOperator($operator->value);
                         $node->setRight($right);
                         return $this->completeNode($node);
                     }
@@ -3066,7 +3066,7 @@ class Parser extends ParserAbstract
         $list = array($exp);
         $coalescingFound = $andOrFound = false;
         while ($token = $this->scanner->consumeOneOf(array_keys($operators))) {
-            $op = $token->getValue();
+            $op = $token->value;
             // Coalescing and logical expressions can't be used together
             if ($op === "??") {
                 $coalescingFound = true;
@@ -3137,7 +3137,7 @@ class Parser extends ParserAbstract
         } elseif ($token = $this->scanner->consumeOneOf($operators)) {
             if ($argument = $this->parseUnaryExpression()) {
 
-                $op = $token->getValue();
+                $op = $token->value;
 
                 //Deleting a variable without accessing its properties is a
                 //syntax error in strict mode
@@ -3194,7 +3194,7 @@ class Parser extends ParserAbstract
                 }
                 
                 $node = $this->createNode("UpdateExpression", $argument);
-                $node->setOperator($token->getValue());
+                $node->setOperator($token->value);
                 $node->setArgument($argument);
                 return $this->completeNode($node);
             }
@@ -3268,7 +3268,7 @@ class Parser extends ParserAbstract
         while (true) {
             $optional = false;
             if ($opToken = $this->scanner->consumeOneOf(array("?.", "."))) {
-                $isOptChain = $opToken->getValue() == "?.";
+                $isOptChain = $opToken->value == "?.";
                 if ($isOptChain) {
                     $optionalChain = $optional = true;
                 }
@@ -3636,12 +3636,12 @@ class Parser extends ParserAbstract
     protected function parsePrivateIdentifier()
     {
         $token = $this->scanner->getToken();
-        if (!$token || $token->getType() !== Token::TYPE_PRIVATE_IDENTIFIER) {
+        if (!$token || $token->type !== Token::TYPE_PRIVATE_IDENTIFIER) {
             return null;
         }
         $this->scanner->consumeToken();
         $node = $this->createNode("PrivateIdentifier", $token);
-        $node->setName(substr($token->getValue(), 1));
+        $node->setName(substr($token->value, 1));
         return $this->completeNode($node);
     }
     
@@ -3663,11 +3663,11 @@ class Parser extends ParserAbstract
         }
         if ($after !== null) {
             $next = $this->scanner->getNextToken();
-            if (!$next || $next->getValue() !== $after) {
+            if (!$next || $next->value !== $after) {
                 return null;
             }
         }
-        $type = $token->getType();
+        $type = $token->type;
         switch ($type) {
             case Token::TYPE_BOOLEAN_LITERAL:
             case Token::TYPE_NULL_LITERAL:
@@ -3692,7 +3692,7 @@ class Parser extends ParserAbstract
         }
         
         //Exclude keywords that depend on parser context
-        $value = $token->getValue();
+        $value = $token->value;
         if ($mode === self::ID_MIXED &&
             isset($this->contextKeywords[$value]) &&
             $this->context->{$this->contextKeywords[$value]}
@@ -3714,14 +3714,14 @@ class Parser extends ParserAbstract
     protected function parseLiteral()
     {
         if ($token = $this->scanner->getToken()) {
-            if ($token->getType() === Token::TYPE_NULL_LITERAL) {
+            if ($token->type === Token::TYPE_NULL_LITERAL) {
                 $this->scanner->consumeToken();
                 $node = $this->createNode("NullLiteral", $token);
                 return $this->completeNode($node);
-            } elseif ($token->getType() === Token::TYPE_BOOLEAN_LITERAL) {
+            } elseif ($token->type === Token::TYPE_BOOLEAN_LITERAL) {
                 $this->scanner->consumeToken();
                 $node = $this->createNode("BooleanLiteral", $token);
-                $node->setRaw($token->getValue());
+                $node->setRaw($token->value);
                 return $this->completeNode($node);
             } elseif ($literal = $this->parseStringLiteral()) {
                 return $literal;
@@ -3740,8 +3740,8 @@ class Parser extends ParserAbstract
     protected function parseStringLiteral()
     {
         $token = $this->scanner->getToken();
-        if ($token && $token->getType() === Token::TYPE_STRING_LITERAL) {
-            $val = $token->getValue();
+        if ($token && $token->type === Token::TYPE_STRING_LITERAL) {
+            $val = $token->value;
             $this->checkInvalidEscapeSequences($val);
             $this->scanner->consumeToken();
             $node = $this->createNode("StringLiteral", $token);
@@ -3759,15 +3759,15 @@ class Parser extends ParserAbstract
     protected function parseNumericLiteral()
     {
         $token = $this->scanner->getToken();
-        if ($token && $token->getType() === Token::TYPE_NUMERIC_LITERAL) {
-            $val = $token->getValue();
+        if ($token && $token->type === Token::TYPE_NUMERIC_LITERAL) {
+            $val = $token->value;
             $this->checkInvalidEscapeSequences($val, true);
             $this->scanner->consumeToken();
             $node = $this->createNode("NumericLiteral", $token);
             $node->setRaw($val);
             return $this->completeNode($node);
-        } elseif ($token && $token->getType() === Token::TYPE_BIGINT_LITERAL) {
-            $val = $token->getValue();
+        } elseif ($token && $token->type === Token::TYPE_BIGINT_LITERAL) {
+            $val = $token->value;
             $this->checkInvalidEscapeSequences($val, true);
             $this->scanner->consumeToken();
             $node = $this->createNode("BigIntLiteral", $token);
@@ -3788,12 +3788,12 @@ class Parser extends ParserAbstract
     {
         $token = $this->scanner->getToken();
         
-        if (!$token || $token->getType() !== Token::TYPE_TEMPLATE) {
+        if (!$token || $token->type !== Token::TYPE_TEMPLATE) {
             return null;
         }
         
         //Do not parse templates parts
-        $val = $token->getValue();
+        $val = $token->value;
         if ($val[0] !== "`") {
             return null;
         }
@@ -3802,7 +3802,7 @@ class Parser extends ParserAbstract
         $valid = false;
         do {
             $this->scanner->consumeToken();
-            $val = $token->getValue();
+            $val = $token->value;
             $this->checkInvalidEscapeSequences($val, false, true, $tagged);
             $lastChar = substr($val, -1);
             
@@ -3827,7 +3827,7 @@ class Parser extends ParserAbstract
             }
             
             $token = $this->scanner->getToken();
-        } while ($token && $token->getType() === Token::TYPE_TEMPLATE);
+        } while ($token && $token->type === Token::TYPE_TEMPLATE);
         
         if ($valid) {
             $node = $this->createNode("TemplateLiteral", $quasis[0]);
@@ -3849,7 +3849,7 @@ class Parser extends ParserAbstract
         if ($token = $this->scanner->reconsumeCurrentTokenAsRegexp()) {
             $this->scanner->consumeToken();
             $node = $this->createNode("RegExpLiteral", $token);
-            $node->setRaw($token->getValue());
+            $node->setRaw($token->value);
             return $this->completeNode($node);
         }
         return null;
@@ -3866,9 +3866,9 @@ class Parser extends ParserAbstract
     {
         $directives = $nodes = array();
         while (($token = $this->scanner->getToken()) &&
-            $token->getType() === Token::TYPE_STRING_LITERAL
+            $token->type === Token::TYPE_STRING_LITERAL
         ) {
-            $directive = substr($token->getValue(), 1, -1);
+            $directive = substr($token->value, 1, -1);
             if ($directive === "use strict") {
                 $directives[] = $directive;
                 $directiveNode = $this->parseStringLiteral();

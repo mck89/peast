@@ -92,21 +92,21 @@ class Token implements \JSONSerializable
      * 
      * @var string 
      */
-    protected $type;
+    public $type;
     
     /**
      * Token's value
      * 
      * @var string 
      */
-    protected $value;
+    public $value;
     
     /**
      * Token's location in the source code
      * 
      * @var SourceLocation 
      */
-    protected $location;
+    public $location;
     
     /**
      * Class constructor
@@ -120,20 +120,20 @@ class Token implements \JSONSerializable
         $this->value = $value;
         $this->location = new SourceLocation();
     }
-    
+
     /**
      * Returns the token's type
-     * 
+     *
      * @return string
      */
     public function getType()
     {
         return $this->type;
     }
-    
+
     /**
      * Returns the token's value
-     * 
+     *
      * @return string
      */
     public function getValue()
@@ -185,9 +185,9 @@ class Token implements \JSONSerializable
     public function jsonSerialize()
     {
         return array(
-            "type" => $this->getType(),
-            "value" => $this->getValue(),
-            "location" => $this->getLocation()
+            "type" => $this->type,
+            "value" => $this->value,
+            "location" => $this->location
         );
     }
 }

@@ -523,10 +523,10 @@ class Scanner
      */
     public function isStrictModeKeyword($token)
     {
-        return $token->getType() === Token::TYPE_KEYWORD &&
-               (in_array($token->getValue(), $this->keywords) || (
+        return $token->type === Token::TYPE_KEYWORD &&
+               (in_array($token->value, $this->keywords) || (
                 $this->strictMode &&
-                in_array($token->getValue(), $this->strictModeKeywords)));
+                in_array($token->value, $this->strictModeKeywords)));
     }
     
     /**
@@ -542,7 +542,7 @@ class Scanner
         //that contains something that can be interpreted as a comment causes
         //the content to be parsed as a real comment too
         $token = $this->getToken();
-        if ($token && $token->getValue() !== "/") {
+        if ($token && $token->value !== "/") {
             $this->getNextToken();
         }
         $state = array();
@@ -689,7 +689,7 @@ class Scanner
     public function consume($expected)
     {
         $token = $this->getToken();
-        if ($token && $token->getValue() === $expected) {
+        if ($token && $token->value === $expected) {
             $this->consumeToken();
             return $token;
         }
@@ -707,7 +707,7 @@ class Scanner
     public function consumeOneOf($expected)
     {
         $token = $this->getToken();
-        if ($token && in_array($token->getValue(), $expected)) {
+        if ($token && in_array($token->value, $expected)) {
             $this->consumeToken();
             return $token;
         }
@@ -754,7 +754,7 @@ class Scanner
         $token = $this->getToken();
         if (!$token) {
             return false;
-        } elseif (in_array($token->getValue(), $expected)) {
+        } elseif (in_array($token->value, $expected)) {
             return true;
         } elseif (!$nextToken) {
             return false;
@@ -763,14 +763,14 @@ class Scanner
             return false;
         }
         foreach ($expected as $val) {
-            if (!is_array($val) || $val[0] !== $token->getValue()) {
+            if (!is_array($val) || $val[0] !== $token->value) {
                 continue;
             }
             //If the second value in the array is true check that the current
             //token is not followed by line terminators, otherwise compare its
             //value to the next token
             if (($val[1] === true && $this->noLineTerminators(true)) ||
-                ($val[1] !== true && $val[1] === $this->nextToken->getValue())) {
+                ($val[1] !== true && $val[1] === $this->nextToken->value)) {
                 return true;
             }
         }
@@ -995,7 +995,7 @@ class Scanner
     public function reconsumeCurrentTokenAsRegexp()
     {
         $token = $this->getToken();
-        $value = $token ? $token->getValue() : null;
+        $value = $token ? $token->value : null;
         
         //Check if the token starts with "/"
         if (!$value || $value[0] !== "/") {
@@ -1047,7 +1047,7 @@ class Scanner
         //If next token has already been parsed and it's a bracket exclude it
         //from the count of open brackets
         if ($this->nextToken) {
-            $nextVal = $this->nextToken->getValue();
+            $nextVal = $this->nextToken->value;
             if (isset($this->brackets[$nextVal]) &&
                 isset($this->openBrackets[$nextVal])
             ) {

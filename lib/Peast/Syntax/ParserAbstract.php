@@ -297,7 +297,7 @@ abstract class ParserAbstract
                 $message = "Unexpected end of input";
             } else {
                 $position = $token->getLocation()->getStart();
-                $message = "Unexpected: " . $token->getValue();
+                $message = "Unexpected: " . $token->value;
             }
         }
         if (!$position) {
@@ -325,7 +325,7 @@ abstract class ParserAbstract
                 return true;
             }
             $token = $this->scanner->getToken();
-            if (!$token || $token->getValue() === "}") {
+            if (!$token || $token->value === "}") {
                 return true;
             }
         }

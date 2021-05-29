@@ -110,7 +110,7 @@ class CommentsRegistry
     public function onTokenConsumed(Token $token = null)
     {
         //Check if it's a comment
-        if ($token && $token->getType() === Token::TYPE_COMMENT) {
+        if ($token && $token->type === Token::TYPE_COMMENT) {
             //If there is not an open comments buffer, create it
             if (!$this->buffer) {
                 $this->buffer = array(
@@ -312,7 +312,7 @@ class CommentsRegistry
             $commentNode = new Node\Comment;
             $commentNode->setStartPosition($loc->getStart())
                         ->setEndPosition($loc->getEnd())
-                        ->setRawText($comment->getValue());
+                        ->setRawText($comment->value);
             $currentComments[] = $commentNode;
         }
         $node->{"set$fn"}($currentComments);
