@@ -657,7 +657,7 @@ class Scanner
     public function consumeToken()
     {
         //Move the scanner position to the end of the current position
-        $this->position = $this->currentToken->getLocation()->getEnd();
+        $this->position = $this->currentToken->location->getEnd();
         
         //Before consume the token, consume comments associated with it
         if ($this->comments) {
@@ -730,13 +730,13 @@ class Scanner
         if ($nextToken) {
             $nextToken = $this->getNextToken();
             $refLine = !$nextToken ? null :
-                        $nextToken->getLocation()->getEnd()->getLine();
+                        $nextToken->location->getEnd()->getLine();
         } else {
             $refLine = $this->getPosition()->getLine();
         }
         $token = $this->getToken();
         return $token &&
-               $token->getLocation()->getEnd()->getLine() === $refLine;
+               $token->location->getEnd()->getLine() === $refLine;
     }
     
     /**
@@ -863,9 +863,11 @@ class Scanner
                 ($token = $this->scanPunctutator()) ||
                 ($token = $this->scanKeywordOrIdentifier())
             ) {
-                //Set the token stard and end positions
-                $token->setStartPosition($startPosition)
-                      ->setEndPosition($this->getPosition(true));
+                //Set the token start and end positions
+                $token->location->setStartEnd(
+                    $startPosition,
+                    $this->getPosition(true)
+                );
                 $this->currentToken = $token;
                                             
                 //Register comments if required
@@ -1003,7 +1005,7 @@ class Scanner
         }
         
         //Reset the scanner position to the token's start position
-        $startPosition = $token->getLocation()->getStart();
+        $startPosition = $token->location->getStart();
         $this->setScanPosition($startPosition);
         
         $buffer = "/";
@@ -1066,8 +1068,11 @@ class Scanner
             
         //Replace the current token with a regexp token
         $token = new Token(Token::TYPE_REGULAR_EXPRESSION, $buffer);
-        $this->currentToken = $token->setStartPosition($startPosition)
-                                    ->setEndPosition($this->getPosition(true));
+        $token->location->setStartEnd(
+            $startPosition,
+            $this->getPosition(true)
+        );
+        $this->currentToken = $token;
                                     
         if ($comments) {
             //Attach the comments to the new current token
@@ -1150,8 +1155,10 @@ class Scanner
                                 }
                                 $this->adjustColumnAndLine($content);
                                 $token = new Token(Token::TYPE_COMMENT, $content);
-                                $token->setStartPosition($start)
-                                      ->setEndPosition($this->getPosition(true));
+                                $token->location->setStartEnd(
+                                    $start,
+                                    $this->getPosition(true)
+                                );
                                 $comments[] = $token;
                                 //For inline comments the new content contains
                                 //the closing line terminator since the char has
@@ -1208,8 +1215,10 @@ class Scanner
                             }
                             $this->adjustColumnAndLine($content);
                             $token = new Token(Token::TYPE_COMMENT, $content);
-                            $token->setStartPosition($start)
-                                  ->setEndPosition($this->getPosition(true));
+                            $token->location->setStartEnd(
+                                $start,
+                                $this->getPosition(true)
+                            );
                             $comments[] = $token;
                             $content = "";
                             if ($char !== null) {
@@ -1274,8 +1283,10 @@ class Scanner
                                 }
                                 $this->adjustColumnAndLine($content);
                                 $token = new Token(Token::TYPE_COMMENT, $content);
-                                $token->setStartPosition($start)
-                                      ->setEndPosition($this->getPosition(true));
+                                $token->location->setStartEnd(
+                                    $start,
+                                    $this->getPosition(true)
+                                );
                                 $comments[] = $token;
                                 $content = "";
                                 if ($char !== null) {
