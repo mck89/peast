@@ -185,11 +185,11 @@ abstract class ParserAbstract
      *                            element of the array is null the context will
 *                                 be reset before applying new values.
      * @param string      $fn     Method to call
-     * @param array       $args   Method arguments
+     * @param array|null  $args   Method arguments
      * 
      * @return mixed
      */
-    protected function isolateContext($flags, $fn, $args = array())
+    protected function isolateContext($flags, $fn, $args = null)
     {
         //Store the current context
         $oldContext = clone $this->context;
@@ -210,7 +210,7 @@ abstract class ParserAbstract
         }
         
         //Call the method with the given arguments
-        $ret = call_user_func_array(array($this, $fn), $args);
+        $ret = $args ? call_user_func_array(array($this, $fn), $args) : $this->$fn();
         
         //Restore previous context
         $this->context = $oldContext;
