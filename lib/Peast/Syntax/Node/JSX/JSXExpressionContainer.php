@@ -56,7 +56,7 @@ class JSXExpressionContainer extends Node
     {
         $this->assertType(
             $expression,
-            array("\Peast\Syntax\Node\Expression", "JSXEmptyExpression")
+            array("Expression", "JSX\\JSXEmptyExpression")
         );
         $this->expression = $expression;
         return $this;

@@ -79,7 +79,7 @@ abstract class Node implements \JSONSerializable
      */
     public function setLeadingComments($comments)
     {
-        $this->assertArrayOf($comments, "\Peast\Syntax\Node\Comment");
+        $this->assertArrayOf($comments, "Comment");
         $this->leadingComments = $comments;
         return $this;
     }
@@ -103,7 +103,7 @@ abstract class Node implements \JSONSerializable
      */
     public function setTrailingComments($comments)
     {
-        $this->assertArrayOf($comments, "\Peast\Syntax\Node\Comment");
+        $this->assertArrayOf($comments, "Comment");
         $this->trailingComments = $comments;
         return $this;
     }
@@ -224,7 +224,7 @@ abstract class Node implements \JSONSerializable
                     if ($param === null && $allowNull) {
                         continue 2;
                     } else {
-                        $c = $this->addNamespace($class);
+                        $c = "Peast\\Syntax\\Node\\$class";
                         if ($param instanceof $c) {
                             continue 2;
                         }
@@ -257,30 +257,13 @@ abstract class Node implements \JSONSerializable
             }
         } else {
             foreach ($classes as $class) {
-                $c = $this->addNamespace($class);
+                $c = "Peast\\Syntax\\Node\\$class";
                 if ($param instanceof $c) {
                     return;
                 }
             }
             $this->typeError($param, $classes, $allowNull);
         }
-    }
-    
-    /**
-     * Adds the namespace of the current class to the given class name
-     * 
-     * @param string $class Class name to namespace
-     * 
-     * @return string
-     */
-    protected function addNamespace($class)
-    {
-        if ($class[0] === "\\") {
-            return $class;
-        }
-        $parts = explode("\\", get_class($this));
-        $parts[count($parts) -1] = $class;
-        return implode("\\", $parts);
     }
     
     /**

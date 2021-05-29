@@ -62,7 +62,7 @@ class JSXMemberExpression extends Node implements Expression
      */
     public function setObject($object)
     {
-        $this->assertType($object, array("JSXMemberExpression", "JSXIdentifier"));
+        $this->assertType($object, array("JSX\\JSXMemberExpression", "JSX\\JSXIdentifier"));
         $this->object = $object;
         return $this;
     }

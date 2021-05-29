@@ -94,8 +94,8 @@ class JSXFragment extends Node implements Expression
     public function setChildren($children)
     {
         $this->assertArrayOf($children, array(
-            "JSXText", "JSXExpressionContainer", "JSXSpreadChild", "JSXElement",
-            "JSXFragment"
+            "JSX\\JSXText", "JSX\\JSXExpressionContainer", "JSX\\JSXSpreadChild",
+            "JSX\\JSXElement", "JSX\\JSXFragment"
         ));
         $this->children = $children;
         return $this;

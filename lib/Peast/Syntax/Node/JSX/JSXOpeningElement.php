@@ -64,7 +64,7 @@ class JSXOpeningElement extends JSXBoundaryElement
     public function setAttributes($attrributes)
     {
         $this->assertArrayOf($attrributes, array(
-            "JSXAttribute", "JSXSpreadAttribute"
+            "JSX\\JSXAttribute", "JSX\\JSXSpreadAttribute"
         ));
         $this->attrributes = $attrributes;
         return $this;
