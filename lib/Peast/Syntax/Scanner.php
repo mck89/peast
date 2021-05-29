@@ -1633,6 +1633,11 @@ class Scanner
         
         //Identify token type
         if ($buffer === "") {
+            //Unconsume the hash if nothing was found after that
+            if ($private) {
+                $this->index--;
+                $this->column--;
+            }
             return null;
         } elseif ($private) {
             $type = Token::TYPE_PRIVATE_IDENTIFIER;
