@@ -209,7 +209,7 @@ class Parser extends ParserAbstract
         $program = $this->completeNode($node);
         
         if ($this->scanner->getToken()) {
-            return $this->error();
+            $this->error();
         }
         
         //Execute scanner end operations
@@ -454,7 +454,7 @@ class Parser extends ParserAbstract
                 }
                 return $this->completeNode($node);
             }
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -576,7 +576,7 @@ class Parser extends ParserAbstract
                 }
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -595,15 +595,15 @@ class Parser extends ParserAbstract
             if ($this->scanner->consume("(")) {
                 if (!($param = $this->parseCatchParameter()) ||
                     !$this->scanner->consume(")")) {
-                    return $this->error();
+                    $this->error();
                 }
                 $node->setParam($param);
             } elseif (!$this->features->optionalCatchBinding) {
-                return $this->error();
+                $this->error();
             }
 
             if (!($body = $this->parseBlock())) {
-                return $this->error();
+                $this->error();
             }
 
             $node->setBody($body);
@@ -641,7 +641,7 @@ class Parser extends ParserAbstract
                 return $block;
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -742,7 +742,7 @@ class Parser extends ParserAbstract
                 //Labelled functions are not allowed in strict mode 
                 if ($body instanceof Node\FunctionDeclaration &&
                     $this->scanner->getStrictMode()) {
-                    return $this->error(
+                    $this->error(
                         "Labelled functions are not allowed in strict mode"
                     );
                 }
@@ -754,7 +754,7 @@ class Parser extends ParserAbstract
 
             }
 
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -780,7 +780,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -808,7 +808,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -836,7 +836,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -869,11 +869,11 @@ class Parser extends ParserAbstract
                 }
                 return $cases;
             } elseif ($this->parseDefaultClause()) {
-                return $this->error(
+                $this->error(
                     "Multiple default clause in switch statement"
                 );
             } else {
-                return $this->error();
+                $this->error();
             }
         }
         return null;
@@ -918,7 +918,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -943,7 +943,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -1002,7 +1002,7 @@ class Parser extends ParserAbstract
                 return $node;
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -1030,7 +1030,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -1111,7 +1111,7 @@ class Parser extends ParserAbstract
                 if ($this->scanner->consume("in")) {
 
                     if ($init && $this->scanner->getStrictMode()) {
-                        return $this->error(
+                        $this->error(
                             "For-in variable initializer not allowed in " .
                             "strict mode"
                         );
@@ -1153,7 +1153,7 @@ class Parser extends ParserAbstract
             }
         }
 
-        return $this->error();
+        $this->error();
     }
     
     /**
@@ -1230,7 +1230,7 @@ class Parser extends ParserAbstract
             }
         }
         
-        return $this->error();
+        $this->error();
     }
     
     /**
@@ -1287,7 +1287,7 @@ class Parser extends ParserAbstract
                 ) {
                     $beforeLetAsyncOf = true;
                 } elseif ($leftType === "ChainExpression") {
-                    return $this->error(
+                    $this->error(
                         "Optional chain can't appear in left-hand side"
                     );
                 }
@@ -1329,7 +1329,7 @@ class Parser extends ParserAbstract
             }
         }
         
-        return $this->error();
+        $this->error();
     }
     
     /**
@@ -1370,7 +1370,7 @@ class Parser extends ParserAbstract
                 return $node;
             }
 
-            return $this->error();
+            $this->error();
         }
 
         return null;
@@ -1468,7 +1468,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
 
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -1541,7 +1541,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
 
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -1598,7 +1598,7 @@ class Parser extends ParserAbstract
         }
         if ($hasComma &&
             !$this->features->trailingCommaFunctionCallDeclaration) {
-            return $this->error();
+            $this->error();
         }
         return $list;
     }
@@ -1656,7 +1656,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -1709,7 +1709,7 @@ class Parser extends ParserAbstract
                 return array($heritage, $body);
             }
         }
-        return $this->error();
+        $this->error();
     }
     
     /**
@@ -1725,7 +1725,7 @@ class Parser extends ParserAbstract
                 return $superClass;
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -1799,7 +1799,7 @@ class Parser extends ParserAbstract
                 }
                 return $field;
             } elseif ($staticToken) {
-                return $this->error();
+                $this->error();
             }
         }
         
@@ -1830,7 +1830,7 @@ class Parser extends ParserAbstract
             
             // "let" can be used as variable name in non-strict mode
             if ($this->scanner->getStrictMode() || $token->value !== "let") {
-                return $this->error();
+                $this->error();
             } else {
                 $this->scanner->setState($state);
             }
@@ -1858,7 +1858,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -1924,7 +1924,7 @@ class Parser extends ParserAbstract
             
             // "let" can be used as variable name in non-strict mode
             if ($this->scanner->getStrictMode() || $token->value !== "let") {
-                return $this->error();
+                $this->error();
             } else {
                 $this->scanner->setState($state);
             }
@@ -1980,7 +1980,7 @@ class Parser extends ParserAbstract
             if ($spec = $this->parseStringLiteral()) {
                 return $spec;
             }
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2001,7 +2001,7 @@ class Parser extends ParserAbstract
                     $this->scanner->consume("as")) {
                     $exported = $this->parseIdentifier(static::$identifierName);
                     if (!$exported) {
-                        return $this->error();
+                        $this->error();
                     }
                 }
                 
@@ -2076,7 +2076,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2102,7 +2102,7 @@ class Parser extends ParserAbstract
                 return $list;
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2126,7 +2126,7 @@ class Parser extends ParserAbstract
                     return $this->completeNode($node);
                 }
                 
-                return $this->error();
+                $this->error();
             } else {
                 $node->setExported($local);
                 return $this->completeNode($node);
@@ -2175,7 +2175,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2207,7 +2207,7 @@ class Parser extends ParserAbstract
                     return $ret;
                 }
                 
-                return $this->error();
+                $this->error();
             } else {
                 return $ret;
             }
@@ -2232,7 +2232,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);  
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2258,7 +2258,7 @@ class Parser extends ParserAbstract
                 return $list;
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2286,13 +2286,13 @@ class Parser extends ParserAbstract
         if ($this->scanner->consume("as")) {
             
             if (!($local = $this->parseIdentifier(static::$importedBinding))) {
-                return $this->error();
+                $this->error();
             }
             
             $node->setLocal($local);
             
         } elseif ($requiredAs) {
-            return $this->error();
+            $this->error();
         } else {
             $node->setLocal($imported);
         }
@@ -2384,7 +2384,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2457,7 +2457,7 @@ class Parser extends ParserAbstract
                 return array($name, true, $token);
             }
             
-            return $this->error();
+            $this->error();
         } elseif ($name = $this->parseIdentifier(static::$identifierName)) {
             return array($name, false);
         } elseif ($name = $this->parseStringLiteral()) {
@@ -2622,7 +2622,7 @@ class Parser extends ParserAbstract
         }
 
         if ($error) {
-            return $this->error();
+            $this->error();
         } else {
             $this->scanner->setState($state);
         }
@@ -2676,7 +2676,7 @@ class Parser extends ParserAbstract
                 return array($body, false);
             }
 
-            return $this->error();
+            $this->error();
         } elseif (!$this->scanner->isBefore(array("{")) &&
             $body = $this->isolateContext(
                 $this->features->asyncAwait ?
@@ -2728,7 +2728,7 @@ class Parser extends ParserAbstract
                     return $this->completeNode($node);
                 }
 
-                return $this->error();
+                $this->error();
             }
         }
         $this->scanner->setState($state);
@@ -2761,7 +2761,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2794,7 +2794,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
 
-            return $this->error();
+            $this->error();
             
         }
         
@@ -2844,7 +2844,7 @@ class Parser extends ParserAbstract
                 return $value;
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2900,7 +2900,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
 
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2990,7 +2990,7 @@ class Parser extends ParserAbstract
                 if ($operator = $this->scanner->consumeOneOf($operators)) {
 
                     if ($expr->getType() === "ChainExpression") {
-                        return $this->error(
+                        $this->error(
                             "Optional chain can't appear in left-hand side"
                         );
                     }
@@ -3006,7 +3006,7 @@ class Parser extends ParserAbstract
                         $node->setRight($right);
                         return $this->completeNode($node);
                     }
-                    return $this->error();
+                    $this->error();
                 }
             }
             return $expr;
@@ -3039,7 +3039,7 @@ class Parser extends ParserAbstract
                     return $this->completeNode($node);
                 }
                 
-                return $this->error();
+                $this->error();
             } else {
                 return $test;
             }
@@ -3074,13 +3074,13 @@ class Parser extends ParserAbstract
                 $andOrFound = true;
             }
             if ($coalescingFound && $andOrFound) {
-                return $this->error(
+                $this->error(
                     "Logical expressions must be wrapped in parentheses when " .
                     "inside coalesce expressions"
                 );
             }
             if (!($exp = $this->parseUnaryExpression())) {
-                return $this->error();
+                $this->error();
             }
             $list[] = $op;
             $list[] = $exp;
@@ -3144,7 +3144,7 @@ class Parser extends ParserAbstract
                 if ($op === "delete" &&
                     $this->scanner->getStrictMode() &&
                     $argument instanceof Node\Identifier) {
-                    return $this->error(
+                    $this->error(
                         "Deleting an unqualified identifier is not allowed in strict mode"
                     );
                 }
@@ -3154,7 +3154,7 @@ class Parser extends ParserAbstract
                 } else {
                     if ($op === "++" || $op === "--") {
                         if ($argument->getType() === "ChainExpression") {
-                            return $this->error(
+                            $this->error(
                                 "Optional chain can't appear in left-hand side"
                             );
                         }
@@ -3169,7 +3169,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
 
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -3188,7 +3188,7 @@ class Parser extends ParserAbstract
             ) {
 
                 if ($argument->getType() === "ChainExpression") {
-                    return $this->error(
+                    $this->error(
                         "Optional chain can't appear in left-hand side"
                     );
                 }
@@ -3220,7 +3220,7 @@ class Parser extends ParserAbstract
                 if ($this->scanner->consume(".")) {
                     //new.target
                     if (!$this->scanner->consume("target")) {
-                        return $this->error();
+                        $this->error();
                     }
                     $node = $this->createNode("MetaProperty", $newToken);
                     $node->setMeta("new");
@@ -3238,7 +3238,7 @@ class Parser extends ParserAbstract
             $importToken = $this->scanner->consume("import");
             $this->scanner->consume(".");
             if (!$this->scanner->consume("meta")) {
-                return $this->error();
+                $this->error();
             }
             $node = $this->createNode("MetaProperty", $importToken);
             $node->setMeta("import");
@@ -3257,7 +3257,7 @@ class Parser extends ParserAbstract
         ) {
             
             if ($newTokensCount) {
-                return $this->error();
+                $this->error();
             }
             return null;
         }
@@ -3310,7 +3310,7 @@ class Parser extends ParserAbstract
                 }
             } elseif ($property = $this->parseTemplateLiteral(true)) {
                 if ($optionalChain) {
-                    return $this->error(
+                    $this->error(
                         "Optional chain can't appear in tagged template expressions"
                     );
                 }
@@ -3335,7 +3335,7 @@ class Parser extends ParserAbstract
         $propCount = count($properties);
         
         if (!$valid) {
-            return $this->error();
+            $this->error();
         } elseif (!$propCount && !$newTokensCount) {
             return $object;
         }
@@ -3351,7 +3351,7 @@ class Parser extends ParserAbstract
             if ($property["type"] === "args") {
                 if ($newTokensCount) {
                     if ($optionalChainStarted && $newTokensCount) {
-                        return $this->error(
+                        $this->error(
                             "Optional chain can't appear in new expressions"
                         );
                     }
@@ -3427,7 +3427,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -3468,7 +3468,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -3488,7 +3488,7 @@ class Parser extends ParserAbstract
                 return $args;
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -3515,7 +3515,7 @@ class Parser extends ParserAbstract
                 if ($spread ||
                     ($hasComma &&
                     !$this->features->trailingCommaFunctionCallDeclaration)) {
-                    return $this->error();
+                    $this->error();
                 }
                 break;
             }
@@ -3575,7 +3575,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -3623,7 +3623,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -3836,7 +3836,7 @@ class Parser extends ParserAbstract
             return $this->completeNode($node);
         }
         
-        return $this->error();
+        $this->error();
     }
     
     /**
@@ -3903,7 +3903,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
 
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -3932,14 +3932,14 @@ class Parser extends ParserAbstract
         if ($number) {
             if ($val && $val[0] === "0" && preg_match("#^0[0-7_]+$#", $val)) {
                 if ($checkLegacyOctal) {
-                    return $this->error(
+                    $this->error(
                         "Octal literals are not allowed in strict mode"
                     );
                 }
                 if ($this->features->numericLiteralSeparator &&
                     strpos($val, '_') !== false
                 ) {
-                    return $this->error(
+                    $this->error(
                         "Numeric separators are not allowed in legacy octal numbers"
                     );
                 }
@@ -3971,7 +3971,7 @@ class Parser extends ParserAbstract
                         } else {
                             $err = "Octal literals are not allowed in strict mode";
                         }
-                        return $this->error($err);
+                        $this->error($err);
                     }
                 }
             }

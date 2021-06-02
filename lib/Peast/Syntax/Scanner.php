@@ -827,13 +827,13 @@ class Scanner
             if (!$skipEOFChecks) {
                 foreach ($this->openBrackets as $bracket => $num) {
                     if ($num) {
-                        return $this->error("Unclosed $bracket");
+                        $this->error("Unclosed $bracket");
                     }
                 }
 
                 //Check if there are open templates
                 if (count($this->openTemplates)) {
-                    return $this->error("Unterminated template");
+                    $this->error("Unterminated template");
                 }
             }
             
@@ -902,7 +902,7 @@ class Scanner
         if ($origException) {
             throw $origException;
         }
-        return $this->error();
+        $this->error();
     }
     
     /**
@@ -1021,11 +1021,11 @@ class Scanner
             $tempBuffer = $this->consumeUntil($stops);
             if ($tempBuffer === null) {
                 if ($inClass) {
-                    return $this->error(
+                    $this->error(
                         "Unterminated character class in regexp"
                     );
                 } else {
-                    return $this->error("Unterminated regexp");
+                    $this->error("Unterminated regexp");
                 }
             }
             $buffer .= $tempBuffer[0];
@@ -1130,7 +1130,7 @@ class Scanner
                                 //If the end of the source has been reached and
                                 //a multiline comment is still open, it's an
                                 //error
-                                return $this->error("Unterminated comment");
+                                $this->error("Unterminated comment");
                             }
                             $isEnd = true;
                         } else {
@@ -1333,7 +1333,7 @@ class Scanner
             $buffer = $this->consumeUntil($this->stringsStopsLSM, $handleEscape);
             $this->stringsStopsLSM->remove($char);
             if ($buffer === null || $buffer[1] !== $char) {
-                return $this->error("Unterminated string");
+                $this->error("Unterminated string");
             }
             return new Token(Token::TYPE_STRING_LITERAL, $char . $buffer[0]);
         }
@@ -1374,7 +1374,7 @@ class Scanner
             while (true) {
                 $tempBuffer = $this->consumeUntil(array("`", "$"));
                 if (!$tempBuffer) {
-                    return $this->error("Unterminated template");
+                    $this->error("Unterminated template");
                 }
                 $buffer .= $tempBuffer[0];
                 if ($tempBuffer[1] !== "$" || $this->charAt() === "{") {
@@ -1436,13 +1436,13 @@ class Scanner
                 $this->column++;
                 $tempBuffer = $this->consumeNumbers($lower);
                 if ($tempBuffer === null) {
-                    return $this->error("Missing numbers after 0$char");
+                    $this->error("Missing numbers after 0$char");
                 }
                 $buffer .= $char . $tempBuffer;
                 
                 //Check that there are not numbers left
                 if ($this->consumeNumbers() !== null) {
-                    return $this->error();
+                    $this->error();
                 }
 
                 if ($this->features->bigInt && $this->charAt() === "n") {
@@ -1484,7 +1484,7 @@ class Scanner
             //Consume exponent part if present
             if (($tempBuffer = $this->consumeExponentPart()) !== null) {
                 if (!$allowedExp) {
-                    return $this->error("Invalid exponential notation");
+                    $this->error("Invalid exponential notation");
                 }
                 $buffer .= $tempBuffer;
             }
@@ -1521,7 +1521,7 @@ class Scanner
             $char = $this->charAt();
         }
         if ($count && substr($buffer, -1) === "_") {
-            return $this->error(
+            $this->error(
                 "Numeric separators are not allowed at the end of a number"
             );
         }
@@ -1549,7 +1549,7 @@ class Scanner
             }
             $tempBuffer = $this->consumeNumbers();
             if ($tempBuffer === null) {
-                return $this->error("Missing exponent");
+                $this->error("Missing exponent");
             }
             $buffer .= $tempBuffer;
         }
@@ -1576,7 +1576,7 @@ class Scanner
                     !$this->openBrackets[$openBracket]
                 ) {
                     if (!$this->isAfterSlash($this->getPosition(true))) {
-                        return $this->error();
+                        $this->error();
                     }
                 } else {
                     $this->openBrackets[$openBracket]--;

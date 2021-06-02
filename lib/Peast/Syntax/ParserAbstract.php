@@ -329,7 +329,7 @@ abstract class ParserAbstract
                 return true;
             }
         }
-        return $this->error();
+        $this->error();
     }
     
     /**
@@ -358,7 +358,7 @@ abstract class ParserAbstract
             }
         }
         if (!$valid) {
-            return $this->error();
+            $this->error();
         }
         return $list;
     }

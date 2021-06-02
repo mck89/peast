@@ -57,7 +57,7 @@ trait Parser
             !$this->scanner->consume("/") ||
             !$this->scanner->reconsumeCurrentTokenInJSXMode() ||
             $endOpeningToken->value !== ">") {
-            return $this->error();
+            $this->error();
         }
         $this->scanner->consumeToken();
         
@@ -118,7 +118,7 @@ trait Parser
             $exp = $this->parseAssignmentExpression();
             $midPos = $this->scanner->getPosition();
             if (($spread && !$exp) || !$this->scanner->consume("}")) {
-                return $this->error();
+                $this->error();
             }
             $node = $this->createJSXNode(
                 $spread ? "JSXSpreadChild" : "JSXExpressionContainer",
@@ -170,7 +170,7 @@ trait Parser
         $this->scanner->consumeToken();
         
         if (!($name = $this->parseJSXIdentifierOrMemberExpression())) {
-            return $this->error();
+            $this->error();
         }
         
         $attributes = $this->parseJSXAttributes();
@@ -179,7 +179,7 @@ trait Parser
         
         $endOpeningToken = $this->scanner->reconsumeCurrentTokenInJSXMode();
         if (!$endOpeningToken || $endOpeningToken->value !== ">") {
-            return $this->error();
+            $this->error();
         }
         $this->scanner->consumeToken();
         
@@ -196,10 +196,10 @@ trait Parser
             ) {
                 $this->scanner->consumeToken();
                 if (!$this->isSameJSXElementName($name, $closingName)) {
-                    return $this->error("Closing tag does not match opening tag");
+                    $this->error("Closing tag does not match opening tag");
                 }
             } else {
-                return $this->error();
+                $this->error();
             }
             
         }
@@ -266,7 +266,7 @@ trait Parser
             
             $idToken2 = $this->scanner->reconsumeCurrentTokenInJSXMode();
             if (!$idToken2 || $idToken2->type !== Token::TYPE_JSX_IDENTIFIER) {
-                return $this->error();
+                $this->error();
             }
             $this->scanner->consumeToken();
             
@@ -287,7 +287,7 @@ trait Parser
             while ($this->scanner->consume(".")) {
                 $nextId = $this->scanner->reconsumeCurrentTokenInJSXMode();
                 if (!$nextId || $nextId->type !== Token::TYPE_JSX_IDENTIFIER) {
-                    return $this->error();
+                    $this->error();
                 }
                 $this->scanner->consumeToken();
                 $nextIds[] = $nextId;
@@ -349,7 +349,7 @@ trait Parser
             return $this->completeNode($node);
         }
         
-        return $this->error();
+        $this->error();
     }
     
     /**
@@ -386,14 +386,14 @@ trait Parser
                     $value = $this->completeNode($value);
                     
                 } else {
-                    return $this->error();
+                    $this->error();
                 }
                 
             } elseif (
                 !($value = $this->parseJSXFragment()) &&
                 !($value = $this->parseJSXElement())
             ) {
-                return $this->error();
+                $this->error();
             }
         }
         
