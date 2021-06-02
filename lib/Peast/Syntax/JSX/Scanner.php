@@ -93,7 +93,7 @@ trait Scanner
     {
         $buffer = "";
         $char = $this->charAt();
-        if ($char !== null && $this->isIdentifierStart($char)) {
+        if ($char !== null && $this->isIdentifierChar($char)) {
             
             do {
                 $buffer .= $char;
@@ -102,7 +102,7 @@ trait Scanner
                 $char = $this->charAt();
             } while (
                 $char !== null &&
-                ($this->isIdentifierPart($char) || $char === "-")
+                ($this->isIdentifierChar($char, false) || $char === "-")
             );
         }
         

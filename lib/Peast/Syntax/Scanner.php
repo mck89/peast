@@ -1628,22 +1628,28 @@ class Scanner
         //sequences or valid identifier starts (only the first character) or
         //parts
         $buffer = "";
-        $fn = "isIdentifierStart";
+        $start = true;
         while (($char = $this->charAt()) !== null) {
-            if ($this->$fn($char)) {
+            if (
+                ($char >= "a" && $char <= "z") ||
+                ($char >= "A" && $char <= "Z") ||
+                $char === "_" || $char === "$" ||
+                (!$start && $char >= "0" && $char <= "9") ||
+                $this->isIdentifierChar($char, $start)
+            ) {
                 $buffer .= $char;
                 $this->index++;
                 $this->column++;
-            } elseif ($seq = $this->consumeUnicodeEscapeSequence()) {
-                //Verify that is a valid character
-                if (!$this->$fn($seq)) {
+            } elseif ($char === "\\" && ($seq = $this->consumeUnicodeEscapeSequence())) {
+                //Verify that it's a valid character
+                if (!$this->isIdentifierChar($seq, $start)) {
                     break;
                 }
                 $buffer .= $seq;
             } else {
                 break;
             }
-            $fn = "isIdentifierPart";
+            $start = false;
         }
         
         //Identify token type
@@ -1720,34 +1726,21 @@ class Scanner
     }
     
     /**
-     * Checks if the given character is a valid identifier start
+     * Checks if the given character is valid for an identifier
      * 
-     * @param string $char Character to check
+     * @param string $char  Character to check
+     * @param bool   $start If true it will check that the character is
+     *                      valid to start an identifier
      * 
      * @return bool
      */
-    protected function isIdentifierStart($char)
+    protected function isIdentifierChar($char, $start = true)
     {
         return ($char >= "a" && $char <= "z") ||
                ($char >= "A" && $char <= "Z") ||
                $char === "_" || $char === "$" ||
-               preg_match($this->idStartRegex, $char);
-    }
-    
-    /**
-     * Checks if the given character is a valid identifier part
-     * 
-     * @param string $char Character to check
-     * 
-     * @return bool
-     */
-    protected function isIdentifierPart($char)
-    {
-        return ($char >= "a" && $char <= "z") ||
-               ($char >= "A" && $char <= "Z") ||
-               ($char >= "0" && $char <= "9") ||
-               $char === "_" || $char === "$" ||
-               preg_match($this->idPartRegex, $char);
+               (!$start && $char >= "0" && $char <= "9") ||
+               preg_match($start ? $this->idStartRegex : $this->idPartRegex, $char);
     }
     
     /**
