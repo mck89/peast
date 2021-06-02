@@ -541,7 +541,7 @@ class Scanner
         //token isn't parsed, this prevents some edge cases where a regexp
         //that contains something that can be interpreted as a comment causes
         //the content to be parsed as a real comment too
-        $token = $this->getToken();
+        $token = $this->currentToken ?: $this->getToken();
         if ($token && $token->value !== "/") {
             $this->getNextToken();
         }
@@ -708,7 +708,9 @@ class Scanner
      */
     public function consumeOneOf($expected)
     {
-        $token = $this->getToken();
+        //Do not call getToken if there's already a pending token for
+        //performance reasons
+        $token = $this->currentToken ?: $this->getToken();
         if ($token && in_array($token->value, $expected)) {
             $this->consumeToken();
             return $token;
@@ -736,7 +738,7 @@ class Scanner
         } else {
             $refLine = $this->getPosition()->getLine();
         }
-        $token = $this->getToken();
+        $token = $this->currentToken ?: $this->getToken();
         return $token &&
                $token->location->getEnd()->getLine() === $refLine;
     }
@@ -753,7 +755,7 @@ class Scanner
      */
     public function isBefore($expected, $nextToken = false)
     {
-        $token = $this->getToken();
+        $token = $this->currentToken ?: $this->getToken();
         if (!$token) {
             return false;
         } elseif (in_array($token->value, $expected)) {
@@ -787,7 +789,7 @@ class Scanner
     public function getNextToken()
     {
         if (!$this->nextToken) {
-            $token = $this->getToken();
+            $token = $this->currentToken ?: $this->getToken();
             $this->currentToken = null;
             $this->nextToken = $this->getToken(true);
             $this->currentToken = $token;
@@ -998,7 +1000,7 @@ class Scanner
      */
     public function reconsumeCurrentTokenAsRegexp()
     {
-        $token = $this->getToken();
+        $token = $this->currentToken ?: $this->getToken();
         $value = $token ? $token->value : null;
         
         //Check if the token starts with "/"
