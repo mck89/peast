@@ -688,7 +688,9 @@ class Scanner
      */
     public function consume($expected)
     {
-        $token = $this->getToken();
+        //Do not call getToken if there's already a pending token for
+        //performance reasons
+        $token = $this->currentToken ?: $this->getToken();
         if ($token && $token->value === $expected) {
             $this->consumeToken();
             return $token;
