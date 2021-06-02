@@ -393,7 +393,7 @@ class Scanner
         
         $this->linesSplitter = "/" .
                                implode("|", $this->lineTerminators) .
-                               "/u";
+                               "/uS";
         $this->position = new Position(0, 0, 0);
     }
     
