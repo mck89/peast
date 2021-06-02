@@ -157,7 +157,7 @@ class Parser extends ParserAbstract
      */
     protected function postInit()
     {
-        //Remove exponentation operator if the feature
+        //Remove exponentiation operator if the feature
         //is not enabled
         if (!$this->features->exponentiationOperator) {
             Utils::removeArrayValue(
@@ -647,7 +647,7 @@ class Parser extends ParserAbstract
     }
     
     /**
-     * Parses a countinue statement
+     * Parses a continue statement
      * 
      * @return Node\ContinueStatement|null
      */
@@ -1692,7 +1692,7 @@ class Parser extends ParserAbstract
     
     /**
      * Parses the code that comes after the class keyword and class name. The
-     * return value is an array where the first item is the extendend class, if
+     * return value is an array where the first item is the extended class, if
      * any, and the second value is the class body
      * 
      * @return array|null
@@ -2832,7 +2832,7 @@ class Parser extends ParserAbstract
     }
     
     /**
-     * Parses an itlializer
+     * Parses an initializer
      * 
      * @return Node\Node|null
      */
@@ -3092,7 +3092,7 @@ class Parser extends ParserAbstract
             for ($grade = $maxGrade; $grade >= 0; $grade--) {
                 $class = $grade < 2 ? "LogicalExpression" : "BinaryExpression";
                 $r2l = $grade === 10;
-                //Exponentation operator must be parsed right to left
+                //Exponentiation operator must be parsed right to left
                 if ($r2l) {
                     $i = $len - 2;
                     $step = -2;
@@ -3651,7 +3651,7 @@ class Parser extends ParserAbstract
      * @param int   $mode       Parsing mode, one of the id parsing mode
      *                          constants
      * @param string $after     If a string is passed in this parameter, the
-     *                          identifier is parsed only if preceeds this string
+     *                          identifier is parsed only if precedes this string
      * 
      * @return Node\Identifier|null
      */
@@ -3909,7 +3909,7 @@ class Parser extends ParserAbstract
     }
     
     /**
-     * Checks if the given string or number contains invalid ecsape sequences
+     * Checks if the given string or number contains invalid escape sequences
      * 
      * @param string  $val                      Value to check
      * @param bool    $number                   True if the value is a number

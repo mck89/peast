@@ -177,7 +177,7 @@ abstract class ParserAbstract
     }
     
     /**
-     * Calls a method with an isolated parser context, applyng the given flags,
+     * Calls a method with an isolated parser context, applying the given flags,
      * but restoring their values after the execution.
      * 
      * @param array|null  $flags  Key/value array of changes to apply to the

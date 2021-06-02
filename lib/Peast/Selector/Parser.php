@@ -142,7 +142,7 @@ class Parser
                 $first = false;
                 $selCombinator = new Node\Combinator;
                 $selCombinator->setOperator(
-                    $combinator ? $combinator : ($filter ? null : " ")
+                    $combinator ?: ($filter ? null : " ")
                 );
                 foreach ($parts as $part) {
                     $selCombinator->addPart($part);
@@ -364,7 +364,7 @@ class Parser
     /**
      * Parses a literal boolean or null value
      *
-     * @return string|null
+     * @return int|bool|null
      *
      * @throws Exception
      */
@@ -404,7 +404,7 @@ class Parser
     /**
      * Parses a literal number
      *
-     * @return string|null
+     * @return int|float|null
      */
     protected function parseLiteralNumber()
     {
@@ -444,7 +444,7 @@ class Parser
             throw new Exception("Unterminated regex in attribute value");
         }
         $modifiers = $this->consumeWord();
-        return $sep . $reg . ($modifiers ? $modifiers : "");
+        return $sep . $reg . ($modifiers ?: "");
     }
 
     /**

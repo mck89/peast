@@ -331,7 +331,7 @@ trait Parser
     /**
      * Parses a jsx spread attribute
      * 
-     * @return \Peast\Syntax\Node\JSXSpreadAttribute|null
+     * @return \Peast\Syntax\Node\JSX\JSXSpreadAttribute|null
      */
     protected function parseJSXSpreadAttribute()
     {
@@ -355,7 +355,7 @@ trait Parser
     /**
      * Parses a jsx spread attribute
      * 
-     * @return \Peast\Syntax\Node\JSXSpreadAttribute|null
+     * @return \Peast\Syntax\Node\JSX\JSXSpreadAttribute|null
      */
     protected function parseJSXAttribute()
     {

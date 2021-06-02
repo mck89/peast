@@ -355,7 +355,7 @@ class Scanner
             }
         }
 
-        //Remove exponentation operator if the feature
+        //Remove exponentiation operator if the feature
         //is not enabled
         if (!$this->features->exponentiationOperator) {
             Utils::removeArrayValue($this->punctutators, "**");
@@ -674,7 +674,7 @@ class Scanner
             "TokenConsumed", array($this->currentToken)
         );
         
-        $this->currentToken = $this->nextToken ? $this->nextToken : null;
+        $this->currentToken = $this->nextToken;
         $this->nextToken = null;
         return $this;
     }
@@ -1015,7 +1015,7 @@ class Scanner
         $this->column++;
         $inClass = false;
         while (true) {
-            //In a characters class the delmiter "/" is allowed without escape,
+            //In a characters class the delimiter "/" is allowed without escape,
             //so the characters class must be closed before closing the regexp
             $stops = $inClass ? array("]") : array("/", "[");
             $tempBuffer = $this->consumeUntil($stops);
@@ -1591,7 +1591,7 @@ class Scanner
             $this->column++;
             $token = new Token(Token::TYPE_PUNCTUTATOR, $char);
         } elseif (
-            //Try to match the longest puncutator
+            //Try to match the longest punctutator
             $match = $this->punctutatorsLSM->match($this, $this->index, $char)
         ) {
             //Optional chaining punctutator cannot appear before a number, in this
@@ -1775,7 +1775,7 @@ class Scanner
      * @param bool      $handleEscape   True to handle escaping
      * @param bool      $collectStop    True to include the stop character
      * 
-     * @return string|null
+     * @return array|null
      */
     protected function consumeUntil(
         $stops, $handleEscape = true, $collectStop = true

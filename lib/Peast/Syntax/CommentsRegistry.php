@@ -196,7 +196,7 @@ class CommentsRegistry
     /**
      * Finds the node to attach the given comments group
      * 
-     * @param array    $comments   Comments group
+     * @param array    $group   Comments group
      * 
      * @return void
      */

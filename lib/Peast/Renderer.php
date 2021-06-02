@@ -248,7 +248,7 @@ class Renderer
                     $code .= " extends " . $this->renderNode($superClass);
                 }
                 $code .= $this->renderStatementBlock(
-                    $node->getBody(), true, false, true
+                    $node->getBody(), true
                 );
             break;
             case "ConditionalExpression":
@@ -555,6 +555,7 @@ class Renderer
             break;
             case "JSXText":
             case "Literal":
+            case "RegExpLiteral":
                 $code .= $node->getRaw();
             break;
             case "JSXMemberExpression":
@@ -705,9 +706,6 @@ class Renderer
                              $this->renderOpts->sao .
                              $this->renderNode($value);
                 }
-            break;
-            case "RegExpLiteral":
-                $code .= $node->getRaw();
             break;
             case "RestElement":
             case "SpreadElement":
@@ -876,7 +874,7 @@ class Renderer
      *                                                      separator is
      *                                                      mandatory
      * @param bool                      $addSemicolons      Semicolons are
-     *                                                      inserted autmatically
+     *                                                      inserted automatically
      *                                                      if this parameter is
      *                                                      not false
      * @param bool                      $incIndent          If false indentation
