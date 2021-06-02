@@ -22,14 +22,14 @@ class SourceLocation implements \JSONSerializable
      * 
      * @var Position 
      */
-    protected $start;
+    public $start;
     
     /**
      * End position
      * 
      * @var Position 
      */
-    protected $end;
+    public $end;
     
     /**
      * Returns the start position
@@ -76,21 +76,6 @@ class SourceLocation implements \JSONSerializable
         $this->end = $position;
         return $this;
     }
-
-    /**
-     * Sets both start and end positions
-     *
-     * @param Position $start Start position
-     * @param Position $end   End position
-     *
-     * @return $this
-     */
-    public function setStartEnd(Position $start, Position $end)
-    {
-        $this->start = $start;
-        $this->end = $end;
-        return $this;
-    }
     
     /**
      * Returns a serializable version of the object
@@ -100,8 +85,8 @@ class SourceLocation implements \JSONSerializable
     public function jsonSerialize()
     {
         return array(
-            "start" => $this->getStart(),
-            "end" => $this->getEnd()
+            "start" => $this->start,
+            "end" => $this->end
         );
     }
 }

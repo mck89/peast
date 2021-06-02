@@ -68,7 +68,7 @@ trait Parser
         );
         $this->completeNode(
             $openingNode,
-            $endOpeningToken->getLocation()->getEnd()
+            $endOpeningToken->location->end
         );
         
         //Closing tag
@@ -147,7 +147,7 @@ trait Parser
         $this->scanner->consumeToken();
         $node = $this->createJSXNode("JSXText", $token);
         $node->setRaw($token->value);
-        return $this->completeNode($node, $token->getLocation()->getEnd());
+        return $this->completeNode($node, $token->location->end);
     }
     
     /**
@@ -216,7 +216,7 @@ trait Parser
         }
         $this->completeNode(
             $openingNode,
-            $endOpeningToken->getLocation()->getEnd()
+            $endOpeningToken->location->end
         );
         
         //Closing tag
@@ -297,7 +297,7 @@ trait Parser
         //Create the member expression if required
         $objectNode = $idNode;
         foreach ($nextIds as $nid) {
-            $propEnd = $nid->getLocation()->getEnd();
+            $propEnd = $nid->location->end;
             $propNode = $this->createJSXNode("JSXIdentifier", $nid);
             $propNode->setName($nid->value);
             $propNode = $this->completeNode($propNode, $propEnd);

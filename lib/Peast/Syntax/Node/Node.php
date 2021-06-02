@@ -35,7 +35,7 @@ abstract class Node implements \JSONSerializable
      * 
      * @var \Peast\Syntax\SourceLocation 
      */
-    protected $location;
+    public $location;
     
     /**
      * Leading comments array
@@ -137,7 +137,7 @@ abstract class Node implements \JSONSerializable
      */
     public function setStartPosition(\Peast\Syntax\Position $position)
     {
-        $this->location->setStart($position);
+        $this->location->start = $position;
         return $this;
     }
     
@@ -150,7 +150,7 @@ abstract class Node implements \JSONSerializable
      */
     public function setEndPosition(\Peast\Syntax\Position $position)
     {
-        $this->location->setEnd($position);
+        $this->location->end = $position;
         return $this;
     }
     

@@ -235,33 +235,33 @@ class Parser extends ParserAbstract
     {
         if ($node instanceof Node\ArrayExpression) {
             
-            $loc = $node->getLocation();
+            $loc = $node->location;
             $elems = array();
             foreach ($node->getElements() as $elem) {
                 $elems[] = $this->expressionToPattern($elem);
             }
                 
-            $retNode = $this->createNode("ArrayPattern", $loc->getStart());
+            $retNode = $this->createNode("ArrayPattern", $loc->start);
             $retNode->setElements($elems);
-            $this->completeNode($retNode, $loc->getEnd());
+            $this->completeNode($retNode, $loc->end);
             
         } elseif ($node instanceof Node\ObjectExpression) {
             
-            $loc = $node->getLocation();
+            $loc = $node->location;
             $props = array();
             foreach ($node->getProperties() as $prop) {
                 $props[] = $this->expressionToPattern($prop);
             }
                 
-            $retNode = $this->createNode("ObjectPattern", $loc->getStart());
+            $retNode = $this->createNode("ObjectPattern", $loc->start);
             $retNode->setProperties($props);
-            $this->completeNode($retNode, $loc->getEnd());
+            $this->completeNode($retNode, $loc->end);
             
         } elseif ($node instanceof Node\Property) {
             
-            $loc = $node->getLocation();
+            $loc = $node->location;
             $retNode = $this->createNode(
-                "AssignmentProperty", $loc->getStart()
+                "AssignmentProperty", $loc->start
             );
             // If it's a shorthand property convert the value to an assignment
             // pattern if necessary
@@ -272,11 +272,11 @@ class Parser extends ParserAbstract
                 (!$value instanceof Node\Identifier || (
                 $key instanceof Node\Identifier && $key->getName() !== $value->getName()
                 ))) {
-                $loc = $node->getLocation();
-                $valNode = $this->createNode("AssignmentPattern", $loc->getStart());
+                $loc = $node->location;
+                $valNode = $this->createNode("AssignmentPattern", $loc->start);
                 $valNode->setLeft($key);
                 $valNode->setRight($value);
-                $this->completeNode($valNode, $loc->getEnd());
+                $this->completeNode($valNode, $loc->end);
                 $value = $valNode;
             } else {
                 $value = $this->expressionToPattern($value);
@@ -286,24 +286,24 @@ class Parser extends ParserAbstract
             $retNode->setMethod($node->getMethod());
             $retNode->setShorthand($node->getShorthand());
             $retNode->setComputed($node->getComputed());
-            $this->completeNode($retNode, $loc->getEnd());
+            $this->completeNode($retNode, $loc->end);
             
         } elseif ($node instanceof Node\SpreadElement) {
             
-            $loc = $node->getLocation();
-            $retNode = $this->createNode("RestElement", $loc->getStart());
+            $loc = $node->location;
+            $retNode = $this->createNode("RestElement", $loc->start);
             $retNode->setArgument(
                 $this->expressionToPattern($node->getArgument())
             );
-            $this->completeNode($retNode, $loc->getEnd());
+            $this->completeNode($retNode, $loc->end);
             
         } elseif ($node instanceof Node\AssignmentExpression) {
             
-            $loc = $node->getLocation();
-            $retNode = $this->createNode("AssignmentPattern", $loc->getStart());
+            $loc = $node->location;
+            $retNode = $this->createNode("AssignmentPattern", $loc->start);
             $retNode->setLeft($this->expressionToPattern($node->getLeft()));
             $retNode->setRight($node->getRight());
-            $this->completeNode($retNode, $loc->getEnd());
+            $this->completeNode($retNode, $loc->end);
             
         } else {
             $retNode = $node;
@@ -1100,7 +1100,7 @@ class Parser extends ParserAbstract
 
                 if ($init) {
                     $decl->setInit($init);
-                    $decl->setEndPosition($init->getLocation()->getEnd());
+                    $decl->location->end = $init->location->end;
                 }
 
                 $left = $this->createNode("VariableDeclaration", $varToken);
@@ -1362,7 +1362,7 @@ class Parser extends ParserAbstract
                     if (!$node instanceof Node\ForOfStatement) {
                         $this->error(
                             "Async iteration is allowed only with for-of statements",
-                            $startForToken->getLocation()->getStart()
+                            $startForToken->location->start
                         );
                     }
                     $node->setAwait(true);
@@ -1450,10 +1450,8 @@ class Parser extends ParserAbstract
                 $this->scanner->consume("}")
             ) {
 
-                $body->setStartPosition(
-                    $tokenBodyStart->getLocation()->getStart()
-                );
-                $body->setEndPosition($this->scanner->getPosition());
+                $body->location->start = $tokenBodyStart->location->start;
+                $body->location->end = $this->scanner->getPosition();
                 $node = $this->createNode(
                     "FunctionDeclaration",
                     $async ? $async : $token
@@ -1525,10 +1523,8 @@ class Parser extends ParserAbstract
                 $this->scanner->consume("}")
             ) {
 
-                $body->setStartPosition(
-                    $tokenBodyStart->getLocation()->getStart()
-                );
-                $body->setEndPosition($this->scanner->getPosition());
+                $body->location->start = $tokenBodyStart->location->start;
+                $body->location->end = $this->scanner->getPosition();
                 $node = $this->createNode(
                     "FunctionExpression",
                     $async ? $async : $token
@@ -1704,8 +1700,8 @@ class Parser extends ParserAbstract
             
             $body = $this->parseClassBody();
             if ($this->scanner->consume("}")) {
-                $body->setStartPosition($token->getLocation()->getStart());
-                $body->setEndPosition($this->scanner->getPosition());
+                $body->location->start = $token->location->start;
+                $body->location->end = $this->scanner->getPosition();
                 return array($heritage, $body);
             }
         }
@@ -1782,7 +1778,7 @@ class Parser extends ParserAbstract
         if ($def = $this->parseMethodDefinition()) {
             if ($staticToken) {
                 $def->setStatic(true);
-                $def->setStartPosition($staticToken->getLocation()->getStart());
+                $def->location->start = $staticToken->location->start;
             }
             return $def;
         } else {
@@ -1790,7 +1786,7 @@ class Parser extends ParserAbstract
                 if ($field = $this->parseFieldDefinition()) {
                     if ($staticToken) {
                         $field->setStatic(true);
-                        $field->setStartPosition($staticToken->getLocation()->getStart());
+                        $field->location->start = $staticToken->location->start;
                     }
                 } elseif ($staticToken) {
                     //Handle the case when "static" is the field name
@@ -2600,10 +2596,8 @@ class Parser extends ParserAbstract
                         $kind = Node\MethodDefinition::KIND_CONSTRUCTOR;
                     }
 
-                    $body->setStartPosition(
-                        $tokenBodyStart->getLocation()->getStart()
-                    );
-                    $body->setEndPosition($this->scanner->getPosition());
+                    $body->location->start = $tokenBodyStart->location->start;
+                    $body->location->end = $this->scanner->getPosition();
 
                     $nodeFn = $this->createNode("FunctionExpression", $tokenFn);
                     $nodeFn->setParams($params);
@@ -2671,8 +2665,8 @@ class Parser extends ParserAbstract
                 )) &&
                 $this->scanner->consume("}")
             ) {
-                $body->setStartPosition($token->getLocation()->getStart());
-                $body->setEndPosition($this->scanner->getPosition());
+                $body->location->start = $token->location->start;
+                $body->location->end = $this->scanner->getPosition();
                 return array($body, false);
             }
 
@@ -3107,7 +3101,7 @@ class Parser extends ParserAbstract
                         $node->setOperator($list[$i]);
                         $node->setRight($list[$i + 1]);
                         $node = $this->completeNode(
-                            $node, $list[$i + 1]->getLocation()->getEnd()
+                            $node, $list[$i + 1]->location->end
                         );
                         array_splice($list, $i - 1, 3, array($node));
                         if (!$r2l) {
@@ -3341,7 +3335,7 @@ class Parser extends ParserAbstract
         }
         
         $node = null;
-        $endPos = $object->getLocation()->getEnd();
+        $endPos = $object->location->end;
         $optionalChainStarted = false;
         foreach ($properties as $i => $property) {
             $lastNode = $node ? $node : $object;
@@ -3371,7 +3365,7 @@ class Parser extends ParserAbstract
                 $node->setObject($lastNode);
                 $node->setOptional($property["optional"]);
                 $node->setProperty($property["info"]);
-                $endPos = $property["info"]->getLocation()->getEnd();
+                $endPos = $property["info"]->location->end;
             } elseif ($property["type"] === "computed") {
                 $node = $this->createNode("MemberExpression", $lastNode);
                 $node->setObject($lastNode);
@@ -3383,7 +3377,7 @@ class Parser extends ParserAbstract
                 $node = $this->createNode("TaggedTemplateExpression", $object);
                 $node->setTag($lastNode);
                 $node->setQuasi($property["info"]);
-                $endPos = $property["info"]->getLocation()->getEnd();
+                $endPos = $property["info"]->location->end;
             }
             $node = $this->completeNode($node, $endPos);
         }

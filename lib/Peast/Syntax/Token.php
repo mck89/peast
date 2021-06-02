@@ -160,7 +160,7 @@ class Token implements \JSONSerializable
      */
     public function setStartPosition(Position $position)
     {
-        $this->location->setStart($position);
+        $this->location->start = $position;
         return $this;
     }
     
@@ -173,7 +173,7 @@ class Token implements \JSONSerializable
      */
     public function setEndPosition(Position $position)
     {
-        $this->location->setEnd($position);
+        $this->location->end = $position;
         return $this;
     }
     

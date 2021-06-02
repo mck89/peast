@@ -236,15 +236,15 @@ abstract class ParserAbstract
         
         //Add the node start position
         if ($position instanceof Node\Node || $position instanceof Token) {
-            $position = $position->getLocation()->getStart();
+            $position = $position->location->start;
         } elseif (is_array($position)) {
             if (count($position)) {
-                $position = $position[0]->getLocation()->getStart();
+                $position = $position[0]->location->start;
             } else {
                 $position = $this->scanner->getPosition();
             }
         }
-        $node->setStartPosition($position);
+        $node->location->start = $position;
         
         //Emit the NodeCreated event for the node
         $this->eventsEmitter && $this->eventsEmitter->fire(
@@ -267,9 +267,7 @@ abstract class ParserAbstract
     protected function completeNode(Node\Node $node, $position = null)
     {
         //Add the node end position
-        $node->setEndPosition(
-            $position ? $position : $this->scanner->getPosition()
-        );
+        $node->location->end = $position ?: $this->scanner->getPosition();
         
         //Emit the NodeCompleted event for the node
         $this->eventsEmitter && $this->eventsEmitter->fire(
@@ -296,7 +294,7 @@ abstract class ParserAbstract
             if ($token === null) {
                 $message = "Unexpected end of input";
             } else {
-                $position = $token->getLocation()->getStart();
+                $position = $token->location->start;
                 $message = "Unexpected: " . $token->value;
             }
         }

@@ -32,8 +32,8 @@ trait Scanner
         $result = $this->consumeUntil(array("{", "<"), false, false);
         if ($result) {
             $this->currentToken = new Token(Token::TYPE_JSX_TEXT, $result[0]);
-            $this->currentToken->setStartPosition($startPosition)
-                               ->setEndPosition($this->getPosition(true));
+            $this->currentToken->location->start = $startPosition;
+            $this->currentToken->location->end = $this->getPosition(true);
         }
         return $this->currentToken;
     }
