@@ -858,14 +858,14 @@ class Scanner
             
             //Try to match a token
             if (
-                ($this->jsx && ($token = $this->scanJSXString())) ||
                 ($this->jsx && ($token = $this->scanJSXIdentifier())) ||
-                ($token = $this->scanString()) ||
                 ($token = $this->scanTemplate()) ||
                 ($token = $this->scanNumber()) ||
                 ($this->jsx && ($token = $this->scanJSXPunctutator())) ||
                 ($token = $this->scanPunctutator()) ||
-                ($token = $this->scanKeywordOrIdentifier())
+                ($token = $this->scanKeywordOrIdentifier()) ||
+                ($this->jsx && ($token = $this->scanJSXString())) ||
+                ($token = $this->scanString())
             ) {
                 //Set the token start and end positions
                 $token->location->start = $startPosition;
