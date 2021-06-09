@@ -2199,8 +2199,7 @@ class Parser extends ParserAbstract
                     $ret[] = $spec;
                     return $ret;
                 } elseif (($specs = $this->parseNamedImports()) !== null) {
-                    $ret = array_merge($ret, $specs);
-                    return $ret;
+                    return array_merge($ret, $specs);
                 }
                 
                 $this->error();
@@ -3209,7 +3208,7 @@ class Parser extends ParserAbstract
         $newTokens = array();
         
         //Parse all occurrences of "new"
-        if ($newToken = $this->scanner->isBefore(array("new"))) {
+        if ($this->scanner->isBefore(array("new"))) {
             while ($newToken = $this->scanner->consume("new")) {
                 if ($this->scanner->consume(".")) {
                     //new.target
@@ -3338,13 +3337,13 @@ class Parser extends ParserAbstract
         $endPos = $object->location->end;
         $optionalChainStarted = false;
         foreach ($properties as $i => $property) {
-            $lastNode = $node ? $node : $object;
+            $lastNode = $node ?: $object;
             if ($property["optional"]) {
                 $optionalChainStarted = true;
             }
             if ($property["type"] === "args") {
                 if ($newTokensCount) {
-                    if ($optionalChainStarted && $newTokensCount) {
+                    if ($optionalChainStarted) {
                         $this->error(
                             "Optional chain can't appear in new expressions"
                         );
