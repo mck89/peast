@@ -369,29 +369,42 @@ class Parser extends ParserAbstract
      */
     protected function parseStatement()
     {
-        if ($statement = $this->parseBlock()) {
+        //Here the token value is checked for performance so that functions won't be
+        //called if not necessary
+        $token = $this->scanner->getToken();
+        if (!$token) {
+            return null;
+        }
+        $val = $token->getValue();
+        if ($val === "{" && $statement = $this->parseBlock()) {
             return $statement;
-        } elseif ($statement = $this->parseVariableStatement()) {
+        } elseif ($val === "var" && $statement = $this->parseVariableStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseEmptyStatement()) {
+        } elseif ($val === ";" && $statement = $this->parseEmptyStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseIfStatement()) {
+        } elseif ($val === "if" && $statement = $this->parseIfStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseBreakableStatement()) {
+        } elseif (
+            ($val === "for" || $val === "while" || $val === "do" || $val === "switch") &&
+            $statement = $this->parseBreakableStatement()
+        ) {
             return $statement;
-        } elseif ($statement = $this->parseContinueStatement()) {
+        } elseif ($val == "continue" && $statement = $this->parseContinueStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseBreakStatement()) {
+        } elseif ($val === "break" && $statement = $this->parseBreakStatement()) {
             return $statement;
-        } elseif ($this->context->allowReturn && $statement = $this->parseReturnStatement()) {
+        } elseif (
+            $this->context->allowReturn && $val === "return" &&
+            $statement = $this->parseReturnStatement()
+        ) {
             return $statement;
-        } elseif ($statement = $this->parseWithStatement()) {
+        } elseif ($val === "with" && $statement = $this->parseWithStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseThrowStatement()) {
+        } elseif ($val === "throw" && $statement = $this->parseThrowStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseTryStatement()) {
+        } elseif ($val === "try" && $statement = $this->parseTryStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseDebuggerStatement()) {
+        } elseif ($val === "debugger" && $statement = $this->parseDebuggerStatement()) {
             return $statement;
         } elseif ($statement = $this->parseLabelledStatement()) {
             return $statement;
@@ -408,11 +421,19 @@ class Parser extends ParserAbstract
      */
     protected function parseDeclaration()
     {
+        //Here the token value is checked for performance so that functions won't be
+        //called if not necessary
+        $token = $this->scanner->getToken();
+        if (!$token) {
+            return null;
+        }
+        $val = $token->getValue();
         if ($declaration = $this->parseFunctionOrGeneratorDeclaration()) {
             return $declaration;
-        } elseif ($declaration = $this->parseClassDeclaration()) {
+        } elseif ($val === "class" && $declaration = $this->parseClassDeclaration()) {
             return $declaration;
         } elseif (
+            ($val === "let" || $val === "const") &&
             $declaration = $this->isolateContext(
                 array("allowIn" => true), "parseLexicalDeclaration"
             )
