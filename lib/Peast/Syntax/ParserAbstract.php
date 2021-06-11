@@ -335,18 +335,17 @@ abstract class ParserAbstract
      * sequence is not valid
      * 
      * @param callable $fn   Parsing instruction function
-     * @param array    $args Arguments that will be passed to the function
      * @param string   $char Separator
      * 
      * @return array
      * 
      * @throws Exception
      */
-    protected function charSeparatedListOf($fn, $args = array(), $char = ",")
+    protected function charSeparatedListOf($fn, $char = ",")
     {
         $list = array();
         $valid = true;
-        while ($param = call_user_func_array(array($this, $fn), $args)) {
+        while ($param = $this->$fn()) {
             $list[] = $param;
             $valid = true;
             if (!$this->scanner->consume($char)) {
