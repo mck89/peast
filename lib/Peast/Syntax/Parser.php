@@ -375,7 +375,7 @@ class Parser extends ParserAbstract
         if (!$token) {
             return null;
         }
-        $val = $token->getValue();
+        $val = $token->value;
         if ($val === "{" && $statement = $this->parseBlock()) {
             return $statement;
         } elseif ($val === "var" && $statement = $this->parseVariableStatement()) {
@@ -427,7 +427,7 @@ class Parser extends ParserAbstract
         if (!$token) {
             return null;
         }
-        $val = $token->getValue();
+        $val = $token->value;
         if ($declaration = $this->parseFunctionOrGeneratorDeclaration()) {
             return $declaration;
         } elseif ($val === "class" && $declaration = $this->parseClassDeclaration()) {
