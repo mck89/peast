@@ -570,7 +570,13 @@ class Scanner
     public function setState($state)
     {
         if ($this->registerTokens) {
-            $this->tokens = array_slice($this->tokens, 0, $state["tokensNum"]);
+            //Check if tokens have been added
+            if (isset($this->tokens[$state["tokensNum"]])) {
+                //Remove all added tokens
+                for ($i = count($this->tokens) - 1; $i >= $state["tokensNum"]; $i--) {
+                    array_pop($this->tokens);
+                }
+            }
             unset($state["tokensNum"]);
         }
         //Emit the ResetState event and pass the given state
