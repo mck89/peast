@@ -173,13 +173,13 @@ class Scanner
         "implements", "interface", "package", "private", "protected", "public",
         "static", "let", "yield"
     );
-    
+
     /**
-     * Punctutators array
+     * Punctuators array
      * 
      * @var array 
      */
-    protected $punctutators = array(
+    protected $punctuators = array(
         ".", ";", ",", "<", ">", "<=", ">=", "==", "!=", "===", "!==", "+",
         "-", "*", "%", "++", "--", "<<", ">>", ">>>", "&", "|", "^", "!", "~",
         "&&", "||", "?", ":", "=", "+=", "-=", "*=", "%=", "<<=", ">>=", ">>>=",
@@ -188,11 +188,11 @@ class Scanner
     );
     
     /**
-     * Punctutators LSM
+     * Punctuators LSM
      * 
      * @var LSM 
      */
-    protected $punctutatorsLSM;
+    protected $punctuatorsLSM;
     
     /**
      * Strings stops LSM
@@ -358,24 +358,24 @@ class Scanner
         //Remove exponentiation operator if the feature
         //is not enabled
         if (!$this->features->exponentiationOperator) {
-            Utils::removeArrayValue($this->punctutators, "**");
-            Utils::removeArrayValue($this->punctutators, "**=");
+            Utils::removeArrayValue($this->punctuators, "**");
+            Utils::removeArrayValue($this->punctuators, "**=");
         }
 
         if (!$this->features->optionalChaining) {
-            Utils::removeArrayValue($this->punctutators, "?.");
+            Utils::removeArrayValue($this->punctuators, "?.");
         }
 
         //Remove logical assignment operators if the feature
         //is not enabled
         if (!$this->features->logicalAssignmentOperators) {
-            Utils::removeArrayValue($this->punctutators, "&&=");
-            Utils::removeArrayValue($this->punctutators, "||=");
-            Utils::removeArrayValue($this->punctutators, "??=");
+            Utils::removeArrayValue($this->punctuators, "&&=");
+            Utils::removeArrayValue($this->punctuators, "||=");
+            Utils::removeArrayValue($this->punctuators, "??=");
         }
         
-        //Create a LSM for punctutators array
-        $this->punctutatorsLSM = new LSM($this->punctutators);
+        //Create a LSM for punctuators array
+        $this->punctuatorsLSM = new LSM($this->punctuators);
         
         //Create a LSM for strings stops
         $this->stringsStopsLSM = new LSM($this->lineTerminators, true);
@@ -861,8 +861,8 @@ class Scanner
                 ($this->jsx && ($token = $this->scanJSXIdentifier())) ||
                 ($token = $this->scanTemplate()) ||
                 ($token = $this->scanNumber()) ||
-                ($this->jsx && ($token = $this->scanJSXPunctutator())) ||
-                ($token = $this->scanPunctutator()) ||
+                ($this->jsx && ($token = $this->scanJSXPunctuator())) ||
+                ($token = $this->scanPunctuator()) ||
                 ($token = $this->scanKeywordOrIdentifier()) ||
                 ($this->jsx && ($token = $this->scanJSXString())) ||
                 ($token = $this->scanString())
@@ -1466,7 +1466,7 @@ class Scanner
             $buffer .= $tempBuffer;
             
             //If the buffer contains only the dot it should be parsed as
-            //punctutator
+            //punctuator
             if ($buffer === ".") {
                 $this->index--;
                 $this->column--;
@@ -1549,11 +1549,11 @@ class Scanner
     }
     
     /**
-     * Punctutator scanning method
+     * Punctuator scanning method
      * 
      * @return Token|null
      */
-    protected function scanPunctutator()
+    protected function scanPunctuator()
     {
         $token = null;
         $char = $this->charAt();
@@ -1581,12 +1581,12 @@ class Scanner
             }
             $this->index++;
             $this->column++;
-            $token = new Token(Token::TYPE_PUNCTUTATOR, $char);
+            $token = new Token(Token::TYPE_PUNCTUATOR, $char);
         } elseif (
-            //Try to match the longest punctutator
-            $match = $this->punctutatorsLSM->match($this, $this->index, $char)
+            //Try to match the longest punctuator
+            $match = $this->punctuatorsLSM->match($this, $this->index, $char)
         ) {
-            //Optional chaining punctutator cannot appear before a number, in this
+            //Optional chaining punctuator cannot appear before a number, in this
             //case only the question mark must be consumed
             if ($match[1] === "?." &&
                 ($nextChar = $this->charAt($this->index + $match[0])) &&
@@ -1596,7 +1596,7 @@ class Scanner
             }
             $this->index += $match[0];
             $this->column += $match[0];
-            $token = new Token(Token::TYPE_PUNCTUTATOR, $match[1]);
+            $token = new Token(Token::TYPE_PUNCTUATOR, $match[1]);
         }
         return $token;
     }

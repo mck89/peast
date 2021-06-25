@@ -53,8 +53,12 @@ class Token implements \JSONSerializable
     const TYPE_BIGINT_LITERAL = "BigInt";
     
     /**
-     * Punctutator
+     * Punctuator
      */
+    const TYPE_PUNCTUATOR = "Punctuator";
+
+    //This constant is kept only for backward compatibility since it was
+    //first written with a typo
     const TYPE_PUNCTUTATOR = "Punctuator";
     
     /**
