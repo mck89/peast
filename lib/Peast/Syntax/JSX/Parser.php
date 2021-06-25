@@ -409,7 +409,7 @@ trait Parser
      * Checks that 2 tag names are equal
      * 
      * @param \Peast\Syntax\Node\Node   $n1 First name
-     * @param \Peast\Syntax\Node\Node   $n1 Second name
+     * @param \Peast\Syntax\Node\Node   $n2 Second name
      * 
      * @return bool
      */

@@ -35,7 +35,7 @@ abstract class ParserAbstract
     /**
      * Parser context
      * 
-     * @var stdClass 
+     * @var \stdClass
      */
     protected $context;
     
@@ -260,7 +260,8 @@ abstract class ParserAbstract
      * @param Node\Node   $node     Node to complete
      * @param Position    $position Node's end position
      * 
-     * @return Node\Node
+     * @return mixed    It actually returns a Node but mixed solves
+     *                  a lot of PHPDoc problems
      * 
      * @codeCoverageIgnore
      */

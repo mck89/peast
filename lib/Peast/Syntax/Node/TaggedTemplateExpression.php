@@ -10,7 +10,7 @@
 namespace Peast\Syntax\Node;
 
 /**
- * A node that represents a tagget template expression.
+ * A node that represents a tagged template expression.
  * For example: fn`template`
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>

@@ -109,14 +109,14 @@ class RegExpLiteral extends Literal
     /**
      * Sets node's raw value that must include delimiters
      * 
-     * @param string $rawValue Raw value
+     * @param string $raw Raw value
      * 
      * @return $this
      */
-    public function setRaw($rawValue)
+    public function setRaw($raw)
     {
         
-        $parts = explode("/", substr($rawValue, 1));
+        $parts = explode("/", substr($raw, 1));
         $flags = array_pop($parts);
         $this->setPattern(implode("/", $parts));
         $this->setFlags($flags);
@@ -126,7 +126,7 @@ class RegExpLiteral extends Literal
     /**
      * Returns node's value
      * 
-     * @return mixed
+     * @return string
      */
     public function getValue()
     {

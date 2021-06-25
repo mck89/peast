@@ -11,7 +11,7 @@ namespace Peast\Syntax;
 
 /**
  * This class represents a location in the source code with start and end
- * positon.
+ * position.
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */

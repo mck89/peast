@@ -136,7 +136,7 @@ class Peast
      * @param string    $version   Parser version
      * @param array     $args      Parser arguments
      * 
-     * @return Syntax/Parser
+     * @return Syntax\Parser
      * 
      * @throws \Exception
      */

@@ -28,7 +28,7 @@ class AssignmentProperty extends Property
     }
     
     /**
-     * Sets the propery value
+     * Sets the property value
      * 
      * @param Pattern $value Property value
      * 

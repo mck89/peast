@@ -200,7 +200,7 @@ class Parser extends ParserAbstract
         }
         
         $node = $this->createNode(
-            "Program", $body ? $body : $this->scanner->getPosition()
+            "Program", $body ?: $this->scanner->getPosition()
         );
         $node->setSourceType($this->sourceType);
         if ($body) {
@@ -565,7 +565,7 @@ class Parser extends ParserAbstract
                 }
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -637,7 +637,7 @@ class Parser extends ParserAbstract
     /**
      * Parses the catch parameter of a catch block in a try-catch statement
      * 
-     * @return Node|null
+     * @return Node\Node|null
      */
     protected function parseCatchParameter()
     {
@@ -1475,7 +1475,7 @@ class Parser extends ParserAbstract
                 $body->location->end = $this->scanner->getPosition();
                 $node = $this->createNode(
                     "FunctionDeclaration",
-                    $async ? $async : $token
+                    $async ?: $token
                 );
                 if ($id) {
                     $node->setId($id);
@@ -1548,7 +1548,7 @@ class Parser extends ParserAbstract
                 $body->location->end = $this->scanner->getPosition();
                 $node = $this->createNode(
                     "FunctionExpression",
-                    $async ? $async : $token
+                    $async ?: $token
                 );
                 $node->setId($id);
                 $node->setParams($params);
@@ -1633,7 +1633,7 @@ class Parser extends ParserAbstract
             array(true)
         );
         $node = $this->createNode(
-            "BlockStatement", $body ? $body : $this->scanner->getPosition()
+            "BlockStatement", $body ?: $this->scanner->getPosition()
         );
         if ($body) {
             $node->setBody($body);
@@ -1756,7 +1756,7 @@ class Parser extends ParserAbstract
     {
         $body = $this->parseClassElementList();
         $node = $this->createNode(
-            "ClassBody", $body ? $body : $this->scanner->getPosition()
+            "ClassBody", $body ?: $this->scanner->getPosition()
         );
         if ($body) {
             $node->setBody($body);
@@ -2200,7 +2200,7 @@ class Parser extends ParserAbstract
     /**
      * Parses an import clause
      * 
-     * @return Node\ModuleSpecifier|null
+     * @return array|null
      */
     protected function parseImportClause()
     {
@@ -2343,7 +2343,7 @@ class Parser extends ParserAbstract
         while ($this->scanner->consume(",")) {
             $count ++;
         }
-        return $count ? $count : null;
+        return $count ?: null;
     }
     
     /**
@@ -2552,7 +2552,7 @@ class Parser extends ParserAbstract
             $error = true;
             $async = true;
             if ($this->features->asyncIterationGenerators &&
-                ($token = $this->scanner->consume("*"))) {
+                ($this->scanner->consume("*"))) {
                 $generator = true;
             }
         }
@@ -2838,7 +2838,7 @@ class Parser extends ParserAbstract
             $value = $this->isolateContext(
                 array("allowIn" => true), "parseInitializer"
             );
-            $node->setValue($value ? $value : $key);
+            $node->setValue($value ?: $key);
             return $this->completeNode($node);
             
         }
@@ -3405,7 +3405,7 @@ class Parser extends ParserAbstract
         //Wrap the result in multiple NewExpression if there are "new" tokens
         if ($newTokensCount) {
             for ($i = $newTokensCount - 1; $i >= 0; $i--) {
-                $lastNode = $node ? $node : $object;
+                $lastNode = $node ?: $object;
                 $node = $this->createNode("NewExpression", $newTokens[$i]);
                 $node->setCallee($lastNode);
                 $node = $this->completeNode($node);

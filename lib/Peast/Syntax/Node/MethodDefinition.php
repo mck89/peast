@@ -171,7 +171,7 @@ class MethodDefinition extends Node
      * Sets the computed flag that is true if method's key is declared using
      * square brackets syntax
      * 
-     * @param type $computed Computed flag
+     * @param bool $computed Computed flag
      * 
      * @return $this
      */

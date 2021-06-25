@@ -30,7 +30,7 @@ class SpreadElement extends Node
     /**
      * The node's argument
      * 
-     * @var type 
+     * @var Expression
      */
     protected $argument;
     

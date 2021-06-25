@@ -27,6 +27,7 @@ class FunctionDeclaration extends Function_ implements Declaration
     public function setId($id)
     {
         $this->assertType($id, "Identifier");
-        return $this->id = $id;
+        $this->id = $id;
+        return $this;
     }
 }

@@ -91,7 +91,7 @@ class Renderer
      * 
      * @return string
      * 
-     * @throws Exception
+     * @throws \Exception
      */
     public function render(Syntax\Node\Node $node)
     {
@@ -605,7 +605,7 @@ class Renderer
                     $code .= $this->renderNode($key);
                 }
                 $code .= $this->renderOpts->sao .
-                         preg_replace("/^[^\(]+/", "", $this->renderNode($value));
+                         preg_replace("/^[^(]+/", "", $this->renderNode($value));
             break;
             case "ObjectExpression":
                 $currentIndentation = $this->getIndentation();
@@ -679,7 +679,7 @@ class Renderer
                     }
                     if ($node->getMethod() || $getterSetter) {
                         $code .= $this->renderOpts->sao .
-                                 preg_replace("/^[^\(]+/", "", $compiledValue);
+                                 preg_replace("/^[^(]+/", "", $compiledValue);
                     } elseif ($keyType !== "Identifier" ||
                               $valueType !== "Identifier" ||
                               $compiledKey !== $compiledValue
@@ -1005,10 +1005,10 @@ class Renderer
      */
     protected function checkIfPartsBracketsRequirement($node)
     {
-        $forceBrackets = null;
         if ($node->getType() === "BlockStatement" && count($node->getBody()) > 1) {
-            return $forceBrackets;
+            return null;
         }
+        $forceBrackets = null;
         $optBracketNodes = array(
             "DoWhileStatement", "ForInStatement", "ForOfStatement",
             "ForStatement", "WhileStatement", "WithStatement"

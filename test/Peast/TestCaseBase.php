@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection PhpDeprecationInspection */
+
 namespace Peast\test;
 
 if (class_exists("\PHPUnit\Framework\TestCase")) {
