@@ -36,7 +36,7 @@ class UpdateExpression extends Node implements Expression
     protected $operator;
     
     /**
-     * Prefix flag that is true when the operator preceeds the argument
+     * Prefix flag that is true when the operator precedes the argument
      * 
      * @var bool
      */
@@ -73,7 +73,7 @@ class UpdateExpression extends Node implements Expression
     }
     
     /**
-     * Returns the prefix flag that is true when the operator preceeds the
+     * Returns the prefix flag that is true when the operator precedes the
      * argument
      * 
      * @return bool
@@ -84,7 +84,7 @@ class UpdateExpression extends Node implements Expression
     }
     
     /**
-     * Sets the prefix flag that is true when the operator preceeds the
+     * Sets the prefix flag that is true when the operator precedes the
      * argument
      * 
      * @param bool $prefix Prefix flag

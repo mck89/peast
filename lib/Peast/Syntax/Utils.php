@@ -163,9 +163,7 @@ class Utils
                 return $m[1];
             }
         };
-        $str = preg_replace_callback($reg, $replacement, $str);
-        
-        return $str;
+        return preg_replace_callback($reg, $replacement, $str);
     }
     
     /**

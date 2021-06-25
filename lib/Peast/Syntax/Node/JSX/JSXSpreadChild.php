@@ -48,7 +48,7 @@ class JSXSpreadChild extends Node
     /**
      * Sets the wrapped expression
      * 
-     * @param Expression $expression Wrappedexpression
+     * @param Expression $expression Wrapped expression
      * 
      * @return $this
      */

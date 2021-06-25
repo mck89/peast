@@ -91,7 +91,7 @@ class Renderer
      * 
      * @return string
      * 
-     * @throws Exception
+     * @throws \Exception
      */
     public function render(Syntax\Node\Node $node)
     {
@@ -248,7 +248,7 @@ class Renderer
                     $code .= " extends " . $this->renderNode($superClass);
                 }
                 $code .= $this->renderStatementBlock(
-                    $node->getBody(), true, false, true
+                    $node->getBody(), true
                 );
             break;
             case "ConditionalExpression":
@@ -555,6 +555,7 @@ class Renderer
             break;
             case "JSXText":
             case "Literal":
+            case "RegExpLiteral":
                 $code .= $node->getRaw();
             break;
             case "JSXMemberExpression":
@@ -604,7 +605,7 @@ class Renderer
                     $code .= $this->renderNode($key);
                 }
                 $code .= $this->renderOpts->sao .
-                         preg_replace("/^[^\(]+/", "", $this->renderNode($value));
+                         preg_replace("/^[^(]+/", "", $this->renderNode($value));
             break;
             case "ObjectExpression":
                 $currentIndentation = $this->getIndentation();
@@ -678,7 +679,7 @@ class Renderer
                     }
                     if ($node->getMethod() || $getterSetter) {
                         $code .= $this->renderOpts->sao .
-                                 preg_replace("/^[^\(]+/", "", $compiledValue);
+                                 preg_replace("/^[^(]+/", "", $compiledValue);
                     } elseif ($keyType !== "Identifier" ||
                               $valueType !== "Identifier" ||
                               $compiledKey !== $compiledValue
@@ -705,9 +706,6 @@ class Renderer
                              $this->renderOpts->sao .
                              $this->renderNode($value);
                 }
-            break;
-            case "RegExpLiteral":
-                $code .= $node->getRaw();
             break;
             case "RestElement":
             case "SpreadElement":
@@ -876,7 +874,7 @@ class Renderer
      *                                                      separator is
      *                                                      mandatory
      * @param bool                      $addSemicolons      Semicolons are
-     *                                                      inserted autmatically
+     *                                                      inserted automatically
      *                                                      if this parameter is
      *                                                      not false
      * @param bool                      $incIndent          If false indentation
@@ -1007,10 +1005,10 @@ class Renderer
      */
     protected function checkIfPartsBracketsRequirement($node)
     {
-        $forceBrackets = null;
         if ($node->getType() === "BlockStatement" && count($node->getBody()) > 1) {
-            return $forceBrackets;
+            return null;
         }
+        $forceBrackets = null;
         $optBracketNodes = array(
             "DoWhileStatement", "ForInStatement", "ForOfStatement",
             "ForStatement", "WhileStatement", "WithStatement"

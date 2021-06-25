@@ -61,7 +61,7 @@ class JSXAttribute extends Node
      */
     public function setName($name)
     {
-        $this->assertType($name, array("JSXIdentifier", "JSXNamespacedName"));
+        $this->assertType($name, array("JSX\\JSXIdentifier", "JSX\\JSXNamespacedName"));
         $this->name = $name;
         return $this;
     }
@@ -88,8 +88,8 @@ class JSXAttribute extends Node
         $this->assertType(
             $value,
             array(
-                "\Peast\Syntax\Node\Literal", "JSXExpressionContainer",
-                "JSXElement", "JSXFragment"
+                "Literal", "JSX\\JSXExpressionContainer",
+                "JSX\\JSXElement", "JSX\\JSXFragment"
             ),
             true
         );

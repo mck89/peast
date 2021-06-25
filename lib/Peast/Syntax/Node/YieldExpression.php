@@ -34,7 +34,7 @@ class YieldExpression extends Node implements Expression
     protected $argument;
     
     /**
-     * Delegate flag that is true when the yield keyword is preceeded by *
+     * Delegate flag that is true when the yield keyword is preceded by *
      * 
      * @var bool 
      */
@@ -66,7 +66,7 @@ class YieldExpression extends Node implements Expression
     
     /**
      * Returns the delegate flag that is true when the yield keyword is
-     * preceeded by *
+     * preceded by *
      * 
      * @return bool
      */
@@ -77,7 +77,7 @@ class YieldExpression extends Node implements Expression
     
     /**
      * Sets the delegate flag that is true when the yield keyword is
-     * preceeded by *
+     * preceded by *
      * 
      * @param bool $delegate Delegate flag
      * 

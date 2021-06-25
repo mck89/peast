@@ -32,8 +32,8 @@ trait Scanner
         $result = $this->consumeUntil(array("{", "<"), false, false);
         if ($result) {
             $this->currentToken = new Token(Token::TYPE_JSX_TEXT, $result[0]);
-            $this->currentToken->setStartPosition($startPosition)
-                               ->setEndPosition($this->getPosition(true));
+            $this->currentToken->location->start = $startPosition;
+            $this->currentToken->location->end = $this->getPosition(true);
         }
         return $this->currentToken;
     }
@@ -67,11 +67,11 @@ trait Scanner
     }
     
     /**
-     * String punctutator method in jsx mode
+     * String punctuator method in jsx mode
      * 
      * @return Token|null
      */
-    public function scanJSXPunctutator()
+    public function scanJSXPunctuator()
     {
         //The ">" character in jsx mode must be emitted in its own token
         //without matching longer sequences like ">>"
@@ -79,9 +79,9 @@ trait Scanner
         if ($char === ">") {
             $this->index++;
             $this->column++;
-            return new Token(Token::TYPE_PUNCTUTATOR, $char);
+            return new Token(Token::TYPE_PUNCTUATOR, $char);
         }
-        return $this->scanPunctutator();
+        return $this->scanPunctuator();
     }
     
     /**
@@ -93,7 +93,7 @@ trait Scanner
     {
         $buffer = "";
         $char = $this->charAt();
-        if ($char !== null && $this->isIdentifierStart($char)) {
+        if ($char !== null && $this->isIdentifierChar($char)) {
             
             do {
                 $buffer .= $char;
@@ -102,7 +102,7 @@ trait Scanner
                 $char = $this->charAt();
             } while (
                 $char !== null &&
-                ($this->isIdentifierPart($char) || $char === "-")
+                ($this->isIdentifierChar($char, false) || $char === "-")
             );
         }
         

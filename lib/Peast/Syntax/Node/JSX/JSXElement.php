@@ -94,8 +94,8 @@ class JSXElement extends Node implements Expression
     public function setChildren($children)
     {
         $this->assertArrayOf($children, array(
-            "JSXText", "JSXExpressionContainer", "JSXSpreadChild", "JSXElement",
-            "JSXFragment"
+            "JSX\\JSXText", "JSX\\JSXExpressionContainer", "JSX\\JSXSpreadChild",
+            "JSX\\JSXElement", "JSX\\JSXFragment"
         ));
         $this->children = $children;
         return $this;
@@ -120,7 +120,7 @@ class JSXElement extends Node implements Expression
      */
     public function setClosingElement($closingElement)
     {
-        $this->assertType($closingElement, "JSXClosingElement", true);
+        $this->assertType($closingElement, "JSX\\JSXClosingElement", true);
         $this->closingElement = $closingElement;
         return $this;
     }

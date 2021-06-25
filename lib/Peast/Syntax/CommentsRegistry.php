@@ -110,7 +110,7 @@ class CommentsRegistry
     public function onTokenConsumed(Token $token = null)
     {
         //Check if it's a comment
-        if ($token && $token->getType() === Token::TYPE_COMMENT) {
+        if ($token && $token->type === Token::TYPE_COMMENT) {
             //If there is not an open comments buffer, create it
             if (!$this->buffer) {
                 $this->buffer = array(
@@ -124,13 +124,13 @@ class CommentsRegistry
         } else {
             
             if ($token) {
-                $loc = $token->getLocation();
+                $loc = $token->location;
                 //Store the token end position
-                $this->lastTokenIndex = $loc->getEnd()->getIndex();
+                $this->lastTokenIndex = $loc->end->getIndex();
                 if ($this->buffer) {
                     //Fill the "next" key on the comments buffer with the token
                     //start position
-                    $this->buffer["next"] = $loc->getStart()->getIndex();
+                    $this->buffer["next"] = $loc->start->getIndex();
                 }
             }
             
@@ -162,7 +162,7 @@ class CommentsRegistry
     {
         //Every time a node is completed, register its start and end indices
         //in the relative properties
-        $loc = $node->getLocation();
+        $loc = $node->location;
         foreach (array("Start", "End") as $pos) {
             $val = $loc->{"get$pos"}()->getIndex();
             $map = &$this->{"nodes{$pos}Map"};
@@ -196,7 +196,7 @@ class CommentsRegistry
     /**
      * Finds the node to attach the given comments group
      * 
-     * @param array    $comments   Comments group
+     * @param array    $group   Comments group
      * 
      * @return void
      */
@@ -229,8 +229,8 @@ class CommentsRegistry
         //For example: for /*comment*/ (;;){}
         else {
             //Calculate comments group boundaries
-            $start = $comments[0]->getLocation()->getStart()->getIndex();
-            $end = $comments[count($comments) -1]->getLocation()->getEnd()->getIndex();
+            $start = $comments[0]->location->start->getIndex();
+            $end = $comments[count($comments) -1]->location->end->getIndex();
             $nodes = array();
             
             //Loop all the entries in the start index map
@@ -242,7 +242,7 @@ class CommentsRegistry
                 }
                 foreach ($ns as $node) {
                     //Check if the comments group is inside node indices range
-                    if ($node->getLocation()->getEnd()->getIndex() >= $end) {
+                    if ($node->location->end->getIndex() >= $end) {
                         $nodes[] = $node;
                     }
                 }
@@ -277,10 +277,10 @@ class CommentsRegistry
      */
     public function compareNodesLength($node1, $node2)
     {
-        $loc1 = $node1->getLocation();
-        $length1 = $loc1->getEnd()->getIndex() - $loc1->getStart()->getIndex();
-        $loc2 = $node2->getLocation();
-        $length2 = $loc2->getEnd()->getIndex() - $loc2->getStart()->getIndex();
+        $loc1 = $node1->location;
+        $length1 = $loc1->end->getIndex() - $loc1->start->getIndex();
+        $loc2 = $node2->location;
+        $length2 = $loc2->end->getIndex() - $loc2->start->getIndex();
         //If the nodes have the same length make sure to choose nodes
         //different from Program nodes
         if ($length1 === $length2) {
@@ -308,11 +308,11 @@ class CommentsRegistry
         $fn = ($leading ? "Leading" : "Trailing") . "Comments";
         $currentComments = $node->{"get$fn"}();
         foreach ($comments as $comment) {
-            $loc = $comment->getLocation();
+            $loc = $comment->location;
             $commentNode = new Node\Comment;
-            $commentNode->setStartPosition($loc->getStart())
-                        ->setEndPosition($loc->getEnd())
-                        ->setRawText($comment->getValue());
+            $commentNode->location->start = $loc->start;
+            $commentNode->location->end = $loc->end;
+            $commentNode->setRawText($comment->value);
             $currentComments[] = $commentNode;
         }
         $node->{"set$fn"}($currentComments);

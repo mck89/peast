@@ -157,7 +157,7 @@ class Parser extends ParserAbstract
      */
     protected function postInit()
     {
-        //Remove exponentation operator if the feature
+        //Remove exponentiation operator if the feature
         //is not enabled
         if (!$this->features->exponentiationOperator) {
             Utils::removeArrayValue(
@@ -200,7 +200,7 @@ class Parser extends ParserAbstract
         }
         
         $node = $this->createNode(
-            "Program", $body ? $body : $this->scanner->getPosition()
+            "Program", $body ?: $this->scanner->getPosition()
         );
         $node->setSourceType($this->sourceType);
         if ($body) {
@@ -209,7 +209,7 @@ class Parser extends ParserAbstract
         $program = $this->completeNode($node);
         
         if ($this->scanner->getToken()) {
-            return $this->error();
+            $this->error();
         }
         
         //Execute scanner end operations
@@ -235,33 +235,33 @@ class Parser extends ParserAbstract
     {
         if ($node instanceof Node\ArrayExpression) {
             
-            $loc = $node->getLocation();
+            $loc = $node->location;
             $elems = array();
             foreach ($node->getElements() as $elem) {
                 $elems[] = $this->expressionToPattern($elem);
             }
                 
-            $retNode = $this->createNode("ArrayPattern", $loc->getStart());
+            $retNode = $this->createNode("ArrayPattern", $loc->start);
             $retNode->setElements($elems);
-            $this->completeNode($retNode, $loc->getEnd());
+            $this->completeNode($retNode, $loc->end);
             
         } elseif ($node instanceof Node\ObjectExpression) {
             
-            $loc = $node->getLocation();
+            $loc = $node->location;
             $props = array();
             foreach ($node->getProperties() as $prop) {
                 $props[] = $this->expressionToPattern($prop);
             }
                 
-            $retNode = $this->createNode("ObjectPattern", $loc->getStart());
+            $retNode = $this->createNode("ObjectPattern", $loc->start);
             $retNode->setProperties($props);
-            $this->completeNode($retNode, $loc->getEnd());
+            $this->completeNode($retNode, $loc->end);
             
         } elseif ($node instanceof Node\Property) {
             
-            $loc = $node->getLocation();
+            $loc = $node->location;
             $retNode = $this->createNode(
-                "AssignmentProperty", $loc->getStart()
+                "AssignmentProperty", $loc->start
             );
             // If it's a shorthand property convert the value to an assignment
             // pattern if necessary
@@ -272,11 +272,11 @@ class Parser extends ParserAbstract
                 (!$value instanceof Node\Identifier || (
                 $key instanceof Node\Identifier && $key->getName() !== $value->getName()
                 ))) {
-                $loc = $node->getLocation();
-                $valNode = $this->createNode("AssignmentPattern", $loc->getStart());
+                $loc = $node->location;
+                $valNode = $this->createNode("AssignmentPattern", $loc->start);
                 $valNode->setLeft($key);
                 $valNode->setRight($value);
-                $this->completeNode($valNode, $loc->getEnd());
+                $this->completeNode($valNode, $loc->end);
                 $value = $valNode;
             } else {
                 $value = $this->expressionToPattern($value);
@@ -286,24 +286,24 @@ class Parser extends ParserAbstract
             $retNode->setMethod($node->getMethod());
             $retNode->setShorthand($node->getShorthand());
             $retNode->setComputed($node->getComputed());
-            $this->completeNode($retNode, $loc->getEnd());
+            $this->completeNode($retNode, $loc->end);
             
         } elseif ($node instanceof Node\SpreadElement) {
             
-            $loc = $node->getLocation();
-            $retNode = $this->createNode("RestElement", $loc->getStart());
+            $loc = $node->location;
+            $retNode = $this->createNode("RestElement", $loc->start);
             $retNode->setArgument(
                 $this->expressionToPattern($node->getArgument())
             );
-            $this->completeNode($retNode, $loc->getEnd());
+            $this->completeNode($retNode, $loc->end);
             
         } elseif ($node instanceof Node\AssignmentExpression) {
             
-            $loc = $node->getLocation();
-            $retNode = $this->createNode("AssignmentPattern", $loc->getStart());
+            $loc = $node->location;
+            $retNode = $this->createNode("AssignmentPattern", $loc->start);
             $retNode->setLeft($this->expressionToPattern($node->getLeft()));
             $retNode->setRight($node->getRight());
-            $this->completeNode($retNode, $loc->getEnd());
+            $this->completeNode($retNode, $loc->end);
             
         } else {
             $retNode = $node;
@@ -369,29 +369,42 @@ class Parser extends ParserAbstract
      */
     protected function parseStatement()
     {
-        if ($statement = $this->parseBlock()) {
+        //Here the token value is checked for performance so that functions won't be
+        //called if not necessary
+        $token = $this->scanner->getToken();
+        if (!$token) {
+            return null;
+        }
+        $val = $token->value;
+        if ($val === "{" && $statement = $this->parseBlock()) {
             return $statement;
-        } elseif ($statement = $this->parseVariableStatement()) {
+        } elseif ($val === "var" && $statement = $this->parseVariableStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseEmptyStatement()) {
+        } elseif ($val === ";" && $statement = $this->parseEmptyStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseIfStatement()) {
+        } elseif ($val === "if" && $statement = $this->parseIfStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseBreakableStatement()) {
+        } elseif (
+            ($val === "for" || $val === "while" || $val === "do" || $val === "switch") &&
+            $statement = $this->parseBreakableStatement()
+        ) {
             return $statement;
-        } elseif ($statement = $this->parseContinueStatement()) {
+        } elseif ($val == "continue" && $statement = $this->parseContinueStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseBreakStatement()) {
+        } elseif ($val === "break" && $statement = $this->parseBreakStatement()) {
             return $statement;
-        } elseif ($this->context->allowReturn && $statement = $this->parseReturnStatement()) {
+        } elseif (
+            $this->context->allowReturn && $val === "return" &&
+            $statement = $this->parseReturnStatement()
+        ) {
             return $statement;
-        } elseif ($statement = $this->parseWithStatement()) {
+        } elseif ($val === "with" && $statement = $this->parseWithStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseThrowStatement()) {
+        } elseif ($val === "throw" && $statement = $this->parseThrowStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseTryStatement()) {
+        } elseif ($val === "try" && $statement = $this->parseTryStatement()) {
             return $statement;
-        } elseif ($statement = $this->parseDebuggerStatement()) {
+        } elseif ($val === "debugger" && $statement = $this->parseDebuggerStatement()) {
             return $statement;
         } elseif ($statement = $this->parseLabelledStatement()) {
             return $statement;
@@ -408,11 +421,19 @@ class Parser extends ParserAbstract
      */
     protected function parseDeclaration()
     {
+        //Here the token value is checked for performance so that functions won't be
+        //called if not necessary
+        $token = $this->scanner->getToken();
+        if (!$token) {
+            return null;
+        }
+        $val = $token->value;
         if ($declaration = $this->parseFunctionOrGeneratorDeclaration()) {
             return $declaration;
-        } elseif ($declaration = $this->parseClassDeclaration()) {
+        } elseif ($val === "class" && $declaration = $this->parseClassDeclaration()) {
             return $declaration;
         } elseif (
+            ($val === "let" || $val === "const") &&
             $declaration = $this->isolateContext(
                 array("allowIn" => true), "parseLexicalDeclaration"
             )
@@ -454,7 +475,7 @@ class Parser extends ParserAbstract
                 }
                 return $this->completeNode($node);
             }
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -544,7 +565,7 @@ class Parser extends ParserAbstract
                 }
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -576,7 +597,7 @@ class Parser extends ParserAbstract
                 }
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -595,15 +616,15 @@ class Parser extends ParserAbstract
             if ($this->scanner->consume("(")) {
                 if (!($param = $this->parseCatchParameter()) ||
                     !$this->scanner->consume(")")) {
-                    return $this->error();
+                    $this->error();
                 }
                 $node->setParam($param);
             } elseif (!$this->features->optionalCatchBinding) {
-                return $this->error();
+                $this->error();
             }
 
             if (!($body = $this->parseBlock())) {
-                return $this->error();
+                $this->error();
             }
 
             $node->setBody($body);
@@ -616,7 +637,7 @@ class Parser extends ParserAbstract
     /**
      * Parses the catch parameter of a catch block in a try-catch statement
      * 
-     * @return Node|null
+     * @return Node\Node|null
      */
     protected function parseCatchParameter()
     {
@@ -641,13 +662,13 @@ class Parser extends ParserAbstract
                 return $block;
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
     
     /**
-     * Parses a countinue statement
+     * Parses a continue statement
      * 
      * @return Node\ContinueStatement|null
      */
@@ -742,7 +763,7 @@ class Parser extends ParserAbstract
                 //Labelled functions are not allowed in strict mode 
                 if ($body instanceof Node\FunctionDeclaration &&
                     $this->scanner->getStrictMode()) {
-                    return $this->error(
+                    $this->error(
                         "Labelled functions are not allowed in strict mode"
                     );
                 }
@@ -754,7 +775,7 @@ class Parser extends ParserAbstract
 
             }
 
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -780,7 +801,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -808,7 +829,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -836,7 +857,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -869,11 +890,11 @@ class Parser extends ParserAbstract
                 }
                 return $cases;
             } elseif ($this->parseDefaultClause()) {
-                return $this->error(
+                $this->error(
                     "Multiple default clause in switch statement"
                 );
             } else {
-                return $this->error();
+                $this->error();
             }
         }
         return null;
@@ -918,7 +939,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -943,7 +964,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -1002,7 +1023,7 @@ class Parser extends ParserAbstract
                 return $node;
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -1030,7 +1051,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -1100,7 +1121,7 @@ class Parser extends ParserAbstract
 
                 if ($init) {
                     $decl->setInit($init);
-                    $decl->setEndPosition($init->getLocation()->getEnd());
+                    $decl->location->end = $init->location->end;
                 }
 
                 $left = $this->createNode("VariableDeclaration", $varToken);
@@ -1111,7 +1132,7 @@ class Parser extends ParserAbstract
                 if ($this->scanner->consume("in")) {
 
                     if ($init && $this->scanner->getStrictMode()) {
-                        return $this->error(
+                        $this->error(
                             "For-in variable initializer not allowed in " .
                             "strict mode"
                         );
@@ -1153,7 +1174,7 @@ class Parser extends ParserAbstract
             }
         }
 
-        return $this->error();
+        $this->error();
     }
     
     /**
@@ -1230,7 +1251,7 @@ class Parser extends ParserAbstract
             }
         }
         
-        return $this->error();
+        $this->error();
     }
     
     /**
@@ -1287,7 +1308,7 @@ class Parser extends ParserAbstract
                 ) {
                     $beforeLetAsyncOf = true;
                 } elseif ($leftType === "ChainExpression") {
-                    return $this->error(
+                    $this->error(
                         "Optional chain can't appear in left-hand side"
                     );
                 }
@@ -1329,7 +1350,7 @@ class Parser extends ParserAbstract
             }
         }
         
-        return $this->error();
+        $this->error();
     }
     
     /**
@@ -1362,7 +1383,7 @@ class Parser extends ParserAbstract
                     if (!$node instanceof Node\ForOfStatement) {
                         $this->error(
                             "Async iteration is allowed only with for-of statements",
-                            $startForToken->getLocation()->getStart()
+                            $startForToken->location->start
                         );
                     }
                     $node->setAwait(true);
@@ -1370,7 +1391,7 @@ class Parser extends ParserAbstract
                 return $node;
             }
 
-            return $this->error();
+            $this->error();
         }
 
         return null;
@@ -1388,11 +1409,11 @@ class Parser extends ParserAbstract
     protected function checkAsyncFunctionStart($checkFn = true)
     {
         return ($asyncToken = $this->scanner->getToken()) &&
-        $asyncToken->getValue() === "async" &&
+        $asyncToken->value === "async" &&
         (
             !$checkFn ||
             (($nextToken = $this->scanner->getNextToken()) &&
-                $nextToken->getValue() === "function")
+                $nextToken->value === "function")
         ) &&
         $this->scanner->noLineTerminators(true) ?
             $asyncToken :
@@ -1450,13 +1471,11 @@ class Parser extends ParserAbstract
                 $this->scanner->consume("}")
             ) {
 
-                $body->setStartPosition(
-                    $tokenBodyStart->getLocation()->getStart()
-                );
-                $body->setEndPosition($this->scanner->getPosition());
+                $body->location->start = $tokenBodyStart->location->start;
+                $body->location->end = $this->scanner->getPosition();
                 $node = $this->createNode(
                     "FunctionDeclaration",
-                    $async ? $async : $token
+                    $async ?: $token
                 );
                 if ($id) {
                     $node->setId($id);
@@ -1468,7 +1487,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
 
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -1525,13 +1544,11 @@ class Parser extends ParserAbstract
                 $this->scanner->consume("}")
             ) {
 
-                $body->setStartPosition(
-                    $tokenBodyStart->getLocation()->getStart()
-                );
-                $body->setEndPosition($this->scanner->getPosition());
+                $body->location->start = $tokenBodyStart->location->start;
+                $body->location->end = $this->scanner->getPosition();
                 $node = $this->createNode(
                     "FunctionExpression",
-                    $async ? $async : $token
+                    $async ?: $token
                 );
                 $node->setId($id);
                 $node->setParams($params);
@@ -1541,7 +1558,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
 
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -1598,7 +1615,7 @@ class Parser extends ParserAbstract
         }
         if ($hasComma &&
             !$this->features->trailingCommaFunctionCallDeclaration) {
-            return $this->error();
+            $this->error();
         }
         return $list;
     }
@@ -1616,7 +1633,7 @@ class Parser extends ParserAbstract
             array(true)
         );
         $node = $this->createNode(
-            "BlockStatement", $body ? $body : $this->scanner->getPosition()
+            "BlockStatement", $body ?: $this->scanner->getPosition()
         );
         if ($body) {
             $node->setBody($body);
@@ -1656,7 +1673,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -1692,7 +1709,7 @@ class Parser extends ParserAbstract
     
     /**
      * Parses the code that comes after the class keyword and class name. The
-     * return value is an array where the first item is the extendend class, if
+     * return value is an array where the first item is the extended class, if
      * any, and the second value is the class body
      * 
      * @return array|null
@@ -1704,12 +1721,12 @@ class Parser extends ParserAbstract
             
             $body = $this->parseClassBody();
             if ($this->scanner->consume("}")) {
-                $body->setStartPosition($token->getLocation()->getStart());
-                $body->setEndPosition($this->scanner->getPosition());
+                $body->location->start = $token->location->start;
+                $body->location->end = $this->scanner->getPosition();
                 return array($heritage, $body);
             }
         }
-        return $this->error();
+        $this->error();
     }
     
     /**
@@ -1725,7 +1742,7 @@ class Parser extends ParserAbstract
                 return $superClass;
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -1739,7 +1756,7 @@ class Parser extends ParserAbstract
     {
         $body = $this->parseClassElementList();
         $node = $this->createNode(
-            "ClassBody", $body ? $body : $this->scanner->getPosition()
+            "ClassBody", $body ?: $this->scanner->getPosition()
         );
         if ($body) {
             $node->setBody($body);
@@ -1766,7 +1783,7 @@ class Parser extends ParserAbstract
     /**
      * Parses a class elements
      * 
-     * @return Node\MethodDefinition|null
+     * @return Node\MethodDefinition|bool|null
      */
     protected function parseClassElement()
     {
@@ -1782,7 +1799,7 @@ class Parser extends ParserAbstract
         if ($def = $this->parseMethodDefinition()) {
             if ($staticToken) {
                 $def->setStatic(true);
-                $def->setStartPosition($staticToken->getLocation()->getStart());
+                $def->location->start = $staticToken->location->start;
             }
             return $def;
         } else {
@@ -1790,7 +1807,7 @@ class Parser extends ParserAbstract
                 if ($field = $this->parseFieldDefinition()) {
                     if ($staticToken) {
                         $field->setStatic(true);
-                        $field->setStartPosition($staticToken->getLocation()->getStart());
+                        $field->location->start = $staticToken->location->start;
                     }
                 } elseif ($staticToken) {
                     //Handle the case when "static" is the field name
@@ -1799,7 +1816,7 @@ class Parser extends ParserAbstract
                 }
                 return $field;
             } elseif ($staticToken) {
-                return $this->error();
+                $this->error();
             }
         }
         
@@ -1823,14 +1840,14 @@ class Parser extends ParserAbstract
             if ($declarations) {
                 $this->assertEndOfStatement();
                 $node = $this->createNode("VariableDeclaration", $token);
-                $node->setKind($token->getValue());
+                $node->setKind($token->value);
                 $node->setDeclarations($declarations);
                 return $this->completeNode($node);
             }
             
             // "let" can be used as variable name in non-strict mode
-            if ($this->scanner->getStrictMode() || $token->getValue() !== "let") {
-                return $this->error();
+            if ($this->scanner->getStrictMode() || $token->value !== "let") {
+                $this->error();
             } else {
                 $this->scanner->setState($state);
             }
@@ -1858,7 +1875,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -1917,14 +1934,14 @@ class Parser extends ParserAbstract
             if ($declaration = $this->parseForBinding()) {
 
                 $node = $this->createNode("VariableDeclaration", $token);
-                $node->setKind($token->getValue());
+                $node->setKind($token->value);
                 $node->setDeclarations(array($declaration));
                 return $this->completeNode($node);
             }
             
             // "let" can be used as variable name in non-strict mode
-            if ($this->scanner->getStrictMode() || $token->getValue() !== "let") {
-                return $this->error();
+            if ($this->scanner->getStrictMode() || $token->value !== "let") {
+                $this->error();
             } else {
                 $this->scanner->setState($state);
             }
@@ -1980,7 +1997,7 @@ class Parser extends ParserAbstract
             if ($spec = $this->parseStringLiteral()) {
                 return $spec;
             }
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2001,7 +2018,7 @@ class Parser extends ParserAbstract
                     $this->scanner->consume("as")) {
                     $exported = $this->parseIdentifier(static::$identifierName);
                     if (!$exported) {
-                        return $this->error();
+                        $this->error();
                     }
                 }
                 
@@ -2076,7 +2093,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2102,7 +2119,7 @@ class Parser extends ParserAbstract
                 return $list;
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2126,7 +2143,7 @@ class Parser extends ParserAbstract
                     return $this->completeNode($node);
                 }
                 
-                return $this->error();
+                $this->error();
             } else {
                 $node->setExported($local);
                 return $this->completeNode($node);
@@ -2175,7 +2192,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2183,7 +2200,7 @@ class Parser extends ParserAbstract
     /**
      * Parses an import clause
      * 
-     * @return Node\ModuleSpecifier|null
+     * @return array|null
      */
     protected function parseImportClause()
     {
@@ -2203,11 +2220,10 @@ class Parser extends ParserAbstract
                     $ret[] = $spec;
                     return $ret;
                 } elseif (($specs = $this->parseNamedImports()) !== null) {
-                    $ret = array_merge($ret, $specs);
-                    return $ret;
+                    return array_merge($ret, $specs);
                 }
                 
-                return $this->error();
+                $this->error();
             } else {
                 return $ret;
             }
@@ -2232,7 +2248,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);  
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2258,7 +2274,7 @@ class Parser extends ParserAbstract
                 return $list;
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2286,13 +2302,13 @@ class Parser extends ParserAbstract
         if ($this->scanner->consume("as")) {
             
             if (!($local = $this->parseIdentifier(static::$importedBinding))) {
-                return $this->error();
+                $this->error();
             }
             
             $node->setLocal($local);
             
         } elseif ($requiredAs) {
-            return $this->error();
+            $this->error();
         } else {
             $node->setLocal($imported);
         }
@@ -2327,7 +2343,7 @@ class Parser extends ParserAbstract
         while ($this->scanner->consume(",")) {
             $count ++;
         }
-        return $count ? $count : null;
+        return $count ?: null;
     }
     
     /**
@@ -2384,7 +2400,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2457,7 +2473,7 @@ class Parser extends ParserAbstract
                 return array($name, true, $token);
             }
             
-            return $this->error();
+            $this->error();
         } elseif ($name = $this->parseIdentifier(static::$identifierName)) {
             return array($name, false);
         } elseif ($name = $this->parseStringLiteral()) {
@@ -2536,7 +2552,7 @@ class Parser extends ParserAbstract
             $error = true;
             $async = true;
             if ($this->features->asyncIterationGenerators &&
-                ($token = $this->scanner->consume("*"))) {
+                ($this->scanner->consume("*"))) {
                 $generator = true;
             }
         }
@@ -2600,10 +2616,8 @@ class Parser extends ParserAbstract
                         $kind = Node\MethodDefinition::KIND_CONSTRUCTOR;
                     }
 
-                    $body->setStartPosition(
-                        $tokenBodyStart->getLocation()->getStart()
-                    );
-                    $body->setEndPosition($this->scanner->getPosition());
+                    $body->location->start = $tokenBodyStart->location->start;
+                    $body->location->end = $this->scanner->getPosition();
 
                     $nodeFn = $this->createNode("FunctionExpression", $tokenFn);
                     $nodeFn->setParams($params);
@@ -2622,7 +2636,7 @@ class Parser extends ParserAbstract
         }
 
         if ($error) {
-            return $this->error();
+            $this->error();
         } else {
             $this->scanner->setState($state);
         }
@@ -2671,12 +2685,12 @@ class Parser extends ParserAbstract
                 )) &&
                 $this->scanner->consume("}")
             ) {
-                $body->setStartPosition($token->getLocation()->getStart());
-                $body->setEndPosition($this->scanner->getPosition());
+                $body->location->start = $token->location->start;
+                $body->location->end = $this->scanner->getPosition();
                 return array($body, false);
             }
 
-            return $this->error();
+            $this->error();
         } elseif (!$this->scanner->isBefore(array("{")) &&
             $body = $this->isolateContext(
                 $this->features->asyncAwait ?
@@ -2728,7 +2742,7 @@ class Parser extends ParserAbstract
                     return $this->completeNode($node);
                 }
 
-                return $this->error();
+                $this->error();
             }
         }
         $this->scanner->setState($state);
@@ -2761,7 +2775,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2794,7 +2808,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
 
-            return $this->error();
+            $this->error();
             
         }
         
@@ -2824,7 +2838,7 @@ class Parser extends ParserAbstract
             $value = $this->isolateContext(
                 array("allowIn" => true), "parseInitializer"
             );
-            $node->setValue($value ? $value : $key);
+            $node->setValue($value ?: $key);
             return $this->completeNode($node);
             
         }
@@ -2832,7 +2846,7 @@ class Parser extends ParserAbstract
     }
     
     /**
-     * Parses an itlializer
+     * Parses an initializer
      * 
      * @return Node\Node|null
      */
@@ -2844,7 +2858,7 @@ class Parser extends ParserAbstract
                 return $value;
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2900,7 +2914,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
 
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -2990,7 +3004,7 @@ class Parser extends ParserAbstract
                 if ($operator = $this->scanner->consumeOneOf($operators)) {
 
                     if ($expr->getType() === "ChainExpression") {
-                        return $this->error(
+                        $this->error(
                             "Optional chain can't appear in left-hand side"
                         );
                     }
@@ -3002,11 +3016,11 @@ class Parser extends ParserAbstract
                             "AssignmentExpression", $expr
                         );
                         $node->setLeft($this->expressionToPattern($expr));
-                        $node->setOperator($operator->getValue());
+                        $node->setOperator($operator->value);
                         $node->setRight($right);
                         return $this->completeNode($node);
                     }
-                    return $this->error();
+                    $this->error();
                 }
             }
             return $expr;
@@ -3039,7 +3053,7 @@ class Parser extends ParserAbstract
                     return $this->completeNode($node);
                 }
                 
-                return $this->error();
+                $this->error();
             } else {
                 return $test;
             }
@@ -3066,7 +3080,7 @@ class Parser extends ParserAbstract
         $list = array($exp);
         $coalescingFound = $andOrFound = false;
         while ($token = $this->scanner->consumeOneOf(array_keys($operators))) {
-            $op = $token->getValue();
+            $op = $token->value;
             // Coalescing and logical expressions can't be used together
             if ($op === "??") {
                 $coalescingFound = true;
@@ -3074,13 +3088,13 @@ class Parser extends ParserAbstract
                 $andOrFound = true;
             }
             if ($coalescingFound && $andOrFound) {
-                return $this->error(
+                $this->error(
                     "Logical expressions must be wrapped in parentheses when " .
                     "inside coalesce expressions"
                 );
             }
             if (!($exp = $this->parseUnaryExpression())) {
-                return $this->error();
+                $this->error();
             }
             $list[] = $op;
             $list[] = $exp;
@@ -3092,7 +3106,7 @@ class Parser extends ParserAbstract
             for ($grade = $maxGrade; $grade >= 0; $grade--) {
                 $class = $grade < 2 ? "LogicalExpression" : "BinaryExpression";
                 $r2l = $grade === 10;
-                //Exponentation operator must be parsed right to left
+                //Exponentiation operator must be parsed right to left
                 if ($r2l) {
                     $i = $len - 2;
                     $step = -2;
@@ -3107,7 +3121,7 @@ class Parser extends ParserAbstract
                         $node->setOperator($list[$i]);
                         $node->setRight($list[$i + 1]);
                         $node = $this->completeNode(
-                            $node, $list[$i + 1]->getLocation()->getEnd()
+                            $node, $list[$i + 1]->location->end
                         );
                         array_splice($list, $i - 1, 3, array($node));
                         if (!$r2l) {
@@ -3137,14 +3151,14 @@ class Parser extends ParserAbstract
         } elseif ($token = $this->scanner->consumeOneOf($operators)) {
             if ($argument = $this->parseUnaryExpression()) {
 
-                $op = $token->getValue();
+                $op = $token->value;
 
                 //Deleting a variable without accessing its properties is a
                 //syntax error in strict mode
                 if ($op === "delete" &&
                     $this->scanner->getStrictMode() &&
                     $argument instanceof Node\Identifier) {
-                    return $this->error(
+                    $this->error(
                         "Deleting an unqualified identifier is not allowed in strict mode"
                     );
                 }
@@ -3154,7 +3168,7 @@ class Parser extends ParserAbstract
                 } else {
                     if ($op === "++" || $op === "--") {
                         if ($argument->getType() === "ChainExpression") {
-                            return $this->error(
+                            $this->error(
                                 "Optional chain can't appear in left-hand side"
                             );
                         }
@@ -3169,7 +3183,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
 
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -3188,13 +3202,13 @@ class Parser extends ParserAbstract
             ) {
 
                 if ($argument->getType() === "ChainExpression") {
-                    return $this->error(
+                    $this->error(
                         "Optional chain can't appear in left-hand side"
                     );
                 }
                 
                 $node = $this->createNode("UpdateExpression", $argument);
-                $node->setOperator($token->getValue());
+                $node->setOperator($token->value);
                 $node->setArgument($argument);
                 return $this->completeNode($node);
             }
@@ -3215,12 +3229,12 @@ class Parser extends ParserAbstract
         $newTokens = array();
         
         //Parse all occurrences of "new"
-        if ($newToken = $this->scanner->isBefore(array("new"))) {
+        if ($this->scanner->isBefore(array("new"))) {
             while ($newToken = $this->scanner->consume("new")) {
                 if ($this->scanner->consume(".")) {
                     //new.target
                     if (!$this->scanner->consume("target")) {
-                        return $this->error();
+                        $this->error();
                     }
                     $node = $this->createNode("MetaProperty", $newToken);
                     $node->setMeta("new");
@@ -3238,7 +3252,7 @@ class Parser extends ParserAbstract
             $importToken = $this->scanner->consume("import");
             $this->scanner->consume(".");
             if (!$this->scanner->consume("meta")) {
-                return $this->error();
+                $this->error();
             }
             $node = $this->createNode("MetaProperty", $importToken);
             $node->setMeta("import");
@@ -3257,7 +3271,7 @@ class Parser extends ParserAbstract
         ) {
             
             if ($newTokensCount) {
-                return $this->error();
+                $this->error();
             }
             return null;
         }
@@ -3268,7 +3282,7 @@ class Parser extends ParserAbstract
         while (true) {
             $optional = false;
             if ($opToken = $this->scanner->consumeOneOf(array("?.", "."))) {
-                $isOptChain = $opToken->getValue() == "?.";
+                $isOptChain = $opToken->value == "?.";
                 if ($isOptChain) {
                     $optionalChain = $optional = true;
                 }
@@ -3310,7 +3324,7 @@ class Parser extends ParserAbstract
                 }
             } elseif ($property = $this->parseTemplateLiteral(true)) {
                 if ($optionalChain) {
-                    return $this->error(
+                    $this->error(
                         "Optional chain can't appear in tagged template expressions"
                     );
                 }
@@ -3335,23 +3349,23 @@ class Parser extends ParserAbstract
         $propCount = count($properties);
         
         if (!$valid) {
-            return $this->error();
+            $this->error();
         } elseif (!$propCount && !$newTokensCount) {
             return $object;
         }
         
         $node = null;
-        $endPos = $object->getLocation()->getEnd();
+        $endPos = $object->location->end;
         $optionalChainStarted = false;
         foreach ($properties as $i => $property) {
-            $lastNode = $node ? $node : $object;
+            $lastNode = $node ?: $object;
             if ($property["optional"]) {
                 $optionalChainStarted = true;
             }
             if ($property["type"] === "args") {
                 if ($newTokensCount) {
-                    if ($optionalChainStarted && $newTokensCount) {
-                        return $this->error(
+                    if ($optionalChainStarted) {
+                        $this->error(
                             "Optional chain can't appear in new expressions"
                         );
                     }
@@ -3371,7 +3385,7 @@ class Parser extends ParserAbstract
                 $node->setObject($lastNode);
                 $node->setOptional($property["optional"]);
                 $node->setProperty($property["info"]);
-                $endPos = $property["info"]->getLocation()->getEnd();
+                $endPos = $property["info"]->location->end;
             } elseif ($property["type"] === "computed") {
                 $node = $this->createNode("MemberExpression", $lastNode);
                 $node->setObject($lastNode);
@@ -3383,7 +3397,7 @@ class Parser extends ParserAbstract
                 $node = $this->createNode("TaggedTemplateExpression", $object);
                 $node->setTag($lastNode);
                 $node->setQuasi($property["info"]);
-                $endPos = $property["info"]->getLocation()->getEnd();
+                $endPos = $property["info"]->location->end;
             }
             $node = $this->completeNode($node, $endPos);
         }
@@ -3391,7 +3405,7 @@ class Parser extends ParserAbstract
         //Wrap the result in multiple NewExpression if there are "new" tokens
         if ($newTokensCount) {
             for ($i = $newTokensCount - 1; $i >= 0; $i--) {
-                $lastNode = $node ? $node : $object;
+                $lastNode = $node ?: $object;
                 $node = $this->createNode("NewExpression", $newTokens[$i]);
                 $node->setCallee($lastNode);
                 $node = $this->completeNode($node);
@@ -3427,7 +3441,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -3468,7 +3482,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -3488,7 +3502,7 @@ class Parser extends ParserAbstract
                 return $args;
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -3515,7 +3529,7 @@ class Parser extends ParserAbstract
                 if ($spread ||
                     ($hasComma &&
                     !$this->features->trailingCommaFunctionCallDeclaration)) {
-                    return $this->error();
+                    $this->error();
                 }
                 break;
             }
@@ -3575,7 +3589,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -3590,21 +3604,21 @@ class Parser extends ParserAbstract
         if ($token = $this->scanner->consume("this")) {
             $node = $this->createNode("ThisExpression", $token);
             return $this->completeNode($node);
+        } elseif ($exp = $this->parseFunctionOrGeneratorExpression()) {
+            return $exp;
+        } elseif ($exp = $this->parseClassExpression()) {
+            return $exp;
+        } elseif ($exp = $this->parseIdentifier(static::$identifierReference)) {
+            return $exp;
         } elseif ($exp = $this->parseLiteral()) {
             return $exp;
         } elseif ($exp = $this->parseArrayLiteral()) {
             return $exp;
         } elseif ($exp = $this->parseObjectLiteral()) {
             return $exp;
-        } elseif ($exp = $this->parseFunctionOrGeneratorExpression()) {
-            return $exp;
-        } elseif ($exp = $this->parseClassExpression()) {
-            return $exp;
         } elseif ($exp = $this->parseRegularExpressionLiteral()) {
             return $exp;
         } elseif ($exp = $this->parseTemplateLiteral()) {
-            return $exp;
-        } elseif ($exp = $this->parseIdentifier(static::$identifierReference)) {
             return $exp;
         } elseif ($this->jsx && ($exp = $this->parseJSXFragment())) {
             return $exp;
@@ -3623,7 +3637,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
             
-            return $this->error();
+            $this->error();
         }
         return null;
     }
@@ -3636,12 +3650,12 @@ class Parser extends ParserAbstract
     protected function parsePrivateIdentifier()
     {
         $token = $this->scanner->getToken();
-        if (!$token || $token->getType() !== Token::TYPE_PRIVATE_IDENTIFIER) {
+        if (!$token || $token->type !== Token::TYPE_PRIVATE_IDENTIFIER) {
             return null;
         }
         $this->scanner->consumeToken();
         $node = $this->createNode("PrivateIdentifier", $token);
-        $node->setName(substr($token->getValue(), 1));
+        $node->setName(substr($token->value, 1));
         return $this->completeNode($node);
     }
     
@@ -3651,7 +3665,7 @@ class Parser extends ParserAbstract
      * @param int   $mode       Parsing mode, one of the id parsing mode
      *                          constants
      * @param string $after     If a string is passed in this parameter, the
-     *                          identifier is parsed only if preceeds this string
+     *                          identifier is parsed only if precedes this string
      * 
      * @return Node\Identifier|null
      */
@@ -3663,11 +3677,11 @@ class Parser extends ParserAbstract
         }
         if ($after !== null) {
             $next = $this->scanner->getNextToken();
-            if (!$next || $next->getValue() !== $after) {
+            if (!$next || $next->value !== $after) {
                 return null;
             }
         }
-        $type = $token->getType();
+        $type = $token->type;
         switch ($type) {
             case Token::TYPE_BOOLEAN_LITERAL:
             case Token::TYPE_NULL_LITERAL:
@@ -3692,7 +3706,7 @@ class Parser extends ParserAbstract
         }
         
         //Exclude keywords that depend on parser context
-        $value = $token->getValue();
+        $value = $token->value;
         if ($mode === self::ID_MIXED &&
             isset($this->contextKeywords[$value]) &&
             $this->context->{$this->contextKeywords[$value]}
@@ -3714,14 +3728,14 @@ class Parser extends ParserAbstract
     protected function parseLiteral()
     {
         if ($token = $this->scanner->getToken()) {
-            if ($token->getType() === Token::TYPE_NULL_LITERAL) {
+            if ($token->type === Token::TYPE_NULL_LITERAL) {
                 $this->scanner->consumeToken();
                 $node = $this->createNode("NullLiteral", $token);
                 return $this->completeNode($node);
-            } elseif ($token->getType() === Token::TYPE_BOOLEAN_LITERAL) {
+            } elseif ($token->type === Token::TYPE_BOOLEAN_LITERAL) {
                 $this->scanner->consumeToken();
                 $node = $this->createNode("BooleanLiteral", $token);
-                $node->setRaw($token->getValue());
+                $node->setRaw($token->value);
                 return $this->completeNode($node);
             } elseif ($literal = $this->parseStringLiteral()) {
                 return $literal;
@@ -3740,8 +3754,8 @@ class Parser extends ParserAbstract
     protected function parseStringLiteral()
     {
         $token = $this->scanner->getToken();
-        if ($token && $token->getType() === Token::TYPE_STRING_LITERAL) {
-            $val = $token->getValue();
+        if ($token && $token->type === Token::TYPE_STRING_LITERAL) {
+            $val = $token->value;
             $this->checkInvalidEscapeSequences($val);
             $this->scanner->consumeToken();
             $node = $this->createNode("StringLiteral", $token);
@@ -3759,15 +3773,15 @@ class Parser extends ParserAbstract
     protected function parseNumericLiteral()
     {
         $token = $this->scanner->getToken();
-        if ($token && $token->getType() === Token::TYPE_NUMERIC_LITERAL) {
-            $val = $token->getValue();
+        if ($token && $token->type === Token::TYPE_NUMERIC_LITERAL) {
+            $val = $token->value;
             $this->checkInvalidEscapeSequences($val, true);
             $this->scanner->consumeToken();
             $node = $this->createNode("NumericLiteral", $token);
             $node->setRaw($val);
             return $this->completeNode($node);
-        } elseif ($token && $token->getType() === Token::TYPE_BIGINT_LITERAL) {
-            $val = $token->getValue();
+        } elseif ($token && $token->type === Token::TYPE_BIGINT_LITERAL) {
+            $val = $token->value;
             $this->checkInvalidEscapeSequences($val, true);
             $this->scanner->consumeToken();
             $node = $this->createNode("BigIntLiteral", $token);
@@ -3788,12 +3802,12 @@ class Parser extends ParserAbstract
     {
         $token = $this->scanner->getToken();
         
-        if (!$token || $token->getType() !== Token::TYPE_TEMPLATE) {
+        if (!$token || $token->type !== Token::TYPE_TEMPLATE) {
             return null;
         }
         
         //Do not parse templates parts
-        $val = $token->getValue();
+        $val = $token->value;
         if ($val[0] !== "`") {
             return null;
         }
@@ -3802,7 +3816,7 @@ class Parser extends ParserAbstract
         $valid = false;
         do {
             $this->scanner->consumeToken();
-            $val = $token->getValue();
+            $val = $token->value;
             $this->checkInvalidEscapeSequences($val, false, true, $tagged);
             $lastChar = substr($val, -1);
             
@@ -3827,7 +3841,7 @@ class Parser extends ParserAbstract
             }
             
             $token = $this->scanner->getToken();
-        } while ($token && $token->getType() === Token::TYPE_TEMPLATE);
+        } while ($token && $token->type === Token::TYPE_TEMPLATE);
         
         if ($valid) {
             $node = $this->createNode("TemplateLiteral", $quasis[0]);
@@ -3836,7 +3850,7 @@ class Parser extends ParserAbstract
             return $this->completeNode($node);
         }
         
-        return $this->error();
+        $this->error();
     }
     
     /**
@@ -3849,7 +3863,7 @@ class Parser extends ParserAbstract
         if ($token = $this->scanner->reconsumeCurrentTokenAsRegexp()) {
             $this->scanner->consumeToken();
             $node = $this->createNode("RegExpLiteral", $token);
-            $node->setRaw($token->getValue());
+            $node->setRaw($token->value);
             return $this->completeNode($node);
         }
         return null;
@@ -3866,9 +3880,9 @@ class Parser extends ParserAbstract
     {
         $directives = $nodes = array();
         while (($token = $this->scanner->getToken()) &&
-            $token->getType() === Token::TYPE_STRING_LITERAL
+            $token->type === Token::TYPE_STRING_LITERAL
         ) {
-            $directive = substr($token->getValue(), 1, -1);
+            $directive = substr($token->value, 1, -1);
             if ($directive === "use strict") {
                 $directives[] = $directive;
                 $directiveNode = $this->parseStringLiteral();
@@ -3903,13 +3917,13 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
 
-            return $this->error();
+            $this->error();
         }
         return null;
     }
     
     /**
-     * Checks if the given string or number contains invalid ecsape sequences
+     * Checks if the given string or number contains invalid escape sequences
      * 
      * @param string  $val                      Value to check
      * @param bool    $number                   True if the value is a number
@@ -3932,14 +3946,14 @@ class Parser extends ParserAbstract
         if ($number) {
             if ($val && $val[0] === "0" && preg_match("#^0[0-7_]+$#", $val)) {
                 if ($checkLegacyOctal) {
-                    return $this->error(
+                    $this->error(
                         "Octal literals are not allowed in strict mode"
                     );
                 }
                 if ($this->features->numericLiteralSeparator &&
                     strpos($val, '_') !== false
                 ) {
-                    return $this->error(
+                    $this->error(
                         "Numeric separators are not allowed in legacy octal numbers"
                     );
                 }
@@ -3971,7 +3985,7 @@ class Parser extends ParserAbstract
                         } else {
                             $err = "Octal literals are not allowed in strict mode";
                         }
-                        return $this->error($err);
+                        $this->error($err);
                     }
                 }
             }

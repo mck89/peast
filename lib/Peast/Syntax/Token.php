@@ -53,8 +53,12 @@ class Token implements \JSONSerializable
     const TYPE_BIGINT_LITERAL = "BigInt";
     
     /**
-     * Punctutator
+     * Punctuator
      */
+    const TYPE_PUNCTUATOR = "Punctuator";
+
+    //This constant is kept only for backward compatibility since it was
+    //first written with a typo
     const TYPE_PUNCTUTATOR = "Punctuator";
     
     /**
@@ -92,21 +96,21 @@ class Token implements \JSONSerializable
      * 
      * @var string 
      */
-    protected $type;
+    public $type;
     
     /**
      * Token's value
      * 
      * @var string 
      */
-    protected $value;
+    public $value;
     
     /**
      * Token's location in the source code
      * 
      * @var SourceLocation 
      */
-    protected $location;
+    public $location;
     
     /**
      * Class constructor
@@ -120,20 +124,20 @@ class Token implements \JSONSerializable
         $this->value = $value;
         $this->location = new SourceLocation();
     }
-    
+
     /**
      * Returns the token's type
-     * 
+     *
      * @return string
      */
     public function getType()
     {
         return $this->type;
     }
-    
+
     /**
      * Returns the token's value
-     * 
+     *
      * @return string
      */
     public function getValue()
@@ -160,7 +164,7 @@ class Token implements \JSONSerializable
      */
     public function setStartPosition(Position $position)
     {
-        $this->location->setStart($position);
+        $this->location->start = $position;
         return $this;
     }
     
@@ -173,7 +177,7 @@ class Token implements \JSONSerializable
      */
     public function setEndPosition(Position $position)
     {
-        $this->location->setEnd($position);
+        $this->location->end = $position;
         return $this;
     }
     
@@ -185,9 +189,9 @@ class Token implements \JSONSerializable
     public function jsonSerialize()
     {
         return array(
-            "type" => $this->getType(),
-            "value" => $this->getValue(),
-            "location" => $this->getLocation()
+            "type" => $this->type,
+            "value" => $this->value,
+            "location" => $this->location
         );
     }
 }

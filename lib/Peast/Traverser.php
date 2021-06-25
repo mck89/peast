@@ -170,7 +170,7 @@ class Traverser
     }
     
     /**
-     * Traverses node children. It returns a boolena indicating if the
+     * Traverses node children. It returns a boolean indicating if the
      * traversing must continue or not
      * 
      * @param Syntax\Node\Node  $node   Node

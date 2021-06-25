@@ -38,7 +38,7 @@ class IfStatement extends Node implements Statement
     /**
      * The statement that is activated if the test expression is true
      * 
-     * @var Statement 
+     * @var Statement|FunctionDeclaration
      */
     protected $consequent;
     

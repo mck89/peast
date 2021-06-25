@@ -22,15 +22,15 @@ class Exception extends \Exception
     /**
      * Error position
      * 
-     * @var \Peast\Syntax\Position
+     * @var Position
      */
     protected $position;
     
     /**
      * Class constructor
      * 
-     * @param string                 $message  Error message
-     * @param \Peast\Syntax\Position $position Error position
+     * @param string   $message  Error message
+     * @param Position $position Error position
      */
     public function __construct($message, Position $position)
     {
@@ -41,7 +41,7 @@ class Exception extends \Exception
     /**
      * Returns the error position
      * 
-     * @return \Peast\Syntax\Position 
+     * @return Position
      */
     public function getPosition()
     {

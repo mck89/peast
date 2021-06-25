@@ -9,9 +9,6 @@
  */
 namespace Peast\Syntax\Node\JSX;
 
-use Peast\Syntax\Node\Node;
-use Peast\Syntax\Node\Expression;
-
 /**
  * A node that represents a JSX opening element tag.
  * 
@@ -34,7 +31,7 @@ class JSXOpeningElement extends JSXBoundaryElement
      * 
      * @var JSXAttribute[]|JSXSpreadAttribute[]
      */
-    protected $attrributes = array();
+    protected $attributes = array();
     
     /**
      * Self closing tag mode
@@ -50,23 +47,23 @@ class JSXOpeningElement extends JSXBoundaryElement
      */
     public function getAttributes()
     {
-        return $this->attrributes;
+        return $this->attributes;
     }
     
     /**
      * Sets the attributes nodes array
      * 
-     * @param JSXAttribute[]|JSXSpreadAttribute[] $attrributes Attrributes nodes
+     * @param JSXAttribute[]|JSXSpreadAttribute[] $attributes Attributes nodes
      *                                                         array
      * 
      * @return $this
      */
-    public function setAttributes($attrributes)
+    public function setAttributes($attributes)
     {
-        $this->assertArrayOf($attrributes, array(
-            "JSXAttribute", "JSXSpreadAttribute"
+        $this->assertArrayOf($attributes, array(
+            "JSX\\JSXAttribute", "JSX\\JSXSpreadAttribute"
         ));
-        $this->attrributes = $attrributes;
+        $this->attributes = $attributes;
         return $this;
     }
     

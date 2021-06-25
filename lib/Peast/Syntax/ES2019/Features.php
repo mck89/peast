@@ -26,7 +26,7 @@ class Features extends \Peast\Syntax\ES2018\Features
     public $optionalCatchBinding = true;
 
     /**
-     * Paragraph and line sepeartor in strings
+     * Paragraph and line separator in strings
      *
      * @var bool
      */

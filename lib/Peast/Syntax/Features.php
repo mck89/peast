@@ -75,7 +75,7 @@ class Features
     public $optionalCatchBinding = false;
 
     /**
-     * Paragraph and line sepeartor in strings
+     * Paragraph and line separator in strings
      *
      * @var bool
      */

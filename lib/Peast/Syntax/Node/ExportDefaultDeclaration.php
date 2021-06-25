@@ -46,7 +46,7 @@ class ExportDefaultDeclaration extends Node implements ModuleDeclaration
     /**
      * Sets the exported declaration
      * 
-     * @param type $declaration The exported declaration
+     * @param Declaration|Expression $declaration The exported declaration
      * 
      * @return $this
      */

@@ -35,7 +35,7 @@ abstract class ParserAbstract
     /**
      * Parser context
      * 
-     * @var stdClass 
+     * @var \stdClass
      */
     protected $context;
     
@@ -88,13 +88,13 @@ abstract class ParserAbstract
         
         //Enable module scanning if required
         if ($this->sourceType === \Peast\Peast::SOURCE_TYPE_MODULE) {
-            $this->scanner->enableModuleMode(true);
+            $this->scanner->enableModuleMode();
         }
         
         //Enable comments scanning
         $this->comments = isset($options["comments"]) && $options["comments"];
         if ($this->comments) {
-            $this->scanner->enableComments(true);
+            $this->scanner->enableComments();
             //Create the comments registry
             new CommentsRegistry($this);
         }
@@ -177,7 +177,7 @@ abstract class ParserAbstract
     }
     
     /**
-     * Calls a method with an isolated parser context, applyng the given flags,
+     * Calls a method with an isolated parser context, applying the given flags,
      * but restoring their values after the execution.
      * 
      * @param array|null  $flags  Key/value array of changes to apply to the
@@ -185,11 +185,11 @@ abstract class ParserAbstract
      *                            element of the array is null the context will
 *                                 be reset before applying new values.
      * @param string      $fn     Method to call
-     * @param array       $args   Method arguments
+     * @param array|null  $args   Method arguments
      * 
      * @return mixed
      */
-    protected function isolateContext($flags, $fn, $args = array())
+    protected function isolateContext($flags, $fn, $args = null)
     {
         //Store the current context
         $oldContext = clone $this->context;
@@ -210,7 +210,7 @@ abstract class ParserAbstract
         }
         
         //Call the method with the given arguments
-        $ret = call_user_func_array(array($this, $fn), $args);
+        $ret = $args ? call_user_func_array(array($this, $fn), $args) : $this->$fn();
         
         //Restore previous context
         $this->context = $oldContext;
@@ -236,15 +236,15 @@ abstract class ParserAbstract
         
         //Add the node start position
         if ($position instanceof Node\Node || $position instanceof Token) {
-            $position = $position->getLocation()->getStart();
+            $position = $position->location->start;
         } elseif (is_array($position)) {
             if (count($position)) {
-                $position = $position[0]->getLocation()->getStart();
+                $position = $position[0]->location->start;
             } else {
                 $position = $this->scanner->getPosition();
             }
         }
-        $node->setStartPosition($position);
+        $node->location->start = $position;
         
         //Emit the NodeCreated event for the node
         $this->eventsEmitter && $this->eventsEmitter->fire(
@@ -260,16 +260,15 @@ abstract class ParserAbstract
      * @param Node\Node   $node     Node to complete
      * @param Position    $position Node's end position
      * 
-     * @return Node\Node
+     * @return mixed    It actually returns a Node but mixed solves
+     *                  a lot of PHPDoc problems
      * 
      * @codeCoverageIgnore
      */
     protected function completeNode(Node\Node $node, $position = null)
     {
         //Add the node end position
-        $node->setEndPosition(
-            $position ? $position : $this->scanner->getPosition()
-        );
+        $node->location->end = $position ?: $this->scanner->getPosition();
         
         //Emit the NodeCompleted event for the node
         $this->eventsEmitter && $this->eventsEmitter->fire(
@@ -296,8 +295,8 @@ abstract class ParserAbstract
             if ($token === null) {
                 $message = "Unexpected end of input";
             } else {
-                $position = $token->getLocation()->getStart();
-                $message = "Unexpected: " . $token->getValue();
+                $position = $token->location->start;
+                $message = "Unexpected: " . $token->value;
             }
         }
         if (!$position) {
@@ -325,11 +324,11 @@ abstract class ParserAbstract
                 return true;
             }
             $token = $this->scanner->getToken();
-            if (!$token || $token->getValue() === "}") {
+            if (!$token || $token->value === "}") {
                 return true;
             }
         }
-        return $this->error();
+        $this->error();
     }
     
     /**
@@ -337,18 +336,17 @@ abstract class ParserAbstract
      * sequence is not valid
      * 
      * @param callable $fn   Parsing instruction function
-     * @param array    $args Arguments that will be passed to the function
      * @param string   $char Separator
      * 
      * @return array
      * 
      * @throws Exception
      */
-    protected function charSeparatedListOf($fn, $args = array(), $char = ",")
+    protected function charSeparatedListOf($fn, $char = ",")
     {
         $list = array();
         $valid = true;
-        while ($param = call_user_func_array(array($this, $fn), $args)) {
+        while ($param = $this->$fn()) {
             $list[] = $param;
             $valid = true;
             if (!$this->scanner->consume($char)) {
@@ -358,7 +356,7 @@ abstract class ParserAbstract
             }
         }
         if (!$valid) {
-            return $this->error();
+            $this->error();
         }
         return $list;
     }

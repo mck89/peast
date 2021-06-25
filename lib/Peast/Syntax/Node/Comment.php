@@ -159,7 +159,7 @@ class Comment extends Node
     /**
      * Sets leading comments array
      * 
-     * @param Comments[] $comments Comments array
+     * @param Comment[] $comments Comments array
      * 
      * @return $this
      */
@@ -172,7 +172,7 @@ class Comment extends Node
     /**
      * Sets trailing comments array
      * 
-     * @param Comments[] $comments Comments array
+     * @param Comment[] $comments Comments array
      * 
      * @return $this
      */

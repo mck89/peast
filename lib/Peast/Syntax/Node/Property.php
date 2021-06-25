@@ -64,7 +64,7 @@ class Property extends Node
     /**
      * Property kind that is one of the kind constants
      * 
-     * @var type 
+     * @var string
      */
     protected $kind = self::KIND_INIT;
     

@@ -37,7 +37,7 @@ class WithStatement extends Node implements Statement
     /**
      * The statement body
      * 
-     * @var type 
+     * @var Expression
      */
     protected $body;
     

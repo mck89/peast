@@ -36,7 +36,7 @@ class UnaryExpression extends Node implements Expression
     protected $operator;
     
     /**
-     * Prefix flag that is always true since the operator preceeds the argument
+     * Prefix flag that is always true since the operator precedes the argument
      * 
      * @var bool
      */
@@ -73,7 +73,7 @@ class UnaryExpression extends Node implements Expression
     }
     
     /**
-     * Returns the prefix flag that is always true since the operator preceeds
+     * Returns the prefix flag that is always true since the operator precedes
      * the argument
      * 
      * @return bool

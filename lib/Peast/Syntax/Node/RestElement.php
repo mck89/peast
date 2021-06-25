@@ -10,7 +10,7 @@
 namespace Peast\Syntax\Node;
 
 /**
- * A node that represents the rest element in array binding paterns or function
+ * A node that represents the rest element in array binding patterns or function
  * parameters.
  * For example "...rest" in: [a, ...rest] = b
  * 
@@ -30,7 +30,7 @@ class RestElement extends Node implements Pattern
     /**
      * The node's argument
      * 
-     * @var type 
+     * @var Pattern
      */
     protected $argument;
     

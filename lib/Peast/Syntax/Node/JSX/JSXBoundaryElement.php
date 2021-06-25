@@ -58,7 +58,7 @@ abstract class JSXBoundaryElement extends Node
     {
         $this->assertType(
             $name,
-            array("JSXIdentifier", "JSXMemberExpression", "JSXNamespacedName")
+            array("JSX\\JSXIdentifier", "JSX\\JSXMemberExpression", "JSX\\JSXNamespacedName")
         );
         $this->name = $name;
         return $this;

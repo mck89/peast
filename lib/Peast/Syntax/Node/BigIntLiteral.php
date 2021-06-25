@@ -43,6 +43,7 @@ class BigIntLiteral extends Literal
     {
         //Value, Raw and Bigint are always the same value
         $this->value = $this->raw = $this->bigint = $value;
+        return $this;
     }
     
     /**

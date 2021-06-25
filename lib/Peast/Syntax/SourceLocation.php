@@ -11,7 +11,7 @@ namespace Peast\Syntax;
 
 /**
  * This class represents a location in the source code with start and end
- * positon.
+ * position.
  * 
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
@@ -22,14 +22,14 @@ class SourceLocation implements \JSONSerializable
      * 
      * @var Position 
      */
-    protected $start;
+    public $start;
     
     /**
      * End position
      * 
      * @var Position 
      */
-    protected $end;
+    public $end;
     
     /**
      * Returns the start position
@@ -85,8 +85,8 @@ class SourceLocation implements \JSONSerializable
     public function jsonSerialize()
     {
         return array(
-            "start" => $this->getStart(),
-            "end" => $this->getEnd()
+            "start" => $this->start,
+            "end" => $this->end
         );
     }
 }

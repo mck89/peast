@@ -51,7 +51,7 @@ Changelog
 
 #### 1.8.1
 * Fixed parsing of regular expressions by disabling scan errors inside them
-* Added LSM utility class to handle correctly punctutators and strings stop characters
+* Added LSM utility class to handle correctly punctuators and strings stop characters
 
 #### 1.8
 * Implemented parsing of JSX syntax

@@ -64,13 +64,6 @@ abstract class Base
     protected $spacesInsideRoundBrackets = false;
     
     /**
-     * Boolean that indicates if comments must be rendered
-     * 
-     * @var bool
-     */
-    protected $renderComments = true;
-    
-    /**
      * Returns the new line character
      * 
      * @return string
