@@ -1783,7 +1783,7 @@ class Parser extends ParserAbstract
     /**
      * Parses a class elements
      * 
-     * @return Node\MethodDefinition|null
+     * @return Node\MethodDefinition|bool|null
      */
     protected function parseClassElement()
     {

@@ -88,13 +88,13 @@ abstract class ParserAbstract
         
         //Enable module scanning if required
         if ($this->sourceType === \Peast\Peast::SOURCE_TYPE_MODULE) {
-            $this->scanner->enableModuleMode(true);
+            $this->scanner->enableModuleMode();
         }
         
         //Enable comments scanning
         $this->comments = isset($options["comments"]) && $options["comments"];
         if ($this->comments) {
-            $this->scanner->enableComments(true);
+            $this->scanner->enableComments();
             //Create the comments registry
             new CommentsRegistry($this);
         }
