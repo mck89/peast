@@ -2906,6 +2906,7 @@ class Parser extends ParserAbstract
      */
     protected function parseRestProperty()
     {
+        $state = $this->scanner->getState();
         if ($token = $this->scanner->consume("...")) {
 
             if ($argument = $this->parseIdentifier(static::$bindingIdentifier)) {
@@ -2914,7 +2915,7 @@ class Parser extends ParserAbstract
                 return $this->completeNode($node);
             }
 
-            $this->error();
+            $this->scanner->setState($state);
         }
         return null;
     }
