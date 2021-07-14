@@ -1,9 +1,11 @@
 Changelog
 ==========
 
+#### 1.13.2
+* Fixed bug when parsing spread operator inside objects returned by arrow functions
+
 #### 1.13.1
 * Major performance improvements to parsing and tokenization
-
 
 #### 1.13.0
 * Implemented ES2022 parser with class fields and private class methods
