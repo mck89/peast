@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.13.3
+* Added support for surrogate pairs in strings and templates
+
 #### 1.13.2
 * Fixed bug when parsing spread operator inside objects returned by arrow functions
 

@@ -100,6 +100,23 @@ class Utils
         }
         return self::$lineTerminatorsCache;
     }
+
+    /**
+     * Converts a surrogate pair of Unicode code points to UTF-8
+     * 
+     * @param string $first  First Unicode code point
+     * @param string $second Second Unicode code point
+     * 
+     * @return string
+     * 
+     * @codeCoverageIgnore
+     */
+    static public function surrogatePairToUtf8($first, $second)
+    {
+        //From: https://stackoverflow.com/questions/39226593/how-to-convert-utf16-surrogate-pairs-to-equivalent-hex-codepoint-in-php
+        $value = ((hexdec($first) & 0x3ff) << 10) | (hexdec($second) & 0x3ff);
+        return self::unicodeToUtf8($value + 0x10000);
+    }
     
     /**
      * This function takes a string as it appears in the source code and returns
@@ -114,10 +131,22 @@ class Utils
         //Remove quotes
         $str = substr($str, 1, -1);
         
+        //Return immediately if the escape character is missing
+        if (strpos($str, "\\") === false) {
+            return $str;
+        }
+        
         $lineTerminators = self::getLineTerminators();
+        
+        //Surrogate pairs regex
+        $surrogatePairsReg = sprintf(
+            'u(?:%1$s|\{%1$s\})\\\\u(?:%2$s|\{%2$s\})',
+            "[dD][89abAB][0-9a-fA-F]{2}", "[dD][c-fC-F][0-9a-fA-F]{2}"
+        );
         
         //Handle escapes
         $patterns = array(
+            $surrogatePairsReg,
             "u\{[a-fA-F0-9]+\}",
             "u[a-fA-F0-9]{4}",
             "x[a-fA-F0-9]{2}",
@@ -143,6 +172,14 @@ class Utils
                 //Invalid unicode or hexadecimal sequences
                 if (strlen($m[1]) === 1) {
                     return "\\$type";
+                }
+                // Surrogate pair
+                if ($type === "u" && strpos($m[1], "\\") !== false) {
+                    $points = explode("\\", $m[1]);
+                    return Utils::surrogatePairToUtf8(
+                        str_replace(array("{", "}"), "", $points[0]),
+                        str_replace(array("{", "}"), "", $points[1])
+                    );
                 }
                 // \uFFFF, \u{FFFF}, \xFF
                 $code = substr($m[1], 1);

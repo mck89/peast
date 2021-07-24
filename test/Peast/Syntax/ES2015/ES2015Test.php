@@ -1,6 +1,8 @@
 <?php
 namespace Peast\test\Syntax\ES2015;
 
+use Peast\Syntax\Utils;
+
 class ES2015Test extends \Peast\test\TestParser
 {
     protected $parser = "ES2015";
@@ -121,5 +123,40 @@ class ES2015Test extends \Peast\test\TestParser
             $validResult = false;
         }
         $this->assertSame($valid, $validResult);
+    }
+
+    public function surrogatePairsProvider()
+    {
+        $tests = array();
+        foreach (array('"', "'", "`") as $char) {
+            for ($i = 0; $i <= 1; $i++) {
+                for ($c = 0; $c <= 1; $c++) {
+                    $tests[] = array($char, $i, $c);
+                }
+            }
+        }
+        return $tests;
+    }    
+
+    /**
+     * @dataProvider surrogatePairsProvider
+     */
+    public function testSurrogatePairs($char, $firstBraces, $secondBraces)
+    {
+        $test = $char;
+        foreach (array("D83D" => $firstBraces, "DE00" => $secondBraces) as $point => $braces) {
+            $test .= '\u' . ($braces ? "{" : "") . $point . ($braces ? "}" : "");
+        }
+        $test .= $char;
+        $check = Utils::unicodeToUtf8(hexdec("1F600"));
+        
+        $body = \Peast\Peast::{$this->parser}($test)->parse()->getBody();
+        if ($char === "`") {
+            $testVal = $body[0]->getExpression()->getQuasis()[0]->getValue();
+        } else {
+            $testVal = $body[0]->getExpression()->getValue();
+        }
+
+        $this->assertSame($testVal, $check);
     }
 }
