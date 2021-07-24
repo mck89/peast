@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.13.4
+* Fixed bug when parsing surrogate pairs in php 7.4+
+
 #### 1.13.3
 * Added support for surrogate pairs in strings and templates
 
