@@ -177,8 +177,8 @@ class Utils
                 if ($type === "u" && strpos($m[1], "\\") !== false) {
                     $points = explode("\\", $m[1]);
                     return Utils::surrogatePairToUtf8(
-                        str_replace(array("{", "}"), "", $points[0]),
-                        str_replace(array("{", "}"), "", $points[1])
+                        str_replace(array("{", "}", "u"), "", $points[0]),
+                        str_replace(array("{", "}", "u"), "", $points[1])
                     );
                 }
                 // \uFFFF, \u{FFFF}, \xFF
