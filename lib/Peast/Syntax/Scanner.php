@@ -1408,7 +1408,7 @@ class Scanner
         }
 
         $buffer = "";
-        $allowedExp = true;
+        $allowedDecimals = true;
         
         //Parse the integer part
         if ($char !== ".") {
@@ -1455,12 +1455,12 @@ class Scanner
             //Consume exponent part if present
             if ($tempBuffer = $this->consumeExponentPart()) {
                 $buffer .= $tempBuffer;
-                $allowedExp = false;
+                $allowedDecimals = false;
             }
         }
         
         //Parse the decimal part
-        if ($this->charAt() === ".") {
+        if ($allowedDecimals && $this->charAt() === ".") {
             
             //Consume the dot
             $this->index++;
@@ -1481,9 +1481,6 @@ class Scanner
             
             //Consume exponent part if present
             if (($tempBuffer = $this->consumeExponentPart()) !== null) {
-                if (!$allowedExp) {
-                    $this->error("Invalid exponential notation");
-                }
                 $buffer .= $tempBuffer;
             }
         }

@@ -1,0 +1,134 @@
+{
+	"type": "Program",
+	"location": {
+	    "start": {
+	        "line": 1,
+	        "column": 0,
+	        "index": 0
+	    },
+	    "end": {
+	        "line": 1,
+	        "column": 15,
+	        "index": 15
+	    }
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+	    {
+	        "type": "ExpressionStatement",
+	        "location": {
+	            "start": {
+	                "line": 1,
+	                "column": 0,
+	                "index": 0
+	            },
+	            "end": {
+	                "line": 1,
+	                "column": 15,
+	                "index": 15
+	            }
+	        },
+	        "leadingComments": [],
+	        "trailingComments": [],
+	        "expression": {
+	            "type": "CallExpression",
+	            "location": {
+	                "start": {
+	                    "line": 1,
+	                    "column": 0,
+	                    "index": 0
+	                },
+	                "end": {
+	                    "line": 1,
+	                    "column": 15,
+	                    "index": 15
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "optional": false,
+	            "callee": {
+	                "type": "MemberExpression",
+	                "location": {
+	                    "start": {
+	                        "line": 1,
+	                        "column": 0,
+	                        "index": 0
+	                    },
+	                    "end": {
+	                        "line": 1,
+	                        "column": 12,
+	                        "index": 12
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "optional": false,
+	                "object": {
+	                    "type": "Literal",
+	                    "location": {
+	                        "start": {
+	                            "line": 1,
+	                            "column": 0,
+	                            "index": 0
+	                        },
+	                        "end": {
+	                            "line": 1,
+	                            "column": 4,
+	                            "index": 4
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "value": 0.00008,
+	                    "raw": "8e-5",
+	                    "format": "decimal"
+	                },
+	                "property": {
+	                    "type": "Identifier",
+	                    "location": {
+	                        "start": {
+	                            "line": 1,
+	                            "column": 5,
+	                            "index": 5
+	                        },
+	                        "end": {
+	                            "line": 1,
+	                            "column": 12,
+	                            "index": 12
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "name": "toFixed"
+	                },
+	                "computed": false
+	            },
+	            "arguments": [
+	                {
+	                    "type": "Literal",
+	                    "location": {
+	                        "start": {
+	                            "line": 1,
+	                            "column": 13,
+	                            "index": 13
+	                        },
+	                        "end": {
+	                            "line": 1,
+	                            "column": 14,
+	                            "index": 14
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "value": 3,
+	                    "raw": "3",
+	                    "format": "decimal"
+	                }
+	            ]
+	        }
+	    }
+	],
+	"sourceType": "script"
+}
