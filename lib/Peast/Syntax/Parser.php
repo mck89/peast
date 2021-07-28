@@ -2536,11 +2536,9 @@ class Parser extends ParserAbstract
         if ($token = $this->scanner->consume("get")) {
             $position = $token;
             $kind = Node\MethodDefinition::KIND_GET;
-            $error = true;
         } elseif ($token = $this->scanner->consume("set")) {
             $position = $token;
             $kind = Node\MethodDefinition::KIND_SET;
-            $error = true;
         } elseif ($token = $this->scanner->consume("*")) {
             $position = $token;
             $error = true;
