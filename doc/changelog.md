@@ -1,6 +1,10 @@
 Changelog
 ==========
 
+#### 1.13.5
+* Fixed parsing of 'get' and 'set' as property names and class fields
+* Fixed parsing of dot after number with exponential notation
+
 #### 1.13.4
 * Fixed bug when parsing surrogate pairs in php 7.4+
 
