@@ -1,0 +1,3 @@
+<div className="example">
+{} {}
+</div>

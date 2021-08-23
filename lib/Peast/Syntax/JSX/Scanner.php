@@ -25,8 +25,20 @@ trait Scanner
      */
     public function reconsumeCurrentTokenAsJSXText()
     {
+        //Current and next tokens must be reset and the open brackets count must be correct
+        //like they were never scanned
+        foreach (array($this->currentToken, $this->nextToken) as $token) {
+            if ($token && isset($this->brackets[$token->value])) {
+                if ($refBracket = $this->brackets[$token->value]) {
+                    $this->openBrackets[$refBracket]++;
+                } else {
+                    $this->openBrackets[$token->value]--;
+                }
+            }
+        }
         $this->nextToken = null;
         $this->currentToken = null;
+
         $startPosition = $this->getPosition();
         $this->setScanPosition($startPosition);
         $result = $this->consumeUntil(array("{", "<"), false, false);
