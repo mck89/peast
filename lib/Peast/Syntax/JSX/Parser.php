@@ -111,6 +111,8 @@ trait Parser
     {
         if ($node = $this->parseJSXText()) {
             return $node;
+        } elseif ($node = $this->parseJSXFragment()) {
+            return $node;
         } elseif($node = $this->parseJSXElement()) {
             return $node;
         } elseif ($startToken = $this->scanner->consume("{")) {

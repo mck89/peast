@@ -1,6 +1,10 @@
 Changelog
 ==========
 
+#### 1.13.6
+* Fixed parsing of adjacent JSX expressions
+* Implemented parsing of JSX fragments inside elements
+
 #### 1.13.5
 * Fixed parsing of 'get' and 'set' as property names and class fields
 * Fixed parsing of dot after number with exponential notation
