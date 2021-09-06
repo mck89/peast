@@ -1979,7 +1979,16 @@ class Parser extends ParserAbstract
             return $item;
         } elseif ($item = $this->parseExportDeclaration()) {
             return $item;
-        } elseif ($item = $this->parseStatementListItem()) {
+        } elseif (
+            $item = $this->isolateContext(
+                array(
+                    "allowYield" => false,
+                    "allowReturn" => false,
+                    "allowAwait" => $this->features->topLevelAwait
+                ),
+                "parseStatementListItem"
+            )
+        ) {
             return $item;
         }
         return null;
@@ -2036,12 +2045,12 @@ class Parser extends ParserAbstract
                     $lookaheadTokens[] = array("async", true);
                 }
                 if (($declaration = $this->isolateContext(
-                        null,
+                        array("allowAwait" => $this->features->topLevelAwait),
                         "parseFunctionOrGeneratorDeclaration",
                         array(true)
                     )) ||
                     ($declaration = $this->isolateContext(
-                        null,
+                        array("allowAwait" => $this->features->topLevelAwait),
                         "parseClassDeclaration",
                         array(true)
                     ))
@@ -2056,7 +2065,7 @@ class Parser extends ParserAbstract
                         $this->features->asyncAwait
                     ) &&
                     ($declaration = $this->isolateContext(
-                        array(null, "allowIn" => true),
+                        array("allowIn" => true, "allowAwait" => $this->features->topLevelAwait),
                         "parseAssignmentExpression"
                     ))
                 ) {
@@ -2081,10 +2090,12 @@ class Parser extends ParserAbstract
 
             } elseif (
                 ($dec = $this->isolateContext(
-                    null, "parseVariableStatement"
+                    array("allowAwait" => $this->features->topLevelAwait),
+                    "parseVariableStatement"
                 )) ||
                 $dec = $this->isolateContext(
-                    null, "parseDeclaration"
+                    array("allowAwait" => $this->features->topLevelAwait),
+                    "parseDeclaration"
                 )
             ) {
 

@@ -157,4 +157,11 @@ class Features
      * @var bool
      */
     public $classFieldsPrivateIn = false;
+
+    /**
+     * Top level await
+     *
+     * @var bool
+     */
+    public $topLevelAwait = false;
 }

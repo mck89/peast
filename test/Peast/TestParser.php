@@ -153,6 +153,9 @@ abstract class TestParser extends TestBase
         ),
         "classFieldsPrivateIn"=> array(
             array("ES2022", "files", "ClassFields", "PrivateClassFieldIn.js")
+        ),
+        "topLevelAwait"=> array(
+            array("ES2022", "files", "modules", "AsyncAwait", "TopLevelAwait.js")
         )
     );
     

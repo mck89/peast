@@ -1,0 +1,91 @@
+{
+	"type": "Program",
+	"location": {
+	    "start": {
+	        "line": 1,
+	        "column": 0,
+	        "index": 0
+	    },
+	    "end": {
+	        "line": 1,
+	        "column": 12,
+	        "index": 12
+	    }
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+	    {
+	        "type": "ExpressionStatement",
+	        "location": {
+	            "start": {
+	                "line": 1,
+	                "column": 0,
+	                "index": 0
+	            },
+	            "end": {
+	                "line": 1,
+	                "column": 12,
+	                "index": 12
+	            }
+	        },
+	        "leadingComments": [],
+	        "trailingComments": [],
+	        "expression": {
+	            "type": "AwaitExpression",
+	            "location": {
+	                "start": {
+	                    "line": 1,
+	                    "column": 0,
+	                    "index": 0
+	                },
+	                "end": {
+	                    "line": 1,
+	                    "column": 12,
+	                    "index": 12
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "argument": {
+	                "type": "CallExpression",
+	                "location": {
+	                    "start": {
+	                        "line": 1,
+	                        "column": 6,
+	                        "index": 6
+	                    },
+	                    "end": {
+	                        "line": 1,
+	                        "column": 12,
+	                        "index": 12
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "optional": false,
+	                "callee": {
+	                    "type": "Identifier",
+	                    "location": {
+	                        "start": {
+	                            "line": 1,
+	                            "column": 6,
+	                            "index": 6
+	                        },
+	                        "end": {
+	                            "line": 1,
+	                            "column": 10,
+	                            "index": 10
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "name": "test"
+	                },
+	                "arguments": []
+	            }
+	        }
+	    }
+	],
+	"sourceType": "module"
+}

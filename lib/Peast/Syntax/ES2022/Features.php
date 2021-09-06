@@ -38,4 +38,11 @@ class Features extends \Peast\Syntax\ES2021\Features
      * @var bool
      */
     public $classFieldsPrivateIn = true;
+
+    /**
+     * Top level await
+     *
+     * @var bool
+     */
+    public $topLevelAwait = true;
 }
