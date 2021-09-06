@@ -31,4 +31,11 @@ class Features extends \Peast\Syntax\ES2021\Features
      * @var bool
      */
     public $classFields = true;
+
+    /**
+     * "in" operator for private fields
+     *
+     * @var bool
+     */
+    public $classFieldsPrivateIn = true;
 }

@@ -3073,7 +3073,23 @@ class Parser extends ParserAbstract
         }
         
         if (!($exp = $this->parseUnaryExpression())) {
-            return null;
+            if (
+                !$this->features->classFieldsPrivateIn ||
+                !$this->context->allowIn
+            ) {
+                return null;
+            }
+            //Support "#private in x" syntax
+            $state = $this->scanner->getState();
+            if (
+                !($exp = $this->parsePrivateIdentifier()) ||
+                !$this->scanner->isBefore(array("in"))
+            ) {
+                if ($exp) {
+                    $this->scanner->setState($state);
+                }
+                return null;
+            }
         }
         
         $list = array($exp);

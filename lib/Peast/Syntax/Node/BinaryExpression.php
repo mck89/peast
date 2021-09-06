@@ -38,7 +38,7 @@ class BinaryExpression extends Node implements Expression
     /**
      * Left expression
      * 
-     * @var Expression
+     * @var Expression|PrivateIdentifier
      */
     protected $left;
     
@@ -75,7 +75,7 @@ class BinaryExpression extends Node implements Expression
     /**
      * Returns the left expression
      * 
-     * @return Expression
+     * @return Expression|PrivateIdentifier
      */
     public function getLeft()
     {
@@ -85,12 +85,13 @@ class BinaryExpression extends Node implements Expression
     /**
      * Sets the left expression
      * 
-     * @param Expression $left Left expression
+     * @param Expression|PrivateIdentifier $left Left expression
      * 
      * @return $this
      */
-    public function setLeft(Expression $left)
+    public function setLeft($left)
     {
+        $this->assertType($left, array("Expression", "PrivateIdentifier"));
         $this->left = $left;
         return $this;
     }

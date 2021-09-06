@@ -150,4 +150,11 @@ class Features
      * @var bool
      */
     public $classFields = false;
+
+    /**
+     * "in" operator for private fields
+     *
+     * @var bool
+     */
+    public $classFieldsPrivateIn = false;
 }

@@ -150,6 +150,9 @@ abstract class TestParser extends TestBase
         "privateMethodsAndFields"=> array(
             array("ES2022", "files", "PrivateMethods", "PrivateMethods.js"),
             array("ES2022", "files", "PrivateMethods", "PrivateMemberExpression.js"),
+        ),
+        "classFieldsPrivateIn"=> array(
+            array("ES2022", "files", "ClassFields", "PrivateClassFieldIn.js")
         )
     );
     
