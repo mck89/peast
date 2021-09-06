@@ -3970,7 +3970,7 @@ class Parser extends ParserAbstract
         }
         $checkLegacyOctal = $forceLegacyOctalCheck || $this->scanner->getStrictMode();
         if ($number) {
-            if ($val && $val[0] === "0" && preg_match("#^0[0-7_]+$#", $val)) {
+            if ($val && $val[0] === "0" && preg_match("#^0[0-9_]+$#", $val)) {
                 if ($checkLegacyOctal) {
                     $this->error(
                         "Octal literals are not allowed in strict mode"
@@ -3996,8 +3996,9 @@ class Parser extends ParserAbstract
                 "u[$hex]{0,3}$"
             );
             if ($checkLegacyOctal) {
-                $invalidSyntax[] = "[0-7]{2}";
+                $invalidSyntax[] = "\d{2}";
                 $invalidSyntax[] = "[1-7]";
+                $invalidSyntax[] = "0[89]";
             }
             $reg = "#(\\\\+)(" . implode("|", $invalidSyntax) . ")#";
             if (preg_match_all($reg, $val, $matches, PREG_SET_ORDER)) {
