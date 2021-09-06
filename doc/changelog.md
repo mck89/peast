@@ -1,6 +1,11 @@
 Changelog
 ==========
 
+#### 1.13.7
+* Implemented parsing of top level await
+* Implemented parsing of '#field in obj' syntax
+* Aligned invalid octal numbers checks to the specification
+
 #### 1.13.6
 * Fixed parsing of adjacent JSX expressions
 * Implemented parsing of JSX fragments inside elements
