@@ -1,0 +1,15 @@
+class foo {
+	static {
+		this.test = await fn();
+	}
+}
+/**************************************************/
+class foo{static{this.test=await fn();}}
+/**************************************************/
+class foo
+{
+	static
+	{
+		this.test = await fn(  );
+	}
+}
