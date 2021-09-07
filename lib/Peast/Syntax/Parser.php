@@ -1783,12 +1783,17 @@ class Parser extends ParserAbstract
     /**
      * Parses a class elements
      * 
-     * @return Node\MethodDefinition|bool|null
+     * @return Node\MethodDefinition|Node\PropertyDefinition|Node\StaticBlock|bool|null
      */
     protected function parseClassElement()
     {
         if ($this->scanner->consume(";")) {
             return true;
+        }
+        if ($this->features->classStaticBlock &&
+            $this->scanner->isBefore(array(array("static", "{")), true)
+        ) {
+            return $this->parseClassStaticBlock();
         }
         $staticToken = null;
         $state = $this->scanner->getState();
@@ -2513,6 +2518,33 @@ class Parser extends ParserAbstract
         return $this->parsePropertyName();
     }
 
+    /**
+     * Parses a field definition
+     * 
+     * @return Node\StaticBlock
+     */
+    protected function parseClassStaticBlock()
+    {
+        $staticToken = $this->scanner->consume("static");
+        $this->scanner->consume("{");
+        $statements = $this->isolateContext(
+            array("allowAwait" => true), "parseStatementList"
+        );
+        if ($this->scanner->consume("}")) {
+            $node = $this->createNode("StaticBlock", $staticToken);
+            if ($statements) {
+                $node->setBody($statements);
+            }
+            return $this->completeNode($node);
+        }
+        $this->error();
+    }
+
+    /**
+     * Parses a field definition
+     * 
+     * @return Node\PropertyDefinition|null
+     */
     protected function parseFieldDefinition()
     {
         $state = $this->scanner->getState();

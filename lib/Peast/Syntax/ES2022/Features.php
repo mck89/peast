@@ -45,4 +45,11 @@ class Features extends \Peast\Syntax\ES2021\Features
      * @var bool
      */
     public $topLevelAwait = true;
+
+    /**
+     * Class static block
+     *
+     * @var bool
+     */
+    public $classStaticBlock = true;
 }

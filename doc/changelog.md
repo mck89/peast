@@ -4,6 +4,7 @@ Changelog
 #### 1.13.7
 * Implemented parsing of top level await
 * Implemented parsing of '#field in obj' syntax
+* Implemented parsing of class static block
 * Aligned invalid octal numbers checks to the specification
 
 #### 1.13.6

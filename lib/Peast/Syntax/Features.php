@@ -164,4 +164,11 @@ class Features
      * @var bool
      */
     public $topLevelAwait = false;
+
+    /**
+     * Class static block
+     *
+     * @var bool
+     */
+    public $classStaticBlock = false;
 }

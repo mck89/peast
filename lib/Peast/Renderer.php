@@ -44,6 +44,7 @@ class Renderer
         "FunctionDeclaration",
         "IfStatement",
         "LabeledStatement",
+        "StaticBlock",
         "SwitchStatement",
         "TryStatement",
         "WhileStatement",
@@ -722,6 +723,10 @@ class Renderer
                             $node->getExpressions(),
                             "," . $this->renderOpts->sao
                          );
+            break;
+            case "StaticBlock":
+                $code .= "static";
+                $code .= $this->renderStatementBlock($node->getBody(), true);
             break;
             case "Super":
                 $code .= "super";

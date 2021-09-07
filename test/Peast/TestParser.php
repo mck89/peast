@@ -156,6 +156,9 @@ abstract class TestParser extends TestBase
         ),
         "topLevelAwait"=> array(
             array("ES2022", "files", "modules", "AsyncAwait", "TopLevelAwait.js")
+        ),
+        "classStaticBlock"=> array(
+            array("ES2022", "files", "ClassStaticBlock", "ClassStaticBlock.js")
         )
     );
     
