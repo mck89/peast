@@ -1258,10 +1258,11 @@ class Parser extends ParserAbstract
      * Parses a for statement that does not start with var, let or const
      * 
      * @param Token $forToken Token that corresponds to the "for" keyword
+     * @param bool  $hasAwait True if "for" is followed by "await"
      * 
      * @return Node\Node|null
      */
-    protected function parseForNotVarLetConstStatement($forToken)
+    protected function parseForNotVarLetConstStatement($forToken, $hasAwait)
     {
         $state = $this->scanner->getState();
         $notBeforeSB = !$this->scanner->isBefore(array(array("let", "[")), true);
@@ -1324,7 +1325,9 @@ class Parser extends ParserAbstract
                     $node->setBody($body);
                     return $this->completeNode($node);
                 }
-            } elseif (!$beforeLetAsyncOf && $left && $this->scanner->consume("of")) {
+            } elseif (($hasAwait || !$beforeLetAsyncOf) &&
+                $left && $this->scanner->consume("of")
+            ) {
                 
                 if (($right = $this->isolateContext(
                         array("allowIn" => true),
@@ -1370,7 +1373,7 @@ class Parser extends ParserAbstract
             if ($this->scanner->consume("(") && (
                 ($node = $this->parseForVarStatement($startForToken)) ||
                 ($node = $this->parseForLetConstStatement($startForToken)) ||
-                ($node = $this->parseForNotVarLetConstStatement($startForToken)))
+                ($node = $this->parseForNotVarLetConstStatement($startForToken, $forAwait)))
             ) {
                 if ($forAwait) {
                     if (!$node instanceof Node\ForOfStatement) {
