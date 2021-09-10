@@ -1298,20 +1298,13 @@ class Parser extends ParserAbstract
         } else {
             
             $this->scanner->setState($state);
+            $beforeLetAsyncOf = $this->scanner->isBefore(array("let", array("async", "of")), true);
             $left = $this->parseLeftHandSideExpression();
 
-            $beforeLetAsyncOf = false;
-            if ($left) {
-                $leftType = $left->getType();
-                if ($leftType === "Identifier" &&
-                    in_array($left->getName(), array("let", "async", "of"))
-                ) {
-                    $beforeLetAsyncOf = true;
-                } elseif ($leftType === "ChainExpression") {
-                    $this->error(
-                        "Optional chain can't appear in left-hand side"
-                    );
-                }
+            if ($left && $left->getType() === "ChainExpression") {
+                $this->error(
+                    "Optional chain can't appear in left-hand side"
+                );
             }
 
             $left = $this->expressionToPattern($left);
