@@ -1,55 +1,56 @@
 {
-    "type": "Program",
-    "location": {
-        "start": {
-            "line": 1,
-            "column": 0,
-            "index": 0
-        },
-        "end": {
-            "line": 1,
-            "column": 29,
-            "index": 29
-        }
-    },
-    "leadingComments": [],
-    "trailingComments": [],
-    "body": [
-        {
-            "type": "ExpressionStatement",
-            "location": {
-                "start": {
-                    "line": 1,
-                    "column": 0,
-                    "index": 0
-                },
-                "end": {
-                    "line": 1,
-                    "column": 29,
-                    "index": 29
-                }
-            },
-            "leadingComments": [],
-            "trailingComments": [],
-            "expression": {
-                "type": "Identifier",
-                "location": {
-                    "start": {
-                        "line": 1,
-                        "column": 0,
-                        "index": 0
-                    },
-                    "end": {
-                        "line": 1,
-                        "column": 29,
-                        "index": 29
-                    }
-                },
-                "leadingComments": [],
-                "trailingComments": [],
-                "name": "\u30c8\u00ff\ua0c5\u5674234"
-            }
-        }
-    ],
-    "sourceType": "script"
+	"type": "Program",
+	"location": {
+	    "start": {
+	        "line": 1,
+	        "column": 0,
+	        "index": 0
+	    },
+	    "end": {
+	        "line": 1,
+	        "column": 29,
+	        "index": 29
+	    }
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+	    {
+	        "type": "ExpressionStatement",
+	        "location": {
+	            "start": {
+	                "line": 1,
+	                "column": 0,
+	                "index": 0
+	            },
+	            "end": {
+	                "line": 1,
+	                "column": 29,
+	                "index": 29
+	            }
+	        },
+	        "leadingComments": [],
+	        "trailingComments": [],
+	        "expression": {
+	            "type": "Identifier",
+	            "location": {
+	                "start": {
+	                    "line": 1,
+	                    "column": 0,
+	                    "index": 0
+	                },
+	                "end": {
+	                    "line": 1,
+	                    "column": 29,
+	                    "index": 29
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "name": "トÿꃅ噴234",
+	            "rawName": "\\u30c8\\u{FF}\\u{A0C5}\\u5674234"
+	        }
+	    }
+	],
+	"sourceType": "script"
 }

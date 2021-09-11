@@ -89,3 +89,5 @@ There is only one big difference from ESTree: parenthesized expressions. This ty
 From version 1.3, literals have their own classes: `StringLiteral`, `NumericLiteral`, `BooleanLiteral` and `NullLiteral`.
 
 From version 1.8, when parsing JSX, 2 new token types are emitted: `JSXIdentifier`, that represents a valid JSX identifier, and `JSXText`, that represents text inside JSX elements and fragments.
+
+From version 1.13.7, the new `rawName` property has been added to `Identifiers` nodes. This property reports the raw name of the identifier with unconverted unicode escape sequences.

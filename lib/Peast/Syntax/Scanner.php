@@ -1635,10 +1635,10 @@ class Scanner
                 $this->column++;
             } elseif ($char === "\\" && ($seq = $this->consumeUnicodeEscapeSequence())) {
                 //Verify that it's a valid character
-                if (!$this->isIdentifierChar($seq, $start)) {
+                if (!$this->isIdentifierChar($seq[1], $start)) {
                     break;
                 }
-                $buffer .= $seq;
+                $buffer .= $seq[0];
             } else {
                 break;
             }
@@ -1674,7 +1674,7 @@ class Scanner
     /**
      * Consumes an unicode escape sequence
      * 
-     * @return string|null
+     * @return array|null
      */
     protected function consumeUnicodeEscapeSequence()
     {
@@ -1688,8 +1688,10 @@ class Scanner
         $startColumn = $this->column;
         $this->index += 2;
         $this->column += 2;
+        $brackets = false;
         if ($this->charAt() === "{") {
             //\u{FFF}
+            $brackets = true;
             $this->index++;
             $this->column++;
             $code = $this->consumeNumbers("x");
@@ -1714,8 +1716,12 @@ class Scanner
             return null;
         }
         
-        //Return the decoded character
-        return Utils::unicodeToUtf8(hexdec($code));
+        //Return an array where the first element is the matched sequence
+        //and the second one is the decoded character
+        return array(
+            $brackets ? "\\u{" . $code . "}" : "\\u" . $code,
+            Utils::unicodeToUtf8(hexdec($code))
+        );
     }
     
     /**

@@ -3770,7 +3770,7 @@ class Parser extends ParserAbstract
         
         $this->scanner->consumeToken();
         $node = $this->createNode("Identifier", $token);
-        $node->setName($value);
+        $node->setRawName($value);
         return $this->completeNode($node);
     }
     

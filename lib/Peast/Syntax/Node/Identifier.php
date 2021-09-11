@@ -9,6 +9,8 @@
  */
 namespace Peast\Syntax\Node;
 
+use Peast\Syntax\Utils;
+
 /**
  * A node that represents an identifier.
  * 
@@ -22,7 +24,8 @@ class Identifier extends Node implements Expression, Pattern
      * @var array 
      */
     protected $propertiesMap = array(
-        "name" => false
+        "name" => false,
+        "rawName" => false,
     );
     
     /**
@@ -31,6 +34,13 @@ class Identifier extends Node implements Expression, Pattern
      * @var string
      */
     protected $name;
+    
+    /**
+     * The identifier's raw name
+     * 
+     * @var string
+     */
+    protected $rawName;
     
     /**
      * Returns the identifier's name
@@ -51,7 +61,39 @@ class Identifier extends Node implements Expression, Pattern
      */
     public function setName($name)
     {
-        $this->name = $name;
+        $this->name = $this->rawName = $name;
+        return $this;
+    }
+    
+    /**
+     * Returns the identifier's raw name
+     * 
+     * @return string
+     */
+    public function getRawName()
+    {
+        return $this->rawName;
+    }
+    
+    /**
+     * Sets the identifier's raw name
+     * 
+     * @param string $name The raw name to set
+     * 
+     * @return $this
+     */
+    public function setRawName($name)
+    {
+        $this->rawName = $name;
+        if (strpos($name, "\\") !== false) {
+            $this->name = preg_replace_callback(
+                "#\\\\u(?:\{([a-fA-F0-9]+)\}|([a-fA-F0-9]{4}))#",
+                function ($match) {
+                    return Utils::unicodeToUtf8(hexdec($match[1] ? : $match[2]));
+                },
+                $name
+            );
+        }
         return $this;
     }
 }

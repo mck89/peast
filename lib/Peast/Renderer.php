@@ -405,7 +405,7 @@ class Renderer
             break;
             case "JSXIdentifier":
             case "Identifier":
-                $code .= $node->getName();
+                $code .= $node->getRawName();
             break;
             case "IfStatement":
                 $code .= "if" .
