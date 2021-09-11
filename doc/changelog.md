@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.13.8
+* Fixed identifiers bug introduced in the last release
+
 #### 1.13.7
 * Implemented parsing of top level await
 * Implemented parsing of `#field in obj` syntax
