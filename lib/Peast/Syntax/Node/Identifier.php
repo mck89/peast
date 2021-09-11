@@ -93,6 +93,8 @@ class Identifier extends Node implements Expression, Pattern
                 },
                 $name
             );
+        } else {
+            $this->name = $name;
         }
         return $this;
     }
