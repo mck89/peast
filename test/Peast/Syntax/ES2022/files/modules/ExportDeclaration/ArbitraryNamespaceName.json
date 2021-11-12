@@ -1,0 +1,117 @@
+{
+	"type": "Program",
+	"location": {
+	    "start": {
+	        "line": 1,
+	        "column": 0,
+	        "index": 0
+	    },
+	    "end": {
+	        "line": 1,
+	        "column": 32,
+	        "index": 32
+	    }
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+	    {
+	        "type": "ExportNamedDeclaration",
+	        "location": {
+	            "start": {
+	                "line": 1,
+	                "column": 0,
+	                "index": 0
+	            },
+	            "end": {
+	                "line": 1,
+	                "column": 32,
+	                "index": 32
+	            }
+	        },
+	        "leadingComments": [],
+	        "trailingComments": [],
+	        "declaration": null,
+	        "specifiers": [
+	            {
+	                "type": "ExportSpecifier",
+	                "location": {
+	                    "start": {
+	                        "line": 1,
+	                        "column": 8,
+	                        "index": 8
+	                    },
+	                    "end": {
+	                        "line": 1,
+	                        "column": 13,
+	                        "index": 13
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "local": {
+	                    "type": "Literal",
+	                    "location": {
+	                        "start": {
+	                            "line": 1,
+	                            "column": 8,
+	                            "index": 8
+	                        },
+	                        "end": {
+	                            "line": 1,
+	                            "column": 13,
+	                            "index": 13
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "value": "abc",
+	                    "raw": "\"abc\"",
+	                    "format": "double"
+	                },
+	                "exported": {
+	                    "type": "Literal",
+	                    "location": {
+	                        "start": {
+	                            "line": 1,
+	                            "column": 8,
+	                            "index": 8
+	                        },
+	                        "end": {
+	                            "line": 1,
+	                            "column": 13,
+	                            "index": 13
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "value": "abc",
+	                    "raw": "\"abc\"",
+	                    "format": "double"
+	                }
+	            }
+	        ],
+	        "source": {
+	            "type": "Literal",
+	            "location": {
+	                "start": {
+	                    "line": 1,
+	                    "column": 20,
+	                    "index": 20
+	                },
+	                "end": {
+	                    "line": 1,
+	                    "column": 31,
+	                    "index": 31
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "value": "source.js",
+	            "raw": "\"source.js\"",
+	            "format": "double"
+	        }
+	    }
+	],
+	"sourceType": "module"
+}

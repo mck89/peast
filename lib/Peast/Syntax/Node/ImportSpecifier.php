@@ -29,14 +29,14 @@ class ImportSpecifier extends ModuleSpecifier
     /**
      * Imported identifier
      * 
-     * @var Identifier 
+     * @var Identifier|StringLiteral
      */
     protected $imported;
     
     /**
      * Returns the imported identifier
      * 
-     * @return Identifier
+     * @return Identifier|StringLiteral
      */
     public function getImported()
     {
@@ -46,12 +46,13 @@ class ImportSpecifier extends ModuleSpecifier
     /**
      * Sets the imported identifier
      * 
-     * @param Identifier $imported Imported identifier
+     * @param Identifier|StringLiteral $imported Imported identifier
      * 
      * @return $this
      */
-    public function setImported(Identifier $imported)
+    public function setImported($imported)
     {
+        $this->assertType($imported, array("Identifier", "StringLiteral"));
         $this->imported = $imported;
         return $this;
     }

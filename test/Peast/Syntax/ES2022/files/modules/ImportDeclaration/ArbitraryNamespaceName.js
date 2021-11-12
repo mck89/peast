@@ -1,0 +1,1 @@
+import {"abc" as test} from "source.js";

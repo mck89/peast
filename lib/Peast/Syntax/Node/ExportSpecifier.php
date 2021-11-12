@@ -29,14 +29,14 @@ class ExportSpecifier extends ModuleSpecifier
     /**
      * Exported identifier
      * 
-     * @var Identifier 
+     * @var Identifier|StringLiteral
      */
     protected $exported;
     
     /**
      * Returns the exported identifier
      * 
-     * @return Identifier
+     * @return Identifier|StringLiteral
      */
     public function getExported()
     {
@@ -46,12 +46,13 @@ class ExportSpecifier extends ModuleSpecifier
     /**
      * Sets the exported identifier
      * 
-     * @param Identifier $exported Exported identifier
+     * @param Identifier|StringLiteral $exported Exported identifier
      * 
      * @return $this
      */
-    public function setExported(Identifier $exported)
+    public function setExported($exported)
     {
+        $this->assertType($exported, array("Identifier", "StringLiteral"));
         $this->exported = $exported;
         return $this;
     }

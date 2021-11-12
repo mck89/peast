@@ -2026,7 +2026,7 @@ class Parser extends ParserAbstract
                 $exported = null;
                 if ($this->features->exportedNameInExportAll &&
                     $this->scanner->consume("as")) {
-                    $exported = $this->parseIdentifier(static::$identifierName);
+                    $exported = $this->parseModuleExportName();
                     if (!$exported) {
                         $this->error();
                     }
@@ -2143,14 +2143,14 @@ class Parser extends ParserAbstract
      */
     protected function parseExportSpecifier()
     {
-        if ($local = $this->parseIdentifier(static::$identifierName)) {
+        if ($local = $this->parseModuleExportName()) {
             
             $node = $this->createNode("ExportSpecifier", $local);
             $node->setLocal($local);
             
             if ($this->scanner->consume("as")) {
                 
-                if ($exported = $this->parseIdentifier(static::$identifierName)) {
+                if ($exported = $this->parseModuleExportName()) {
                     $node->setExported($exported);
                     return $this->completeNode($node);
                 }
@@ -2160,6 +2160,23 @@ class Parser extends ParserAbstract
                 $node->setExported($local);
                 return $this->completeNode($node);
             }
+        }
+        return null;
+    }
+
+    /**
+     * Parses an export name
+     * 
+     * @return Node\Identifier|Node\StringLiteral|null
+     */
+    protected function parseModuleExportName()
+    {
+        if ($name = $this->parseIdentifier(static::$identifierName)) {
+            return $name;
+        } elseif ($this->features->arbitraryModuleNSNames &&
+            ($name = $this->parseStringLiteral())
+        ) {
+            return $name;
         }
         return null;
     }
@@ -2301,7 +2318,7 @@ class Parser extends ParserAbstract
         $requiredAs = false;
         $imported = $this->parseIdentifier(static::$importedBinding);
         if (!$imported) {
-            $imported = $this->parseIdentifier(static::$identifierName);
+            $imported = $this->parseModuleExportName();
             if (!$imported) {
                 return null;
             }

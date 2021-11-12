@@ -52,4 +52,11 @@ class Features extends \Peast\Syntax\ES2021\Features
      * @var bool
      */
     public $classStaticBlock = true;
+
+    /**
+     * Arbitrary module namespace identifier names
+     *
+     * @var bool
+     */
+    public $arbitraryModuleNSNames = true;
 }

@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.13.9
+* Implemented parsing of arbitrary module namespace identifier names
+
 #### 1.13.8
 * Fixed identifiers bug introduced in the last release
 

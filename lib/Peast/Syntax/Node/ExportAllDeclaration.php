@@ -37,7 +37,7 @@ class ExportAllDeclaration extends Node implements ModuleDeclaration
     /**
      * The exported name
      *
-     * @var Identifier
+     * @var Identifier|StringLiteral
      */
     protected $exported;
 
@@ -67,7 +67,7 @@ class ExportAllDeclaration extends Node implements ModuleDeclaration
     /**
      * Returns the exported name
      *
-     * @return Identifier
+     * @return Identifier|StringLiteral
      */
     public function getExported()
     {
@@ -77,13 +77,13 @@ class ExportAllDeclaration extends Node implements ModuleDeclaration
     /**
      * Sets the exported name
      *W
-     * @param Identifier $exported Exported name
+     * @param Identifier|StringLiteral $exported Exported name
      *
      * @return $this
      */
     public function setExported($exported)
     {
-        $this->assertType($exported, "Identifier", true);
+        $this->assertType($exported, array("Identifier", "StringLiteral"), true);
         $this->exported = $exported;
         return $this;
     }

@@ -1,0 +1,5 @@
+import {"abc" as test} from "source.js";
+/**************************************************/
+import {"abc" as test} from "source.js";
+/**************************************************/
+import {"abc" as test} from "source.js";

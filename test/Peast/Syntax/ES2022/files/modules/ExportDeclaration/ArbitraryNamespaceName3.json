@@ -1,0 +1,77 @@
+{
+	"type": "Program",
+	"location": {
+	    "start": {
+	        "line": 1,
+	        "column": 0,
+	        "index": 0
+	    },
+	    "end": {
+	        "line": 1,
+	        "column": 36,
+	        "index": 36
+	    }
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+	    {
+	        "type": "ExportAllDeclaration",
+	        "location": {
+	            "start": {
+	                "line": 1,
+	                "column": 0,
+	                "index": 0
+	            },
+	            "end": {
+	                "line": 1,
+	                "column": 36,
+	                "index": 36
+	            }
+	        },
+	        "leadingComments": [],
+	        "trailingComments": [],
+	        "source": {
+	            "type": "Literal",
+	            "location": {
+	                "start": {
+	                    "line": 1,
+	                    "column": 24,
+	                    "index": 24
+	                },
+	                "end": {
+	                    "line": 1,
+	                    "column": 35,
+	                    "index": 35
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "value": "source.js",
+	            "raw": "\"source.js\"",
+	            "format": "double"
+	        },
+	        "exported": {
+	            "type": "Literal",
+	            "location": {
+	                "start": {
+	                    "line": 1,
+	                    "column": 12,
+	                    "index": 12
+	                },
+	                "end": {
+	                    "line": 1,
+	                    "column": 18,
+	                    "index": 18
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "value": "test",
+	            "raw": "\"test\"",
+	            "format": "double"
+	        }
+	    }
+	],
+	"sourceType": "module"
+}

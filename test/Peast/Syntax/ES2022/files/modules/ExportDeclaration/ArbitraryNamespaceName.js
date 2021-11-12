@@ -1,0 +1,1 @@
+export {"abc"} from "source.js";

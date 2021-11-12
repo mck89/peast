@@ -171,4 +171,11 @@ class Features
      * @var bool
      */
     public $classStaticBlock = false;
+
+    /**
+     * Arbitrary module namespace identifier names
+     *
+     * @var bool
+     */
+    public $arbitraryModuleNSNames = false;
 }

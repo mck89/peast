@@ -159,6 +159,10 @@ abstract class TestParser extends TestBase
         ),
         "classStaticBlock"=> array(
             array("ES2022", "files", "ClassStaticBlock", "ClassStaticBlock.js")
+        ),
+        "arbitraryModuleNSNames"=> array(
+            array("ES2022", "files", "modules", "ExportDeclaration", "ArbitraryNamespaceName.js"),
+            array("ES2022", "files", "modules", "ImportDeclaration", "ArbitraryNamespaceName.js")
         )
     );
     

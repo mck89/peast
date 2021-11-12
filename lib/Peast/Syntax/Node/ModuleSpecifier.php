@@ -30,14 +30,14 @@ abstract class ModuleSpecifier extends Node
     /**
      * Local identifier
      * 
-     * @var Identifier 
+     * @var Identifier|StringLiteral
      */
     protected $local;
     
     /**
      * Returns the local identifier
      * 
-     * @return Identifier
+     * @return Identifier|StringLiteral
      */
     public function getLocal()
     {
@@ -47,12 +47,13 @@ abstract class ModuleSpecifier extends Node
     /**
      * Sets the local identifier
      * 
-     * @param Identifier $local Local identifier
+     * @param Identifier|StringLiteral $local Local identifier
      * 
      * @return $this
      */
-    public function setLocal(Identifier $local)
+    public function setLocal($local)
     {
+        $this->assertType($local, array("Identifier", "StringLiteral"));
         $this->local = $local;
         return $this;
     }
