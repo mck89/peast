@@ -746,7 +746,7 @@ class Scanner
         }
         $token = $this->currentToken ?: $this->getToken();
         return $token &&
-               $token->location->end->getLine() === $refLine;
+               $token->location->start->getLine() === $refLine;
     }
     
     /**
