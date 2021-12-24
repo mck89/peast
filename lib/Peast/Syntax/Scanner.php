@@ -1532,7 +1532,7 @@ class Scanner
     {
         $buffer = "";
         $char = $this->charAt();
-        if (strtolower($char) === "e") {
+        if ($char !== null && strtolower($char) === "e") {
             $this->index++;
             $this->column++;
             $buffer .= $char;
