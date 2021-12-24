@@ -1,6 +1,10 @@
 Changelog
 ==========
 
+#### 1.13.10
+* Added support for php 8.1
+* Fixed parsing of multiline template literals in return statements
+
 #### 1.13.9
 * Implemented parsing of arbitrary module namespace identifier names
 
