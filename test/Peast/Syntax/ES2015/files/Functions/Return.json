@@ -7,9 +7,9 @@
             "index": 0
         },
         "end": {
-            "line": 7,
+            "line": 12,
             "column": 1,
-            "index": 73
+            "index": 132
         }
     },
     "leadingComments": [],
@@ -47,7 +47,8 @@
                 },
                 "leadingComments": [],
                 "trailingComments": [],
-                "name": "useless"
+                "name": "useless",
+                "rawName": "useless"
             },
             "params": [],
             "body": {
@@ -122,7 +123,8 @@
                 },
                 "leadingComments": [],
                 "trailingComments": [],
-                "name": "sum"
+                "name": "sum",
+                "rawName": "sum"
             },
             "params": [
                 {
@@ -141,7 +143,8 @@
                     },
                     "leadingComments": [],
                     "trailingComments": [],
-                    "name": "a"
+                    "name": "a",
+                    "rawName": "a"
                 },
                 {
                     "type": "Identifier",
@@ -159,7 +162,8 @@
                     },
                     "leadingComments": [],
                     "trailingComments": [],
-                    "name": "b"
+                    "name": "b",
+                    "rawName": "b"
                 }
             ],
             "body": {
@@ -227,7 +231,8 @@
                                 },
                                 "leadingComments": [],
                                 "trailingComments": [],
-                                "name": "a"
+                                "name": "a",
+                                "rawName": "a"
                             },
                             "operator": "+",
                             "right": {
@@ -246,8 +251,124 @@
                                 },
                                 "leadingComments": [],
                                 "trailingComments": [],
-                                "name": "b"
+                                "name": "b",
+                                "rawName": "b"
                             }
+                        }
+                    }
+                ]
+            },
+            "generator": false,
+            "async": false
+        },
+        {
+            "type": "FunctionDeclaration",
+            "location": {
+                "start": {
+                    "line": 9,
+                    "column": 0,
+                    "index": 75
+                },
+                "end": {
+                    "line": 12,
+                    "column": 1,
+                    "index": 132
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "id": {
+                "type": "Identifier",
+                "location": {
+                    "start": {
+                        "line": 9,
+                        "column": 9,
+                        "index": 84
+                    },
+                    "end": {
+                        "line": 9,
+                        "column": 24,
+                        "index": 99
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "name": "templateLiteral",
+                "rawName": "templateLiteral"
+            },
+            "params": [],
+            "body": {
+                "type": "BlockStatement",
+                "location": {
+                    "start": {
+                        "line": 9,
+                        "column": 27,
+                        "index": 102
+                    },
+                    "end": {
+                        "line": 12,
+                        "column": 1,
+                        "index": 132
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "body": [
+                    {
+                        "type": "ReturnStatement",
+                        "location": {
+                            "start": {
+                                "line": 10,
+                                "column": 4,
+                                "index": 108
+                            },
+                            "end": {
+                                "line": 11,
+                                "column": 13,
+                                "index": 130
+                            }
+                        },
+                        "leadingComments": [],
+                        "trailingComments": [],
+                        "argument": {
+                            "type": "TemplateLiteral",
+                            "location": {
+                                "start": {
+                                    "line": 10,
+                                    "column": 11,
+                                    "index": 115
+                                },
+                                "end": {
+                                    "line": 11,
+                                    "column": 12,
+                                    "index": 129
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "quasis": [
+                                {
+                                    "type": "TemplateElement",
+                                    "location": {
+                                        "start": {
+                                            "line": 10,
+                                            "column": 11,
+                                            "index": 115
+                                        },
+                                        "end": {
+                                            "line": 11,
+                                            "column": 12,
+                                            "index": 129
+                                        }
+                                    },
+                                    "leadingComments": [],
+                                    "trailingComments": [],
+                                    "value": "\nHello World",
+                                    "tail": true,
+                                    "rawValue": "\nHello World"
+                                }
+                            ],
+                            "expressions": []
                         }
                     }
                 ]
