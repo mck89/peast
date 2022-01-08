@@ -1592,7 +1592,7 @@ class Scanner
             //Optional chaining punctuator cannot appear before a number, in this
             //case only the question mark must be consumed
             if ($match[1] === "?." &&
-                ($nextChar = $this->charAt($this->index + $match[0])) &&
+                ($nextChar = $this->charAt($this->index + $match[0])) !== null &&
                 $nextChar >= "0" && $nextChar <= "9"
             ) {
                 $match = array(1, "?");

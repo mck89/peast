@@ -1,0 +1,171 @@
+{
+	"type": "Program",
+	"location": {
+	    "start": {
+	        "line": 1,
+	        "column": 0,
+	        "index": 0
+	    },
+	    "end": {
+	        "line": 1,
+	        "column": 16,
+	        "index": 16
+	    }
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+	    {
+	        "type": "VariableDeclaration",
+	        "location": {
+	            "start": {
+	                "line": 1,
+	                "column": 0,
+	                "index": 0
+	            },
+	            "end": {
+	                "line": 1,
+	                "column": 16,
+	                "index": 16
+	            }
+	        },
+	        "leadingComments": [],
+	        "trailingComments": [],
+	        "declarations": [
+	            {
+	                "type": "VariableDeclarator",
+	                "location": {
+	                    "start": {
+	                        "line": 1,
+	                        "column": 4,
+	                        "index": 4
+	                    },
+	                    "end": {
+	                        "line": 1,
+	                        "column": 16,
+	                        "index": 16
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "id": {
+	                    "type": "Identifier",
+	                    "location": {
+	                        "start": {
+	                            "line": 1,
+	                            "column": 4,
+	                            "index": 4
+	                        },
+	                        "end": {
+	                            "line": 1,
+	                            "column": 5,
+	                            "index": 5
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "name": "a",
+	                    "rawName": "a"
+	                },
+	                "init": {
+	                    "type": "ConditionalExpression",
+	                    "location": {
+	                        "start": {
+	                            "line": 1,
+	                            "column": 6,
+	                            "index": 6
+	                        },
+	                        "end": {
+	                            "line": 1,
+	                            "column": 16,
+	                            "index": 16
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "test": {
+	                        "type": "Identifier",
+	                        "location": {
+	                            "start": {
+	                                "line": 1,
+	                                "column": 6,
+	                                "index": 6
+	                            },
+	                            "end": {
+	                                "line": 1,
+	                                "column": 7,
+	                                "index": 7
+	                            }
+	                        },
+	                        "leadingComments": [],
+	                        "trailingComments": [],
+	                        "name": "b",
+	                        "rawName": "b"
+	                    },
+	                    "consequent": {
+	                        "type": "Literal",
+	                        "location": {
+	                            "start": {
+	                                "line": 1,
+	                                "column": 8,
+	                                "index": 8
+	                            },
+	                            "end": {
+	                                "line": 1,
+	                                "column": 11,
+	                                "index": 11
+	                            }
+	                        },
+	                        "leadingComments": [],
+	                        "trailingComments": [],
+	                        "value": 0.05,
+	                        "raw": ".05",
+	                        "format": "decimal"
+	                    },
+	                    "alternate": {
+	                        "type": "UnaryExpression",
+	                        "location": {
+	                            "start": {
+	                                "line": 1,
+	                                "column": 12,
+	                                "index": 12
+	                            },
+	                            "end": {
+	                                "line": 1,
+	                                "column": 16,
+	                                "index": 16
+	                            }
+	                        },
+	                        "leadingComments": [],
+	                        "trailingComments": [],
+	                        "argument": {
+	                            "type": "Literal",
+	                            "location": {
+	                                "start": {
+	                                    "line": 1,
+	                                    "column": 13,
+	                                    "index": 13
+	                                },
+	                                "end": {
+	                                    "line": 1,
+	                                    "column": 16,
+	                                    "index": 16
+	                                }
+	                            },
+	                            "leadingComments": [],
+	                            "trailingComments": [],
+	                            "value": 0.05,
+	                            "raw": ".05",
+	                            "format": "decimal"
+	                        },
+	                        "operator": "-",
+	                        "prefix": true
+	                    }
+	                }
+	            }
+	        ],
+	        "kind": "var"
+	    }
+	],
+	"sourceType": "script"
+}
