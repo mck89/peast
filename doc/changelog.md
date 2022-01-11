@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.13.11
+* Fixed a case of conditional expression parsed as a wrong optional chain
+
 #### 1.13.10
 * Added support for php 8.1
 * Fixed parsing of multiline template literals in return statements
