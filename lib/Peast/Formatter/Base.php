@@ -78,6 +78,21 @@ abstract class Base
      * @var bool
      */
     protected $recalcCommentsIndent = true;
+
+    /**
+     * Class constructor
+     *
+     * @param bool  $renderComments     True to render the comments if
+     *                                  the parser has collected them
+     *                                  and the formatter allows their
+     *                                  rendering
+     */
+    public function __construct($renderComments = false)
+    {
+        if ($this->renderComments) {
+            $this->renderComments = $renderComments;
+        }
+    }
     
     /**
      * Returns the new line character

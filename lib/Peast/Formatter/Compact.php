@@ -44,4 +44,11 @@ class Compact extends Base
      * @var bool
      */
     protected $alwaysWrapBlocks = false;
+    
+    /**
+     * Boolean that indicates if comments must be rendered
+     * 
+     * @var bool
+     */
+    protected $renderComments = false;
 }
