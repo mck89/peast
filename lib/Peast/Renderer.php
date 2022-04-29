@@ -1134,8 +1134,10 @@ class Renderer
 
                 //If format is enabled, add the new line character and the indentation if the node
                 //is not an empty block or the it's not the last comment
-                if ($format && ($blockContent !== true || !$lastComment)) {
-                    $code .= $this->renderOpts->nl;
+                if ($format && ($blockContent !== true || !$lastComment || !$isMultilineComment)) {
+                    //For non multiline comments the new line is mandatory, even if the formatter
+                    //disables it
+                    $code .= !$isMultilineComment && !$this->renderOpts->nl ? "\n" : $this->renderOpts->nl;
                     //Last comment on blocks must not render indentation
                     if ($blockContent === null || !$lastComment) {
                         $code .= $indent;
