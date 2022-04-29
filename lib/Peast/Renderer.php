@@ -979,15 +979,16 @@ class Renderer
         }
         
         if ($this->renderOpts->com) {
+            //Strip last new line and indentations added by comments rendering
+            if (!$emptyBody) {
+                $code = $this->trimEmptyLine($code);
+            }
             if ($origNode) {
                 $code .= $this->renderComments($origNode, false, !$emptyBody);
+                if (!$emptyBody) {
+                    $code = $this->trimEmptyLine($code);
+                }
             }
-            //Strip last new line and indentations added by comments rendering
-            $code = preg_replace(
-                "/" . preg_quote($this->renderOpts->nl . $subIndentation, "/"). "$/",
-                "",
-                $code
-            );
         }
         
         //Reset the indentation level
@@ -1095,7 +1096,7 @@ class Renderer
         $comments = $node ? $node->$fn() : array();
         $numComments = count($comments);
         if ($numComments) {
-            $lastFormatted = $blockContent !== null || $leading;
+            $lastFormatted = $blockContent === false ? true : $leading;
             $refNode = $node;
             $refKey = $leading ? "end" : "start";
             $refNodeKey = $leading ? "start" : "end";
@@ -1146,6 +1147,23 @@ class Renderer
                 $refNode = $comment;
                 $lastFormatted = $format;
             }
+        }
+        return $code;
+    }
+
+    /**
+     * Removes an empty line at the end of the given code, if present
+     * 
+     * @param string  $code   Code
+     * 
+     * @return string
+     */
+    protected function trimEmptyLine($code)
+    {
+        if ($this->renderOpts->nl) {
+            $nl = preg_quote($this->renderOpts->nl, "/");
+            $indent = preg_quote($this->getIndentation(), "/");
+            $code = preg_replace("/$nl(?:$indent)?$/", "", $code);
         }
         return $code;
     }
