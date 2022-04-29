@@ -116,6 +116,13 @@ class Comment extends Node
     {
         $text = $this->getText();
         $kind = $this->getKind();
+
+        if ($kind === self::KIND_MULTILINE) {
+            $sanitize = "*/";
+        } else {
+            $sanitize = array("\n", "\r");
+        }
+        $text = str_replace($sanitize, "", $text);
         
         if ($kind === self::KIND_INLINE) {
             return "//" . $text;

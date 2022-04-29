@@ -9,6 +9,8 @@
  */
 namespace Peast;
 
+use Peast\Syntax\Node\Comment;
+
 /**
  * Nodes renderer class
  * 
@@ -69,7 +71,9 @@ class Renderer
             "nlbc" => $this->formatter->getNewLineBeforeCurlyBracket(),
             "sao" =>  $this->formatter->getSpacesAroundOperator() ? " " : "",
             "sirb" => $this->formatter->getSpacesInsideRoundBrackets() ? " " : "",
-            "awb" => $this->formatter->getAlwaysWrapBlocks()
+            "awb" => $this->formatter->getAlwaysWrapBlocks(),
+            "com" => $this->formatter->getRenderComments(),
+            "rci" => $this->formatter->getRecalcCommentsIndent()
         );
         
         return $this;
@@ -111,13 +115,18 @@ class Renderer
     /**
      * Renders a node
      * 
-     * @param Syntax\Node\Node  $node   Node to render
+     * @param Syntax\Node\Node  $node           Node to render
+     * @param bool              $addSemicolon   True to add semicolon after node
+     *                                          rendered code
      * 
      * @return string
      */
-    protected function renderNode(Syntax\Node\Node $node)
+    protected function renderNode(Syntax\Node\Node $node, $addSemicolon = false)
     {
         $code = "";
+        if ($this->renderOpts->com) {
+            $code .= $this->renderComments($node);
+        }
         $type = $node->getType();
         switch ($type) {
             case "ArrayExpression":
@@ -865,6 +874,12 @@ class Renderer
                 }
             break;
         }
+        if ($addSemicolon) {
+            $code .= ";";
+        }
+        if ($this->renderOpts->com) {
+            $code .= $this->renderComments($node, false);
+        }
         return $code;
     }
     
@@ -896,8 +911,10 @@ class Renderer
         
         //Special handling of BlockStatement and ClassBody nodes by rendering
         //their child nodes
+        $origNode = null;
         if (!is_array($node) &&
             in_array($node->getType(), array("BlockStatement", "ClassBody"))) {
+            $origNode = $node;
             $node = $node->getBody();
         }
         
@@ -922,6 +939,12 @@ class Renderer
                 $code .= $this->renderOpts->sao;
             }
         }
+
+        $emptyBody = is_array($node) && !count($node);
+
+        if ($this->renderOpts->com && $origNode) {
+            $code .= $this->renderComments($origNode, true, !$emptyBody);
+        }
         
         //Insert open curly bracket if required
         if ($hasBrackets) {
@@ -939,7 +962,6 @@ class Renderer
         $subIndentation = $this->getIndentation();
         
         //Render the node or the array of nodes
-        $emptyBody = is_array($node) && !count($node);
         if (is_array($node)) {
             if (!$emptyBody) {
                 $code .= $subIndentation .
@@ -950,10 +972,22 @@ class Renderer
                          );
             }
         } else {
-            $code .= $subIndentation . $this->renderNode($node);
-            if ($addSemicolons && $this->requiresSemicolon($node)) {
-                $code .= ";";
+            $code .= $subIndentation . $this->renderNode(
+                $node,
+                $addSemicolons && $this->requiresSemicolon($node)
+            );
+        }
+        
+        if ($this->renderOpts->com) {
+            if ($origNode) {
+                $code .= $this->renderComments($origNode, false, !$emptyBody);
             }
+            //Strip last new line and indentations added by comments rendering
+            $code = preg_replace(
+                "/" . preg_quote($this->renderOpts->nl . $subIndentation, "/"). "$/",
+                "",
+                $code
+            );
         }
         
         //Reset the indentation level
@@ -989,10 +1023,10 @@ class Renderer
             if (!$node) {
                 $code = "";
             } else {
-                $code = $this->renderNode($node);
-                if ($addSemicolons && $this->requiresSemicolon($node)) {
-                    $code .= ";";
-                }
+                $code = $this->renderNode(
+                    $node,
+                    $addSemicolons && $this->requiresSemicolon($node)
+                );
             }
             $parts[] = $code;
         }
@@ -1040,6 +1074,78 @@ class Renderer
         };
         $node->traverse($checkFn);
         return $forceBrackets;
+    }
+
+    /**
+     * Render node's comments
+     * 
+     * @param Syntax\Node\Node  $node             Node
+     * @param bool              $leading          False to render trailing comments
+     * @param bool|null         $blockContent     This paramater can have 3 values:
+     *                                            - null: the node is not a block
+     *                                            - false: the node is an empty block
+     *                                            - true: the node is a block with content
+     * 
+     * @return string
+     */
+    protected function renderComments($node, $leading = true, $blockContent = null)
+    {
+        $code = "";
+        $fn = $leading ? "getLeadingComments" : "getTrailingComments";
+        $comments = $node ? $node->$fn() : array();
+        $numComments = count($comments);
+        if ($numComments) {
+            $lastFormatted = $blockContent !== null || $leading;
+            $refNode = $node;
+            $refKey = $leading ? "end" : "start";
+            $refNodeKey = $leading ? "start" : "end";
+            $indent = $this->getIndentation();
+            foreach ($comments as $k => $comment) {                
+                $lastComment = $k === $numComments - 1;
+                $isMultilineComment = $comment->getKind() === Comment::KIND_MULTILINE;
+                // Check if the comment must be formatted with new line and indentations
+                $format = true;
+                if (
+                    $refNode && $isMultilineComment &&
+                    $comment->location && $refNode->location &&
+                    $comment->location->$refKey->getLine() === $refNode->location->$refNodeKey->getLine()
+                ) {
+                    $format = false;
+                }
+                //If the last comment wasn't formatted but this one must be formatted, add the new
+                //line and the indentation
+                if ($format && !$lastFormatted) {
+                    $code .= $this->renderOpts->nl . $indent;
+                }
+                //Leading comments on empty blocks must render the initial indentation if format
+                //is enabled
+                if ($format && $blockContent === false && !$k) {
+                    $code .= $indent;
+                }
+
+                $commentRaw = $comment->getRawText();
+
+                //Reindent multiline comments if necessary
+                if ($isMultilineComment && $indent && $this->renderOpts->rci) {
+                    $commentRaw = preg_replace("/^\s{2,}\*/m", $indent . " *", $commentRaw);
+                }
+
+                $code .= $commentRaw;
+
+                //If format is enabled, add the new line character and the indentation if the node
+                //is not an empty block or the it's not the last comment
+                if ($format && ($blockContent !== true || !$lastComment)) {
+                    $code .= $this->renderOpts->nl;
+                    //Last comment on blocks must not render indentation
+                    if ($blockContent === null || !$lastComment) {
+                        $code .= $indent;
+                    }
+                }
+                $refNode = $comment;
+                $lastFormatted = $format;
+            }
+        }
+        return $code;
     }
     
     /**
