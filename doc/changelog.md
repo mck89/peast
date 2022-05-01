@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.14.0
+* Implemented comments rendering
+
 #### 1.13.11
 * Fixed a case of conditional expression parsed as a wrong optional chain
 

@@ -91,3 +91,14 @@ $renderer = new Peast\Renderer;
 $renderer->setFormatter(new Peast\Formatter\PrettyPrint);
 $renderer->render($ast);
 ```
+
+Comments rendering
+-------------
+**_From version 1.14_**
+Comments can be rendered by passing `true` to the formatter constructor:
+```php
+$ast = Peast\Peast::latest($source, array("comments" => true))->parse();
+$ast->render(new Peast\Formatter\PrettyPrint(true));
+```
+Note that comments can be rendered only when parser is enabled to collect them, to do this you must set the `comments` option to `true`.
+Also note that only PrettyPrint and Expanded formatters allow comments rendering, while Compact does not allow it by default.
