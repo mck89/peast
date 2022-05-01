@@ -81,4 +81,177 @@ class RendererTest extends TestBase
         $res = $tree->render(new \Peast\Formatter\Compact);
         $this->assertEquals($result . ";", $res);
     }
+
+    public function commentsRenderingProvider()
+    {
+        return array(
+            array(
+                array(
+                    "//test",
+                    "/*test*/"
+                ),
+                array(
+                    "//test",
+                    "/*test*/"
+                ),
+            ),
+            array(
+                array(
+                    "function test () {",
+                    "//test",
+                    "/*test*/",
+                    "}"
+                ),
+                array(
+                    "function test () {",
+                    "//test",
+                    "/*test*/",
+                    "}"
+                ),
+            ),
+            array(
+                array(
+                    "function test () {",
+                    "/*1*/",
+                    "for /*2*/(/*3*/var/*4*/i/*5*/=/*6*/0;/*7*/i/*8*/</*9*/10/*10*/;/*11*/i++/*12*/) {/*13*/",
+                    "/*14*/",
+                    "test(/*15*/i)/*16*/;/*17*/",
+                    "/*18*/",
+                    "}",
+                    "/*19*/",
+                    "}",
+                    "/*20*/"
+                ),
+                array(
+                    "function test () {",
+                    "/*1*/",
+                    "/*2*/",
+                    "for (/*3*/var /*4*/i/*5*/ = /*6*/0; /*7*/i/*8*/ < /*9*/10/*10*/; /*11*/i++/*12*/) {",
+                    "/*13*/",
+                    "/*14*/",
+                    "test(/*15*/i)/*16*/;/*17*/",
+                    "/*18*/",
+                    "/*19*/",
+                    "}",
+                    "}",
+                    "/*20*/"
+                )
+            ),
+            array(
+                array(
+                    "//comment",
+                    "var test = 1;",
+                    "switch(test) {",
+                    "//case 1",
+                    "case 1:",
+                    "call(1);",
+                    "break;",
+                    "//case 2",
+                    "case 2:",
+                    "call(2);",
+                    "break;",
+                    "//case default",
+                    "default:",
+                    "/*This is called with null*/",
+                    "call(null);",
+                    "break;",
+                    "}"
+                ),
+                array(
+                    "//comment",
+                    "var test = 1;",
+                    "switch (test) {",
+                    "//case 1",
+                    "case 1:",
+                    "call(1);",
+                    "break;",
+                    "//case 2",
+                    "case 2:",
+                    "call(2);",
+                    "break;",
+                    "//case default",
+                    "default:",
+                    "/*This is called with null*/",
+                    "call(null);",
+                    "break;",
+                    "}"
+                )
+            ),
+            array(
+                array(
+                    "var arr = [",
+                    "1/*one*/,",
+                    "2/*two*/,",
+                    "3/*three*/",
+                    "];",
+                ),
+                array(
+                    "var arr = [1/*one*/, 2/*two*/, 3/*three*/];"
+                )
+            ),
+            array(
+                array(
+                    "/*",
+                    "* Class",
+                    "*/",
+                    "class test {",
+                    "/*",
+                    "* Classs property",
+                    "*/",
+                    "prop1 = 1;",
+                    "/*",
+                    "* Class method",
+                    "*/",
+                    "method () {",
+                    "//Method body",
+                    "}",
+                    "}"
+                    ),
+                array(
+                    "/*",
+                    "* Class",
+                    "*/",
+                    "class test {",
+                    "/*",
+                    "* Classs property",
+                    "*/",
+                    "prop1 = 1;",
+                    "/*",
+                    "* Class method",
+                    "*/",
+                    "method () {",
+                    "//Method body",
+                    "}",
+                    "}"
+                )
+            ),
+            array(
+                array(
+                    "<!-- start",
+                    "var test = 1;",
+                    "--> end",
+                ),
+                array(
+                    "<!-- start",
+                    "var test = 1;",
+                    "--> end",
+                )
+            )
+        );
+    }
+
+    /**
+     * @dataProvider commentsRenderingProvider
+     */
+    public function testCommentsRenderingProvider($source, $result)
+    {
+        $source = implode("\n", $source);
+        $tree = \Peast\Peast::latest($source, array("comments" => true))->parse();
+        $res = $tree->render(new \Peast\Formatter\PrettyPrint(true));
+        $compare = array();
+        foreach (explode("\n", trim($res)) as $line) {
+            $compare[] = trim($line);
+        }
+        $this->assertEquals($result, $compare);
+    }
 }
