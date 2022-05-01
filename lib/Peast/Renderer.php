@@ -1128,7 +1128,7 @@ class Renderer
 
                 //Reindent multiline comments if necessary
                 if ($isMultilineComment && $indent && $this->renderOpts->rci) {
-                    $commentRaw = preg_replace("/^\s{2,}\*/m", $indent . " *", $commentRaw);
+                    $commentRaw = preg_replace("/^\s+\*/m", $indent . " *", $commentRaw);
                 }
 
                 $code .= $commentRaw;
