@@ -18,4 +18,10 @@ namespace Peast\Syntax\ES2023;
  */
 class Features extends \Peast\Syntax\ES2022\Features
 {
+    /**
+     * Hashbang comments
+     *
+     * @var bool
+     */
+    public $hashbangComments = true;
 }

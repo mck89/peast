@@ -1106,11 +1106,19 @@ class Scanner
                 $content .= $char;
                 $this->index++;
                 
-            } elseif ($char === "/") {
-                
-                //Comment
+            } elseif ($char === "/" || $char === "#") {
+
                 $nextChar = $this->charAt($this->index + 1);
-                if ($nextChar === "/" || $nextChar === "*") {
+
+                //Hashbang comment. This will be parsed only if hashbangs comments are enabled
+                //and if it appears at the beginning of the code
+                $hashBang = (
+                    $char === "#" && $nextChar === "!" &&
+                    $this->features->hashbangComments && !$this->index
+                );
+
+                //Comment
+                if ($nextChar === "/" || $nextChar === "*" || $hashBang) {
                     
                     //If comments must be handled, empty the current content too
                     //and get the comment start position
@@ -1122,7 +1130,7 @@ class Scanner
                         $start = $this->getPosition(true);
                     }
                     
-                    $inline = $nextChar === "/";
+                    $inline = $nextChar !== "*";
                     $this->index += 2;
                     $content .= $char . $nextChar;
                     

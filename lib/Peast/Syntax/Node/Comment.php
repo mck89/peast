@@ -38,6 +38,11 @@ class Comment extends Node
     const KIND_HTML_CLOSE = "html-close";
     
     /**
+     * Hashbang comment
+     */
+    const KIND_HASHBANG = "hashbang";
+    
+    /**
      * Map of node properties
      * 
      * @var array 
@@ -126,6 +131,8 @@ class Comment extends Node
         
         if ($kind === self::KIND_INLINE) {
             return "//" . $text;
+        } elseif ($kind === self::KIND_HASHBANG) {
+            return "#!" . $text;
         } elseif ($kind === self::KIND_HTML_OPEN) {
             return "<!--" . $text;
         } elseif ($kind === self::KIND_HTML_CLOSE) {
@@ -151,6 +158,9 @@ class Comment extends Node
         } elseif ($start === "/*" && substr($rawText, -2) === "*/") {
             $kind = self::KIND_MULTILINE;
             $text = substr($rawText, 2, -2);
+        } elseif ($start === "#!") {
+            $kind = self::KIND_HASHBANG;
+            $text = substr($rawText, 2);
         } elseif ($start === "<!" && substr($rawText, 2, 2) === "--") {
             $kind = self::KIND_HTML_OPEN;
             $text = substr($rawText, 4);

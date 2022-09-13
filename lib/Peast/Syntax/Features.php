@@ -178,4 +178,11 @@ class Features
      * @var bool
      */
     public $arbitraryModuleNSNames = false;
+
+    /**
+     * Hashbang comments
+     *
+     * @var bool
+     */
+    public $hashbangComments = false;
 }
