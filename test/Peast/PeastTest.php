@@ -50,10 +50,16 @@ class PeastTest extends TestBase
         $this->assertTrue(\Peast\Peast::ES2022("")->getFeatures() instanceof \Peast\Syntax\ES2022\Features);
         $this->assertTrue(\Peast\Peast::ES13("")->getFeatures() instanceof \Peast\Syntax\ES2022\Features);
     }
+
+    public function testES2023()
+    {
+        $this->assertTrue(\Peast\Peast::ES2023("")->getFeatures() instanceof \Peast\Syntax\ES2023\Features);
+        $this->assertTrue(\Peast\Peast::ES14("")->getFeatures() instanceof \Peast\Syntax\ES2023\Features);
+    }
     
     public function testLatest()
     {
-        $this->assertTrue(\Peast\Peast::latest("")->getFeatures() instanceof \Peast\Syntax\ES2022\Features);
+        $this->assertTrue(\Peast\Peast::latest("")->getFeatures() instanceof \Peast\Syntax\ES2023\Features);
     }
 
     public function testInvalidVersion()
