@@ -1,0 +1,50 @@
+[
+	{
+	    "type": "Keyword",
+	    "value": "var",
+	    "location": {
+	        "start": {
+	            "line": 2,
+	            "column": 0,
+	            "index": 20
+	        },
+	        "end": {
+	            "line": 2,
+	            "column": 3,
+	            "index": 23
+	        }
+	    }
+	},
+	{
+	    "type": "Identifier",
+	    "value": "test",
+	    "location": {
+	        "start": {
+	            "line": 2,
+	            "column": 4,
+	            "index": 24
+	        },
+	        "end": {
+	            "line": 2,
+	            "column": 8,
+	            "index": 28
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ";",
+	    "location": {
+	        "start": {
+	            "line": 2,
+	            "column": 8,
+	            "index": 28
+	        },
+	        "end": {
+	            "line": 2,
+	            "column": 9,
+	            "index": 29
+	        }
+	    }
+	}
+]

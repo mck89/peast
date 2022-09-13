@@ -1,0 +1,77 @@
+{
+	"type": "Program",
+	"location": {
+	    "start": {
+	        "line": 2,
+	        "column": 0,
+	        "index": 3
+	    },
+	    "end": {
+	        "line": 2,
+	        "column": 9,
+	        "index": 12
+	    }
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+	    {
+	        "type": "VariableDeclaration",
+	        "location": {
+	            "start": {
+	                "line": 2,
+	                "column": 0,
+	                "index": 3
+	            },
+	            "end": {
+	                "line": 2,
+	                "column": 9,
+	                "index": 12
+	            }
+	        },
+	        "leadingComments": [],
+	        "trailingComments": [],
+	        "declarations": [
+	            {
+	                "type": "VariableDeclarator",
+	                "location": {
+	                    "start": {
+	                        "line": 2,
+	                        "column": 4,
+	                        "index": 7
+	                    },
+	                    "end": {
+	                        "line": 2,
+	                        "column": 8,
+	                        "index": 11
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "id": {
+	                    "type": "Identifier",
+	                    "location": {
+	                        "start": {
+	                            "line": 2,
+	                            "column": 4,
+	                            "index": 7
+	                        },
+	                        "end": {
+	                            "line": 2,
+	                            "column": 8,
+	                            "index": 11
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "name": "test",
+	                    "rawName": "test"
+	                },
+	                "init": null
+	            }
+	        ],
+	        "kind": "var"
+	    }
+	],
+	"sourceType": "script"
+}

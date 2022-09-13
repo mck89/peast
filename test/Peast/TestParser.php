@@ -163,6 +163,9 @@ abstract class TestParser extends TestBase
         "arbitraryModuleNSNames"=> array(
             array("ES2022", "files", "modules", "ExportDeclaration", "ArbitraryNamespaceName.js"),
             array("ES2022", "files", "modules", "ImportDeclaration", "ArbitraryNamespaceName.js")
+        ),
+        "hashbangComments"=> array(
+            array("ES2023", "files", "HashbangComments", "HashbangComments.js")
         )
     );
     
