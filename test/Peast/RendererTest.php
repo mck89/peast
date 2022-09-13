@@ -228,6 +228,24 @@ class RendererTest extends TestBase
                     "var test = 1;",
                     "--> end",
                 )
+            ),
+            array(
+                array(
+                    "#!hashbang",
+                    "var test = 1;"
+                ),
+                array(
+                    "#!hashbang",
+                    "var test = 1;"
+                )
+            ),
+            array(
+                array(
+                    "#!hashbang"
+                ),
+                array(
+                    "#!hashbang"
+                )
             )
         );
     }
