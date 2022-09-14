@@ -4,7 +4,7 @@ Peast
 [![Latest Stable Version](https://poser.pugx.org/mck89/peast/v/stable)](https://packagist.org/packages/mck89/peast)
 [![Total Downloads](https://poser.pugx.org/mck89/peast/downloads)](https://packagist.org/packages/mck89/peast)
 [![License](https://poser.pugx.org/mck89/peast/license)](https://packagist.org/packages/mck89/peast)
-[![Build Status](https://travis-ci.org/mck89/peast.svg?branch=master)](https://travis-ci.org/mck89/peast)
+[![Build Status](https://github.com/mck89/peast/actions/workflows/test.yml/badge.svg)](https://github.com/mck89/peast/actions/workflows/test.yml)
 
 
 **Peast** _(PHP ECMAScript Abstract Syntax Tree)_ is a PHP 5.4+ library that parses JavaScript code, according to [ECMAScript specification](http://www.ecma-international.org/publications/standards/Ecma-262.htm), and generates an abstract syntax tree following the [ESTree standard](https://github.com/estree/estree).
