@@ -31,6 +31,18 @@ $source = "var a = 1"; //Your JavaScript code
 $ast = Peast\Peast::latest($source, $options)->parse(); //Parse it!
 ```
 
+Known issues
+-------------
+When Xdebug is enabled and Peast is used to scan code that contains deeply nested functions, this fatal error can appear:
+```
+PHP Fatal error:  Maximum function nesting level of '512' reached, aborting!
+```
+or
+```
+PHP Warning:  Uncaught Error: Xdebug has detected a possible infinite loop, and aborted your script with a stack depth of '256' frames
+```
+To prevent this you can set `xdebug.max_nesting_level` to a higher value, such as 512.
+
 Documentation
 -------------
 Read the documentation for more examples and explanations:
