@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.15.1
+* Fixed bug on hashbang comment detection
+
 #### 1.15.0
 * Implemented ES2022 parser with hashbang comments
 
