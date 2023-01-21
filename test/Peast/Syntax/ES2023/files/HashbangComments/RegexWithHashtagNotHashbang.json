@@ -1,0 +1,97 @@
+{
+	"type": "Program",
+	"location": {
+		"start": {
+			"line": 1,
+			"column": 0,
+			"index": 0
+		},
+		"end": {
+			"line": 1,
+			"column": 21,
+			"index": 21
+		}
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+		{
+			"type": "VariableDeclaration",
+			"location": {
+				"start": {
+					"line": 1,
+					"column": 0,
+					"index": 0
+				},
+				"end": {
+					"line": 1,
+					"column": 21,
+					"index": 21
+				}
+			},
+			"leadingComments": [],
+			"trailingComments": [],
+			"declarations": [
+				{
+					"type": "VariableDeclarator",
+					"location": {
+						"start": {
+							"line": 1,
+							"column": 6,
+							"index": 6
+						},
+						"end": {
+							"line": 1,
+							"column": 20,
+							"index": 20
+						}
+					},
+					"leadingComments": [],
+					"trailingComments": [],
+					"id": {
+						"type": "Identifier",
+						"location": {
+							"start": {
+								"line": 1,
+								"column": 6,
+								"index": 6
+							},
+							"end": {
+								"line": 1,
+								"column": 13,
+								"index": 13
+							}
+						},
+						"leadingComments": [],
+						"trailingComments": [],
+						"name": "HASH_RE",
+						"rawName": "HASH_RE"
+					},
+					"init": {
+						"type": "RegExpLiteral",
+						"location": {
+							"start": {
+								"line": 1,
+								"column": 16,
+								"index": 16
+							},
+							"end": {
+								"line": 1,
+								"column": 20,
+								"index": 20
+							}
+						},
+						"leadingComments": [],
+						"trailingComments": [],
+						"value": "/#/g",
+						"raw": "/#/g",
+						"flags": "g",
+						"pattern": "#"
+					}
+				}
+			],
+			"kind": "const"
+		}
+	],
+	"sourceType": "script"
+}

@@ -1110,15 +1110,16 @@ class Scanner
 
                 $nextChar = $this->charAt($this->index + 1);
 
-                //Hashbang comment. This will be parsed only if hashbangs comments are enabled
-                //and if it appears at the beginning of the code
-                $hashBang = (
-                    $char === "#" && $nextChar === "!" &&
-                    $this->features->hashbangComments && !$this->index
-                );
+                if ($char === "#") {
+                    //Hashbang comment. This will be parsed only if hashbang comments are enabled
+                    //and if it appears at the beginning of the code
+                    $valid = $nextChar === "!" && $this->features->hashbangComments && !$this->index;
+                } else {
+                    $valid = $nextChar === "/" || $nextChar === "*";
+                }
 
                 //Comment
-                if ($nextChar === "/" || $nextChar === "*" || $hashBang) {
+                if ($valid) {
                     
                     //If comments must be handled, empty the current content too
                     //and get the comment start position
