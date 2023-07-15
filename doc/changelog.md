@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.15.2
+* Fixed bug where async keyword was lost when rendering an object async method
+
 #### 1.15.1
 * Fixed bug on hashbang comment detection
 

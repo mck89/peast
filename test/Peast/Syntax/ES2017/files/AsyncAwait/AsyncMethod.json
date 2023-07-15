@@ -1,0 +1,252 @@
+{
+    "type": "Program",
+    "location": {
+        "start": {
+            "line": 1,
+            "column": 0,
+            "index": 0
+        },
+        "end": {
+            "line": 4,
+            "column": 1,
+            "index": 53
+        }
+    },
+    "leadingComments": [],
+    "trailingComments": [],
+    "body": [
+        {
+            "type": "ExpressionStatement",
+            "location": {
+                "start": {
+                    "line": 1,
+                    "column": 0,
+                    "index": 0
+                },
+                "end": {
+                    "line": 4,
+                    "column": 1,
+                    "index": 53
+                }
+            },
+            "leadingComments": [],
+            "trailingComments": [],
+            "expression": {
+                "type": "AssignmentExpression",
+                "location": {
+                    "start": {
+                        "line": 1,
+                        "column": 0,
+                        "index": 0
+                    },
+                    "end": {
+                        "line": 4,
+                        "column": 1,
+                        "index": 53
+                    }
+                },
+                "leadingComments": [],
+                "trailingComments": [],
+                "left": {
+                    "type": "Identifier",
+                    "location": {
+                        "start": {
+                            "line": 1,
+                            "column": 0,
+                            "index": 0
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 3,
+                            "index": 3
+                        }
+                    },
+                    "leadingComments": [],
+                    "trailingComments": [],
+                    "name": "Foo",
+                    "rawName": "Foo"
+                },
+                "operator": "=",
+                "right": {
+                    "type": "ObjectExpression",
+                    "location": {
+                        "start": {
+                            "line": 1,
+                            "column": 6,
+                            "index": 6
+                        },
+                        "end": {
+                            "line": 4,
+                            "column": 1,
+                            "index": 53
+                        }
+                    },
+                    "leadingComments": [],
+                    "trailingComments": [],
+                    "properties": [
+                        {
+                            "type": "Property",
+                            "location": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 4,
+                                    "index": 12
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 18,
+                                    "index": 26
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "key": {
+                                "type": "Identifier",
+                                "location": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 10,
+                                        "index": 18
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 13,
+                                        "index": 21
+                                    }
+                                },
+                                "leadingComments": [],
+                                "trailingComments": [],
+                                "name": "bar",
+                                "rawName": "bar"
+                            },
+                            "value": {
+                                "type": "FunctionExpression",
+                                "location": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 13,
+                                        "index": 21
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 18,
+                                        "index": 26
+                                    }
+                                },
+                                "leadingComments": [],
+                                "trailingComments": [],
+                                "id": null,
+                                "params": [],
+                                "body": {
+                                    "type": "BlockStatement",
+                                    "location": {
+                                        "start": {
+                                            "line": 2,
+                                            "column": 16,
+                                            "index": 24
+                                        },
+                                        "end": {
+                                            "line": 2,
+                                            "column": 18,
+                                            "index": 26
+                                        }
+                                    },
+                                    "leadingComments": [],
+                                    "trailingComments": [],
+                                    "body": []
+                                },
+                                "generator": false,
+                                "async": true
+                            },
+                            "kind": "init",
+                            "method": true,
+                            "shorthand": false,
+                            "computed": false
+                        },
+                        {
+                            "type": "Property",
+                            "location": {
+                                "start": {
+                                    "line": 3,
+                                    "column": 4,
+                                    "index": 32
+                                },
+                                "end": {
+                                    "line": 3,
+                                    "column": 23,
+                                    "index": 51
+                                }
+                            },
+                            "leadingComments": [],
+                            "trailingComments": [],
+                            "key": {
+                                "type": "Identifier",
+                                "location": {
+                                    "start": {
+                                        "line": 3,
+                                        "column": 4,
+                                        "index": 32
+                                    },
+                                    "end": {
+                                        "line": 3,
+                                        "column": 7,
+                                        "index": 35
+                                    }
+                                },
+                                "leadingComments": [],
+                                "trailingComments": [],
+                                "name": "baz",
+                                "rawName": "baz"
+                            },
+                            "value": {
+                                "type": "ArrowFunctionExpression",
+                                "location": {
+                                    "start": {
+                                        "line": 3,
+                                        "column": 9,
+                                        "index": 37
+                                    },
+                                    "end": {
+                                        "line": 3,
+                                        "column": 23,
+                                        "index": 51
+                                    }
+                                },
+                                "leadingComments": [],
+                                "trailingComments": [],
+                                "id": null,
+                                "params": [],
+                                "body": {
+                                    "type": "BlockStatement",
+                                    "location": {
+                                        "start": {
+                                            "line": 3,
+                                            "column": 21,
+                                            "index": 49
+                                        },
+                                        "end": {
+                                            "line": 3,
+                                            "column": 23,
+                                            "index": 51
+                                        }
+                                    },
+                                    "leadingComments": [],
+                                    "trailingComments": [],
+                                    "body": []
+                                },
+                                "generator": false,
+                                "async": true,
+                                "expression": false
+                            },
+                            "kind": "init",
+                            "method": false,
+                            "shorthand": false,
+                            "computed": false
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "sourceType": "script"
+}

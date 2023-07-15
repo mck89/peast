@@ -682,6 +682,9 @@ class Renderer
                         $code .= "*" .
                                  $this->renderOpts->sao;
                     }
+                    if ($node->getMethod() && $value->getAsync()) {
+                        $code .= "async ";
+                    }
                     if ($node->getComputed()) {
                         $code .= "[" . $compiledKey . "]";
                     } else {
