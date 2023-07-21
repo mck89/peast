@@ -17,7 +17,11 @@
     },
     "autoload": {
         "psr-4": {
-            "Peast\\": "lib/Peast/",
+            "Peast\\": "lib/Peast/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "Peast\\test\\": "test/Peast/"
         }
     },
