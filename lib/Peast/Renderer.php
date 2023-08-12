@@ -740,11 +740,9 @@ class Renderer
                 }
                 $code .= ":";
                 if (count($node->getConsequent())) {
-                    $code .= $this->renderOpts->nl .
-                             $this->renderStatementBlock(
+                    $code .= $this->renderStatementBlock(
                                  $node,
-                                 $node->getConsequent(),
-                                 false
+                                 $node->getConsequent()
                              );
                 }
             break;
@@ -903,6 +901,11 @@ class Renderer
     ) {
         $code = "";
         
+        //If node is an array with only one element, handle it as a single node
+        if (is_array($node) && count($node) === 1) {
+            $node = $node[0];
+        }
+
         //Special handling of BlockStatement and ClassBody nodes by rendering
         //their child nodes
         $origNode = null;
@@ -917,20 +920,24 @@ class Renderer
         if ($forceBrackets !== null) {
             $hasBrackets = $forceBrackets;
         } else {
-            //Insert curly brackets if required by the formatter or if the
-            //number of nodes to render is different from one
-            $hasBrackets = $this->renderOpts->awb || $this->needsBrackets($parent, $node);
+            //Insert curly brackets if needed
+            $hasBrackets = $this->needsBrackets($parent, $node);
         }
         $currentIndentation = $this->getIndentation();
         
-        //If $forceBrackets is not set to false then the node can be wrapped in
-        //curly braces, so a separator defined by formatter must be inserted
-        if ($forceBrackets !== false) {
+        //If the node must be wrapped in curly braces a separator defined by formatter
+        //must be inserted
+        if ($hasBrackets) {
             if ($this->renderOpts->nlbc) {
                 $code .= $this->renderOpts->nl . $currentIndentation;
             } else {
                 $code .= $this->renderOpts->sao;
             }
+        }
+        //Move the content of the SwitchCase content to a new line if brackets won't
+        //be inserted, in this way it's not rendered on the same line of the "case"
+        elseif ($parent->getType() === "SwitchCase") {
+            $code .= $this->renderOpts->nl;
         }
 
         $emptyBody = is_array($node) && !count($node);
@@ -1038,16 +1045,25 @@ class Renderer
      */
     protected function needsBrackets($parent, $node)
     {
-        if (is_array($node) && count($node) !== 1) {
+        $parentType = $parent->getType();
+        //The SwitchCase content needs brackets if it contains let or const declarations
+        $inSwitchCase = $parentType === "SwitchCase";
+        //Except for SwitchCase, brackets are needed if the formatter requires them or whenever
+        //there are 0 or multiple nodes to render
+        if (!$inSwitchCase && ($this->renderOpts->awb || (is_array($node) && count($node) !== 1))) {
             return true;
         }
-        $node = is_array($node) ? $node[0] : $node;
+        if (!is_array($node)) {
+            $node = array($node);
+        }
         $addBrackets = false;
         $optBracketNodes = array(
             "DoWhileStatement", "ForInStatement", "ForOfStatement",
             "ForStatement", "WhileStatement", "WithStatement"
         );
-        $inIfWithElse = $parent->getType() === "IfStatement" && $parent->getAlternate();
+        //An IfStatement requires brackets if it contains let or const declarations and if it has the "else" part
+        //and contains another IfStatement with "else"
+        $inIfWithElse = $parentType === "IfStatement" && $parent->getAlternate();
         $checkFn = function ($n) use ($inIfWithElse, $optBracketNodes, &$addBrackets) {
             $type = $n->getType();
             if ($inIfWithElse && $type === "IfStatement") {
@@ -1073,7 +1089,13 @@ class Renderer
                 return Traverser::DONT_TRAVERSE_CHILD_NODES;
             }
         };
-        $node->traverse($checkFn);
+        //Traverse every node but stop whenever the $addBrackets variable becomes true
+        foreach ($node as $n) {
+            $n->traverse($checkFn);
+            if ($addBrackets) {
+                break;
+            }
+        }
         return $addBrackets;
     }
 
