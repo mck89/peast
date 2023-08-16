@@ -1,0 +1,17 @@
+class test {
+	async;
+	async = 1;
+	async fn () {
+	}
+}
+/**************************************************/
+class test{async;async=1;async fn(){}}
+/**************************************************/
+class test
+{
+	async;
+	async = 1;
+	async fn (  )
+	{
+	}
+}
