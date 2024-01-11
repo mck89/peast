@@ -3,6 +3,7 @@ Changelog
 
 #### 1.16.0
 * Implemented ES2024 parser, no new syntax features have been introduced
+* Fixed bug when parsing sequence expressions using older ES versions
 
 #### 1.15.4
 * Fixed rendering of `let` and `const` inside `switch` cases that always require brackets

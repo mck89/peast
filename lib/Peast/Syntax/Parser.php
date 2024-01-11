@@ -1609,9 +1609,14 @@ class Parser extends ParserAbstract
                 break;
             }
         }
+        //Check if it ends with a comma, then check if the comma is a trailing comma,
+        //in that case throw an error if the trailing comma feature is not enabled
         if ($hasComma &&
             !$this->features->trailingCommaFunctionCallDeclaration) {
-            $this->error();
+            $token = $this->scanner->getToken();
+            if ($token && $token->value === ")") {
+                $this->error();
+            }
         }
         return $list;
     }
