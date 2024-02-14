@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.16.1
+* Fixed bug where, in some situations, scanner allowed invalid characters after a slash
+
 #### 1.16.0
 * Implemented ES2024 parser, no new syntax features have been introduced
 * Fixed bug when parsing sequence expressions using older ES versions

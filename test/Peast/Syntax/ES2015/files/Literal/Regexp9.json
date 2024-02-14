@@ -1,0 +1,96 @@
+{
+	"type": "Program",
+	"location": {
+	    "start": {
+	        "line": 1,
+	        "column": 0,
+	        "index": 0
+	    },
+	    "end": {
+	        "line": 1,
+	        "column": 12,
+	        "index": 12
+	    }
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+	    {
+	        "type": "ExpressionStatement",
+	        "location": {
+	            "start": {
+	                "line": 1,
+	                "column": 0,
+	                "index": 0
+	            },
+	            "end": {
+	                "line": 1,
+	                "column": 12,
+	                "index": 12
+	            }
+	        },
+	        "leadingComments": [],
+	        "trailingComments": [],
+	        "expression": {
+	            "type": "MemberExpression",
+	            "location": {
+	                "start": {
+	                    "line": 1,
+	                    "column": 0,
+	                    "index": 0
+	                },
+	                "end": {
+	                    "line": 1,
+	                    "column": 12,
+	                    "index": 12
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "optional": false,
+	            "object": {
+	                "type": "RegExpLiteral",
+	                "location": {
+	                    "start": {
+	                        "line": 1,
+	                        "column": 0,
+	                        "index": 0
+	                    },
+	                    "end": {
+	                        "line": 1,
+	                        "column": 5,
+	                        "index": 5
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "value": "/ \\ /",
+	                "raw": "/ \\ /",
+	                "flags": "",
+	                "pattern": " \\ "
+	            },
+	            "property": {
+	                "type": "Identifier",
+	                "location": {
+	                    "start": {
+	                        "line": 1,
+	                        "column": 6,
+	                        "index": 6
+	                    },
+	                    "end": {
+	                        "line": 1,
+	                        "column": 12,
+	                        "index": 12
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "name": "source",
+	                "rawName": "source"
+	            },
+	            "computed": false
+	        }
+	    }
+	],
+	"sourceType": "script"
+}
