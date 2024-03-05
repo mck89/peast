@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.16.2
+* Fixed bug where a regex that started with `/=` raised a syntax error
+
 #### 1.16.1
 * Fixed bug where, in some situations, scanner allowed invalid characters after a slash
 

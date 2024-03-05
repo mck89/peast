@@ -1,0 +1,58 @@
+{
+	"type": "Program",
+	"location": {
+	    "start": {
+	        "line": 1,
+	        "column": 0,
+	        "index": 0
+	    },
+	    "end": {
+	        "line": 1,
+	        "column": 5,
+	        "index": 5
+	    }
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+	    {
+	        "type": "ExpressionStatement",
+	        "location": {
+	            "start": {
+	                "line": 1,
+	                "column": 0,
+	                "index": 0
+	            },
+	            "end": {
+	                "line": 1,
+	                "column": 5,
+	                "index": 5
+	            }
+	        },
+	        "leadingComments": [],
+	        "trailingComments": [],
+	        "expression": {
+	            "type": "RegExpLiteral",
+	            "location": {
+	                "start": {
+	                    "line": 1,
+	                    "column": 0,
+	                    "index": 0
+	                },
+	                "end": {
+	                    "line": 1,
+	                    "column": 5,
+	                    "index": 5
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "value": "/=\\n/",
+	            "raw": "/=\\n/",
+	            "flags": "",
+	            "pattern": "=\\n"
+	        }
+	    }
+	],
+	"sourceType": "script"
+}

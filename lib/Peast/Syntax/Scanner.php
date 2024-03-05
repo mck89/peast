@@ -997,6 +997,11 @@ class Scanner
             elseif (in_array($char, $this->whitespaces) && !in_array($char, $this->lineTerminators)) {
                 $idx--;
             }
+            //If "/=" is found, return true, this is the only operator that needs a special treatment
+            //since it can be also the start of a regex
+            elseif ($char === "=" && $this->charAt($idx - 1) === "/") {
+                return true;
+            }
             //Different character, return
             else {
                 break;
