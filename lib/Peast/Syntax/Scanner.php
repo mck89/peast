@@ -614,7 +614,7 @@ class Scanner
      * 
      * @return $this
      */
-    public function setScanPosition(Position $position = null)
+    public function setScanPosition(Position $position)
     {
         $this->line = $position->getLine();
         $this->column = $position->getColumn();

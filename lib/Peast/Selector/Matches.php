@@ -41,7 +41,7 @@ class Matches
      * @param Node $node
      * @param Node|null $parent
      */
-    public function addMatch(Node $node, Node $parent = null)
+    public function addMatch(Node $node, $parent = null)
     {
         $this->matches[] = array($node, $parent);
     }

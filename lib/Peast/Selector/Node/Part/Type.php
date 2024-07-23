@@ -47,7 +47,7 @@ class Type extends Part
      *
      * @return bool
      */
-    public function check(Node $node, Node $parent = null)
+    public function check(Node $node, $parent = null)
     {
         return $node->getType() === $this->type;
     }
