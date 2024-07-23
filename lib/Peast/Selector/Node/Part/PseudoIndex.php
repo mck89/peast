@@ -75,7 +75,7 @@ class PseudoIndex extends Pseudo
      *
      * @return bool
      */
-    public function check(Node $node, Node $parent = null)
+    public function check(Node $node, $parent = null)
     {
         $props = Utils::getExpandedNodeProperties($parent);
         $count = count($props);

@@ -43,5 +43,5 @@ abstract class Part
      *
      * @abstract
      */
-    abstract public function check(Node $node, Node $parent = null);
+    abstract public function check(Node $node, $parent = null);
 }

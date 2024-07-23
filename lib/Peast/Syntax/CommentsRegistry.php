@@ -107,7 +107,7 @@ class CommentsRegistry
      * 
      * @return void
      */
-    public function onTokenConsumed(Token $token = null)
+    public function onTokenConsumed($token = null)
     {
         //Check if it's a comment
         if ($token && $token->type === Token::TYPE_COMMENT) {

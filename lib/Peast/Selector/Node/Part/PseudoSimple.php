@@ -39,7 +39,7 @@ class PseudoSimple extends Pseudo
      *
      * @return bool
      */
-    public function check(Node $node, Node $parent = null)
+    public function check(Node $node, $parent = null)
     {
         switch ($this->name) {
             case "pattern":
