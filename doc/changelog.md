@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.16.3
+* Removed implicitly nullable parameter declarations for PHP 8.4 compatibility
+
 #### 1.16.2
 * Fixed bug where a regex that started with `/=` raised a syntax error
 
