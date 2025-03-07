@@ -18,4 +18,10 @@ namespace Peast\Syntax\ES2025;
  */
 class Features extends \Peast\Syntax\ES2024\Features
 {
+    /**
+     * Import attributes
+     *
+     * @var bool
+     */
+    public $importAttributes = true;
 }

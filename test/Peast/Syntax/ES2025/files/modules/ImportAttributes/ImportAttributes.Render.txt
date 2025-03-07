@@ -1,0 +1,5 @@
+import x from 'test.js' with {key: "value"};
+/**************************************************/
+import x from 'test.js' with{key:"value"};
+/**************************************************/
+import x from 'test.js' with {key: "value"};

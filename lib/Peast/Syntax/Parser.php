@@ -2038,10 +2038,14 @@ class Parser extends ParserAbstract
                 }
                 
                 if ($source = $this->parseFromClause()) {
-                    $this->assertEndOfStatement();
                     $node = $this->createNode("ExportAllDeclaration", $token);
                     $node->setSource($source);
                     $node->setExported($exported);
+                    if ($this->features->importAttributes &&
+                        ($attrs = $this->parseWithClause())) {
+                        $node->setAttributes($attrs);
+                    }
+                    $this->assertEndOfStatement();
                     return $this->completeNode($node);
                 }
                 
@@ -2090,6 +2094,10 @@ class Parser extends ParserAbstract
                 $node->setSpecifiers($specifiers);
                 if ($source = $this->parseFromClause()) {
                     $node->setSource($source);
+                }
+                if ($this->features->importAttributes &&
+                    ($attrs = $this->parseWithClause())) {
+                    $node->setAttributes($attrs);
                 }
                 $this->assertEndOfStatement();
                 return $this->completeNode($node);
@@ -2208,21 +2216,28 @@ class Parser extends ParserAbstract
         if ($token = $this->scanner->consume("import")) {
             
             if ($source = $this->parseStringLiteral()) {
-                
+                $attrs = $this->features->importAttributes ?
+                         $this->parseWithClause() : null;
                 $this->assertEndOfStatement();
                 $node = $this->createNode("ImportDeclaration", $token);
                 $node->setSource($source);
+                if ($attrs) {
+                    $node->setAttributes($attrs);
+                }
                 return $this->completeNode($node);
                 
             } elseif (($specifiers = $this->parseImportClause()) !== null &&
                 $source = $this->parseFromClause()
             ) {
-                
+                $attrs = $this->features->importAttributes ?
+                         $this->parseWithClause() : null;
                 $this->assertEndOfStatement();
                 $node = $this->createNode("ImportDeclaration", $token);
                 $node->setSpecifiers($specifiers);
                 $node->setSource($source);
-                
+                if ($attrs) {
+                    $node->setAttributes($attrs);
+                }
                 return $this->completeNode($node);
             }
             
@@ -2348,6 +2363,59 @@ class Parser extends ParserAbstract
         }
         
         return $this->completeNode($node);
+    }
+    
+    /**
+     * Parses a with clause
+     * 
+     * @return array|null
+     */
+    protected function parseWithClause()
+    {
+        if ($this->scanner->consume("with")) {
+            if (!$this->scanner->consume("{")) {
+                $this->error();
+            } else {
+                $list = array();
+                while (true) {
+                    if ($entry = $this->parseWithEntries()) {
+                        $list[] = $entry;
+                        if (!$this->scanner->consume(",")) {
+                            break;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+                if (!$this->scanner->consume("}")) {
+                    $this->error();
+                }
+                return $list;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Parses a with entry
+     * 
+     * @return ImportAttribute |null
+     */
+    protected function parseWithEntries()
+    {
+        if (($key = $this->parseIdentifier(static::$identifierName)) ||
+            ($key = $this->parseStringLiteral())) {
+            if ($this->scanner->consume(":") &&
+                ($value = $this->parseStringLiteral())) {
+                $node = $this->createNode("ImportAttribute", $key);
+                $node->setKey($key);
+                $node->setValue($value);
+                return $this->completeNode($node);
+            } else {
+                $this->error();
+            }
+        }
+        return null;
     }
     
     /**
@@ -3987,17 +4055,25 @@ class Parser extends ParserAbstract
     {
         if (($token = $this->scanner->consume("import")) &&
             $this->scanner->consume("(")) {
-
-            if (($source = $this->isolateContext(
-                    array("allowIn" => true), "parseAssignmentExpression"
-                )) &&
-                $this->scanner->consume(")")
-            ) {
-                $node = $this->createNode("ImportExpression", $token);
-                $node->setSource($source);
-                return $this->completeNode($node);
+            $source = $this->isolateContext(
+                array("allowIn" => true), "parseAssignmentExpression"
+            );
+            if ($source) {
+                $options = null;
+                if ($this->features->importAttributes &&
+                    $this->scanner->consume(",")) {
+                    $options = $this->isolateContext(
+                        array("allowIn" => true), "parseAssignmentExpression"
+                    );
+                    $this->scanner->consume(",");
+                }
+                if ($this->scanner->consume(")")) {
+                    $node = $this->createNode("ImportExpression", $token);
+                    $node->setSource($source);
+                    $node->setOptions($options);
+                    return $this->completeNode($node);
+                }
             }
-
             $this->error();
         }
         return null;

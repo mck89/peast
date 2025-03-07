@@ -1,0 +1,466 @@
+[
+	{
+	    "type": "Keyword",
+	    "value": "import",
+	    "location": {
+	        "start": {
+	            "line": 1,
+	            "column": 0,
+	            "index": 0
+	        },
+	        "end": {
+	            "line": 1,
+	            "column": 6,
+	            "index": 6
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": "(",
+	    "location": {
+	        "start": {
+	            "line": 1,
+	            "column": 6,
+	            "index": 6
+	        },
+	        "end": {
+	            "line": 1,
+	            "column": 7,
+	            "index": 7
+	        }
+	    }
+	},
+	{
+	    "type": "String",
+	    "value": "\"test.js\"",
+	    "location": {
+	        "start": {
+	            "line": 1,
+	            "column": 7,
+	            "index": 7
+	        },
+	        "end": {
+	            "line": 1,
+	            "column": 16,
+	            "index": 16
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ",",
+	    "location": {
+	        "start": {
+	            "line": 1,
+	            "column": 16,
+	            "index": 16
+	        },
+	        "end": {
+	            "line": 1,
+	            "column": 17,
+	            "index": 17
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ")",
+	    "location": {
+	        "start": {
+	            "line": 1,
+	            "column": 17,
+	            "index": 17
+	        },
+	        "end": {
+	            "line": 1,
+	            "column": 18,
+	            "index": 18
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ";",
+	    "location": {
+	        "start": {
+	            "line": 1,
+	            "column": 18,
+	            "index": 18
+	        },
+	        "end": {
+	            "line": 1,
+	            "column": 19,
+	            "index": 19
+	        }
+	    }
+	},
+	{
+	    "type": "Keyword",
+	    "value": "import",
+	    "location": {
+	        "start": {
+	            "line": 2,
+	            "column": 0,
+	            "index": 20
+	        },
+	        "end": {
+	            "line": 2,
+	            "column": 6,
+	            "index": 26
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": "(",
+	    "location": {
+	        "start": {
+	            "line": 2,
+	            "column": 6,
+	            "index": 26
+	        },
+	        "end": {
+	            "line": 2,
+	            "column": 7,
+	            "index": 27
+	        }
+	    }
+	},
+	{
+	    "type": "String",
+	    "value": "\"test.js\"",
+	    "location": {
+	        "start": {
+	            "line": 2,
+	            "column": 7,
+	            "index": 27
+	        },
+	        "end": {
+	            "line": 2,
+	            "column": 16,
+	            "index": 36
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ",",
+	    "location": {
+	        "start": {
+	            "line": 2,
+	            "column": 16,
+	            "index": 36
+	        },
+	        "end": {
+	            "line": 2,
+	            "column": 17,
+	            "index": 37
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": "{",
+	    "location": {
+	        "start": {
+	            "line": 2,
+	            "column": 18,
+	            "index": 38
+	        },
+	        "end": {
+	            "line": 2,
+	            "column": 19,
+	            "index": 39
+	        }
+	    }
+	},
+	{
+	    "type": "String",
+	    "value": "\"key\"",
+	    "location": {
+	        "start": {
+	            "line": 2,
+	            "column": 19,
+	            "index": 39
+	        },
+	        "end": {
+	            "line": 2,
+	            "column": 24,
+	            "index": 44
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ":",
+	    "location": {
+	        "start": {
+	            "line": 2,
+	            "column": 24,
+	            "index": 44
+	        },
+	        "end": {
+	            "line": 2,
+	            "column": 25,
+	            "index": 45
+	        }
+	    }
+	},
+	{
+	    "type": "String",
+	    "value": "\"value\"",
+	    "location": {
+	        "start": {
+	            "line": 2,
+	            "column": 26,
+	            "index": 46
+	        },
+	        "end": {
+	            "line": 2,
+	            "column": 33,
+	            "index": 53
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": "}",
+	    "location": {
+	        "start": {
+	            "line": 2,
+	            "column": 33,
+	            "index": 53
+	        },
+	        "end": {
+	            "line": 2,
+	            "column": 34,
+	            "index": 54
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ")",
+	    "location": {
+	        "start": {
+	            "line": 2,
+	            "column": 34,
+	            "index": 54
+	        },
+	        "end": {
+	            "line": 2,
+	            "column": 35,
+	            "index": 55
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ";",
+	    "location": {
+	        "start": {
+	            "line": 2,
+	            "column": 35,
+	            "index": 55
+	        },
+	        "end": {
+	            "line": 2,
+	            "column": 36,
+	            "index": 56
+	        }
+	    }
+	},
+	{
+	    "type": "Keyword",
+	    "value": "import",
+	    "location": {
+	        "start": {
+	            "line": 3,
+	            "column": 0,
+	            "index": 57
+	        },
+	        "end": {
+	            "line": 3,
+	            "column": 6,
+	            "index": 63
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": "(",
+	    "location": {
+	        "start": {
+	            "line": 3,
+	            "column": 6,
+	            "index": 63
+	        },
+	        "end": {
+	            "line": 3,
+	            "column": 7,
+	            "index": 64
+	        }
+	    }
+	},
+	{
+	    "type": "String",
+	    "value": "\"test.js\"",
+	    "location": {
+	        "start": {
+	            "line": 3,
+	            "column": 7,
+	            "index": 64
+	        },
+	        "end": {
+	            "line": 3,
+	            "column": 16,
+	            "index": 73
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ",",
+	    "location": {
+	        "start": {
+	            "line": 3,
+	            "column": 16,
+	            "index": 73
+	        },
+	        "end": {
+	            "line": 3,
+	            "column": 17,
+	            "index": 74
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": "{",
+	    "location": {
+	        "start": {
+	            "line": 3,
+	            "column": 18,
+	            "index": 75
+	        },
+	        "end": {
+	            "line": 3,
+	            "column": 19,
+	            "index": 76
+	        }
+	    }
+	},
+	{
+	    "type": "Identifier",
+	    "value": "key",
+	    "location": {
+	        "start": {
+	            "line": 3,
+	            "column": 19,
+	            "index": 76
+	        },
+	        "end": {
+	            "line": 3,
+	            "column": 22,
+	            "index": 79
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ":",
+	    "location": {
+	        "start": {
+	            "line": 3,
+	            "column": 22,
+	            "index": 79
+	        },
+	        "end": {
+	            "line": 3,
+	            "column": 23,
+	            "index": 80
+	        }
+	    }
+	},
+	{
+	    "type": "String",
+	    "value": "\"value\"",
+	    "location": {
+	        "start": {
+	            "line": 3,
+	            "column": 24,
+	            "index": 81
+	        },
+	        "end": {
+	            "line": 3,
+	            "column": 31,
+	            "index": 88
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": "}",
+	    "location": {
+	        "start": {
+	            "line": 3,
+	            "column": 31,
+	            "index": 88
+	        },
+	        "end": {
+	            "line": 3,
+	            "column": 32,
+	            "index": 89
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ",",
+	    "location": {
+	        "start": {
+	            "line": 3,
+	            "column": 32,
+	            "index": 89
+	        },
+	        "end": {
+	            "line": 3,
+	            "column": 33,
+	            "index": 90
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ")",
+	    "location": {
+	        "start": {
+	            "line": 3,
+	            "column": 33,
+	            "index": 90
+	        },
+	        "end": {
+	            "line": 3,
+	            "column": 34,
+	            "index": 91
+	        }
+	    }
+	},
+	{
+	    "type": "Punctuator",
+	    "value": ";",
+	    "location": {
+	        "start": {
+	            "line": 3,
+	            "column": 34,
+	            "index": 91
+	        },
+	        "end": {
+	            "line": 3,
+	            "column": 35,
+	            "index": 92
+	        }
+	    }
+	}
+]

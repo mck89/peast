@@ -1,0 +1,1 @@
+import {x} from "test.js" with {"key": "value", "key2": "value2"};

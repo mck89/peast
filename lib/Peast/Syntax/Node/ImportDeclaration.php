@@ -24,7 +24,8 @@ class ImportDeclaration extends Node implements ModuleDeclaration
      */
     protected $propertiesMap = array(
         "specifiers" => true,
-        "source" => true
+        "source" => true,
+        "attributes" => true
     );
     
     /**
@@ -40,6 +41,13 @@ class ImportDeclaration extends Node implements ModuleDeclaration
      * @var Literal 
      */
     protected $source;
+    
+    /**
+     * Attributes array
+     * 
+     * @var array
+     */
+    protected $attributes = array();
     
     /**
      * Returns the import specifiers array
@@ -92,6 +100,30 @@ class ImportDeclaration extends Node implements ModuleDeclaration
     public function setSource(Literal $source)
     {
         $this->source = $source;
+        return $this;
+    }
+    
+    /**
+     * Returns the attributes array
+     * 
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+    
+    /**
+     * Sets the attributes array
+     * 
+     * @param array $attributes Attributes array
+     * 
+     * @return $this
+     */
+    public function setAttributes($attributes)
+    {
+        $this->assertArrayOf($attributes, "ImportAttribute");
+        $this->attributes = $attributes;
         return $this;
     }
 }

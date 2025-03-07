@@ -1,0 +1,1 @@
+export {x} from "test.js" with {"key": "value

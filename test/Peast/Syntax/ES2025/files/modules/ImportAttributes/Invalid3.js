@@ -1,0 +1,1 @@
+import {x} from "test.js" with {a}

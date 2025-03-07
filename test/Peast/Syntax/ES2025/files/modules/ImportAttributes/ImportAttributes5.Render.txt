@@ -1,0 +1,5 @@
+export {x} from "test.js" with {"key": "value"};
+/**************************************************/
+export{x}from "test.js" with{"key":"value"};
+/**************************************************/
+export {x} from "test.js" with {"key": "value"};

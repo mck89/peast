@@ -1,0 +1,9 @@
+import x from 'test.js';
+export {x} from "test.js";
+import("test.js", {});
+/**************************************************/
+import x from 'test.js';export{x}from "test.js";import("test.js",{});
+/**************************************************/
+import x from 'test.js';
+export {x} from "test.js";
+import( "test.js", {} );
