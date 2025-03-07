@@ -108,6 +108,14 @@ namespace Peast;
  * Returns a parser instance with ES2024 features for the given source. See Peast
  * class documentation to understand function arguments.
  *
+ * @method static Syntax\Parser ES2025(string $source, array $options = array())
+ * Returns a parser instance with ES2025 features for the given source. See Peast
+ * class documentation to understand function arguments.
+ *
+ * @method static Syntax\Parser ES16(string $source, array $options = array())
+ * Returns a parser instance with ES2025 features for the given source. See Peast
+ * class documentation to understand function arguments.
+ *
  * @method static Syntax\Parser latest(string $source, array $options = array())
  * Returns an instance of the latest parser version for the given source. See
  * Peast class documentation to understand function arguments.
@@ -144,7 +152,8 @@ class Peast
         "ES12" => "ES2021",
         "ES13" => "ES2022",
         "ES14" => "ES2023",
-        "ES15" => "ES2024"
+        "ES15" => "ES2024",
+        "ES16" => "ES2025"
     );
     
     /**

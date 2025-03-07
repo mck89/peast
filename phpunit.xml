@@ -37,6 +37,9 @@
         <testsuite name="ES2024">
             <directory>test/Peast/Syntax/ES2024</directory>
         </testsuite>
+        <testsuite name="ES2025">
+            <directory>test/Peast/Syntax/ES2025</directory>
+        </testsuite>
         <testsuite name="Traverser">
             <file>test/Peast/TraverserTest.php</file>
         </testsuite>
