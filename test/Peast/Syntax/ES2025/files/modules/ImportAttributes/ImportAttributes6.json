@@ -7,9 +7,9 @@
 	        "index": 0
 	    },
 	    "end": {
-	        "line": 3,
-	        "column": 35,
-	        "index": 92
+	        "line": 4,
+	        "column": 42,
+	        "index": 135
 	    }
 	},
 	"leadingComments": [],
@@ -327,6 +327,198 @@
 	                            "value": "value",
 	                            "raw": "\"value\"",
 	                            "format": "double"
+	                        },
+	                        "kind": "init",
+	                        "method": false,
+	                        "shorthand": false,
+	                        "computed": false
+	                    }
+	                ]
+	            }
+	        }
+	    },
+	    {
+	        "type": "ExpressionStatement",
+	        "location": {
+	            "start": {
+	                "line": 4,
+	                "column": 0,
+	                "index": 93
+	            },
+	            "end": {
+	                "line": 4,
+	                "column": 42,
+	                "index": 135
+	            }
+	        },
+	        "leadingComments": [],
+	        "trailingComments": [],
+	        "expression": {
+	            "type": "ImportExpression",
+	            "location": {
+	                "start": {
+	                    "line": 4,
+	                    "column": 0,
+	                    "index": 93
+	                },
+	                "end": {
+	                    "line": 4,
+	                    "column": 41,
+	                    "index": 134
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "source": {
+	                "type": "Literal",
+	                "location": {
+	                    "start": {
+	                        "line": 4,
+	                        "column": 7,
+	                        "index": 100
+	                    },
+	                    "end": {
+	                        "line": 4,
+	                        "column": 16,
+	                        "index": 109
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "value": "test.js",
+	                "raw": "\"test.js\"",
+	                "format": "double"
+	            },
+	            "options": {
+	                "type": "ObjectExpression",
+	                "location": {
+	                    "start": {
+	                        "line": 4,
+	                        "column": 18,
+	                        "index": 111
+	                    },
+	                    "end": {
+	                        "line": 4,
+	                        "column": 40,
+	                        "index": 133
+	                    }
+	                },
+	                "leadingComments": [],
+	                "trailingComments": [],
+	                "properties": [
+	                    {
+	                        "type": "Property",
+	                        "location": {
+	                            "start": {
+	                                "line": 4,
+	                                "column": 19,
+	                                "index": 112
+	                            },
+	                            "end": {
+	                                "line": 4,
+	                                "column": 39,
+	                                "index": 132
+	                            }
+	                        },
+	                        "leadingComments": [],
+	                        "trailingComments": [],
+	                        "key": {
+	                            "type": "Identifier",
+	                            "location": {
+	                                "start": {
+	                                    "line": 4,
+	                                    "column": 19,
+	                                    "index": 112
+	                                },
+	                                "end": {
+	                                    "line": 4,
+	                                    "column": 23,
+	                                    "index": 116
+	                                }
+	                            },
+	                            "leadingComments": [],
+	                            "trailingComments": [],
+	                            "name": "with",
+	                            "rawName": "with"
+	                        },
+	                        "value": {
+	                            "type": "ObjectExpression",
+	                            "location": {
+	                                "start": {
+	                                    "line": 4,
+	                                    "column": 25,
+	                                    "index": 118
+	                                },
+	                                "end": {
+	                                    "line": 4,
+	                                    "column": 39,
+	                                    "index": 132
+	                                }
+	                            },
+	                            "leadingComments": [],
+	                            "trailingComments": [],
+	                            "properties": [
+	                                {
+	                                    "type": "Property",
+	                                    "location": {
+	                                        "start": {
+	                                            "line": 4,
+	                                            "column": 26,
+	                                            "index": 119
+	                                        },
+	                                        "end": {
+	                                            "line": 4,
+	                                            "column": 38,
+	                                            "index": 131
+	                                        }
+	                                    },
+	                                    "leadingComments": [],
+	                                    "trailingComments": [],
+	                                    "key": {
+	                                        "type": "Identifier",
+	                                        "location": {
+	                                            "start": {
+	                                                "line": 4,
+	                                                "column": 26,
+	                                                "index": 119
+	                                            },
+	                                            "end": {
+	                                                "line": 4,
+	                                                "column": 30,
+	                                                "index": 123
+	                                            }
+	                                        },
+	                                        "leadingComments": [],
+	                                        "trailingComments": [],
+	                                        "name": "type",
+	                                        "rawName": "type"
+	                                    },
+	                                    "value": {
+	                                        "type": "Literal",
+	                                        "location": {
+	                                            "start": {
+	                                                "line": 4,
+	                                                "column": 32,
+	                                                "index": 125
+	                                            },
+	                                            "end": {
+	                                                "line": 4,
+	                                                "column": 38,
+	                                                "index": 131
+	                                            }
+	                                        },
+	                                        "leadingComments": [],
+	                                        "trailingComments": [],
+	                                        "value": "json",
+	                                        "raw": "\"json\"",
+	                                        "format": "double"
+	                                    },
+	                                    "kind": "init",
+	                                    "method": false,
+	                                    "shorthand": false,
+	                                    "computed": false
+	                                }
+	                            ]
 	                        },
 	                        "kind": "init",
 	                        "method": false,
