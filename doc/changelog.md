@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.17.0
+* Implemented ES2025 parser with import attributes
+
 #### 1.16.3
 * Removed implicitly nullable parameter declarations for PHP 8.4 compatibility
 
