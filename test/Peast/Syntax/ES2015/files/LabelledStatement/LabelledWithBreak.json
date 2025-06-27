@@ -1,0 +1,111 @@
+{
+	"type": "Program",
+	"location": {
+	    "start": {
+	        "line": 1,
+	        "column": 0,
+	        "index": 0
+	    },
+	    "end": {
+	        "line": 1,
+	        "column": 20,
+	        "index": 20
+	    }
+	},
+	"leadingComments": [],
+	"trailingComments": [],
+	"body": [
+	    {
+	        "type": "LabeledStatement",
+	        "location": {
+	            "start": {
+	                "line": 1,
+	                "column": 0,
+	                "index": 0
+	            },
+	            "end": {
+	                "line": 1,
+	                "column": 20,
+	                "index": 20
+	            }
+	        },
+	        "leadingComments": [],
+	        "trailingComments": [],
+	        "label": {
+	            "type": "Identifier",
+	            "location": {
+	                "start": {
+	                    "line": 1,
+	                    "column": 0,
+	                    "index": 0
+	                },
+	                "end": {
+	                    "line": 1,
+	                    "column": 5,
+	                    "index": 5
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "name": "label",
+	            "rawName": "label"
+	        },
+	        "body": {
+	            "type": "BlockStatement",
+	            "location": {
+	                "start": {
+	                    "line": 1,
+	                    "column": 6,
+	                    "index": 6
+	                },
+	                "end": {
+	                    "line": 1,
+	                    "column": 20,
+	                    "index": 20
+	                }
+	            },
+	            "leadingComments": [],
+	            "trailingComments": [],
+	            "body": [
+	                {
+	                    "type": "BreakStatement",
+	                    "location": {
+	                        "start": {
+	                            "line": 1,
+	                            "column": 7,
+	                            "index": 7
+	                        },
+	                        "end": {
+	                            "line": 1,
+	                            "column": 19,
+	                            "index": 19
+	                        }
+	                    },
+	                    "leadingComments": [],
+	                    "trailingComments": [],
+	                    "label": {
+	                        "type": "Identifier",
+	                        "location": {
+	                            "start": {
+	                                "line": 1,
+	                                "column": 13,
+	                                "index": 13
+	                            },
+	                            "end": {
+	                                "line": 1,
+	                                "column": 18,
+	                                "index": 18
+	                            }
+	                        },
+	                        "leadingComments": [],
+	                        "trailingComments": [],
+	                        "name": "label",
+	                        "rawName": "label"
+	                    }
+	                }
+	            ]
+	        }
+	    }
+	],
+	"sourceType": "script"
+}

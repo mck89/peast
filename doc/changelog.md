@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.17.1
+* Fixed bug where `continue` and `break` were allowed outside iteration and `break` statements
+
 #### 1.17.0
 * Implemented ES2025 parser with import attributes
 

@@ -1,0 +1,134 @@
+for (var i = 0; ; ) {
+	break;
+	continue;
+}
+for (let i = 0; ; ) {
+	break;
+	continue;
+}
+for (const i = 0; ; ) {
+	break;
+	continue;
+}
+for (; ; ) {
+	break;
+	continue;
+}
+for (var i in obj) {
+	break;
+	continue;
+}
+for (let i in obj) {
+	break;
+	continue;
+}
+for (const i in obj) {
+	break;
+	continue;
+}
+for (i in obj) {
+	break;
+	continue;
+}
+for (var i of obj) {
+	break;
+	continue;
+}
+for (let i of obj) {
+	break;
+	continue;
+}
+for (const i of obj) {
+	break;
+	continue;
+}
+for (i of obj) {
+	break;
+	continue;
+}
+while (i) {
+	break;
+	continue;
+}
+do {
+	if (i) {
+		break;
+		continue;
+	}
+} while (i);
+/**************************************************/
+for(var i=0;;){break;continue;}for(let i=0;;){break;continue;}for(const i=0;;){break;continue;}for(;;){break;continue;}for(var i in obj){break;continue;}for(let i in obj){break;continue;}for(const i in obj){break;continue;}for(i in obj){break;continue;}for(var i of obj){break;continue;}for(let i of obj){break;continue;}for(const i of obj){break;continue;}for(i of obj){break;continue;}while(i){break;continue;}do if(i){break;continue;}while(i);
+/**************************************************/
+for ( var i = 0; ;  )
+{
+	break;
+	continue;
+}
+for ( let i = 0; ;  )
+{
+	break;
+	continue;
+}
+for ( const i = 0; ;  )
+{
+	break;
+	continue;
+}
+for ( ; ;  )
+{
+	break;
+	continue;
+}
+for ( var i in obj )
+{
+	break;
+	continue;
+}
+for ( let i in obj )
+{
+	break;
+	continue;
+}
+for ( const i in obj )
+{
+	break;
+	continue;
+}
+for ( i in obj )
+{
+	break;
+	continue;
+}
+for ( var i of obj )
+{
+	break;
+	continue;
+}
+for ( let i of obj )
+{
+	break;
+	continue;
+}
+for ( const i of obj )
+{
+	break;
+	continue;
+}
+for ( i of obj )
+{
+	break;
+	continue;
+}
+while ( i )
+{
+	break;
+	continue;
+}
+do
+{
+	if ( i )
+	{
+		break;
+		continue;
+	}
+} while ( i );
