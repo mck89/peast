@@ -1883,6 +1883,15 @@ class Parser extends ParserAbstract
             );
             
             if ($declarations) {
+                // "const" requires that all declarations have an initializer
+                if ($token->value === "const") {
+                    foreach ($declarations as $dec) {
+                        if (!$dec->getInit()) {
+                            $this->error("Missing initializer in const declaration");
+                        }
+                    }
+                }
+
                 $this->assertEndOfStatement();
                 $node = $this->createNode("VariableDeclaration", $token);
                 $node->setKind($token->value);
