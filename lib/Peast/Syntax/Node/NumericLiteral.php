@@ -115,7 +115,7 @@ class NumericLiteral extends Literal
             //Numeric separator cannot appear at the beginning or at the end of the number
             if (preg_match("/^_|_$/", $value)) {
                 throw new \Exception("Invalid numeric value");
-            } elseif (isset($this->forms[$form])) {
+            } elseif (isset($this->forms[$form ?? ''])) {
                 $formDef = $this->forms[$form];
                 if (!preg_match($formDef["check"], $value)) {
                     throw new \Exception("Invalid " . $formDef["format"]);
