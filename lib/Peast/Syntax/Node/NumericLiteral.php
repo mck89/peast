@@ -142,9 +142,11 @@ class NumericLiteral extends Literal
             throw new \Exception("Invalid numeric value");
         }
         $value = (float) $value;
-        $intValue = (int) $value;
-        if ($value == $intValue) {
-            $value = $intValue;
+        if ($value <= PHP_INT_MAX && $value >= PHP_INT_MIN) {
+            $intValue = (int) $value;
+            if ($value == $intValue) {
+                $value = $intValue;
+            }
         }
         $this->format = $format;
         $this->value = $value;
