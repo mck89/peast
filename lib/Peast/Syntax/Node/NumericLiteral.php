@@ -144,7 +144,7 @@ class NumericLiteral extends Literal
         $value = (float) $value;
         //Do not attempt to cast to int if it's not possible
         $checkInt = true;
-        if (defined("PHP_INT_MAX")) {
+        if (defined("PHP_INT_MAX") && defined("PHP_INT_MIN")) {
             $checkInt = $value <= PHP_INT_MAX && $value >= PHP_INT_MIN;
         }
         if ($checkInt) {
