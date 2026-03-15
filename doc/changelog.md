@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.17.5
+* Fixed bug when parsing SpreadElement followed by NewExpression between parenthesis
+
 #### 1.17.4
 * Fixed warning on PHP 8.5 when handling large numbers
 
