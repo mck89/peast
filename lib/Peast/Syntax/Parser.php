@@ -2897,7 +2897,13 @@ class Parser extends ParserAbstract
             ($async = $this->checkAsyncFunctionStart(false))) {
             $this->scanner->consumeToken();
         }
-        if (($params = $this->parseArrowParameters()) !== null) {
+        // We might be parsing a ParenthesizedExpression, return null instead of throwing an exception if we can't parse the parameters.
+        try {
+            $params = $this->parseArrowParameters();
+        } catch (Exception $e) {
+            $params = null;
+        }
+        if ($params !== null) {
 
             if ($this->scanner->noLineTerminators() &&
                 $this->scanner->consume("=>")
