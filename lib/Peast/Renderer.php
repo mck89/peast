@@ -51,7 +51,8 @@ class Renderer
         "TryStatement",
         "WhileStatement",
         "WithStatement",
-        "MethodDefinition"
+        "MethodDefinition",
+        "BlockStatement"
     );
     
     /**
@@ -200,6 +201,10 @@ class Renderer
                 $code .= $codeRight;
             break;
             case "BlockStatement":
+                $code .= trim($this->renderStatementBlock(
+                    $node, $node->getBody(), true, false, true, true
+                ));
+            break;
             case "ClassBody":
             case "Program":
                 $code .= $this->renderStatementBlock(

@@ -1,10 +1,16 @@
-label: {
-	break label;
+if (true) {
+	let a = 1;
+	{
+		a++;
+	}
 }
 /**************************************************/
-label:{break label;}
+if(true){let a=1;{a++;}}
 /**************************************************/
-label:
+if ( true )
 {
-	break label;
+	let a = 1;
+	{
+		a++;
+	}
 }
