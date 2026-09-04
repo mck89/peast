@@ -14,58 +14,58 @@ use Peast\Syntax\Node\Expression;
 
 /**
  * A node that represents a JSX element.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class JSXElement extends Node implements Expression
 {
     /**
      * Map of node properties
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $propertiesMap = array(
         "openingElement" => true,
         "children" => true,
         "closingElement" => true
     );
-    
+
     /**
      * Opening element node
-     * 
+     *
      * @var JSXOpeningElement
      */
     protected $openingElement;
-    
+
     /**
      * Children nodes array
-     * 
+     *
      * @var Node[]
      */
     protected $children = array();
-    
+
     /**
      * Closing element node
-     * 
+     *
      * @var JSXClosingElement|null
      */
     protected $closingElement;
-    
+
     /**
      * Returns the opening element node
-     * 
+     *
      * @return JSXOpeningElement
      */
     public function getOpeningElement()
     {
         return $this->openingElement;
     }
-    
+
     /**
      * Sets the opening element node
-     * 
+     *
      * @param JSXOpeningElement $openingElement Opening element node
-     * 
+     *
      * @return $this
      */
     public function setOpeningElement(JSXOpeningElement $openingElement)
@@ -73,22 +73,22 @@ class JSXElement extends Node implements Expression
         $this->openingElement = $openingElement;
         return $this;
     }
-    
+
     /**
      * Returns the children nodes array
-     * 
+     *
      * @return Node[]
      */
     public function getChildren()
     {
         return $this->children;
     }
-    
+
     /**
      * Sets the children nodes array
-     * 
+     *
      * @param Node[] $children Children nodes array
-     * 
+     *
      * @return $this
      */
     public function setChildren($children)
@@ -100,22 +100,22 @@ class JSXElement extends Node implements Expression
         $this->children = $children;
         return $this;
     }
-    
+
     /**
      * Returns the closing element node
-     * 
+     *
      * @return JSXClosingElement|null
      */
     public function getClosingElement()
     {
         return $this->closingElement;
     }
-    
+
     /**
      * Sets the closing element node
-     * 
+     *
      * @param JSXClosingElement|null $closingElement Closing element node
-     * 
+     *
      * @return $this
      */
     public function setClosingElement($closingElement)

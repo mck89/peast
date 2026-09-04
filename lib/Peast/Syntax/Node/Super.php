@@ -11,7 +11,7 @@ namespace Peast\Syntax\Node;
 
 /**
  * A node that represents the "super" keyword.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class Super extends Node

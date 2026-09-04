@@ -13,7 +13,7 @@ use Peast\Syntax\Node\Node;
 
 /**
  * Selector matches class
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class Matches

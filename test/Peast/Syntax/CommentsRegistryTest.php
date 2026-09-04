@@ -723,7 +723,7 @@ class CommentsRegistryTest extends TestBase
             )
         );
     }
-    
+
     /**
      * @dataProvider dataProvider
      */
@@ -763,7 +763,7 @@ class CommentsRegistryTest extends TestBase
             $this->assertEquals($node, $testComment);
         }
     }
-    
+
     /**
      * @dataProvider dataProvider
      */

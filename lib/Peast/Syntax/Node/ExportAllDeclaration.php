@@ -12,15 +12,15 @@ namespace Peast\Syntax\Node;
 /**
  * A node that represents an "export all" declaration.
  * For example: export * from "test"
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class ExportAllDeclaration extends Node implements ModuleDeclaration
 {
     /**
      * Map of node properties
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $propertiesMap = array(
         "source" => true,
@@ -41,10 +41,10 @@ class ExportAllDeclaration extends Node implements ModuleDeclaration
      * @var Identifier|StringLiteral
      */
     protected $exported;
-    
+
     /**
      * Attributes array
-     * 
+     *
      * @var array
      */
     protected $attributes = array();
@@ -95,22 +95,22 @@ class ExportAllDeclaration extends Node implements ModuleDeclaration
         $this->exported = $exported;
         return $this;
     }
-    
+
     /**
      * Returns the attributes array
-     * 
+     *
      * @return array
      */
     public function getAttributes()
     {
         return $this->attributes;
     }
-    
+
     /**
      * Sets the attributes array
-     * 
+     *
      * @param array $attributes Attributes array
-     * 
+     *
      * @return $this
      */
     public function setAttributes($attributes)

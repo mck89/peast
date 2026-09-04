@@ -13,7 +13,7 @@ use Peast\Syntax\Node\SpreadElement;
 
 /**
  * A node that represents a JSX spread attribute.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class JSXSpreadAttribute extends SpreadElement

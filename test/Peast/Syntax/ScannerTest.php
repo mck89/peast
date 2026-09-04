@@ -26,7 +26,7 @@ class ScannerTest extends TestBase
         $source = "'" . $UTF8Char . $UTF8Char[0] . "'";
         \Peast\Peast::latest($source)->parse();
     }
-    
+
     public function testHandleInvalidUTF8UsingStrictEncodingOpt()
     {
         if (function_exists("mb_convert_encoding")) {
@@ -38,7 +38,7 @@ class ScannerTest extends TestBase
             $this->assertTrue(strpos($str, $UTF8Char) !== false);
         }
     }
-    
+
     public function BOMProvider()
     {
         return array(
@@ -47,7 +47,7 @@ class ScannerTest extends TestBase
             array("UTF-16LE", "\xFF\xFE")
         );
     }
-    
+
     /**
      * @dataProvider BOMProvider
      */

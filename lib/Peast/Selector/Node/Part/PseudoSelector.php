@@ -15,7 +15,7 @@ use Peast\Syntax\Node\Node;
 
 /**
  * Selector part selector pseudo class
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class PseudoSelector extends Pseudo

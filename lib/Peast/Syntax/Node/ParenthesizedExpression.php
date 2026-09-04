@@ -11,42 +11,42 @@ namespace Peast\Syntax\Node;
 
 /**
  * A node that represents an expression wrapped in round brackets.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class ParenthesizedExpression extends Node implements Expression
 {
     /**
      * Map of node properties
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $propertiesMap = array(
         "expression" => true
     );
-    
+
     /**
      * The wrapped expression
-     * 
-     * @var Expression 
+     *
+     * @var Expression
      */
     protected $expression;
-    
+
     /**
      * Returns the wrapped expression
-     * 
+     *
      * @return Expression
      */
     public function getExpression()
     {
         return $this->expression;
     }
-    
+
     /**
      * Sets the wrapped expression
-     * 
+     *
      * @param Expression $expression Wrapped expression
-     * 
+     *
      * @return $this
      */
     public function setExpression(Expression $expression)

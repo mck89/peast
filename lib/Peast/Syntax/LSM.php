@@ -12,25 +12,25 @@ namespace Peast\Syntax;
 /**
  * Longest Sequence Matcher. Utility class used by the scanner to consume
  * the longest sequence of character given a set of allowed characters sequences.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class LSM
 {
     /**
      * Internal sequences map
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $map = array();
-    
+
     /**
      * Encoding handle flag
-     * 
-     * @var bool 
+     *
+     * @var bool
      */
     protected $handleEncoding = false;
-    
+
     /**
      * Class constructor
      *
@@ -44,12 +44,12 @@ class LSM
             $this->add($s);
         }
     }
-    
+
     /**
      * Adds a sequence
-     * 
+     *
      * @param string $sequence Sequence to add
-     * 
+     *
      * @return $this
      */
     public function add($sequence)
@@ -58,7 +58,7 @@ class LSM
             $s = Utils::stringToUTF8Array($sequence);
             $first = $s[0];
             $len = count($s);
-        } else {    
+        } else {
             $first = $sequence[0];
             $len = strlen($sequence);
         }
@@ -73,12 +73,12 @@ class LSM
         }
         return $this;
     }
-    
+
     /**
      * Removes a sequence
-     * 
+     *
      * @param string $sequence Sequence to remove
-     * 
+     *
      * @return $this
      */
     public function remove($sequence)
@@ -108,16 +108,16 @@ class LSM
         }
         return $this;
     }
-    
+
     /**
      * Executes the match. It returns an array where the first element is the
      * number of consumed characters and the second element is the match. If
      * no match is found it returns null.
-     * 
+     *
      * @param Scanner   $scanner    Scanner instance
      * @param int       $index      Current index
      * @param string    $char       Current character
-     * 
+     *
      * @return array|null
      */
     public function match($scanner, $index, $char)

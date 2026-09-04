@@ -15,7 +15,7 @@ use Peast\Traverser;
 
 /**
  * Selector combinator class
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class Combinator

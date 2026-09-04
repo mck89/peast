@@ -4,7 +4,7 @@ namespace Peast\test\Syntax\ES2027;
 class ES2027Test extends \Peast\test\Syntax\ES2026\ES2026Test
 {
     protected $parser = "ES2027";
-    
+
     protected function getTestVersions()
     {
         return array(

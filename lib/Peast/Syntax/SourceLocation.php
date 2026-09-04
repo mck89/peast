@@ -12,40 +12,40 @@ namespace Peast\Syntax;
 /**
  * This class represents a location in the source code with start and end
  * position.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class SourceLocation implements \JSONSerializable
 {
     /**
      * Start position
-     * 
-     * @var Position 
+     *
+     * @var Position
      */
     public $start;
-    
+
     /**
      * End position
-     * 
-     * @var Position 
+     *
+     * @var Position
      */
     public $end;
-    
+
     /**
      * Returns the start position
-     * 
+     *
      * @return Position
      */
     public function getStart()
     {
         return $this->start;
     }
-    
+
     /**
      * Sets the start position
-     * 
+     *
      * @param Position $position Start position
-     * 
+     *
      * @return $this
      */
     public function setStart(Position $position)
@@ -53,22 +53,22 @@ class SourceLocation implements \JSONSerializable
         $this->start = $position;
         return $this;
     }
-    
+
     /**
      * Returns the end position
-     * 
+     *
      * @return Position
      */
     public function getEnd()
     {
         return $this->end;
     }
-    
+
     /**
      * Sets the end position
-     * 
+     *
      * @param Position $position End position
-     * 
+     *
      * @return $this
      */
     public function setEnd(Position $position)
@@ -76,10 +76,10 @@ class SourceLocation implements \JSONSerializable
         $this->end = $position;
         return $this;
     }
-    
+
     /**
      * Returns a serializable version of the object
-     * 
+     *
      * @return array
      */
     #[\ReturnTypeWillChange]

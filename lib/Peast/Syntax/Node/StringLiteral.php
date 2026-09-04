@@ -13,43 +13,43 @@ use Peast\Syntax\Utils;
 
 /**
  * A node that represents a string literal.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class StringLiteral extends Literal
 {
     /**
      * Map of node properties
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $propertiesMap = array(
         "format" => false
     );
-    
+
     //Format constants
     /**
      * Double quoted string
      */
     const DOUBLE_QUOTED = "double";
-    
+
     /**
      * Single quoted string
      */
     const SINGLE_QUOTED = "single";
-    
+
     /**
      * String format
-     * 
+     *
      * @var string
      */
     protected $format = self::DOUBLE_QUOTED;
-    
+
     /**
      * Sets node's value
-     * 
+     *
      * @param string $value Value
-     * 
+     *
      * @return $this
      */
     public function setValue($value)
@@ -58,14 +58,14 @@ class StringLiteral extends Literal
         //Force recalculation of the raw value
         return $this->setFormat($this->format);
     }
-    
+
     /**
      * Sets node's raw value
-     * 
+     *
      * @param mixed $raw Raw value
-     * 
+     *
      * @return $this
-     * 
+     *
      * @throws \Exception
      */
     public function setRaw($raw)
@@ -88,22 +88,22 @@ class StringLiteral extends Literal
         $this->raw = $raw;
         return $this;
     }
-    
+
     /**
      * Returns string format
-     * 
+     *
      * @return string
      */
     public function getFormat()
     {
         return $this->format;
     }
-    
+
     /**
      * Sets string format
-     * 
+     *
      * @param string $format Format, one of the format constants
-     * 
+     *
      * @return $this
      */
     public function setFormat($format)

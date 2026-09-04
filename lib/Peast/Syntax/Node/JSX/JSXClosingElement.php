@@ -11,7 +11,7 @@ namespace Peast\Syntax\Node\JSX;
 
 /**
  * A node that represents a JSX closing element tag.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class JSXClosingElement extends JSXBoundaryElement

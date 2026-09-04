@@ -13,7 +13,7 @@ use Peast\Selector\Matches;
 
 /**
  * Selector group class
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class Group

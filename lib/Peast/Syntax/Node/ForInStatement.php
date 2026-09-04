@@ -12,58 +12,58 @@ namespace Peast\Syntax\Node;
 /**
  * A node that represents a for-in statement.
  * For example: for (var a in b) {}
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class ForInStatement extends Node implements Statement
 {
     /**
      * Map of node properties
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $propertiesMap = array(
         "left" => true,
         "right" => true,
         "body" => true
     );
-    
+
     /**
      * Iteration variable
-     * 
+     *
      * @var VariableDeclaration|Expression|Pattern
      */
     protected $left;
-    
+
     /**
      * Iterated object
-     * 
+     *
      * @var Expression
      */
     protected $right;
-    
+
     /**
      * Loop body
-     * 
-     * @var Statement 
+     *
+     * @var Statement
      */
     protected $body;
-    
+
     /**
      * Returns the iteration variable
-     * 
+     *
      * @return VariableDeclaration|Expression|Pattern
      */
     public function getLeft()
     {
         return $this->left;
     }
-    
+
     /**
      * Sets the iteration variable
-     * 
+     *
      * @param VariableDeclaration|Expression|Pattern $left Iteration variable
-     * 
+     *
      * @return $this
      */
     public function setLeft($left)
@@ -74,22 +74,22 @@ class ForInStatement extends Node implements Statement
         $this->left = $left;
         return $this;
     }
-    
+
     /**
      * Returns the iterated object
-     * 
+     *
      * @return Expression
      */
     public function getRight()
     {
         return $this->right;
     }
-    
+
     /**
      * Sets the iterated object
-     * 
+     *
      * @param Expression $right Iterated object
-     * 
+     *
      * @return $this
      */
     public function setRight(Expression $right)
@@ -97,22 +97,22 @@ class ForInStatement extends Node implements Statement
         $this->right = $right;
         return $this;
     }
-    
+
     /**
      * Returns the loop body
-     * 
+     *
      * @return Statement
      */
     public function getBody()
     {
         return $this->body;
     }
-    
+
     /**
      * Sets the loop body
-     * 
+     *
      * @param Statement $body Loop body
-     * 
+     *
      * @return $this
      */
     public function setBody(Statement $body)

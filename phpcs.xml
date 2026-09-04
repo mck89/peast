@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<ruleset name="Peast">
+    <description>CodeSniffer rules for Peast</description>
+    
+    <file>lib</file>
+    <file>test</file>
+    
+    <exclude-pattern>*/files/*</exclude-pattern>
+    <exclude-pattern>*.js</exclude-pattern>
+    
+    <rule ref="Generic.Files.LineEndings">
+        <properties>
+            <property name="eolChar" value="\n"/>
+        </properties>
+    </rule>
+    
+    <rule ref="Generic.WhiteSpace.ScopeIndent">
+        <properties>
+            <property name="indent" value="4"/>
+            <property name="tabIndent" value="false"/>
+        </properties>
+    </rule>
+    
+    <rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
+    
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
+        <properties>
+            <property name="ignoreBlankLines" value="false"/>
+        </properties>
+    </rule>
+    
+    <rule ref="Squiz.WhiteSpace.FunctionSpacing">
+        <properties>
+            <property name="spacing" value="1"/>
+            <property name="spacingBeforeFirst" value="0"/>
+            <property name="spacingAfterLast" value="0"/>
+        </properties>
+    </rule>
+</ruleset>

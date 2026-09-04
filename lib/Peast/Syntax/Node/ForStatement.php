@@ -11,15 +11,15 @@ namespace Peast\Syntax\Node;
 
 /**
  * A node that represents a for statement.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class ForStatement extends Node implements Statement
 {
     /**
      * Map of node properties
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $propertiesMap = array(
         "init" => true,
@@ -27,50 +27,50 @@ class ForStatement extends Node implements Statement
         "update" => true,
         "body" => true
     );
-    
+
     /**
      * Initializer
-     * 
+     *
      * @var VariableDeclaration|Expression
      */
     protected $init;
-    
+
     /**
      * Test expression
-     * 
-     * @var Expression 
+     *
+     * @var Expression
      */
     protected $test;
-    
+
     /**
      * Update expression
-     * 
-     * @var Expression 
+     *
+     * @var Expression
      */
     protected $update;
-    
+
     /**
      * Loop body
-     * 
-     * @var Statement 
+     *
+     * @var Statement
      */
     protected $body;
-    
+
     /**
      * Returns the initializer
-     * 
+     *
      * @return VariableDeclaration|Expression
      */
     public function getInit()
     {
         return $this->init;
     }
-    
+
     /**
      * Sets the initializer
-     * 
+     *
      * @param VariableDeclaration|Expression $init Initializer
-     * 
+     *
      * @return $this
      */
     public function setInit($init)
@@ -83,22 +83,22 @@ class ForStatement extends Node implements Statement
         $this->init = $init;
         return $this;
     }
-    
+
     /**
      * Returns the test expression
-     * 
+     *
      * @return Expression
      */
     public function getTest()
     {
         return $this->test;
     }
-    
+
     /**
      * Sets the test expression
-     * 
+     *
      * @param Expression $test Test expression
-     * 
+     *
      * @return $this
      */
     public function setTest($test)
@@ -107,22 +107,22 @@ class ForStatement extends Node implements Statement
         $this->test = $test;
         return $this;
     }
-    
+
     /**
      * Returns the update expression
-     * 
+     *
      * @return Expression
      */
     public function getUpdate()
     {
         return $this->update;
     }
-    
+
     /**
      * Sets the update expression
-     * 
+     *
      * @param Expression $update Update expression
-     * 
+     *
      * @return $this
      */
     public function setUpdate($update)
@@ -131,22 +131,22 @@ class ForStatement extends Node implements Statement
         $this->update = $update;
         return $this;
     }
-    
+
     /**
      * Returns the loop body
-     * 
+     *
      * @return Statement
      */
     public function getBody()
     {
         return $this->body;
     }
-    
+
     /**
      * Sets the loop body
-     * 
+     *
      * @param Statement $body Loop body
-     * 
+     *
      * @return $this
      */
     public function setBody(Statement $body)

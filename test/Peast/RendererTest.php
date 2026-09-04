@@ -11,12 +11,12 @@ class RendererTest extends TestBase
             "ES2025", "ES2026", "ES2027"
         );
     }
-    
+
     public function jsParserTestFilesProvider()
     {
         return parent::getJsTestFiles(self::JS_RENDERER);
     }
-    
+
     /**
      * @dataProvider jsParserTestFilesProvider
      */
@@ -36,12 +36,12 @@ class RendererTest extends TestBase
         $pp = $renderer->setFormatter(new \Peast\Formatter\PrettyPrint)->render($tree);
         $cm = $renderer->setFormatter(new \Peast\Formatter\Compact)->render($tree);
         $ex = $renderer->setFormatter(new \Peast\Formatter\Expanded)->render($tree);
-        
+
         list($ppTest, $cmTest, $exTest) = preg_split(
             "#\s+/\*{50}/\s+#",
             file_get_contents($compareFile)
         );
-        
+
         $this->assertEquals($ppTest, $pp);
         $this->assertEquals($cmTest, $cm);
         $this->assertEquals($exTest, $ex);
@@ -56,7 +56,7 @@ class RendererTest extends TestBase
         $this->assertEquals(null, $renderer->getFormatter());
         $renderer->render($tree);
     }
-    
+
     public function testSemicolonAfterLabelledStatement()
     {
         $source = "label:var test;";

@@ -13,7 +13,7 @@ use Peast\Syntax\Node\Identifier;
 
 /**
  * A node that represents a JSX identifier.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class JSXIdentifier extends Identifier

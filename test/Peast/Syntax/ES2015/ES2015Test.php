@@ -6,25 +6,25 @@ use Peast\Syntax\Utils;
 class ES2015Test extends \Peast\test\TestParser
 {
     protected $parser = "ES2015";
-    
+
     protected function getTestVersions()
     {
         return array("ES2015");
     }
-    
+
     public function testParseEmptySource()
     {
         $tree = \Peast\Peast::{$this->parser}("")->parse();
         $this->assertTrue($tree->getType() === "Program");
         $this->assertSame(0, count($tree->getBody()));
     }
-    
+
     public function testTokenizeEmptySource()
     {
         $tree = \Peast\Peast::{$this->parser}("")->tokenize();
         $this->assertSame(0, count($tree));
     }
-    
+
     public function keywordIdentifierProvider()
     {
         return array(
@@ -53,7 +53,7 @@ class ES2015Test extends \Peast\test\TestParser
             array("function *test(){var yield;}", false, false)
         );
     }
-    
+
     /**
      * @dataProvider keywordIdentifierProvider
      */
@@ -75,7 +75,7 @@ class ES2015Test extends \Peast\test\TestParser
             $this->assertSame($isValid, $validResult);
         }
     }
-    
+
     public function stringCharsProvider()
     {
         return array(
@@ -109,7 +109,7 @@ class ES2015Test extends \Peast\test\TestParser
             array("\\" . \Peast\Syntax\Utils::unicodeToUtf8(0x2029), true)
         );
     }
-    
+
     /**
      * @dataProvider stringCharsProvider
      */
@@ -136,7 +136,7 @@ class ES2015Test extends \Peast\test\TestParser
             }
         }
         return $tests;
-    }    
+    }
 
     /**
      * @dataProvider surrogatePairsProvider
@@ -149,7 +149,7 @@ class ES2015Test extends \Peast\test\TestParser
         }
         $test .= $char;
         $check = Utils::unicodeToUtf8(hexdec("1F600"));
-        
+
         $body = \Peast\Peast::{$this->parser}($test)->parse()->getBody();
         if ($char === "`") {
             $testVal = $body[0]->getExpression()->getQuasis()[0]->getValue();

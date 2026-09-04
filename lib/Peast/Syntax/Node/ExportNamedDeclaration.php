@@ -12,15 +12,15 @@ namespace Peast\Syntax\Node;
 /**
  * A node that represents an export named declaration.
  * For example: export {foo} from "bar"
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class ExportNamedDeclaration extends Node implements ModuleDeclaration
 {
     /**
      * Map of node properties
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $propertiesMap = array(
         "declaration" => true,
@@ -28,50 +28,50 @@ class ExportNamedDeclaration extends Node implements ModuleDeclaration
         "source" => true,
         "attributes" => true
     );
-    
+
     /**
      * Exported declaration
-     * 
-     * @var Declaration 
+     *
+     * @var Declaration
      */
     protected $declaration;
-    
+
     /**
      * Exported specifiers
-     * 
-     * @var ExportSpecifier[] 
+     *
+     * @var ExportSpecifier[]
      */
     protected $specifiers = array();
-    
+
     /**
      * Attributes array
-     * 
+     *
      * @var array
      */
     protected $attributes = array();
-    
+
     /**
      * The export source
-     * 
-     * @var Literal 
+     *
+     * @var Literal
      */
     protected $source;
-    
+
     /**
      * Returns the exported declaration
-     * 
+     *
      * @return Declaration
      */
     public function getDeclaration()
     {
         return $this->declaration;
     }
-    
+
     /**
      * Sets the exported declaration
-     * 
+     *
      * @param Declaration $declaration Exported declaration
-     * 
+     *
      * @return $this
      */
     public function setDeclaration($declaration)
@@ -80,22 +80,22 @@ class ExportNamedDeclaration extends Node implements ModuleDeclaration
         $this->declaration = $declaration;
         return $this;
     }
-    
+
     /**
      * Return the exported specifiers
-     * 
+     *
      * @return ExportSpecifier[]
      */
     public function getSpecifiers()
     {
         return $this->specifiers;
     }
-    
+
     /**
      * Sets the exported specifiers
-     * 
+     *
      * @param ExportSpecifier[] $specifiers Exported specifiers
-     * 
+     *
      * @return $this
      */
     public function setSpecifiers($specifiers)
@@ -104,22 +104,22 @@ class ExportNamedDeclaration extends Node implements ModuleDeclaration
         $this->specifiers = $specifiers;
         return $this;
     }
-    
+
     /**
      * Returns the export source
-     * 
+     *
      * @return Literal
      */
     public function getSource()
     {
         return $this->source;
     }
-    
+
     /**
      * Sets the export source
-     * 
+     *
      * @param Literal $source Export source
-     * 
+     *
      * @return $this
      */
     public function setSource($source)
@@ -128,22 +128,22 @@ class ExportNamedDeclaration extends Node implements ModuleDeclaration
         $this->source = $source;
         return $this;
     }
-    
+
     /**
      * Returns the attributes array
-     * 
+     *
      * @return array
      */
     public function getAttributes()
     {
         return $this->attributes;
     }
-    
+
     /**
      * Sets the attributes array
-     * 
+     *
      * @param array $attributes Attributes array
-     * 
+     *
      * @return $this
      */
     public function setAttributes($attributes)

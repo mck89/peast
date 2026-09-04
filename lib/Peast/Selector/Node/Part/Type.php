@@ -13,7 +13,7 @@ use Peast\Syntax\Node\Node;
 
 /**
  * Selector part type class
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class Type extends Part

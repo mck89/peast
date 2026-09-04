@@ -9,10 +9,10 @@ class NullLiteralTest extends TestBase
     public function testValue()
     {
         $node = new Node\NullLiteral;
-        
+
         $this->assertEquals(null, $node->getValue());
         $this->assertEquals("null", $node->getRaw());
-        
+
         $node->setValue(123);
         $this->assertEquals(null, $node->getValue());
         $this->assertEquals("null", $node->getRaw());

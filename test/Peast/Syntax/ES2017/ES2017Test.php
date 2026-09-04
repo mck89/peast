@@ -4,12 +4,12 @@ namespace Peast\test\Syntax\ES2017;
 class ES2017Test extends \Peast\test\Syntax\ES2016\ES2016Test
 {
     protected $parser = "ES2017";
-    
+
     protected function getTestVersions()
     {
         return array("ES2015", "ES2016", "ES2017");
     }
-    
+
     protected function getExcludedTests()
     {
         return array(
@@ -18,7 +18,7 @@ class ES2017Test extends \Peast\test\Syntax\ES2016\ES2016Test
             "ArrowFunction/Invalid5.js"
         );
     }
-    
+
     public function keywordIdentifierProvider()
     {
         return array_merge(

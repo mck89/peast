@@ -11,9 +11,9 @@ namespace Peast\Syntax;
 
 /**
  * Parser features class
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
- * 
+ *
  * @codeCoverageIgnore
  */
 class Features

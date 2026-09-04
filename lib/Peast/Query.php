@@ -11,7 +11,7 @@ namespace Peast;
 
 /**
  * Nodes query class
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class Query implements \IteratorAggregate, \Countable

@@ -11,9 +11,9 @@ namespace Peast\Syntax\ES2024;
 
 /**
  * ES2024 features class
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
- * 
+ *
  * @codeCoverageIgnore
  */
 class Features extends \Peast\Syntax\ES2023\Features

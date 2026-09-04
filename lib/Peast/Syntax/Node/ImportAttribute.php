@@ -12,50 +12,50 @@ namespace Peast\Syntax\Node;
 /**
  * A node that represents a key value pair for an import attribute.
  * For example: return a + 1
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class ImportAttribute extends Node
 {
     /**
      * Map of node properties
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $propertiesMap = array(
         "key" => true,
         "value" => true
     );
-    
+
     /**
      * Import attribute key
-     * 
-     * @var Identifier|Literal 
+     *
+     * @var Identifier|Literal
      */
     protected $key;
-    
+
     /**
      * Import attribute value
-     * 
-     * @var Literal 
+     *
+     * @var Literal
      */
     protected $value;
-    
+
     /**
      * Returns the import attribute key
-     * 
-     * @return Identifier|Literal 
+     *
+     * @return Identifier|Literal
      */
     public function getKey()
     {
         return $this->key;
     }
-    
+
     /**
      * Sets the import attribute key
-     * 
+     *
      * @param Identifier|Literal $key The import attribute key
-     * 
+     *
      * @return $this
      */
     public function setKey($key)
@@ -64,22 +64,22 @@ class ImportAttribute extends Node
         $this->key = $key;
         return $this;
     }
-    
+
     /**
      * Returns the import attribute value
-     * 
-     * @return Literal 
+     *
+     * @return Literal
      */
     public function getValue()
     {
         return $this->value;
     }
-    
+
     /**
      * Sets the import attribute value
-     * 
+     *
      * @param Literal $value The import attribute value
-     * 
+     *
      * @return $this
      */
     public function setValue(Literal $value)

@@ -12,7 +12,7 @@ namespace Peast\Syntax\Node;
 /**
  * A node that represents a namespace import specifier.
  * For example "* as test" in: import * as test from "test.js".
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class ImportDefaultSpecifier extends ModuleSpecifier

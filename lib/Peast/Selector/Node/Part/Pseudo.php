@@ -11,7 +11,7 @@ namespace Peast\Selector\Node\Part;
 
 /**
  * Selector pseudo part base class
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  *
  * @abstract

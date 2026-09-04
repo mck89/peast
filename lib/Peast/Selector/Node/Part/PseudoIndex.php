@@ -14,7 +14,7 @@ use Peast\Syntax\Utils;
 
 /**
  * Selector part index pseudo class
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class PseudoIndex extends Pseudo

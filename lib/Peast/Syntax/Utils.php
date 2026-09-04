@@ -11,22 +11,22 @@ namespace Peast\Syntax;
 
 /**
  * Utilities class.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class Utils
 {
     /**
      * Converts a string to an array of UTF-8 characters
-     * 
+     *
      * @param string $str            String to convert
      * @param bool   $strictEncoding If false and the string contains invalid
      *                               UTF-8 characters, it will replace those
      *                               characters with the one defined in the
      *                               mbstring.substitute_character setting
-     * 
+     *
      * @return array
-     * 
+     *
      * @throws EncodingException
      */
     static public function stringToUTF8Array($str, $strictEncoding = true)
@@ -45,14 +45,14 @@ class Utils
         }
         return $ret;
     }
-    
+
     /**
      * Converts an unicode code point to UTF-8
-     * 
+     *
      * @param int $num Unicode code point
-     * 
+     *
      * @return string
-     * 
+     *
      * @codeCoverageIgnore
      */
     static public function unicodeToUtf8($num)
@@ -75,17 +75,17 @@ class Utils
         }
         return '';
     }
-    
+
     /**
      * Compiled line terminators cache
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected static $lineTerminatorsCache;
-    
+
     /**
      * Returns line terminators array
-     * 
+     *
      * @return array
      */
     protected static function getLineTerminators()
@@ -103,12 +103,12 @@ class Utils
 
     /**
      * Converts a surrogate pair of Unicode code points to UTF-8
-     * 
+     *
      * @param string $first  First Unicode code point
      * @param string $second Second Unicode code point
-     * 
+     *
      * @return string
-     * 
+     *
      * @codeCoverageIgnore
      */
     static public function surrogatePairToUtf8($first, $second)
@@ -117,33 +117,33 @@ class Utils
         $value = ((hexdec($first) & 0x3ff) << 10) | (hexdec($second) & 0x3ff);
         return self::unicodeToUtf8($value + 0x10000);
     }
-    
+
     /**
      * This function takes a string as it appears in the source code and returns
      * an unquoted version of it
-     * 
+     *
      * @param string $str The string to unquote
-     * 
+     *
      * @return string
      */
     static public function unquoteLiteralString($str)
     {
         //Remove quotes
         $str = substr($str, 1, -1);
-        
+
         //Return immediately if the escape character is missing
         if (strpos($str, "\\") === false) {
             return $str;
         }
-        
+
         $lineTerminators = self::getLineTerminators();
-        
+
         //Surrogate pairs regex
         $surrogatePairsReg = sprintf(
             'u(?:%1$s|\{%1$s\})\\\\u(?:%2$s|\{%2$s\})',
             "[dD][89abAB][0-9a-fA-F]{2}", "[dD][c-fC-F][0-9a-fA-F]{2}"
         );
-        
+
         //Handle escapes
         $patterns = array(
             $surrogatePairsReg,
@@ -202,13 +202,13 @@ class Utils
         };
         return preg_replace_callback($reg, $replacement, $str);
     }
-    
+
     /**
      * This function converts a string to a quoted javascript string
-     * 
+     *
      * @param string $str   String to quote
      * @param string $quote Quote character
-     * 
+     *
      * @return string
      */
     static public function quoteLiteralString($str, $quote)
@@ -220,24 +220,24 @@ class Utils
         $str = preg_replace($reg, "\\\\$1", $str);
         return $quote . $str . $quote;
     }
-    
+
     /**
      * Returns the properties map for the given node
-     * 
+     *
      * @param mixed $node Node or class to consider
-     * 
+     *
      * @return array
      */
     static protected function getPropertiesMap($node)
     {
         static $cache = array();
-        
+
         if ($node instanceof \ReflectionClass) {
             $className = $node->getName();
         } else {
             $className = get_class($node);
         }
-        
+
         if (!isset($cache[$className])) {
             $class = new \ReflectionClass($className);
             $parent = $class->getParentClass();
@@ -250,13 +250,13 @@ class Utils
         }
         return $cache[$className];
     }
-    
+
     /**
      * Returns the properties list for the given node
-     * 
+     *
      * @param Node\Node $node        Node to consider
      * @param bool      $traversable If true it returns only traversable properties
-     * 
+     *
      * @return array
      */
     static public function getNodeProperties(Node\Node $node, $traversable = false)
@@ -301,10 +301,10 @@ class Utils
 
     /**
      * Delete an array element by value
-     * 
+     *
      * @param array $array Array
      * @param mixed $val   Value to remove
-     * 
+     *
      * @return void
      */
     static public function removeArrayValue(&$array, $val)

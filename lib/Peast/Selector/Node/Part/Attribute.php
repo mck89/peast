@@ -14,7 +14,7 @@ use Peast\Syntax\Utils;
 
 /**
  * Selector part attribute class
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class Attribute extends Part

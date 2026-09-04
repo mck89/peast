@@ -13,7 +13,7 @@ use Peast\Syntax\Node\Node;
 
 /**
  * A node that represents a JSX opening fragment tag.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class JSXOpeningFragment extends Node

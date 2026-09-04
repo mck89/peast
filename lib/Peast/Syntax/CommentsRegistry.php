@@ -11,49 +11,49 @@ namespace Peast\Syntax;
 
 /**
  * Comments registry class. Internal class used to manage comments
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class CommentsRegistry
 {
     /**
      * Map of the indices where nodes start
-     * 
-     * @var int 
+     *
+     * @var int
      */
     protected $nodesStartMap = array();
-    
+
     /**
      * Map of the indices where nodes end
-     * 
-     * @var int 
+     *
+     * @var int
      */
     protected $nodesEndMap = array();
-    
+
     /**
      * Comments buffer
-     * 
+     *
      * @var array
      */
     protected $buffer = null;
-    
+
     /**
      * Last token index
-     * 
+     *
      * @var int
      */
     protected $lastTokenIndex = null;
-    
+
     /**
      * Comments registry
-     * 
+     *
      * @var array
      */
     protected $registry = array();
-    
+
     /**
      * Class constructor
-     * 
+     *
      * @param Parser    $parser     Parser
      */
     public function __construct(Parser $parser)
@@ -61,20 +61,20 @@ class CommentsRegistry
         $parser->getEventsEmitter()
                ->addListener("NodeCompleted", array($this, "onNodeCompleted"))
                ->addListener("EndParsing", array($this, "onEndParsing"));
-        
+
         $parser->getScanner()->getEventsEmitter()
                ->addListener("TokenConsumed", array($this, "onTokenConsumed"))
                ->addListener("EndReached", array($this, "onTokenConsumed"))
                ->addListener("FreezeState", array($this, "onScannerFreezeState"))
                ->addListener("ResetState", array($this, "onScannerResetState"));
     }
-    
+
     /**
      * Listener called every time the scanner compose the array that represents
      * its current state
-     * 
+     *
      * @param array   $state   State
-     * 
+     *
      * @return void
      */
     public function onScannerFreezeState(&$state)
@@ -82,13 +82,13 @@ class CommentsRegistry
         //Register the current last token index
         $state["commentsLastTokenIndex"] = $this->lastTokenIndex;
     }
-    
+
     /**
      * Listener called every time the scanner reset its state using the given
      * array
-     * 
+     *
      * @param array   $state   State
-     * 
+     *
      * @return void
      */
     public function onScannerResetState(&$state)
@@ -97,14 +97,14 @@ class CommentsRegistry
         $this->lastTokenIndex = $state["commentsLastTokenIndex"];
         unset($state["commentsLastTokenIndex"]);
     }
-    
+
     /**
      * Listener called every time a token is consumed and when the scanner
      * reaches the end of the source
-     * 
+     *
      * @param Token|null   $token   Consumed token or null if the end has
      *                              been reached
-     * 
+     *
      * @return void
      */
     public function onTokenConsumed($token = null)
@@ -122,7 +122,7 @@ class CommentsRegistry
             //Add the comment token to the buffer
             $this->buffer["comments"][] = $token;
         } else {
-            
+
             if ($token) {
                 $loc = $token->location;
                 //Store the token end position
@@ -133,7 +133,7 @@ class CommentsRegistry
                     $this->buffer["next"] = $loc->start->getIndex();
                 }
             }
-            
+
             //If there is an open comment buffer, close it and move it to the
             //registry
             if ($buffer = $this->buffer) {
@@ -147,15 +147,15 @@ class CommentsRegistry
                 $this->registry[$key] = $this->buffer;
                 $this->buffer = null;
             }
-            
+
         }
     }
-    
+
     /**
      * Listener called every time a node is completed by the parser
-     * 
+     *
      * @param Node\Node   $node     Completed node
-     * 
+     *
      * @return void
      */
     public function onNodeCompleted(Node\Node $node)
@@ -172,32 +172,32 @@ class CommentsRegistry
             $map[$val][] = $node;
         }
     }
-    
+
     /**
      * Listener called when parsing process ends
-     * 
+     *
      * @return void
      */
     public function onEndParsing()
     {
         //Return if there are no comments to process
         if ($this->registry) {
-            
+
             //Make sure nodes start indices map is sorted
             ksort($this->nodesStartMap);
-            
+
             //Loop all comment groups in the registry
             foreach ($this->registry as $group) {
                 $this->findNodeForCommentsGroup($group);
             }
         }
     }
-    
+
     /**
      * Finds the node to attach the given comments group
-     * 
+     *
      * @param array    $group   Comments group
-     * 
+     *
      * @return void
      */
     public function findNodeForCommentsGroup($group)
@@ -206,7 +206,7 @@ class CommentsRegistry
         $prev = $group["prev"];
         $comments = $group["comments"];
         $leading = true;
-        
+
         //If the group of comments has a next token index that appears
         //in the map of start node indices, add the group to the
         //corresponding node's leading comments. This associates
@@ -219,7 +219,7 @@ class CommentsRegistry
         //in the map of end node indices, add the group to the
         //corresponding node's trailing comments. This associates
         //comments that appear immediately after a node.
-        //For example: for (;;){} /*comment*/ 
+        //For example: for (;;){} /*comment*/
         elseif ($prev !== null && isset($this->nodesEndMap[$prev])) {
             $nodes = $this->nodesEndMap[$prev];
             $leading = false;
@@ -232,7 +232,7 @@ class CommentsRegistry
             $start = $comments[0]->location->start->getIndex();
             $end = $comments[count($comments) -1]->location->end->getIndex();
             $nodes = array();
-            
+
             //Loop all the entries in the start index map
             foreach ($this->nodesStartMap as $idx => $ns) {
                 //If the index is higher than the start index of the comments
@@ -247,7 +247,7 @@ class CommentsRegistry
                     }
                 }
             }
-            
+
             //If comments can't be associated with any node, associate it as
             //leading comments of the program, this happens when the source is
             //empty
@@ -256,7 +256,7 @@ class CommentsRegistry
                 $nodes = array($firstNode[0][0]);
             }
         }
-        
+
         //If there are multiple possible nodes to associate the comments to,
         //find the shortest one
         if (count($nodes) > 1) {
@@ -264,15 +264,15 @@ class CommentsRegistry
         }
         $this->associateComments($nodes[0], $comments, $leading);
     }
-    
+
     /**
-     * Compares node length 
-     * 
+     * Compares node length
+     *
      * @param Node\Node  $node1     First node
      * @param Node\Node  $node2     Second node
-     * 
+     *
      * @return int
-     * 
+     *
      * @codeCoverageIgnore
      */
     public function compareNodesLength($node1, $node2)
@@ -292,15 +292,15 @@ class CommentsRegistry
         }
         return $length1 < $length2 ? -1 : 1;
     }
-    
+
     /**
      * Adds comments to the given node
-     * 
+     *
      * @param Node\Node     $node       Node
      * @param array         $comments   Array of comments to add
      * @param bool          $leading    True to add comments as leading comments
      *                                  or false to add them as trailing comments
-     * 
+     *
      * @return void
      */
     public function associateComments($node, $comments, $leading)

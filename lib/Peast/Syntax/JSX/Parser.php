@@ -13,27 +13,27 @@ use Peast\Syntax\Token;
 
 /**
  * JSX parser trait
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 trait Parser
 {
     /**
      * Creates a JSX node
-     * 
+     *
      * @param string $nodeType Node's type
      * @param mixed  $position Node's start position
-     * 
+     *
      * @return \Peast\Syntax\Node\Node
      */
     protected function createJSXNode($nodeType, $position)
     {
         return $this->createNode("JSX\\$nodeType", $position);
     }
-    
+
     /**
      * Parses a jsx fragment
-     * 
+     *
      * @return \Peast\Syntax\Node\JSX\JSXFragment|null
      */
     protected function parseJSXFragment()
@@ -42,17 +42,17 @@ trait Parser
         if (!$startOpeningToken || $startOpeningToken->value !== "<") {
             return null;
         }
-        
+
         $endOpeningToken = $this->scanner->getNextToken();
         if (!$endOpeningToken || $endOpeningToken->value !== ">") {
             return null;
         }
-        
+
         $this->scanner->consumeToken();
         $this->scanner->consumeToken();
-        
+
         $children = $this->parseJSXChildren();
-        
+
         if (!($startClosingToken = $this->scanner->consume("<")) ||
             !$this->scanner->consume("/") ||
             !$this->scanner->reconsumeCurrentTokenInJSXMode() ||
@@ -60,7 +60,7 @@ trait Parser
             $this->error();
         }
         $this->scanner->consumeToken();
-        
+
         //Opening tag
         $openingNode = $this->createJSXNode(
             "JSXOpeningFragment",
@@ -70,14 +70,14 @@ trait Parser
             $openingNode,
             $endOpeningToken->location->end
         );
-        
+
         //Closing tag
         $closingNode = $this->createJSXNode(
             "JSXClosingFragment",
             $startClosingToken
         );
         $this->completeNode($closingNode);
-        
+
         //Fragment
         $node = $this->createJSXNode("JSXFragment", $startOpeningToken);
         $node->setOpeningFragment($openingNode);
@@ -87,10 +87,10 @@ trait Parser
         }
         return $this->completeNode($node);
     }
-    
+
     /**
      * Parses a group of jsx children
-     * 
+     *
      * @return \Peast\Syntax\Node\Node[]|null
      */
     protected function parseJSXChildren()
@@ -101,10 +101,10 @@ trait Parser
         }
         return count($children) ? $children : null;
     }
-    
+
     /**
      * Parses a jsx child
-     * 
+     *
      * @return \Peast\Syntax\Node\Node|null
      */
     protected function parseJSXChild()
@@ -135,10 +135,10 @@ trait Parser
         }
         return null;
     }
-    
+
     /**
      * Parses a jsx text
-     * 
+     *
      * @return \Peast\Syntax\Node\JSX\JSXText|null
      */
     protected function parseJSXText()
@@ -151,10 +151,10 @@ trait Parser
         $node->setRaw($token->value);
         return $this->completeNode($node, $token->location->end);
     }
-    
+
     /**
      * Parses a jsx element
-     * 
+     *
      * @return \Peast\Syntax\Node\JSX\JSXElement|null
      */
     protected function parseJSXElement()
@@ -163,32 +163,32 @@ trait Parser
         if (!$startOpeningToken || $startOpeningToken->value !== "<") {
             return null;
         }
-        
+
         $nextToken = $this->scanner->getNextToken();
         if ($nextToken && $nextToken->value === "/") {
             return null;
         }
-        
+
         $this->scanner->consumeToken();
-        
+
         if (!($name = $this->parseJSXIdentifierOrMemberExpression())) {
             $this->error();
         }
-        
+
         $attributes = $this->parseJSXAttributes();
-        
+
         $selfClosing = $this->scanner->consume("/");
-        
+
         $endOpeningToken = $this->scanner->reconsumeCurrentTokenInJSXMode();
         if (!$endOpeningToken || $endOpeningToken->value !== ">") {
             $this->error();
         }
         $this->scanner->consumeToken();
-        
+
         if (!$selfClosing) {
-            
+
             $children = $this->parseJSXChildren();
-            
+
             if (
                 ($startClosingToken = $this->scanner->consume("<")) &&
                 $this->scanner->consume("/") &&
@@ -203,9 +203,9 @@ trait Parser
             } else {
                 $this->error();
             }
-            
+
         }
-        
+
         //Opening tag
         $openingNode = $this->createJSXNode(
             "JSXOpeningElement",
@@ -220,7 +220,7 @@ trait Parser
             $openingNode,
             $endOpeningToken->location->end
         );
-        
+
         //Closing tag
         $closingNode = null;
         if (!$selfClosing) {
@@ -231,7 +231,7 @@ trait Parser
             $closingNode->setName($closingName);
             $this->completeNode($closingNode);
         }
-        
+
         //Element
         $node = $this->createJSXNode("JSXElement", $startOpeningToken);
         $node->setOpeningElement($openingNode);
@@ -243,12 +243,12 @@ trait Parser
         }
         return $this->completeNode($node);
     }
-    
+
     /**
      * Parses a jsx identifier, namespaced identifier or member expression
-     * 
+     *
      * @param bool $allowMember True to allow member expressions
-     * 
+     *
      * @return \Peast\Syntax\Node\Node|null
      */
     protected function parseJSXIdentifierOrMemberExpression($allowMember = true)
@@ -258,31 +258,31 @@ trait Parser
             return null;
         }
         $this->scanner->consumeToken();
-        
+
         $idNode = $this->createJSXNode("JSXIdentifier", $idToken);
         $idNode->setName($idToken->value);
         $idNode = $this->completeNode($idNode);
-        
+
         //Namespaced identifier
         if ($this->scanner->consume(":")) {
-            
+
             $idToken2 = $this->scanner->reconsumeCurrentTokenInJSXMode();
             if (!$idToken2 || $idToken2->type !== Token::TYPE_JSX_IDENTIFIER) {
                 $this->error();
             }
             $this->scanner->consumeToken();
-            
+
             $idNode2 = $this->createJSXNode("JSXIdentifier", $idToken2);
             $idNode2->setName($idToken2->value);
             $idNode2 = $this->completeNode($idNode2);
-            
+
             $node = $this->createJSXNode("JSXNamespacedName", $idToken);
             $node->setNamespace($idNode);
             $node->setName($idNode2);
             return $this->completeNode($node);
-            
+
         }
-        
+
         //Get following identifiers
         $nextIds = array();
         if ($allowMember) {
@@ -295,7 +295,7 @@ trait Parser
                 $nextIds[] = $nextId;
             }
         }
-        
+
         //Create the member expression if required
         $objectNode = $idNode;
         foreach ($nextIds as $nid) {
@@ -303,19 +303,19 @@ trait Parser
             $propNode = $this->createJSXNode("JSXIdentifier", $nid);
             $propNode->setName($nid->value);
             $propNode = $this->completeNode($propNode, $propEnd);
-            
+
             $node = $this->createJSXNode("JSXMemberExpression", $objectNode);
             $node->setObject($objectNode);
             $node->setProperty($propNode);
             $objectNode = $this->completeNode($node, $propEnd);
         }
-        
+
         return $objectNode;
     }
-    
+
     /**
      * Parses a jsx attributes list
-     * 
+     *
      * @return \Peast\Syntax\Node\Node[]|null
      */
     protected function parseJSXAttributes()
@@ -329,10 +329,10 @@ trait Parser
         }
         return count($attributes) ? $attributes : null;
     }
-    
+
     /**
      * Parses a jsx spread attribute
-     * 
+     *
      * @return \Peast\Syntax\Node\JSX\JSXSpreadAttribute|null
      */
     protected function parseJSXSpreadAttribute()
@@ -340,7 +340,7 @@ trait Parser
         if (!($openToken = $this->scanner->consume("{"))) {
             return null;
         }
-        
+
         if (
             $this->scanner->consume("...") &&
             ($exp = $this->parseAssignmentExpression()) &&
@@ -350,13 +350,13 @@ trait Parser
             $node->setArgument($exp);
             return $this->completeNode($node);
         }
-        
+
         $this->error();
     }
-    
+
     /**
      * Parses a jsx spread attribute
-     * 
+     *
      * @return \Peast\Syntax\Node\JSX\JSXSpreadAttribute|null
      */
     protected function parseJSXAttribute()
@@ -364,7 +364,7 @@ trait Parser
         if (!($name = $this->parseJSXIdentifierOrMemberExpression(false))) {
             return null;
         }
-        
+
         $value = null;
         if ($this->scanner->consume("=")) {
             $strToken = $this->scanner->reconsumeCurrentTokenInJSXMode();
@@ -374,23 +374,23 @@ trait Parser
                 $value->setRaw($strToken->value);
                 $value = $this->completeNode($value);
             } elseif ($startExp = $this->scanner->consume("{")) {
-                
+
                 if (
                     ($exp = $this->parseAssignmentExpression()) &&
                     $this->scanner->consume("}")
                 ) {
-                    
+
                     $value = $this->createJSXNode(
                         "JSXExpressionContainer",
                         $startExp
                     );
                     $value->setExpression($exp);
                     $value = $this->completeNode($value);
-                    
+
                 } else {
                     $this->error();
                 }
-                
+
             } elseif (
                 !($value = $this->parseJSXFragment()) &&
                 !($value = $this->parseJSXElement())
@@ -398,7 +398,7 @@ trait Parser
                 $this->error();
             }
         }
-        
+
         $node = $this->createJSXNode("JSXAttribute", $name);
         $node->setName($name);
         if ($value) {
@@ -406,13 +406,13 @@ trait Parser
         }
         return $this->completeNode($node);
     }
-    
+
     /**
      * Checks that 2 tag names are equal
-     * 
+     *
      * @param \Peast\Syntax\Node\Node   $n1 First name
      * @param \Peast\Syntax\Node\Node   $n2 Second name
-     * 
+     *
      * @return bool
      */
     protected function isSameJSXElementName($n1, $n2)

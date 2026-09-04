@@ -12,58 +12,58 @@ namespace Peast\Syntax\Node;
 /**
  * A node that represents in import declaration.
  * For example: import a from "mod"
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class ImportDeclaration extends Node implements ModuleDeclaration
 {
     /**
      * Map of node properties
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $propertiesMap = array(
         "specifiers" => true,
         "source" => true,
         "attributes" => true
     );
-    
+
     /**
      * Import specifiers array
-     * 
+     *
      * @var array
      */
     protected $specifiers = array();
-    
+
     /**
      * Import source
-     * 
-     * @var Literal 
+     *
+     * @var Literal
      */
     protected $source;
-    
+
     /**
      * Attributes array
-     * 
+     *
      * @var array
      */
     protected $attributes = array();
-    
+
     /**
      * Returns the import specifiers array
-     * 
+     *
      * @return array
      */
     public function getSpecifiers()
     {
         return $this->specifiers;
     }
-    
+
     /**
      * Sets the import specifiers array
-     * 
+     *
      * @param array $specifiers Import specifiers array
-     * 
+     *
      * @return $this
      */
     public function setSpecifiers($specifiers)
@@ -79,22 +79,22 @@ class ImportDeclaration extends Node implements ModuleDeclaration
         $this->specifiers = $specifiers;
         return $this;
     }
-    
+
     /**
      * Returns the import source
-     * 
+     *
      * @return Literal
      */
     public function getSource()
     {
         return $this->source;
     }
-    
+
     /**
      * Sets the import source
-     * 
+     *
      * @param Literal $source Import source
-     * 
+     *
      * @return $this
      */
     public function setSource(Literal $source)
@@ -102,22 +102,22 @@ class ImportDeclaration extends Node implements ModuleDeclaration
         $this->source = $source;
         return $this;
     }
-    
+
     /**
      * Returns the attributes array
-     * 
+     *
      * @return array
      */
     public function getAttributes()
     {
         return $this->attributes;
     }
-    
+
     /**
      * Sets the attributes array
-     * 
+     *
      * @param array $attributes Attributes array
-     * 
+     *
      * @return $this
      */
     public function setAttributes($attributes)

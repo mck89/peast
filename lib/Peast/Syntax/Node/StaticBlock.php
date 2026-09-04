@@ -11,7 +11,7 @@ namespace Peast\Syntax\Node;
 
 /**
  * A node that represents a class static block
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class StaticBlock extends BlockStatement

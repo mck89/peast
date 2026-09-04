@@ -11,51 +11,51 @@ namespace Peast\Syntax\Node;
 
 /**
  * A node that represents a numeric literal.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class NumericLiteral extends Literal
 {
     /**
      * Map of node properties
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $propertiesMap = array(
         "format" => false
     );
-    
+
     //Format constants
     /**
      * Decimal number format
      */
     const DECIMAL = "decimal";
-    
+
     /**
      * Hexadecimal number format
      */
     const HEXADECIMAL = "hexadecimal";
-    
+
     /**
      * Octal number format
      */
     const OCTAL = "octal";
-    
+
     /**
      * Binary number format
      */
     const BINARY = "binary";
-    
+
     /**
      * Node's numeric format
-     * 
+     *
      * @var string
      */
     protected $format = self::DECIMAL;
-    
+
     /**
      * Numeric forms conversion rules
-     * 
+     *
      * @var array
      */
     protected $forms = array(
@@ -75,12 +75,12 @@ class NumericLiteral extends Literal
             "format" => self::HEXADECIMAL
         ),
     );
-    
+
     /**
      * Sets node's value
-     * 
+     *
      * @param float $value Value
-     * 
+     *
      * @return $this
      */
     public function setValue($value)
@@ -94,14 +94,14 @@ class NumericLiteral extends Literal
         //Force recalculation of the raw value
         return $this->setFormat($this->format);
     }
-    
+
     /**
      * Sets node's raw value
-     * 
+     *
      * @param mixed $raw Raw value
-     * 
+     *
      * @return $this
-     * 
+     *
      * @throws \Exception
      */
     public function setRaw($raw)
@@ -158,22 +158,22 @@ class NumericLiteral extends Literal
         $this->raw = $raw;
         return $this;
     }
-    
+
     /**
      * Returns node's numeric format
-     * 
+     *
      * @return string
      */
     public function getFormat()
     {
         return $this->format;
     }
-    
+
     /**
      * Sets node's numeric format
-     * 
+     *
      * @param string $format Format, one of the format constants
-     * 
+     *
      * @return $this
      */
     public function setFormat($format)

@@ -18,7 +18,7 @@ use Peast\Syntax\Utils;
 
 /**
  * Selector part simple pseudo class
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class PseudoSimple extends Pseudo

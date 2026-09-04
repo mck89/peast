@@ -36,7 +36,7 @@ class TraverserTest extends TestBase
         $this->assertEquals(1, count($declarations[3]->getInit()->getElements()));
         $this->assertEquals("/bar/", $declarations[4]->getInit()->getValue());
     }
-    
+
     public function testRemoveNodesAndActions()
     {
         $source = "var a = 1, b = [2, [2], 3, 2], c = 1;";
@@ -64,7 +64,7 @@ class TraverserTest extends TestBase
         $this->assertEquals(1, count($arrayElements[0]->getElements()));
         $this->assertEquals(1, $declarations[2]->getInit()->getValue());
     }
-    
+
     public function testReplaceNodesAndActions()
     {
         $source = "var a, b = 1, c = [2], d = 3, e = 4;";
@@ -101,8 +101,7 @@ class TraverserTest extends TestBase
         $this->assertEquals("ArrayExpression", $declarations[3]->getInit()->getType());
         $this->assertEquals("Literal", $declarations[4]->getInit()->getType());
     }
-    
-    
+
     public function testArrayWithNullElements()
     {
         $source = "var a = [b,,c,,d,]";
@@ -116,7 +115,7 @@ class TraverserTest extends TestBase
             });
         $this->assertEquals(array("a", "b", "c", "d"), $names);
     }
-    
+
     public function testTraverseTemplate()
     {
         $source = '`foo${exp()}bar`';

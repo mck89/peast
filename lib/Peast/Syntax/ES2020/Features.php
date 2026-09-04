@@ -11,9 +11,9 @@ namespace Peast\Syntax\ES2020;
 
 /**
  * ES2020 features class
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
- * 
+ *
  * @codeCoverageIgnore
  */
 class Features extends \Peast\Syntax\ES2019\Features

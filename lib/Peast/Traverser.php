@@ -11,7 +11,7 @@ namespace Peast;
 
 /**
  * Nodes traverser class
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class Traverser
@@ -20,21 +20,21 @@ class Traverser
      * If a function return this value, the current node will be removed
      */
     const REMOVE_NODE = 1;
-    
+
     /**
      * If a function return this value, the current node's children won't be
      * traversed
      */
     const DONT_TRAVERSE_CHILD_NODES = 2;
-    
+
     /**
      * If a function return this value, the traverser will stop running
      */
     const STOP_TRAVERSING = 4;
-    
+
     /**
      * Array of functions to call on each node
-     * 
+     *
      * @var array
      */
     protected $functions = array();
@@ -72,7 +72,7 @@ class Traverser
             $this->skipStartingNode = (bool) $options["skipStartingNode"];
         }
     }
-    
+
     /**
      * Adds a function that will be called for each node in the tree. The
      * function will receive the current node as argument. The action that will
@@ -87,9 +87,9 @@ class Traverser
      *   execute the function related to each constant (REMOVE_NODE will be
      *   ignored since it does not make any sense in this case)
      * - other: nothing
-     * 
+     *
      * @param callable $fn Function to add
-     * 
+     *
      * @return $this
      */
     public function addFunction(callable $fn)
@@ -97,12 +97,12 @@ class Traverser
         $this->functions[] = $fn;
         return $this;
     }
-    
+
     /**
      * Starts the traversing
-     * 
+     *
      * @param Syntax\Node\Node  $node   Starting node
-     * 
+     *
      * @return Syntax\Node\Node
      */
     public function traverse(Syntax\Node\Node $node)
@@ -114,23 +114,23 @@ class Traverser
         }
         return $node;
     }
-    
+
     /**
      * Executes all functions on the given node and, if required, starts
      * traversing its children. The returned value is an array where the first
      * value is the node or null if it has been removed and the second value is
      * a boolean indicating if the traverser must continue the traversing or not
-     * 
+     *
      * @param Syntax\Node\Node       $node     Node
      * @param Syntax\Node\Node|null  $parent   Parent node
-     * 
+     *
      * @return array
      */
     protected function execFunctions($node, $parent = null)
     {
         $traverseChildren = true;
         $continueTraversing = true;
-        
+
         foreach ($this->functions as $fn) {
             $ret = $this->passParentNode ? $fn($node, $parent) : $fn($node);
             if ($ret) {
@@ -161,26 +161,26 @@ class Traverser
                 }
             }
         }
-        
+
         if ($traverseChildren && $continueTraversing) {
             $continueTraversing = $this->traverseChildren($node);
         }
-        
+
         return array($node, $continueTraversing);
     }
-    
+
     /**
      * Traverses node children. It returns a boolean indicating if the
      * traversing must continue or not
-     * 
+     *
      * @param Syntax\Node\Node  $node   Node
-     * 
+     *
      * @return bool
      */
     protected function traverseChildren(Syntax\Node\Node $node)
     {
         $continue = true;
-        
+
         foreach (Syntax\Utils::getNodeProperties($node, true) as $prop) {
             $getter = $prop["getter"];
             $setter = $prop["setter"];
@@ -204,12 +204,12 @@ class Traverser
                 list($child, $continue) = $this->execFunctions($child, $node);
                 $node->$setter($child);
             }
-            
+
             if (!$continue) {
                 break;
             }
         }
-        
+
         return $continue;
     }
 }

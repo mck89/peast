@@ -11,7 +11,7 @@ namespace Peast\Selector;
 
 /**
  * Selector parser class
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class Parser

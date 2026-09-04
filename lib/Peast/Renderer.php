@@ -13,28 +13,28 @@ use Peast\Syntax\Node\Comment;
 
 /**
  * Nodes renderer class
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class Renderer
 {
     /**
      * Formatter to use for the rendering
-     * 
+     *
      * @var Formatter\Base
      */
     protected $formatter;
-    
+
     /**
      * Rendering options taken from the formatter
-     * 
+     *
      * @var object
      */
     protected $renderOpts;
-    
+
     /**
      * Node types that does not require semicolon insertion
-     * 
+     *
      * @var array
      */
     protected $noSemicolon = array(
@@ -54,18 +54,18 @@ class Renderer
         "MethodDefinition",
         "BlockStatement"
     );
-    
+
     /**
      * Sets the formatter to use for the rendering
-     * 
+     *
      * @param Formatter\Base    $formatter  Formatter
-     * 
+     *
      * @return $this
      */
     public function setFormatter(Formatter\Base $formatter)
     {
         $this->formatter = $formatter;
-        
+
         $this->renderOpts = (object) array(
             "nl" => $this->formatter->getNewLine(),
             "ind" => $this->formatter->getIndentation(),
@@ -76,27 +76,27 @@ class Renderer
             "com" => $this->formatter->getRenderComments(),
             "rci" => $this->formatter->getRecalcCommentsIndent()
         );
-        
+
         return $this;
     }
-    
+
     /**
      * Returns the formatter to use for the rendering
-     * 
+     *
      * @return Formatter\Base
      */
     public function getFormatter()
     {
         return $this->formatter;
     }
-    
+
     /**
      * Renders the given node
-     * 
+     *
      * @param Syntax\Node\Node  $node   Node to render
-     * 
+     *
      * @return string
-     * 
+     *
      * @throws \Exception
      */
     public function render(Syntax\Node\Node $node)
@@ -105,21 +105,21 @@ class Renderer
         if (!$this->formatter) {
             throw new \Exception("Formatter not set");
         }
-        
+
         //Reset indentation level
         $this->renderOpts->indLevel = 0;
-        
+
         //Start rendering
         return $this->renderNode($node);
     }
-    
+
     /**
      * Renders a node
-     * 
+     *
      * @param Syntax\Node\Node  $node           Node to render
      * @param bool              $addSemicolon   True to add semicolon after node
      *                                          rendered code
-     * 
+     *
      * @return string
      */
     protected function renderNode(Syntax\Node\Node $node, $addSemicolon = false)
@@ -181,17 +181,17 @@ class Renderer
                     //be performed to prevent errors when rendering unary and update
                     //expressions inside binary expressions
                     $checkSpace = !$this->renderOpts->sao && $type === "BinaryExpression";
-                    
+
                     //The space is mandatory if the left part ends with the same
                     //character used as operator
                     if ($checkSpace && $code && substr($code, -1) === $operator) {
                         $code .= " ";
                     }
-                    
+
                     $code .= $this->renderOpts->sao .
                              $operator .
                              $this->renderOpts->sao;
-                    
+
                     //The space is mandatory if the right part begins with the same
                     //character used as operator
                     if ($checkSpace && $codeRight && $codeRight[0] === $operator) {
@@ -437,7 +437,7 @@ class Renderer
                          $this->renderNode($node->getTest()) .
                          $this->renderOpts->sirb .
                          ")";
-                
+
                 $code .= $this->renderStatementBlock(
                     $node, $node->getConsequent()
                 );
@@ -893,12 +893,12 @@ class Renderer
         }
         return $code;
     }
-    
+
     /**
      * Renders a node as a block statement
      *
      * @param Syntax\Node\Node          $parent             Parent node
-     * @param Syntax\Node\Node|array    $node               Node or array of 
+     * @param Syntax\Node\Node|array    $node               Node or array of
      *                                                      nodes to render
      * @param bool                      $forceBrackets      Overrides brackets
      *                                                      inserting rules
@@ -912,7 +912,7 @@ class Renderer
      * @param bool                      $incIndent          If false indentation
      *                                                      level won't be
      *                                                      incremented
-     * 
+     *
      * @return string
      */
     protected function renderStatementBlock(
@@ -920,7 +920,7 @@ class Renderer
         $addSemicolons = true, $incIndent = true
     ) {
         $code = "";
-        
+
         //If node is an array with only one element, handle it as a single node
         if (is_array($node) && count($node) === 1) {
             $node = $node[0];
@@ -934,7 +934,7 @@ class Renderer
             $origNode = $node;
             $node = $node->getBody();
         }
-        
+
         //If $forceBrackets is not null use its value to override curly brackets
         //insertion rules
         if ($forceBrackets !== null) {
@@ -944,7 +944,7 @@ class Renderer
             $hasBrackets = $this->needsBrackets($parent, $node);
         }
         $currentIndentation = $this->getIndentation();
-        
+
         //If the node must be wrapped in curly braces a separator defined by formatter
         //must be inserted
         if ($hasBrackets) {
@@ -965,7 +965,7 @@ class Renderer
         if ($this->renderOpts->com && $origNode) {
             $code .= $this->renderComments($origNode, true, !$emptyBody);
         }
-        
+
         //Insert open curly bracket if required
         if ($hasBrackets) {
             $code .= "{" . $this->renderOpts->nl;
@@ -974,13 +974,13 @@ class Renderer
             //a space is added
             $code .= " ";
         }
-        
+
         //Increase indentation level
         if ($incIndent) {
             $this->renderOpts->indLevel++;
         }
         $subIndentation = $this->getIndentation();
-        
+
         //Render the node or the array of nodes
         if (is_array($node)) {
             if (!$emptyBody) {
@@ -997,7 +997,7 @@ class Renderer
                 $addSemicolons && $this->requiresSemicolon($node)
             );
         }
-        
+
         if ($this->renderOpts->com) {
             //Strip last new line and indentations added by comments rendering
             if (!$emptyBody) {
@@ -1010,12 +1010,12 @@ class Renderer
                 }
             }
         }
-        
+
         //Reset the indentation level
         if ($incIndent) {
             $this->renderOpts->indLevel--;
         }
-        
+
         //Insert closing curly bracket if required
         if ($hasBrackets) {
             //Add a new line if something was rendered
@@ -1024,17 +1024,17 @@ class Renderer
             }
             $code .= $currentIndentation . "}";
         }
-        
+
         return $code;
     }
-    
+
     /**
      * Joins an array of nodes with the given separator
-     * 
+     *
      * @param array     $nodes          Nodes
      * @param string    $separator      Separator
      * @param bool      $addSemicolons  True to add semicolons after each node
-     * 
+     *
      * @return string
      */
     protected function joinNodes($nodes, $separator, $addSemicolons=false)
@@ -1053,14 +1053,14 @@ class Renderer
         }
         return implode($separator, $parts);
     }
-    
+
     /**
      * Check if the node or the array of nodes need brackets to be rendered
      *
      * @param Syntax\Node\Node          $parent             Parent node
      * @param Syntax\Node\Node|array    $node               Node or array of
      *                                                      nodes to render
-     * 
+     *
      * @return bool
      */
     protected function needsBrackets($parent, $node)
@@ -1127,14 +1127,14 @@ class Renderer
 
     /**
      * Render node's comments
-     * 
+     *
      * @param Syntax\Node\Node  $node             Node
      * @param bool              $leading          False to render trailing comments
      * @param bool|null         $blockContent     This parameter can have 3 values:
      *                                            - null: the node is not a block
      *                                            - false: the node is an empty block
      *                                            - true: the node is a block with content
-     * 
+     *
      * @return string
      */
     protected function renderComments($node, $leading = true, $blockContent = null)
@@ -1149,7 +1149,7 @@ class Renderer
             $refKey = $leading ? "end" : "start";
             $refNodeKey = $leading ? "start" : "end";
             $indent = $this->getIndentation();
-            foreach ($comments as $k => $comment) {                
+            foreach ($comments as $k => $comment) {
                 $lastComment = $k === $numComments - 1;
                 $isMultilineComment = $comment->getKind() === Comment::KIND_MULTILINE;
                 // Check if the comment must be formatted with new line and indentations
@@ -1201,9 +1201,9 @@ class Renderer
 
     /**
      * Render import attributes of the given node
-     * 
+     *
      * @param Syntax\Node\Node  $node Node
-     * 
+     *
      * @return string
      */
     protected function renderImportAttributes($node)
@@ -1224,9 +1224,9 @@ class Renderer
 
     /**
      * Removes an empty line at the end of the given code, if present
-     * 
+     *
      * @param string  $code   Code
-     * 
+     *
      * @return string
      */
     protected function trimEmptyLine($code)
@@ -1238,22 +1238,22 @@ class Renderer
         }
         return $code;
     }
-    
+
     /**
      * Check if the given node requires semicolons insertion
-     * 
+     *
      * @param Syntax\Node\Node  $node   Node
-     * 
+     *
      * @return bool
      */
     protected function requiresSemicolon($node)
     {
         return !in_array($node->getType(), $this->noSemicolon);
     }
-    
+
     /**
      * Returns the current indentation string
-     * 
+     *
      * @return string
      */
     protected function getIndentation()

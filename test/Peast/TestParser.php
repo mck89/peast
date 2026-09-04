@@ -2,14 +2,14 @@
 namespace Peast\test;
 
 abstract class TestParser extends TestBase
-{ 
+{
     protected function compareJSFile($tree, $compareFile, $tokens = false)
     {
         $compareTree = json_decode(file_get_contents($compareFile));
         $origTree = json_decode(json_encode($tree));
         $this->objectTestRecursive($compareTree, $origTree, $tokens);
     }
-    
+
     protected function objectTestRecursive($compare, $obj, $tokens, $message = "")
     {
         $objType = gettype($obj);
@@ -45,12 +45,12 @@ abstract class TestParser extends TestBase
         );
         return \Peast\Peast::{$this->parser}(file_get_contents($sourceFile), $options);
     }
-    
+
     public function jsParserTestFilesProvider()
     {
         return parent::getJsTestFiles();
     }
-    
+
     /**
      * @dataProvider jsParserTestFilesProvider
      */
@@ -59,12 +59,12 @@ abstract class TestParser extends TestBase
         $tree = $this->instanceParser($sourceFile)->parse();
         $this->compareJSFile($tree, $compareFile);
     }
-    
+
     public function jsTokenizerTestFilesProvider()
     {
         return parent::getJsTestFiles(self::JS_TOKENIZE);
     }
-    
+
     /**
      * @dataProvider jsTokenizerTestFilesProvider
      */
@@ -73,7 +73,7 @@ abstract class TestParser extends TestBase
         $tree = $this->instanceParser($sourceFile)->tokenize();
         $this->compareJSFile($tree, $compareFile, true);
     }
-    
+
     public function invalidJsTestFilesProvider()
     {
         return parent::getJsTestFiles(self::JS_INVALID);
@@ -88,7 +88,7 @@ abstract class TestParser extends TestBase
 
         $this->instanceParser($sourceFile)->parse();
     }
-    
+
     protected $featuresTests = array(
         "exponentiationOperator"=> array(
             array("ES2016", "files", "ExponentiationOperator", "Assignment.js"),
@@ -175,7 +175,7 @@ abstract class TestParser extends TestBase
             array("ES2027", "files", "modules", "ExplicitResourceManagement", "ModuleExplicitResourceManagement.js")
         )
     );
-    
+
     public function invalidFutureFeaturesProvider()
     {
         $featuresClass = "\\Peast\\Syntax\\" . $this->parser . "\\Features";

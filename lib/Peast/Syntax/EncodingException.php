@@ -12,9 +12,9 @@ namespace Peast\Syntax;
 /**
  * Encoding exception class. Encoding errors while scanning the source are
  * thrown using this using this exception class.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
- * 
+ *
  * @codeCoverageIgnore
  */
 class EncodingException extends \Exception

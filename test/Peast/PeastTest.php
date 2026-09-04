@@ -8,25 +8,25 @@ class PeastTest extends TestBase
         $this->assertTrue(\Peast\Peast::ES2015("")->getFeatures() instanceof \Peast\Syntax\ES2015\Features);
         $this->assertTrue(\Peast\Peast::ES6("")->getFeatures() instanceof \Peast\Syntax\ES2015\Features);
     }
-    
+
     public function testES2016()
     {
         $this->assertTrue(\Peast\Peast::ES2016("")->getFeatures() instanceof \Peast\Syntax\ES2016\Features);
         $this->assertTrue(\Peast\Peast::ES7("")->getFeatures() instanceof \Peast\Syntax\ES2016\Features);
     }
-    
+
     public function testES2017()
     {
         $this->assertTrue(\Peast\Peast::ES2017("")->getFeatures() instanceof \Peast\Syntax\ES2017\Features);
         $this->assertTrue(\Peast\Peast::ES8("")->getFeatures() instanceof \Peast\Syntax\ES2017\Features);
     }
-    
+
     public function testES2018()
     {
         $this->assertTrue(\Peast\Peast::ES2018("")->getFeatures() instanceof \Peast\Syntax\ES2018\Features);
         $this->assertTrue(\Peast\Peast::ES9("")->getFeatures() instanceof \Peast\Syntax\ES2018\Features);
     }
-    
+
     public function testES2019()
     {
         $this->assertTrue(\Peast\Peast::ES2019("")->getFeatures() instanceof \Peast\Syntax\ES2019\Features);
@@ -80,7 +80,7 @@ class PeastTest extends TestBase
         $this->assertTrue(\Peast\Peast::ES2027("")->getFeatures() instanceof \Peast\Syntax\ES2027\Features);
         $this->assertTrue(\Peast\Peast::ES18("")->getFeatures() instanceof \Peast\Syntax\ES2027\Features);
     }
-    
+
     public function testLatest()
     {
         $this->assertTrue(\Peast\Peast::latest("")->getFeatures() instanceof \Peast\Syntax\ES2027\Features);

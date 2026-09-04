@@ -12,7 +12,7 @@ namespace Peast\Syntax\Node;
 /**
  * A node that represents a class expression
  * For example: test = class {}
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class ClassExpression extends Class_ implements Expression

@@ -12,9 +12,9 @@ namespace Peast\Selector;
 /**
  * Selector exception class. Syntax errors in selectors are thrown
  * using this exception class.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
- * 
+ *
  * @codeCoverageIgnore
  */
 class Exception extends \Exception

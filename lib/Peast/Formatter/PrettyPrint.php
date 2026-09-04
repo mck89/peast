@@ -11,7 +11,7 @@ namespace Peast\Formatter;
 
 /**
  * Pretty print formatter.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class PrettyPrint extends Base

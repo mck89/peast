@@ -4,17 +4,17 @@ namespace Peast\test;
 abstract class TestBase extends TestCaseBase
 {
     const JS_INVALID = 1;
-    
+
     const JS_PARSE = 2;
-    
+
     const JS_TOKENIZE = 3;
-    
+
     const JS_RENDERER = 4;
-    
+
     protected function getTestVersions() {}
-    
+
     protected function getExcludedTests() {return array();}
-    
+
     protected function getJsTestFiles($jsType = self::JS_PARSE)
     {
         $invalid = $jsType === self::JS_INVALID;

@@ -11,9 +11,9 @@ namespace Peast\Syntax\ES2018;
 
 /**
  * ES2018 features class
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
- * 
+ *
  * @codeCoverageIgnore
  */
 class Features extends \Peast\Syntax\ES2017\Features

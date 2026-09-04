@@ -14,50 +14,50 @@ use Peast\Syntax\Node\Expression;
 
 /**
  * A node that represents a JSX member expression.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class JSXMemberExpression extends Node implements Expression
 {
     /**
      * Map of node properties
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $propertiesMap = array(
         "object" => true,
         "property" => true
     );
-    
+
     /**
      * Expression's object
-     * 
-     * @var JSXMemberExpression|JSXIdentifier 
+     *
+     * @var JSXMemberExpression|JSXIdentifier
      */
     protected $object;
-    
+
     /**
      * Expression's property
-     * 
+     *
      * @var JSXIdentifier
      */
     protected $property;
-    
+
     /**
      * Returns the expression's object
-     * 
+     *
      * @return JSXMemberExpression|JSXIdentifier
      */
     public function getObject()
     {
         return $this->object;
     }
-    
+
     /**
      * Sets the expression's object
-     * 
+     *
      * @param JSXMemberExpression|JSXIdentifier $object Object
-     * 
+     *
      * @return $this
      */
     public function setObject($object)
@@ -66,22 +66,22 @@ class JSXMemberExpression extends Node implements Expression
         $this->object = $object;
         return $this;
     }
-    
+
     /**
      * Returns the expression's property
-     * 
+     *
      * @return JSXIdentifier
      */
     public function getProperty()
     {
         return $this->property;
     }
-    
+
     /**
      * Sets the expression's property
-     * 
+     *
      * @param JSXIdentifier $property Property
-     * 
+     *
      * @return $this
      */
     public function setProperty(JSXIdentifier $property)

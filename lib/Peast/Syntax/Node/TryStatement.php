@@ -11,58 +11,58 @@ namespace Peast\Syntax\Node;
 
 /**
  * A node that represents a try-catch statement.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class TryStatement extends Node implements Statement
 {
     /**
      * Map of node properties
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $propertiesMap = array(
         "block" => true,
         "handler" => true,
         "finalizer" => true
     );
-    
+
     /**
      * Wrapped block
-     * 
+     *
      * @var BlockStatement
      */
     protected $block;
-    
+
     /**
      * Catch clause
-     * 
-     * @var CatchClause 
+     *
+     * @var CatchClause
      */
     protected $handler;
-    
+
     /**
      * "finally" block
-     * 
-     * @var BlockStatement 
+     *
+     * @var BlockStatement
      */
     protected $finalizer;
-    
+
     /**
      * Returns the wrapped block
-     * 
+     *
      * @return BlockStatement
      */
     public function getBlock()
     {
         return $this->block;
     }
-    
+
     /**
      * Sets the wrapped block
-     * 
+     *
      * @param BlockStatement $block Wrapped block
-     * 
+     *
      * @return $this
      */
     public function setBlock(BlockStatement $block)
@@ -70,22 +70,22 @@ class TryStatement extends Node implements Statement
         $this->block = $block;
         return $this;
     }
-    
+
     /**
      * Returns the catch clause
-     * 
+     *
      * @return CatchClause
      */
     public function getHandler()
     {
         return $this->handler;
     }
-    
+
     /**
      * Sets the catch clause
-     * 
+     *
      * @param CatchClause $handler Catch clause
-     * 
+     *
      * @return $this
      */
     public function setHandler($handler)
@@ -94,22 +94,22 @@ class TryStatement extends Node implements Statement
         $this->handler = $handler;
         return $this;
     }
-    
+
     /**
      * Returns the "finally" block
-     * 
+     *
      * @return BlockStatement
      */
     public function getFinalizer()
     {
         return $this->finalizer;
     }
-    
+
     /**
      * Sets the "finally" block
-     * 
+     *
      * @param BlockStatement $finalizer The "finally" block
-     * 
+     *
      * @return $this
      */
     public function setFinalizer($finalizer)

@@ -11,9 +11,9 @@ namespace Peast\Syntax\ES2021;
 
 /**
  * ES2021 features class
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
- * 
+ *
  * @codeCoverageIgnore
  */
 class Features extends \Peast\Syntax\ES2020\Features

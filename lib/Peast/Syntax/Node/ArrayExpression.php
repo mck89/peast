@@ -12,42 +12,42 @@ namespace Peast\Syntax\Node;
 /**
  * A node that represents an array literal.
  * For example: [a, b, c]
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class ArrayExpression extends Node implements Expression
 {
     /**
      * Map of node properties
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $propertiesMap = array(
         "elements" => true
     );
-    
+
     /**
      * Array elements
-     * 
+     *
      * @var Expression[]|SpreadElement[]
      */
     protected $elements = array();
-    
+
     /**
      * Returns array elements
-     * 
+     *
      * @return Expression[]|SpreadElement[]
      */
     public function getElements()
     {
         return $this->elements;
     }
-    
+
     /**
      * Sets array elements
-     * 
+     *
      * @param Expression[]|SpreadElement[] $elements Array elements to set
-     * 
+     *
      * @return $this
      */
     public function setElements($elements)

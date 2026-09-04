@@ -11,7 +11,7 @@ namespace Peast\Syntax\Node;
 
 /**
  * A node that represents a chain element.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 abstract class ChainElement extends Node implements Expression

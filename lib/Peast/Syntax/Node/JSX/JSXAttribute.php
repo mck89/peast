@@ -13,50 +13,50 @@ use Peast\Syntax\Node\Node;
 
 /**
  * A node that represents a JSX attribute.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class JSXAttribute extends Node
 {
     /**
      * Map of node properties
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $propertiesMap = array(
         "name" => true,
         "value" => true
     );
-    
+
     /**
      * Attribute name
-     * 
+     *
      * @var JSXIdentifier|JSXNamespacedName
      */
     protected $name;
-    
+
     /**
      * Attribute value
-     * 
+     *
      * @var Node|null
      */
     protected $value;
-    
+
     /**
      * Returns the attribute name
-     * 
+     *
      * @return Node
      */
     public function getName()
     {
         return $this->name;
     }
-    
+
     /**
      * Sets the attribute name
-     * 
+     *
      * @param JSXIdentifier|JSXNamespacedName $name Attribute name
-     * 
+     *
      * @return $this
      */
     public function setName($name)
@@ -65,22 +65,22 @@ class JSXAttribute extends Node
         $this->name = $name;
         return $this;
     }
-    
+
     /**
      * Returns the attribute value
-     * 
+     *
      * @return Node|null
      */
     public function getValue()
     {
         return $this->value;
     }
-    
+
     /**
      * Sets the attribute value
-     * 
+     *
      * @param Node|null $value Attribute value
-     * 
+     *
      * @return $this
      */
     public function setValue($value)

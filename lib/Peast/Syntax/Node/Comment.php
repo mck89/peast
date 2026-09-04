@@ -11,7 +11,7 @@ namespace Peast\Syntax\Node;
 
 /**
  * A node that represents a comment.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class Comment extends Node
@@ -21,66 +21,66 @@ class Comment extends Node
      * Inline comment
      */
     const KIND_INLINE = "inline";
-    
+
     /**
      * Multiline comment
      */
     const KIND_MULTILINE = "multiline";
-    
+
     /**
      * Html open comment
      */
     const KIND_HTML_OPEN = "html-open";
-    
+
     /**
      * Html close comment
      */
     const KIND_HTML_CLOSE = "html-close";
-    
+
     /**
      * Hashbang comment
      */
     const KIND_HASHBANG = "hashbang";
-    
+
     /**
      * Map of node properties
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $propertiesMap = array(
         "kind" => false,
         "text" => false
     );
-    
+
     /**
      * The comment kind
-     * 
-     * @var string 
+     *
+     * @var string
      */
     protected $kind;
-    
+
     /**
      * The comment text
-     * 
-     * @var string 
+     *
+     * @var string
      */
     protected $text;
-    
+
     /**
      * Returns the comment kind
-     * 
+     *
      * @return string
      */
     public function getKind()
     {
         return $this->kind;
     }
-    
+
     /**
      * Sets the comment kind
-     * 
+     *
      * @param string $kind Comment kind
-     * 
+     *
      * @return $this
      */
     public function setKind($kind)
@@ -88,22 +88,22 @@ class Comment extends Node
         $this->kind = $kind;
         return $this;
     }
-    
+
     /**
      * Returns the comment text
-     * 
+     *
      * @return string
      */
     public function getText()
     {
         return $this->text;
     }
-    
+
     /**
      * Sets the comment text
-     * 
+     *
      * @param string $text Comment text
-     * 
+     *
      * @return $this
      */
     public function setText($text)
@@ -111,10 +111,10 @@ class Comment extends Node
         $this->text = $text;
         return $this;
     }
-    
+
     /**
      * Returns the comment raw text
-     * 
+     *
      * @return string
      */
     public function getRawText()
@@ -128,7 +128,7 @@ class Comment extends Node
             $sanitize = array("\n", "\r");
         }
         $text = str_replace($sanitize, "", $text);
-        
+
         if ($kind === self::KIND_INLINE) {
             return "//" . $text;
         } elseif ($kind === self::KIND_HASHBANG) {
@@ -141,12 +141,12 @@ class Comment extends Node
             return "/*" . $text . "*/";
         }
     }
-    
+
     /**
      * Sets the comment raw text
-     * 
+     *
      * @param string $rawText Comment raw text
-     * 
+     *
      * @return $this
      */
     public function setRawText($rawText)
@@ -172,12 +172,12 @@ class Comment extends Node
         }
         return $this->setKind($kind)->setText($text);
     }
-    
+
     /**
      * Sets leading comments array
-     * 
+     *
      * @param Comment[] $comments Comments array
-     * 
+     *
      * @return $this
      */
     public function setLeadingComments($comments)
@@ -185,12 +185,12 @@ class Comment extends Node
         //Comments cannot be attached to other comments
         return $this;
     }
-    
+
     /**
      * Sets trailing comments array
-     * 
+     *
      * @param Comment[] $comments Comments array
-     * 
+     *
      * @return $this
      */
     public function setTrailingComments($comments)
@@ -198,10 +198,10 @@ class Comment extends Node
         //Comments cannot be attached to other comments
         return $this;
     }
-    
+
     /**
      * Returns a serializable version of the node
-     * 
+     *
      * @return array
      */
     #[\ReturnTypeWillChange]

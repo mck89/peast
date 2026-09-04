@@ -13,14 +13,14 @@ use Peast\Syntax\Token;
 
 /**
  * JSX scanner trait
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 trait Scanner
 {
     /**
      * Tries to reconsume the current token as a jsx text if possible
-     * 
+     *
      * @return Token|null
      */
     public function reconsumeCurrentTokenAsJSXText()
@@ -49,11 +49,10 @@ trait Scanner
         }
         return $this->currentToken;
     }
-    
-    
+
     /**
      * Reconsumes the current token in jsx mode
-     * 
+     *
      * @return Token|null
      */
     public function reconsumeCurrentTokenInJSXMode()
@@ -67,20 +66,20 @@ trait Scanner
         $this->jsx = false;
         return $token;
     }
-    
+
     /**
      * String scanning method in jsx mode
-     * 
+     *
      * @return Token|null
      */
     public function scanJSXString()
     {
         return $this->scanString(false);
     }
-    
+
     /**
      * String punctuator method in jsx mode
-     * 
+     *
      * @return Token|null
      */
     public function scanJSXPunctuator()
@@ -95,10 +94,10 @@ trait Scanner
         }
         return $this->scanPunctuator();
     }
-    
+
     /**
      * Identifier scanning method in jsx mode
-     * 
+     *
      * @return Token|null
      */
     public function scanJSXIdentifier()
@@ -106,7 +105,7 @@ trait Scanner
         $buffer = "";
         $char = $this->charAt();
         if ($char !== null && $this->isIdentifierChar($char)) {
-            
+
             do {
                 $buffer .= $char;
                 $this->index++;
@@ -117,7 +116,7 @@ trait Scanner
                 ($this->isIdentifierChar($char, false) || $char === "-")
             );
         }
-        
+
         return $buffer === "" ? null : new Token(Token::TYPE_JSX_IDENTIFIER, $buffer);
     }
 }

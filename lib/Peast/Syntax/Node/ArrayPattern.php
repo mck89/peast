@@ -12,42 +12,42 @@ namespace Peast\Syntax\Node;
 /**
  * A node that represents an array binding pattern.
  * For example: [a, b, c] = d
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class ArrayPattern extends Node implements Pattern
 {
     /**
      * Map of node properties
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $propertiesMap = array(
         "elements" => true
     );
-    
+
     /**
      * Array elements
-     * 
+     *
      * @var Pattern[]
      */
     protected $elements = array();
-    
+
     /**
      * Returns array elements
-     * 
+     *
      * @return Pattern[]
      */
     public function getElements()
     {
         return $this->elements;
     }
-    
+
     /**
      * Sets array elements
-     * 
+     *
      * @param Pattern[] $elements Array elements to set
-     * 
+     *
      * @return $this
      */
     public function setElements($elements)

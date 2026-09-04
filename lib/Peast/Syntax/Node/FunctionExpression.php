@@ -12,7 +12,7 @@ namespace Peast\Syntax\Node;
 /**
  * A node that represents a function expression
  * For example: var test = function () {}
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class FunctionExpression extends Function_ implements Expression

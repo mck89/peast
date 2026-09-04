@@ -14,50 +14,50 @@ use Peast\Syntax\Node\Expression;
 
 /**
  * A node that represents a JSX namespaced name.
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class JSXNamespacedName extends Node implements Expression
 {
     /**
      * Map of node properties
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $propertiesMap = array(
         "namespace" => false,
         "name" => false
     );
-    
+
     /**
      * Node's namespace
-     * 
+     *
      * @var JSXIdentifier
      */
     protected $namespace;
-    
+
     /**
      * Node's name
-     * 
+     *
      * @var JSXIdentifier
      */
     protected $name;
-    
+
     /**
      * Returns node's namespace
-     * 
+     *
      * @return JSXIdentifier
      */
     public function getNamespace()
     {
         return $this->namespace;
     }
-    
+
     /**
      * Sets node's namespace
-     * 
+     *
      * @param JSXIdentifier $namespace Namespace
-     * 
+     *
      * @return $this
      */
     public function setNamespace($namespace)
@@ -65,22 +65,22 @@ class JSXNamespacedName extends Node implements Expression
         $this->namespace = $namespace;
         return $this;
     }
-    
+
     /**
      * Return node's name
-     * 
+     *
      * @return JSXIdentifier
      */
     public function getName()
     {
         return $this->name;
     }
-    
+
     /**
      * Sets node's name
-     * 
+     *
      * @param JSXIdentifier $name Name
-     * 
+     *
      * @return $this
      */
     public function setName($name)

@@ -13,7 +13,7 @@ use Peast\Syntax\Node\Node;
 
 /**
  * Selector part base class
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  *
  * @abstract

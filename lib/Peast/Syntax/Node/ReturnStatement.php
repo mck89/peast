@@ -12,42 +12,42 @@ namespace Peast\Syntax\Node;
 /**
  * A node that represents the return statement inside functions.
  * For example: return a + 1
- * 
+ *
  * @author Marco Marchiò <marco.mm89@gmail.com>
  */
 class ReturnStatement extends Node implements Statement
 {
     /**
      * Map of node properties
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $propertiesMap = array(
         "argument" => true
     );
-    
+
     /**
      * Optional expression after the return keyword
-     * 
-     * @var Expression 
+     *
+     * @var Expression
      */
     protected $argument;
-    
+
     /**
      * Returns the expression after the return keyword
-     * 
+     *
      * @return Expression
      */
     public function getArgument()
     {
         return $this->argument;
     }
-    
+
     /**
      * Sets the expression after the return keyword
-     * 
+     *
      * @param Expression $argument The expression to return
-     * 
+     *
      * @return $this
      */
     public function setArgument($argument)

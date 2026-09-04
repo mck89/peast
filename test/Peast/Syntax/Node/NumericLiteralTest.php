@@ -9,18 +9,18 @@ class NumericLiteralTest extends TestBase
     public function testValue()
     {
         $node = new Node\NumericLiteral;
-        
+
         $node->setValue(123);
         $this->assertEquals(123, $node->getValue());
         $this->assertEquals('123', $node->getRaw());
         $this->assertEquals(Node\NumericLiteral::DECIMAL, $node->getFormat());
-        
+
         $node->setValue("123.45");
         $this->assertEquals(123.45, $node->getValue());
         $this->assertEquals('123.45', $node->getRaw());
         $this->assertEquals(Node\NumericLiteral::DECIMAL, $node->getFormat());
     }
-    
+
     public function rawValuesProvider()
     {
         return array(
@@ -44,45 +44,45 @@ class NumericLiteralTest extends TestBase
             array("088", 88, "088", Node\NumericLiteral::DECIMAL),
         );
     }
-    
+
     public function testFormatChange()
     {
         $node = new Node\NumericLiteral;
-        
+
         $node->setValue(1200);
         $this->assertEquals(1200, $node->getValue());
         $this->assertEquals('1200', $node->getRaw());
         $this->assertEquals(Node\NumericLiteral::DECIMAL, $node->getFormat());
-        
+
         $node->setFormat(Node\NumericLiteral::HEXADECIMAL);
         $this->assertEquals(1200, $node->getValue());
         $this->assertEquals('0x4b0', $node->getRaw());
         $this->assertEquals(Node\NumericLiteral::HEXADECIMAL, $node->getFormat());
-        
+
         $node->setFormat(Node\NumericLiteral::OCTAL);
         $this->assertEquals(1200, $node->getValue());
         $this->assertEquals('0o2260', $node->getRaw());
         $this->assertEquals(Node\NumericLiteral::OCTAL, $node->getFormat());
-        
+
         $node->setFormat(Node\NumericLiteral::BINARY);
         $this->assertEquals(1200, $node->getValue());
         $this->assertEquals('0b10010110000', $node->getRaw());
         $this->assertEquals(Node\NumericLiteral::BINARY, $node->getFormat());
     }
-    
+
     /**
      * @dataProvider rawValuesProvider
      */
     public function testRaw($test, $value, $raw, $format)
     {
         $node = new Node\NumericLiteral;
-        
+
         $node->setRaw($test);
         $this->assertEquals($value, $node->getValue());
         $this->assertEquals($raw, $node->getRaw());
         $this->assertEquals($format, $node->getFormat());
     }
-    
+
     public function invalidNumbersProvider()
     {
         return array(
@@ -99,7 +99,7 @@ class NumericLiteralTest extends TestBase
             array("0b13"),
         );
     }
-    
+
     /**
      * @dataProvider invalidNumbersProvider
      */
