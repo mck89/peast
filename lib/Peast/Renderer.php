@@ -1107,7 +1107,7 @@ class Renderer
                 }
                 return Traverser::DONT_TRAVERSE_CHILD_NODES;
             } elseif ($type === "VariableDeclaration") {
-                if (in_array($n->getKind(), array($n::KIND_LET, $n::KIND_CONST))) {
+                if (in_array($n->getKind(), array($n::KIND_LET, $n::KIND_CONST, $n::KIND_USING, $n::KIND_AWAIT_USING))) {
                     $addBrackets = true;
                 }
                 return Traverser::DONT_TRAVERSE_CHILD_NODES;
