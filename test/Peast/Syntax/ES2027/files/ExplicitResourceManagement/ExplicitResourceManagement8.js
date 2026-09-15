@@ -1,0 +1,1 @@
+async function test() {switch (a) {case 1: {await using b = 1; break;}}}
