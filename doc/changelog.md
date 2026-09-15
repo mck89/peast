@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.18.1
+* Fixed bug where rendering a "using" or "using await" declaration inside a switch case not always wrap it into brackets
+
 #### 1.18.0
 * Added ES2026 parser with no additional features
 * Added ES2027 parser and implemented explicit resource management
