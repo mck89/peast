@@ -1,7 +1,7 @@
 [
 	{
 		"type": "BigInt",
-		"value": "0x1234CCx",
+		"value": "0x1234CCn",
 		"location": {
 			"start": {
 				"line": 1,
@@ -33,7 +33,7 @@
 	},
 	{
 		"type": "BigInt",
-		"value": "0o777777o",
+		"value": "0o777777n",
 		"location": {
 			"start": {
 				"line": 2,
@@ -65,7 +65,7 @@
 	},
 	{
 		"type": "BigInt",
-		"value": "0b111111b",
+		"value": "0b111111n",
 		"location": {
 			"start": {
 				"line": 3,

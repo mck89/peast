@@ -1468,7 +1468,7 @@ class Scanner
                 if ($this->features->bigInt && $this->charAt() === "n") {
                     $this->index++;
                     $this->column++;
-                    return new Token(Token::TYPE_BIGINT_LITERAL, $buffer . $char);
+                    return new Token(Token::TYPE_BIGINT_LITERAL, $buffer . "n");
                 }
 
                 return new Token(Token::TYPE_NUMERIC_LITERAL, $buffer);

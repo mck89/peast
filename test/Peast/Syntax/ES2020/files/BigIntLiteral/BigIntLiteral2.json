@@ -47,9 +47,9 @@
 				},
 				"leadingComments": [],
 				"trailingComments": [],
-				"value": "0x1234CCx",
-				"raw": "0x1234CCx",
-				"bigint": "0x1234CCx"
+				"value": "0x1234CCn",
+				"raw": "0x1234CCn",
+				"bigint": "0x1234CCn"
 			}
 		},
 		{
@@ -84,9 +84,9 @@
 				},
 				"leadingComments": [],
 				"trailingComments": [],
-				"value": "0o777777o",
-				"raw": "0o777777o",
-				"bigint": "0o777777o"
+				"value": "0o777777n",
+				"raw": "0o777777n",
+				"bigint": "0o777777n"
 			}
 		},
 		{
@@ -121,9 +121,9 @@
 				},
 				"leadingComments": [],
 				"trailingComments": [],
-				"value": "0b111111b",
-				"raw": "0b111111b",
-				"bigint": "0b111111b"
+				"value": "0b111111n",
+				"raw": "0b111111n",
+				"bigint": "0b111111n"
 			}
 		}
 	],
