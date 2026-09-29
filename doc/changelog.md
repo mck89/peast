@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.18.2
+* Fixed bug where BigInts in hexadecimal, octal and binary forms were rendered with an invalid suffix
+
 #### 1.18.1
 * Fixed bug where rendering a "using" or "using await" declaration inside a switch case not always wrap it into brackets
 
