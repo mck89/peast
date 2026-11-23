@@ -942,7 +942,7 @@ class Scanner
      */
     protected function commentsForCurrentToken($comments = null)
     {
-        $id = $this->currentToken ? spl_object_hash($this->currentToken) : "";
+        $id = $this->currentToken ? spl_object_id($this->currentToken) : "";
         if ($comments !== null) {
             $this->commentsMap[$id] = $comments;
         } elseif (isset($this->commentsMap[$id])) {
