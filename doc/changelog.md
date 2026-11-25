@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+#### 1.18.3
+* Removed usage of deprecated function spl_object_hash on PHP 8.6
+
 #### 1.18.2
 * Fixed bug where BigInts in hexadecimal, octal and binary forms were rendered with an invalid suffix
 
